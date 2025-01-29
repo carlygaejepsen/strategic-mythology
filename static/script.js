@@ -57,7 +57,7 @@ const HAND_SIZE = 5; // Define this constant at the top of your script
 
 async function loadData() {
     try {
-        const response = await fetch("https://github.com/carlygaejepsen/strategic-mythology/blob/main/data.json"); // Path to your JSON file
+        const response = await fetch("https://carlygaejepsen.github.io/strategic-mythology/data.json"); // Path to your JSON file
         const data = await response.json();
 
         // Assign the loaded data to your variables
@@ -99,7 +99,7 @@ function generateCards(data) {
 
 // Fetch card data when "New Game" button is clicked
 document.getElementById("start-game").addEventListener("click", () => {
-    fetch("https://github.com/carlygaejepsen/strategic-mythology/blob/main/data.json") // Update this path if needed
+    fetch("https://carlygaejepsen.github.io/strategic-mythology/data.json") // Update this path if needed
         .then(response => {
             if (!response.ok) {
                 throw new Error("Failed to load card data");
@@ -116,7 +116,7 @@ document.getElementById("start-game").addEventListener("click", () => {
 });
 
 // Debugging: Run this on page load to check if JSON is accessible
-fetch("https://github.com/carlygaejepsen/strategic-mythology/blob/main/data.json")
+fetch("https://carlygaejepsen.github.io/strategic-mythology/data.json")
     .then(response => response.json())
     .then(data => console.log("JSON data available:", data))
     .catch(error => console.error("JSON fetch error:", error));
