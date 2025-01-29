@@ -4,12 +4,12 @@
     { "name": "Athena", "type": "god", "health": 26, "power": 9, "speed": 8, "classes": ["Sages", "Authorities"], "image": "https://carlygaejepsen.github.io/strategic-mythology/static/images/athena.png" },
     { "name": "Hades", "type": "god", "health": 28, "power": 7, "speed": 6, "classes": ["Malevolents", "Authorities"], "image": "https://carlygaejepsen.github.io/strategic-mythology/static/images/hades.png" },
     { "name": "Aether", "type": "god", "health": 25, "power": 7, "speed": 8, "classes": ["Mystics", "Authorities"], "image": "https://carlygaejepsen.github.io/strategic-mythology/static/images/aether.png" },
-    { "name": "Amphitrite", "type": "god", "health": 27, "power": 6, "speed": 7, "classes": ["Caretakers", "Wildkeepers"], "image": "https://carlygaejepsen.github.io/strategic-mythology/static/images/amphitrite.png" }
+    { "name": "Amphitrite", "type": "god", "health": 27, "power": 6, "speed": 7, "classes": ["Caretakers", "Wildkeepers"], "image": "https://carlygaejepsen.github.io/strategic-mythology/static/images/amphitrite.png" },
     // Add more characters here...
   ],
   "actionCards": [
     { "name": "Wave", "type": "action", "effect": "Deals 6 damage to all enemy cards.", "classes": ["Wildkeepers", "Authorities"], "image": "https://carlygaejepsen.github.io/strategic-mythology/static/images/wave.png" },
-    { "name": "Lightning", "type": "action", "effect": "Deals 10 damage to a single enemy card.", "classes": ["Authorities", "Mystics"], "image": "https://carlygaejepsen.github.io/strategic-mythology/static/images/lightning.png" }
+    { "name": "Lightning", "type": "action", "effect": "Deals 10 damage to a single enemy card.", "classes": ["Authorities", "Mystics"], "image": "https://carlygaejepsen.github.io/strategic-mythology/static/images/lightning.png" },
     // Add more action cards here...
   ]
 }
