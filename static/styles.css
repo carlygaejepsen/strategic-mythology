@@ -1,0 +1,156 @@
+/* Fullscreen layout */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+}
+
+/* Game Board Layout */
+#game-board {
+   display: flex;
+    justify-content: space-between; /* Space out Player 1, Center, and Player 2 */
+    align-items: flex-start;
+    width: 90%;
+    max-width: 1100px; /* Keeps everything centered */
+    margin: 0;
+    padding: 20px;
+    gap: 20px;
+}
+
+/* Player Areas */
+.player-area {
+     flex: 1;
+    max-width: 600px; /* Controls the width of player zones */
+    min-height: 600px; /* Prevents collapse */
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#player1-area, #player2-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Center Area */
+#center-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    min-width: 350px;
+}
+
+/* Buttons */
+#controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1vh; /* Keep it close to Battle Zone */
+    gap: 10px; /* Space between buttons */
+}
+
+
+#controls button {
+    padding: 8px 16px;
+    font-size: 14px;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+#controls button:hover {
+    background-color: #ddd;
+}
+
+/* 🔹 Battle Zone - Smaller & Ensures Cards Stay Inside */
+.battle-zone {
+    width: 100%;
+    min-height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px dashed black;
+    padding: 10px;
+}
+
+/* 🔹 Results Log - Same Size as Battle Zone */
+/* Ensure the results log is visible */
+.results-container {
+    width: 100%;
+    max-width: 350px; /* Adjust width as needed */
+    min-height: 120px; /* Ensures it doesn’t disappear */
+    background-color: white;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    overflow-y: auto; /* Adds scrolling if needed */
+}
+
+
+/* 🔹 Cards - Fix Overflow, Ensure They Fit Properly */
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Ensures 3 cards per row */
+    gap: 10px;
+    width: 100%;
+}
+
+/* Individual Cards */
+.card {
+       display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 100%;
+    max-width: 130px;
+ cursor: pointer;
+    pointer-events: auto;
+    user-select: none;
+}
+
+
+.card h3, .card p {
+    font-size: 12px; /* Makes text proportionally smaller */
+    line-height: 1.2;
+    margin: 2px 0;
+}
+
+
+/* Ensure Battle Zone Cards Fit Properly */
+.battle-zone .card {
+    width: 120px; /* Bigger so they are clear in battle */
+    max-width: 140px;
+    height: auto;
+    aspect-ratio: 3 / 4;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* Ensure Card Images Scale Properly */
+.card img {
+    width: 100%;
+    max-width: 130px; /* Keeps images from getting too big */
+    max-height: 160px; /* Prevents it from taking over */
+    object-fit: cover; /* Fits the image nicely */
+    border-radius: 6px;
+}
