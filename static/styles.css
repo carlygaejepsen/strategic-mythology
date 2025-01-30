@@ -9,6 +9,31 @@ body {
     height: 100vh;
     display: flex;
 }
+/* 🏆 Make the start popup an actual modal */
+#start-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    text-align: center;
+}
+
+/* 🕶 Darken background while popup is open */
+#start-popup::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
 
 /* Game Board Layout */
 #game-board {
