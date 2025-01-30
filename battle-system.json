@@ -358,3 +358,10 @@
     }
   }
 }
+{
+  "elementMultipliers": {
+    "Earth": 1.2,
+    "Water": 1.3,
+    "Fire": 1.1
+  }
+}
