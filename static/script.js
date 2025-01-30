@@ -635,4 +635,3 @@ function resetGame() {
     document.getElementById("results-log").innerHTML = "";
     document.getElementById("play-turn").disabled = true;
 }
-
