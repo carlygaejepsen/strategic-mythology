@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = await response.json();
             console.log("JSON data loaded:", data);
 
-            generateCards(data); // ✅ Now passing data to generateCards()
+            generateCards(data);
         } catch (error) {
             console.error("Error loading JSON:", error);
         }
@@ -117,42 +117,17 @@ const HAND_SIZE = 5; // Define this constant at the top of your script
 async function loadData() {
     try {
         const response = await fetch("https://carlygaejepsen.github.io/strategic-mythology/static/data.json"); // Path to your JSON file
+        if (!response.ok) throw new Error("Failed to fetch JSON data.");
+        
         const data = await response.json();
+        console.log("JSON data loaded:", data);
 
-        // Assign the loaded data to your variables
-        godCards = data.godCards;
-        actionCards = data.actionCards;
-
-        console.log("Data loaded successfully!");
-        initializeGame(); // Call your game initialization function after loading data
+        generateCards(data); // Generate cards first
+        initializeGame(); // Then initialize the game
     } catch (error) {
-        console.error("Error loading data:", error);
+        console.error("Error loading JSON:", error);
     }
-
 }
-// Function to generate cards dynamically from JSON data
-function generateCards(data) {
-    const player1Container = document.getElementById("player1-cards");
-    const player2Container = document.getElementById("player2-cards");
-
-    // Clear previous cards
-    player1Container.innerHTML = "";
-    player2Container.innerHTML = "";
-
-    // Add Player 1 Cards
-    data.player1.forEach(card => {
-        const cardElement = document.createElement("div");
-        cardElement.classList.add("card");
-        cardElement.textContent = `${card.name} (Power: ${card.power})`;
-        player1Container.appendChild(cardElement);
-    });
-
-    // Add Player 2 Cards
-    data.player2.forEach(card => {
-        const cardElement = document.createElement("div");
-        cardElement.classList.add("card");
-        cardElement.textContent = `${card.name} (Power: ${card.power})`;
-        player2Container.appendChild(cardElement);
     });
 }
 
@@ -380,7 +355,7 @@ function highlightSelectedCards(playerId) {
 function selectAICard(hand) {
     // Find a god card and an action card that matches its class
     const godCard = hand.find(card => card.type === "god");
-    const actionCard = godCard 
+    let actionCard = godCard 
         ? hand.find(card => card.type === "action" && card.classes.some(cls => godCard.classes.includes(cls)))
         : null;
 
@@ -419,7 +394,7 @@ function moveCardToCenter(cardElement, containerId) {
     clone.style.maxWidth = "120px"; /* Prevents oversized images */
     clone.style.height = "auto";
 
-    centerContainer.appendChild(clone);
+    centerContainer.appendChild(clone); // Append to the battle zone, not the body
 }
 
 
@@ -460,14 +435,16 @@ function createCardElement(card) {
 // Play a single turn
 
    function playTurn() {
-    const player1GodCard = selectedCardPlayer1?.godCard?.card;
-    const player1ActionCard = selectedCardPlayer1?.actionCard?.card;
-	const player2GodCard = selectAICard(player2Hand) || null;
-	const player2ActionCard = selectedCardPlayer2?.actionCard?.card || null;
-     if (!selectedCardPlayer1.godCard && !selectedCardPlayer1.actionCard) {
+  function playTurn() {
+    if (!selectedCardPlayer1.godCard && !selectedCardPlayer1.actionCard) {
         alert("Please select at least one card!");
         return;
     }
+
+    const player1GodCard = selectedCardPlayer1?.godCard?.card;
+    const player1ActionCard = selectedCardPlayer1?.actionCard?.card;
+    const player2GodCard = selectAICard(player2Hand) || null;
+    const player2ActionCard = selectedCardPlayer2?.actionCard?.card || null;
 
 	
 	// Validate combinations for Player 1
