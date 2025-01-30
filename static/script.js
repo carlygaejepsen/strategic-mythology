@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     console.log("Page Loaded");
-)
-}
+
+})
 
     document.getElementById("start-game").addEventListener("click", initializeGame);
     document.getElementById("play-turn").addEventListener("click", playTurn);
