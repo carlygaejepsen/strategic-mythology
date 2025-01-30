@@ -128,7 +128,7 @@ async function loadData() {
         console.error("Error loading JSON:", error);
     }
 }
-    });
+    
 }
 
 // Fetch card data when "New Game" button is clicked
