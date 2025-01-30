@@ -1,7 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
     console.log("Page Loaded");
 
-   function generateCards(data) {
+}
+
+    document.getElementById("start-game").addEventListener("click", initializeGame);
+    document.getElementById("play-turn").addEventListener("click", playTurn);
+
+// Generate Cards
+function generateCards(data) {
     const player1Container = document.getElementById("player1-cards");
     const player2Container = document.getElementById("player2-cards");
 
@@ -49,39 +55,41 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("Cards generated successfully:", document.querySelectorAll(".card"));
 }
 
-    // Load data and start the game
-    async function loadData() {
-        try {
-            const response = await fetch("https://carlygaejepsen.github.io/strategic-mythology/static/data.json"); // Path to your JSON file
-            if (!response.ok) throw new Error("Failed to fetch JSON data.");
-            
-            const data = await response.json();
-            console.log("JSON data loaded:", data);
+// 🔥 Load data function
+async function loadData() {
+    try {
+        const response = await fetch("https://carlygaejepsen.github.io/strategic-mythology/static/data.json");
+        if (!response.ok) throw new Error("Failed to fetch JSON data.");
+        
+        const data = await response.json();
+        console.log("JSON data loaded:", data);
 
-            generateCards(data);
-        } catch (error) {
-            console.error("Error loading JSON:", error);
-        }
+        generateCards(data); // ✅ Now this should work since it's not inside DOMContentLoaded
+    } catch (error) {
+        console.error("Error loading JSON:", error);
     }
+}
 
-    // New Game Button Click - Load Cards
+// 🔥 Wrap DOM events inside DOMContentLoaded
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("Page Loaded");
+
     document.getElementById("start-game").addEventListener("click", () => {
         console.log("Starting new game...");
-        loadData(); // ✅ This loads JSON and creates cards
+        loadData();
     });
 
-    // Set up MutationObserver to watch for cards being added
+    // MutationObserver to wait for cards to be added
     const observer = new MutationObserver(() => {
         const cardElement = document.querySelector(".card");
         if (cardElement) {
             console.log("Card element found!", cardElement.getBoundingClientRect());
-            observer.disconnect(); // Stop observing once found
+            observer.disconnect();
         } else {
             console.warn("Waiting for cards to be added...");
         }
     });
 
-    // Observe the player card areas
     const player1CardsContainer = document.getElementById("player1-cards");
     const player2CardsContainer = document.getElementById("player2-cards");
 
@@ -91,13 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
         console.error("Error: Card containers not found for MutationObserver.");
     }
-
-    console.log("Waiting for cards to be added...");
 });
-
-
-    document.getElementById("start-game").addEventListener("click", initializeGame);
-    document.getElementById("play-turn").addEventListener("click", playTurn);
 
 
 // Global variables
