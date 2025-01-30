@@ -99,13 +99,14 @@ body {
 }
 
 
-/* 🔹 Cards - Fix Overflow, Ensure They Fit Properly */
+// Card Container
 .card-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Ensures 3 cards per row */
+    grid-template-columns: repeat(3, minmax(100px, 1fr)); /* Ensure uniform grid */
     gap: 10px;
     width: 100%;
 }
+
 
 /* Individual Cards */
 .card {
@@ -120,8 +121,10 @@ body {
     width: 100%;
     max-width: 130px;
  cursor: pointer;
-    pointer-events: auto;
+    pointer-events: all !important;
     user-select: none;
+      position: relative;
+    z-index: 10;
 }
 
 
