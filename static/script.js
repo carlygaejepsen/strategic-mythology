@@ -1,71 +1,85 @@
 document.addEventListener("DOMContentLoaded", () => {
-	const cardElement = document.querySelector('.card');
-    if (cardElement) {
-        const rect = cardElement.getBoundingClientRect();
-        console.log(rect);
-    } else {
-        console.error("Card element not found in the DOM.");
-    }
-	document.getElementById("start-game").addEventListener("click", () => {
-    generateCards();
-});
+    console.log("Page Loaded");
 
-	document.addEventListener("DOMContentLoaded", () => {
-function generateCards() {
-    const player1Container = document.getElementById("player1-cards");
-    const player2Container = document.getElementById("player2-cards");
+    // Function to generate cards dynamically
+    function generateCards(data) {
+        const player1Container = document.getElementById("player1-cards");
+        const player2Container = document.getElementById("player2-cards");
 
-    if (!player1Container || !player2Container) {
-        console.error("Error: Card containers not found in the DOM.");
-        return;
-    }
+        if (!player1Container || !player2Container) {
+            console.error("Error: Card containers not found in the DOM.");
+            return;
+        }
 
-    // Clear existing cards
-    player1Container.innerHTML = "";
-    player2Container.innerHTML = "";
+        // Clear existing cards
+        player1Container.innerHTML = "";
+        player2Container.innerHTML = "";
 
-    // Create cards dynamically
-    for (let i = 1; i <= 5; i++) {
-        const card1 = document.createElement("div");
-        card1.classList.add("card");
-        card1.textContent = `P1 Card ${i}`;
-        player1Container.appendChild(card1);
+        // Add Player 1 Cards
+        data.player1.forEach(card => {
+            const cardElement = document.createElement("div");
+            cardElement.classList.add("card");
+            cardElement.textContent = `${card.name} (Power: ${card.power})`;
+            player1Container.appendChild(cardElement);
+        });
 
-        const card2 = document.createElement("div");
-        card2.classList.add("card");
-        card2.textContent = `P2 Card ${i}`;
-        player2Container.appendChild(card2);
+        // Add Player 2 Cards
+        data.player2.forEach(card => {
+            const cardElement = document.createElement("div");
+            cardElement.classList.add("card");
+            cardElement.textContent = `${card.name} (Power: ${card.power})`;
+            player2Container.appendChild(cardElement);
+        });
+
+        console.log("Cards generated successfully!");
     }
 
-    console.log("Cards generated successfully!");
-}
+    // Load data and start the game
+    async function loadData() {
+        try {
+            const response = await fetch("https://carlygaejepsen.github.io/strategic-mythology/static/data.json"); // Path to your JSON file
+            if (!response.ok) throw new Error("Failed to fetch JSON data.");
+            
+            const data = await response.json();
+            console.log("JSON data loaded:", data);
 
-    // Function to check if cards exist
-    const checkForCards = () => {
+            generateCards(data); // ✅ Now passing data to generateCards()
+        } catch (error) {
+            console.error("Error loading JSON:", error);
+        }
+    }
+
+    // New Game Button Click - Load Cards
+    document.getElementById("start-game").addEventListener("click", () => {
+        console.log("Starting new game...");
+        loadData(); // ✅ This loads JSON and creates cards
+    });
+
+    // Set up MutationObserver to watch for cards being added
+    const observer = new MutationObserver(() => {
         const cardElement = document.querySelector(".card");
         if (cardElement) {
             console.log("Card element found!", cardElement.getBoundingClientRect());
-            return true;
-        }
-        return false;
-    };
-
-    // If cards already exist (unlikely at page load), log them
-    if (checkForCards()) return;
-
-    // Set up MutationObserver to watch for new cards being added
-    const observer = new MutationObserver(() => {
-        if (checkForCards()) {
-            observer.disconnect(); // Stop observing once the element is found
+            observer.disconnect(); // Stop observing once found
+        } else {
+            console.warn("Waiting for cards to be added...");
         }
     });
 
-    // Observe both players' card areas for changes
-    observer.observe(player1CardsContainer, { childList: true, subtree: true });
-    observer.observe(player2CardsContainer, { childList: true, subtree: true });
+    // Observe the player card areas
+    const player1CardsContainer = document.getElementById("player1-cards");
+    const player2CardsContainer = document.getElementById("player2-cards");
+
+    if (player1CardsContainer && player2CardsContainer) {
+        observer.observe(player1CardsContainer, { childList: true, subtree: true });
+        observer.observe(player2CardsContainer, { childList: true, subtree: true });
+    } else {
+        console.error("Error: Card containers not found for MutationObserver.");
+    }
 
     console.log("Waiting for cards to be added...");
 });
+
 
     document.getElementById("start-game").addEventListener("click", initializeGame);
     document.getElementById("play-turn").addEventListener("click", playTurn);
