@@ -368,8 +368,7 @@ function moveCardToCenter(cardElement, containerId) {
     const rect = cardElement.getBoundingClientRect();
     clone.style.left = `${rect.left}px`;
     clone.style.top = `${rect.top}px`;
-    document.body.appendChild(clone);
-
+  
 
 
     // After animation, update the position and append to the battle center
@@ -380,6 +379,7 @@ clone.style.left = "";
 clone.style.top = "";
 clone.style.width = "100%"; // Ensure card scales properly
 clone.style.maxWidth = "120px"; // Prevent it from getting too large
+	      document.body.appendChild(clone);
     }, 500); // Match the animation duration
 
 
