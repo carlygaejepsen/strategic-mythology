@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("start-game").addEventListener("click", initializeGame);
     document.getElementById("play-turn").addEventListener("click", playTurn);
-});
+);
 
 // Global variables
 let player1Deck = [];
