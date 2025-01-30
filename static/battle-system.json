@@ -1,6 +1,4 @@
-
-
-  "classMatchingRules": {
+ "classMatchingRules": 
     "Ecstatics": {
       "strongAgainst": ["Warlords", "Authorities"],
       "weakAgainst": ["Oracles", "Mystics"]
