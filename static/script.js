@@ -6,6 +6,10 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
         console.error("Card element not found in the DOM.");
     }
+	document.getElementById("start-game").addEventListener("click", () => {
+    generateCards();
+});
+
 	document.addEventListener("DOMContentLoaded", () => {
 function generateCards() {
     const player1Container = document.getElementById("player1-cards");
