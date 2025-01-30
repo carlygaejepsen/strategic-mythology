@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
-// 🎮 Show Start Game Popup
+// 🎮 Show Start Game Popup 2.0
 function showStartPopup() {
     const startPopup = document.createElement("div");
     startPopup.id = "start-popup";
@@ -47,11 +47,21 @@ function showStartPopup() {
     `;
     document.body.appendChild(startPopup);
 
-    document.getElementById("start-game").addEventListener("click", () => {
-        document.body.removeChild(startPopup);
-        initializeGame();
-    });
+    // Ensure button click is properly attached
+    setTimeout(() => {
+        const startButton = document.getElementById("start-game");
+        if (startButton) {
+            startButton.addEventListener("click", () => {
+                console.log("Start button clicked!");
+                document.body.removeChild(startPopup);
+                initializeGame();
+            });
+        } else {
+            console.error("Start button not found!");
+        }
+    }, 100); // Small delay to ensure the button exists in the DOM
 }
+
 // 🎴 Define and Validate Cards Before Creating Decks
 function processCardData(rawCards) {
     return rawCards.map(card => ({
