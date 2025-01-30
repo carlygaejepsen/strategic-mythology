@@ -111,3 +111,66 @@
     "Insight": null
   }
 }
+{
+  "classAttacks": {
+    "Ecstatics": [
+      "Love",
+      "Dream",
+      "Vine"
+    ],
+    "Warlords": [
+      "Malice",
+      "Boulder",
+      "Decree"
+    ],
+    "Sages": [
+      "Wisdom",
+      "Light",
+      "Insight"
+    ],
+    "Malevolents": [
+      "Shadow",
+      "Curse",
+      "Malice"
+    ],
+    "Oracles": [
+      "Insight",
+      "Wisdom",
+      "Curse"
+    ],
+    "Caretakers": [
+      "Growth",
+      "Blessing",
+      "Healing"
+    ],
+    "Mystics": [
+      "Luck",
+      "Light",
+      "Shadow"
+    ],
+    "Wildkeepers": [
+      "Beast",
+      "Athletics",
+      "Vine"
+    ],
+    "Authorities": [
+      "Decree",
+      "Luck",
+      "Malice"
+    ],
+    "Heroes": [
+      "Athletics",
+      "Boulder",
+      "Healing"
+    ]
+  },
+  "elementAttacks": {
+    "Earth": "Boulder",
+    "Electricity": "Lightning",
+    "Fire": "Fire",
+    "Water": "Wave",
+    "Air": "Wind",
+    "Vitality": "Growth",
+    "Insight": "Insight"
+  }
+}
