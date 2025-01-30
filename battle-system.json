@@ -1,4 +1,5 @@
-"classMatchingRules": 
+{
+  "classMatchingRules": {
     "Ecstatics": {
       "strongAgainst": ["Warlords", "Authorities"],
       "weakAgainst": ["Oracles", "Mystics"]
@@ -38,37 +39,38 @@
     "Heroes": {
       "strongAgainst": ["Warlords", "Malevolents"],
       "weakAgainst": ["Caretakers", "Oracles"]
-	},
-	"elementStatusEffects": { 
-		"Earth": "Rooted", 
-		"Water": "Soaked", 
-		"Fire": "Burned", 
-		"Air": "Disoriented", 
-		"Electricity": "Paralyzed", 
-		"Vitality": "Regenerate", 
-		"Insight": null
-	},
-	"classAttacks": {
-		"Ecstatics": ["Love", "Dream", "Vine"],
-		"Warlords": ["Malice", "Boulder", "Decree"],
-		"Sages": ["Wisdom", "Light", "Insight"],
-		"Malevolents": ["Shadow", "Curse", "Malice"],
-		"Oracles": ["Insight", "Wisdom", "Curse"],
-		"Caretakers": ["Growth", "Blessing", "Healing"],
-		"Mystics": ["Luck", "Light", "Shadow"],
-		"Wildkeepers": ["Beast", "Athletics", "Vine"],
-		"Authorities": ["Decree", "Luck", "Malice"],
-		"Heroes": ["Athletics", "Boulder", "Healing"]
-	},
-	"elementAttacks": {
-		"Earth": "Boulder",
-		"Electricity": "Lightning",
-		"Fire": "Fire",
-		"Water": "Wave",
-		"Air": "Wind",
-		"Vitality": "Growth",
-		"Insight": "Insight"
-	},
+    }
+  },
+  "elementStatusEffects": {
+    "Earth": "Rooted",
+    "Water": "Soaked",
+    "Fire": "Burned",
+    "Air": "Disoriented",
+    "Electricity": "Paralyzed",
+    "Vitality": "Regenerate",
+    "Insight": null
+  },
+  "classAttacks": {
+    "Ecstatics": ["Love", "Dream", "Vine"],
+    "Warlords": ["Malice", "Boulder", "Decree"],
+    "Sages": ["Wisdom", "Light", "Insight"],
+    "Malevolents": ["Shadow", "Curse", "Malice"],
+    "Oracles": ["Insight", "Wisdom", "Curse"],
+    "Caretakers": ["Growth", "Blessing", "Healing"],
+    "Mystics": ["Luck", "Light", "Shadow"],
+    "Wildkeepers": ["Beast", "Athletics", "Vine"],
+    "Authorities": ["Decree", "Luck", "Malice"],
+    "Heroes": ["Athletics", "Boulder", "Healing"]
+  },
+  "elementAttacks": {
+    "Earth": "Boulder",
+    "Electricity": "Lightning",
+    "Fire": "Fire",
+    "Water": "Wave",
+    "Air": "Wind",
+    "Vitality": "Growth",
+    "Insight": "Insight"
+  },
   "classWeaknesses": {
     "Ecstatics": "Authorities",
     "Warlords": "Sages",
@@ -99,8 +101,6 @@
     "Vitality": "None",
     "Insight": "None"
   },
-}
-{
   "damage_multipliers": {
     "strong": 1.25,
     "weak": 0.75,
@@ -140,10 +140,9 @@
       "heal_amount": 5
     }
   },
-   "status_application_rules": {
+  "status_application_rules": {
     "requires_god_card": true
-   }
- {
+  },
   "godClassSynergies": {
     "Ecstatics": {
       "Love": {
@@ -180,20 +179,20 @@
       }
     },
     "Sages": {
-      "Boulder": {
-        "effect": "Landslide",
-        "powerMultiplier": 1.3,
-        "description": "A landslide attack slows enemy movement, reducing their speed."
+      "Wisdom": {
+        "effect": "Enlightened",
+        "powerMultiplier": 1.2,
+        "description": "Wisdom attack reveals enemy weaknesses, increasing crit chance."
       },
       "Light": {
         "effect": "Blinded",
         "powerMultiplier": 1.3,
         "description": "Light attack reduces enemy accuracy and visibility."
       },
-      "Dream": {
-        "effect": "Sleep",
-        "powerMultiplier": 1.3,
-        "description": "Dream attack puts the enemy to sleep for one turn."
+      "Insight": {
+        "effect": "Foreseen",
+        "powerMultiplier": 1.5,
+        "description": "Insight attack allows the attacker to anticipate and dodge the next attack."
       }
     },
     "Malevolents": {
@@ -236,15 +235,15 @@
         "powerMultiplier": 1.3,
         "description": "Growth restores some health each turn."
       },
-      "Healing": {
+      "Blessing": {
         "effect": "Fortified",
         "powerMultiplier": 1.2,
-        "description": "Healing grants temporary armor and reduces incoming damage."
+        "description": "Blessing grants temporary armor and reduces incoming damage."
       },
-      "Malice": {
-        "effect": "Retaliation",
-        "powerMultiplier": 1.4,
-        "description": "Malice attack retaliates with counter damage when hit."
+      "Healing": {
+        "effect": "Second Wind",
+        "powerMultiplier": 1.3,
+        "description": "Healing revives the attacker with small HP if KO'd."
       }
     },
     "Mystics": {
@@ -315,9 +314,7 @@
         "description": "Healing revives the attacker with small HP if KO'd."
       }
     }
-  }
-}
- {
+  },
   "elementalStatusEffects": {
     "Earth": {
       "effect": "Rooted",
