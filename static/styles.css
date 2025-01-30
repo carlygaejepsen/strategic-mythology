@@ -21,6 +21,7 @@ body {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
     z-index: 1000;
     text-align: center;
+    pointer-events: auto;
 }
 
 /* 🕶 Darken background while popup is open */
