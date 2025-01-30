@@ -382,51 +382,56 @@ function selectAICard(hand) {
 // Move card to the battle center with animation
 function moveCardToCenter(cardElement, containerId) {
     const centerContainer = document.getElementById(containerId);
+
+    if (!centerContainer) {
+        console.error("Error: Center container not found.");
+        return;
+    }
+
+    // Create a clone of the card
     const clone = cardElement.cloneNode(true);
 
-    clone.style.position = "relative"; /* No absolute positioning */
-    clone.style.zIndex = "1000"; 
-    clone.style.left = ""; 
-    clone.style.top = ""; 
-    clone.style.width = "100px"; /* Ensures correct scaling */
-    clone.style.maxWidth = "120px"; /* Prevents oversized images */
+    // Style the clone for animation
+    clone.style.position = "absolute"; // Use absolute positioning for smooth animation
+    clone.style.zIndex = "1000";
+    clone.style.width = "100px"; // Ensures correct scaling
+    clone.style.maxWidth = "120px"; // Prevents oversized images
     clone.style.height = "auto";
-
-    centerContainer.appendChild(clone); // Append to the battle zone, not the body
-}
-
 
     // Get the initial position of the card
     const rect = cardElement.getBoundingClientRect();
     clone.style.left = `${rect.left}px`;
     clone.style.top = `${rect.top}px`;
-  
 
+    // Append the clone to the body temporarily for animation
+    document.body.appendChild(clone);
 
-    // After animation, update the position and append to the battle center
+    // Animate the card to the center
+    requestAnimationFrame(() => {
+        clone.style.transition = "all 0.5s ease";
+
+        // Calculate the center position
+        const centerRect = centerContainer.getBoundingClientRect();
+        const centerX = centerRect.left + centerRect.width / 2 - clone.offsetWidth / 2;
+        const centerY = centerRect.top + centerRect.height / 2 - clone.offsetHeight / 2;
+
+        clone.style.left = `${centerX}px`;
+        clone.style.top = `${centerY}px`;
+    });
+
+    // After animation, move the clone to the center container
     setTimeout(() => {
         clone.style.position = "relative";
-clone.style.transition = "";
-clone.style.left = "";
-clone.style.top = "";
-clone.style.width = "100%"; // Ensure card scales properly
-clone.style.maxWidth = "120px"; // Prevent it from getting too large
-	      document.body.appendChild(clone);
+        clone.style.transition = "";
+        clone.style.left = "";
+        clone.style.top = "";
+        clone.style.width = "100%"; // Ensure card scales properly
+        clone.style.maxWidth = "120px"; // Prevent it from getting too large
+
+        // Remove the clone from the body and append it to the center container
+        document.body.removeChild(clone);
+        centerContainer.appendChild(clone);
     }, 500); // Match the animation duration
-
-
-
-// Create a DOM element for a card (used for AI cards)
-function createCardElement(card) {
-    const cardElement = document.createElement("div");
-    cardElement.className = "card";
-    cardElement.innerHTML = `
-        <img src="${card.image}" alt="${card.name}" class="card-image">
-        <h3>${card.name}</h3>
-        <p>Type: ${card.type}</p>
-        ${card.type === "god" ? `<p>HP: ${card.health}, Pow: ${card.power}, Spd: ${card.speed}</p>` : `<p>${card.effect}</p>`}
-    `;
-    return cardElement;
 }
 
 
