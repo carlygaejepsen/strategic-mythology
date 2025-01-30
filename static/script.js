@@ -7,8 +7,34 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("Card element not found in the DOM.");
     }
 	document.addEventListener("DOMContentLoaded", () => {
-    const player1CardsContainer = document.getElementById("player1-cards");
-    const player2CardsContainer = document.getElementById("player2-cards");
+function generateCards() {
+    const player1Container = document.getElementById("player1-cards");
+    const player2Container = document.getElementById("player2-cards");
+
+    if (!player1Container || !player2Container) {
+        console.error("Error: Card containers not found in the DOM.");
+        return;
+    }
+
+    // Clear existing cards
+    player1Container.innerHTML = "";
+    player2Container.innerHTML = "";
+
+    // Create cards dynamically
+    for (let i = 1; i <= 5; i++) {
+        const card1 = document.createElement("div");
+        card1.classList.add("card");
+        card1.textContent = `P1 Card ${i}`;
+        player1Container.appendChild(card1);
+
+        const card2 = document.createElement("div");
+        card2.classList.add("card");
+        card2.textContent = `P2 Card ${i}`;
+        player2Container.appendChild(card2);
+    }
+
+    console.log("Cards generated successfully!");
+}
 
     // Function to check if cards exist
     const checkForCards = () => {
