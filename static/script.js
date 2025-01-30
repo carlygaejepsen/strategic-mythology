@@ -1,38 +1,53 @@
 document.addEventListener("DOMContentLoaded", () => {
     console.log("Page Loaded");
 
-    // Function to generate cards dynamically
-    function generateCards(data) {
-        const player1Container = document.getElementById("player1-cards");
-        const player2Container = document.getElementById("player2-cards");
+   function generateCards(data) {
+    const player1Container = document.getElementById("player1-cards");
+    const player2Container = document.getElementById("player2-cards");
 
-        if (!player1Container || !player2Container) {
-            console.error("Error: Card containers not found in the DOM.");
-            return;
+    if (!player1Container || !player2Container) {
+        console.error("Error: Card containers not found in the DOM.");
+        return;
+    }
+
+    // Clear previous cards
+    player1Container.innerHTML = "";
+    player2Container.innerHTML = "";
+
+    // Function to create a card element
+    function createCardElement(card) {
+        const cardElement = document.createElement("div");
+        cardElement.classList.add("card");
+
+        if (card.type === "god") {
+            cardElement.innerHTML = `
+                <strong>${card.name}</strong> <br>
+                Type: God <br>
+                HP: ${card.health} | Pow: ${card.power} | Spd: ${card.speed}
+            `;
+        } else if (card.type === "action") {
+            cardElement.innerHTML = `
+                <strong>${card.name}</strong> <br>
+                Type: Action <br>
+                Effect: ${card.effect}
+            `;
+        } else {
+            console.warn("Unknown card type:", card);
         }
 
-        // Clear existing cards
-        player1Container.innerHTML = "";
-        player2Container.innerHTML = "";
-
-        // Add Player 1 Cards
-        data.player1.forEach(card => {
-            const cardElement = document.createElement("div");
-            cardElement.classList.add("card");
-            cardElement.textContent = `${card.name} (Power: ${card.power})`;
-            player1Container.appendChild(cardElement);
-        });
-
-        // Add Player 2 Cards
-        data.player2.forEach(card => {
-            const cardElement = document.createElement("div");
-            cardElement.classList.add("card");
-            cardElement.textContent = `${card.name} (Power: ${card.power})`;
-            player2Container.appendChild(cardElement);
-        });
-
-        console.log("Cards generated successfully!");
+        return cardElement;
     }
+
+    // Generate Player 1 Cards
+    data.godCards.forEach(card => player1Container.appendChild(createCardElement(card)));
+    data.actionCards.forEach(card => player1Container.appendChild(createCardElement(card)));
+
+    // Generate Player 2 Cards
+    data.godCards.forEach(card => player2Container.appendChild(createCardElement(card)));
+    data.actionCards.forEach(card => player2Container.appendChild(createCardElement(card)));
+
+    console.log("Cards generated successfully:", document.querySelectorAll(".card"));
+}
 
     // Load data and start the game
     async function loadData() {
