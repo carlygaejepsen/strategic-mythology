@@ -57,18 +57,6 @@ function showStartPopup() {
     });
 }
 
-// Function to load all images before allowing the game to start
-function loadAllImages(imagePaths) {
-    return Promise.all(imagePaths.map(path => {
-        return new Promise(resolve => {
-            const img = new Image();
-            img.src = path;
-            img.onload = resolve;
-            img.onerror = resolve; // Prevent loading failure from blocking game
-        });
-    }));
-}
-
 // 🎴 Define and Validate Cards Before Creating Decks
 function processCardData(rawCards) {
     return rawCards.map(card => ({
