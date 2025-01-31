@@ -65,21 +65,31 @@ function showStartPopup() {
     document.getElementById("start-game").addEventListener("click", () => {
         document.body.removeChild(startPopup);
         initializeGame();
+        } else {
+            console.error("Start button not found!");
+        }
+    }, 100);
     });
 }
 
 // 🎮 Initialize Game
 function initializeGame() {
-    console.log("Initializing game...");
+    console.log("Initializing game..."); // Debug log
+
     if (!window.gameData?.cards?.length) {
         console.error("No card data available.");
         return;
     }
+
     window.player1 = createPlayerDeck(window.gameData.cards);
     window.player2 = createPlayerDeck(window.gameData.cards);
+
     drawInitialHands();
     updateUI();
+
+    console.log("Game initialized successfully!"); // Debug log
 }
+
 
 // 🃏 Create Player Deck
 function createPlayerDeck(cards) {
