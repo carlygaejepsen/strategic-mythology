@@ -5,24 +5,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.log("Start button clicked!");
         document.getElementById("start-popup").remove();
         initializeGame();
-    try {
         const [cardData, battleSystem] = await Promise.all([
             fetch("static/data.json").then(res => res.json()),
             fetch("static/battle-system.json").then(res => res.json())
-        ]);
 
         console.log("Game data loaded.");
-
-        if (!cardData || !Array.isArray(cardData.cards) || !battleSystem) {
-            throw new Error("Invalid JSON format.");
-        }
   
 });
 
         window.gameData = { cards: cardData.cards, battleSystem };
         showStartPopup();
-    } catch (error) {
-        console.error("Error loading game data:", error);
+  
     }
 });
 
