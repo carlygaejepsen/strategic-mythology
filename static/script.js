@@ -1,7 +1,10 @@
 // 🚀 Load Core Game Data
 document.addEventListener("DOMContentLoaded", async () => {
     console.log("Loading Strategic Mythology...");
-
+  document.getElementById("start-game").addEventListener("click", () => {
+        console.log("Start button clicked!");
+        document.getElementById("start-popup").remove();
+        initializeGame();
     try {
         const [cardData, battleSystem] = await Promise.all([
             fetch("static/data.json").then(res => res.json()),
@@ -13,10 +16,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (!cardData || !Array.isArray(cardData.cards) || !battleSystem) {
             throw new Error("Invalid JSON format.");
         }
-    document.getElementById("start-game").addEventListener("click", () => {
-        console.log("Start button clicked!");
-        document.getElementById("start-popup").remove();
-        initializeGame();
+  
 });
 
         window.gameData = { cards: cardData.cards, battleSystem };
