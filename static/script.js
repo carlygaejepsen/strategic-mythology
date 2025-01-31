@@ -1,17 +1,16 @@
 // 🚀 Load Core Game Data
 document.addEventListener("DOMContentLoaded", async () => {
     console.log("Loading Strategic Mythology...");
-document.body.addEventListener("click", function (event) {
-    if (event.target && event.target.id === "startButton") {
-        startGame();
-    }
-});
 
-    // Show loading screen
-    const loadingScreen = document.createElement("div");
-    loadingScreen.id = "loading-screen";
-    loadingScreen.innerHTML = "<h2>Loading Strategic Mythology...</h2>";
-    document.body.appendChild(loadingScreen);
+    // Show loading popup
+    const startPopup = document.createElement("div");
+    startPopup.id = "start-popup";
+    startPopup.innerHTML = `
+        <h2>Welcome to Strategic Mythology</h2>
+        <div id="loading-screen"><h2>Loading...</h2></div>
+        <button id="start-game" style="display: none;">Start</button>
+    `;
+    document.body.appendChild(startPopup);
 
     try {
         // Step 1: Fetch JSON files simultaneously
@@ -29,43 +28,18 @@ document.body.addEventListener("click", function (event) {
 
         // Step 3: Store globally for easy access
         window.gameData = {
-            cards: cardData.cards,  // Ensure only the cards array is stored
+            cards: processCardData(cardData.cards),  // Ensure processed cards are stored
             battleSystem: battleSystem
         };
 
-        // Step 4: Remove loading screen & show Start button
-        document.body.removeChild(loadingScreen);
-        showStartPopup();
+        // Step 4: Remove loading message & show Start button only after everything is fully loaded
+        document.getElementById("loading-screen").remove();
+        document.getElementById("start-game").style.display = "block";
     } catch (error) {
         console.error("Error loading game data:", error);
-        loadingScreen.innerHTML = "<h2>Error loading game data. Please refresh.</h2>";
+        document.getElementById("loading-screen").innerHTML = "<h2>Error loading game data. Please refresh.</h2>";
     }
 });
-
-// 🎮 Show Start Game Popup 2.0
-function showStartPopup() {
-    const startPopup = document.createElement("div");
-    startPopup.id = "start-popup";
-    startPopup.innerHTML = `
-        <h2>Welcome to Strategic Mythology</h2>
-        <button id="start-game">Start</button>
-    `;
-    document.body.appendChild(startPopup);
-
-    // Ensure button click is properly attached
-    setTimeout(() => {
-        const startButton = document.getElementById("start-game");
-        if (startButton) {
-            startButton.addEventListener("click", () => {
-                console.log("Start button clicked!");
-                document.body.removeChild(startPopup);
-                initializeGame();
-            });
-        } else {
-            console.error("Start button not found!");
-        }
-    }, 100); // Small delay to ensure the button exists in the DOM
-}
 
 // 🎴 Define and Validate Cards Before Creating Decks
 function processCardData(rawCards) {
@@ -79,9 +53,54 @@ function processCardData(rawCards) {
         defense: card.defense ?? (card.type === "god" ? 5 : 0), // Default defense if missing
         speed: card.speed ?? 10, // Default speed value
         effect: card.effect || null, // Some cards have unique effects
-        image: card.image || "images/default-card.png" // Placeholder if no image is given
+        image: card.image || "images/default-card.png", // Placeholder if no image is given
+        description: card.description || "No description available", // Ensure descriptions are included
+        power: card.power ?? 0, // Default power value for class attack cards
+        specialAttack: card.specialAttack ? {
+            name: card.specialAttack.name || "Unknown Special Attack",
+            power: card.specialAttack.power ?? 0,
+            effect: card.specialAttack.effect || "No effect",
+            image: card.specialAttack.image || "images/default-special.png"
+        } : null,
+        ultraAttack: card.ultraAttack ? {
+            name: card.ultraAttack.name || "Unknown Ultra Attack",
+            power: card.ultraAttack.power ?? 0,
+            effect: card.ultraAttack.effect || "No effect",
+            image: card.ultraAttack.image || "images/default-ultra.png",
+            ultraUser: card.ultraAttack.ultraUser || "Unknown"
+        } : null,
+        elementalAttack: card.element ? {
+            element: card.element || "Unknown",
+            damage: card.damage ?? 0,
+            effect: card.effect || "No effect",
+            speed: card.speed ?? 10,
+            image: card.image || "images/default-elemental.png",
+            description: card.description || "No description available"
+        } : null
     }));
 }
+
+// 🎮 Initialize Game Canvas
+document.addEventListener("DOMContentLoaded", function () {
+    let canvas = document.getElementById("gameCanvas");
+    let ctx = canvas.getContext("2d");
+
+    document.getElementById("start-game").addEventListener("click", () => {
+        console.log("Start button clicked!");
+        document.getElementById("start-popup").remove();
+        startGame();
+    });
+
+    function startGame() {
+        console.log("Game started!");
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "white";
+        ctx.font = "30px Arial";
+        ctx.fillText("Game Loaded!", canvas.width / 4, canvas.height / 2);
+    }
+});
+
 
 // 🎮 Initialize Game (Now ensuring cards are structured first)
 function initializeGame() {
