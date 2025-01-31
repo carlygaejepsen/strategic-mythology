@@ -135,12 +135,11 @@ function displayPlayerHand(playerId, hand) {
 
     handContainer.innerHTML = "";
 
+
     hand.forEach((card) => {
+        console.log(`Adding card: ${card.name}`); // Debugging
         const cardElement = createCardElement(card);
         handContainer.appendChild(cardElement);
-    });
-
-    console.log(`${playerId} hand updated.`);
 }
 
 // 🎴 Create Card Element with Stats and Description
