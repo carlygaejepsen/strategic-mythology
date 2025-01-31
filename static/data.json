@@ -1,0 +1,1215 @@
+{
+	"elements": [
+    {
+        "name": "Earth",
+        "weakAgainst": "Air",
+        "strongAgainst": "Water"
+    },
+    {
+        "name": "Water",
+        "weakAgainst": "Electricity",
+        "strongAgainst": "Fire"
+    },
+    {
+        "name": "Air",
+        "weakAgainst": "Earth",
+        "strongAgainst": "Electricity"
+    },
+    {
+        "name": "Electricity",
+        "weakAgainst": "Earth",
+        "strongAgainst": "Water"
+    },
+    {
+        "name": "Fire",
+        "weakAgainst": "Water",
+        "strongAgainst": "Shadow"
+    },
+    {
+        "name": "Vitality",
+        "weakAgainst": "Decay",
+        "strongAgainst": "Shadow"
+    },
+    {
+        "name": "Decay",
+        "weakAgainst": "Vitality",
+        "strongAgainst": "Wisdom"
+    },
+    {
+        "name": "Light",
+        "weakAgainst": "Shadow",
+        "strongAgainst": "Decay"
+    },
+    {
+        "name": "Shadow",
+        "weakAgainst": "Light",
+        "strongAgainst": "Wisdom"
+    },
+    {
+        "name": "Love",
+        "weakAgainst": "Malice",
+        "strongAgainst": "Malice"
+    },
+    {
+        "name": "Malice",
+        "weakAgainst": "Love",
+        "strongAgainst": "Wisdom"
+    },
+    {
+        "name": "Wisdom",
+        "weakAgainst": "Hubris",
+        "strongAgainst": "Malice"
+    },
+    {
+        "name": "Hubris",
+        "weakAgainst": "Wisdom",
+        "strongAgainst": "Light"
+    }
+],
+
+"classes": [
+    {
+        "name": "Ecstatics",
+        "weakAgainst": "Authorities",
+        "strongAgainst": "Malevolents"
+    },
+    {
+        "name": "Warlords",
+        "weakAgainst": "Sages",
+        "strongAgainst": "Wildkeepers"
+    },
+    {
+        "name": "Sages",
+        "weakAgainst": "Malevolents",
+        "strongAgainst": "Warlords"
+    },
+    {
+        "name": "Malevolents",
+        "weakAgainst": "Caretakers",
+        "strongAgainst": "Sages"
+    },
+    {
+        "name": "Oracles",
+        "weakAgainst": "Mystics",
+        "strongAgainst": "Authorities"
+    },
+    {
+        "name": "Caretakers",
+        "weakAgainst": "Warlords",
+        "strongAgainst": "Malevolents"
+    },
+    {
+        "name": "Mystics",
+        "weakAgainst": "Heroes",
+        "strongAgainst": "Oracles"
+    },
+    {
+        "name": "Wildkeepers",
+        "weakAgainst": "Authorities",
+        "strongAgainst": "Ecstatics"
+    },
+    {
+        "name": "Authorities",
+        "weakAgainst": "Heroes",
+        "strongAgainst": "Wildkeepers"
+    },
+    {
+        "name": "Heroes",
+        "weakAgainst": "Malevolents",
+        "strongAgainst": "Authorities"
+    }
+],
+
+"cards": [
+
+    {
+        "name": "Aether",
+        "type": "god",
+        "classes": ["Mystics", "Authorities"],
+        "elements": ["Air", "Light"],
+        "hp": 100,
+        "attack": 10,
+        "defense": 5,
+        "speed": 10,
+        "effect": null,
+        "image": "static/images/aether.png",
+        "description": "Aether commands the upper sky, controlling air and cosmic insight."
+    },
+    {
+        "name": "Amphitrite",
+        "type": "god",
+        "classes": ["Caretakers", "Wildkeepers"],
+        "elements": ["Water", "Vitality"],
+        "hp": 100,
+        "attack": 10,
+        "defense": 5,
+        "speed": 10,
+        "effect": null,
+        "image": "static/images/amphitrite.png",
+        "description": "Amphitrite is the queen of the sea, using powerful water-based healing magic."
+    },
+    {
+        "name": "Aphrodite",
+        "type": "god",
+        "classes": ["Ecstatics", "Mystics"],
+        "elements": ["Love", "Vitality"],
+        "hp": 100,
+        "attack": 10,
+        "defense": 5,
+        "speed": 10,
+        "effect": null,
+        "image": "static/images/aphrodite.png",
+        "description": "Aphrodite is over this. She can cast ultra love attacks in her sleep."
+    },
+    {
+        "name": "Apollo",
+        "type": "god",
+        "classes": ["Sages", "Mystics"],
+        "elements": ["Light", "Wisdom"],
+        "hp": 100,
+        "attack": 12,
+        "defense": 6,
+        "speed": 12,
+        "effect": null,
+        "image": "static/images/apollo.png",
+        "description": "Apollo is the radiant god of music and prophecy, striking with fiery insight."
+    },
+    {
+        "name": "Ares",
+        "type": "god",
+        "classes": ["Warlords", "Heroes"],
+        "elements": ["Fire", "Malice"],
+        "hp": 110,
+        "attack": 14,
+        "defense": 7,
+        "speed": 9,
+        "effect": null,
+        "image": "static/images/ares.png",
+        "description": "Ares thrives in battle, bringing destruction with his fiery and earthen fury."
+    },
+    {
+        "name": "Artemis",
+        "type": "god",
+        "classes": ["Wildkeepers", "Heroes"],
+        "elements": ["Earth", "Air"],
+        "hp": 105,
+        "attack": 12,
+        "defense": 6,
+        "speed": 11,
+        "effect": null,
+        "image": "static/images/artemis.png",
+        "description": "Artemis, the huntress, swiftly strikes her foes with precision and agility."
+    },
+    {
+        "name": "Asterion",
+        "type": "god",
+        "classes": ["Warlords", "Wildkeepers"],
+        "elements": ["Earth"],
+        "hp": 110,
+        "attack": 13,
+        "defense": 7,
+        "speed": 8,
+        "effect": null,
+        "image": "static/images/asterion.png",
+        "description": "Asterion, the mighty Minotaur, crushes enemies with his sheer brute force."
+    },
+    {
+        "name": "Astraeus",
+        "type": "god",
+        "classes": ["Mystics", "Oracles"],
+        "elements": ["Air", "Insight"],
+        "hp": 100,
+        "attack": 11,
+        "defense": 6,
+        "speed": 12,
+        "effect": null,
+        "image": "static/images/astraeus.png",
+        "description": "Astraeus, the dusk-bringer, channels celestial wisdom to guide destiny."
+    },
+    {
+        "name": "Athena",
+        "type": "god",
+        "classes": ["Sages", "Authorities"],
+        "elements": ["Wisdom", "Light"],
+        "hp": 100,
+        "attack": 11,
+        "defense": 8,
+        "speed": 10,
+        "effect": null,
+        "image": "static/images/athena.png",
+        "description": "Athena, the goddess of wisdom, uses strategy and insight to outmaneuver foes."
+    },
+    {
+        "name": "Atlas",
+        "type": "god",
+        "classes": ["Authorities", "Warlords"],
+        "elements": ["Earth", "Wisdom"],
+        "hp": 120,
+        "attack": 13,
+        "defense": 9,
+        "speed": 7,
+        "effect": null,
+        "image": "static/images/atlas.png",
+        "description": "Atlas, the titan of endurance, bears the weight of the heavens with unyielding strength."
+    },
+    {
+        "name": "Chimera",
+        "type": "god",
+        "classes": ["Wildkeepers", "Malevolents"],
+        "elements": ["Fire", "Earth"],
+        "hp": 110,
+        "attack": 14,
+        "defense": 6,
+        "speed": 9,
+        "effect": null,
+        "image": "static/images/chimera.png",
+        "description": "The Chimera, a fearsome hybrid beast, breathes fire and strikes with savage ferocity."
+    },
+    {
+        "name": "Chronos",
+        "type": "god",
+        "classes": ["Authorities", "Mystics"],
+        "elements": ["Wisdom", "Decay"],
+        "hp": 115,
+        "attack": 12,
+        "defense": 7,
+        "speed": 9,
+        "effect": null,
+        "image": "static/images/chronos.png",
+        "description": "Chronos controls the passage of time, ensuring his strikes land at the perfect moment."
+    },
+    {
+        "name": "Coeus",
+        "type": "god",
+        "classes": ["Sages", "Mystics"],
+        "elements": ["Insight", "Air"],
+        "hp": 105,
+        "attack": 12,
+        "defense": 6,
+        "speed": 11,
+        "effect": null,
+        "image": "static/images/coeus.png",
+        "description": "Coeus, the pillar of intellect, empowers his allies with wisdom and strategic foresight."
+    },
+    {
+        "name": "Cronus",
+        "type": "god",
+        "classes": ["Warlords", "Malevolents"],
+        "elements": ["Earth", "Insight"],
+        "hp": 120,
+        "attack": 14,
+        "defense": 8,
+        "speed": 7,
+        "effect": null,
+        "image": "static/images/cronus.png",
+        "description": "Cronus, the tyrant of time, wields immense power to reshape fate itself."
+    },
+    {
+        "name": "Demeter",
+        "type": "god",
+        "classes": ["Caretakers", "Wildkeepers"],
+        "elements": ["Earth", "Vitality"],
+        "hp": 110,
+        "attack": 12,
+        "defense": 9,
+        "speed": 8,
+        "effect": null,
+        "image": "static/images/demeter.png",
+        "description": "Demeter nurtures the land, bringing life and abundance wherever she treads."
+    },
+    {
+        "name": "Dionysus",
+        "type": "god",
+        "classes": ["Ecstatics", "Wildkeepers"],
+        "elements": ["Vitality", "Love"],
+        "hp": 100,
+        "attack": 11,
+        "defense": 7,
+        "speed": 10,
+        "effect": null,
+        "image": "static/images/dionysus.png",
+        "description": "Dionysus, the wild reveler, intoxicates foes and inspires allies alike."
+    },
+    {
+        "name": "Eileithyia",
+        "type": "god",
+        "classes": ["Caretakers", "Mystics"],
+        "elements": ["Vitality"],
+        "hp": 105,
+        "attack": 10,
+        "defense": 8,
+        "speed": 9,
+        "effect": null,
+        "image": "static/images/eileithyia.png",
+        "description": "Eileithyia, goddess of childbirth, bestows healing and renewal upon her allies."
+    },
+    {
+        "name": "Eos",
+        "type": "god",
+        "classes": ["Mystics", "Authorities"],
+        "elements": ["Fire", "Air"],
+        "hp": 100,
+        "attack": 12,
+        "defense": 7,
+        "speed": 12,
+        "effect": null,
+        "image": "static/images/eos.png",
+        "description": "Eos, the dawn-bringer, races across the sky, lighting the way for victory."
+    },
+    {
+        "name": "Erebus",
+        "type": "god",
+        "classes": ["Malevolents", "Mystics"],
+        "elements": ["Shadow", "Decay"],
+        "hp": 110,
+        "attack": 13,
+        "defense": 7,
+        "speed": 8,
+        "effect": null,
+        "image": "static/images/erebus.png",
+        "description": "Erebus, lord of primordial darkness, cloaks the battlefield in shadow."
+    },
+    {
+        "name": "Eris",
+        "type": "god",
+        "classes": ["Malevolents", "Ecstatics"],
+        "elements": ["Malice", "Shadow"],
+        "hp": 100,
+        "attack": 12,
+        "defense": 6,
+        "speed": 11,
+        "effect": null,
+        "image": "static/images/eris.png",
+        "description": "Eris thrives in chaos, sowing discord and striking when least expected."
+    },
+    {
+        "name": "Eros",
+        "type": "god",
+        "classes": ["Ecstatics", "Mystics"],
+        "elements": ["Love", "Vitality"],
+        "hp": 100,
+        "attack": 10,
+        "defense": 5,
+        "speed": 10,
+        "effect": null,
+        "image": "static/images/eros.png",
+        "description": "Eros, the playful archer of love, enchants and manipulates his foes."
+    },
+    {
+        "name": "Gaia",
+        "type": "god",
+        "classes": ["Caretakers", "Authorities"],
+        "elements": ["Earth", "Vitality"],
+        "hp": 120,
+        "attack": 12,
+        "defense": 10,
+        "speed": 7,
+        "effect": null,
+        "image": "static/images/gaia.png",
+        "description": "Gaia, the primordial mother, shapes the very foundation of existence."
+    },
+    {
+        "name": "Ganymede",
+        "type": "god",
+        "classes": ["Ecstatics", "Mystics"],
+        "elements": ["Vitality"],
+        "hp": 100,
+        "attack": 9,
+        "defense": 6,
+        "speed": 11,
+        "effect": null,
+        "image": "static/images/ganymede.png",
+        "description": "Ganymede, the divine cupbearer, radiates celestial charm and fortune."
+    },
+    {
+        "name": "Hades",
+        "type": "god",
+        "classes": ["Malevolents", "Authorities"],
+        "elements": ["Shadow", "Decay"],
+        "hp": 110,
+        "attack": 13,
+        "defense": 8,
+        "speed": 9,
+        "effect": null,
+        "image": "static/images/hades.png",
+        "description": "Hades rules the underworld, wielding dark earth and insight magic."
+    },
+    {
+        "name": "Harpies",
+        "type": "god",
+        "classes": ["Wildkeepers", "Malevolents"],
+        "elements": ["Air"],
+        "hp": 90,
+        "attack": 11,
+        "defense": 5,
+        "speed": 13,
+        "effect": null,
+        "image": "static/images/harpies.png",
+        "description": "The Harpies strike from the skies with relentless speed and chaos."
+    },
+    {
+        "name": "Hebe",
+        "type": "god",
+        "classes": ["Caretakers", "Mystics"],
+        "elements": ["Vitality"],
+        "hp": 100,
+        "attack": 9,
+        "defense": 6,
+        "speed": 10,
+        "effect": null,
+        "image": "static/images/hebe.png",
+        "description": "Hebe, the goddess of youth, restores vitality and strength."
+    },
+    {
+        "name": "Hecate",
+        "type": "god",
+        "classes": ["Oracles", "Mystics"],
+        "elements": ["Shadow", "Wisdom"],
+        "hp": 105,
+        "attack": 12,
+        "defense": 7,
+        "speed": 11,
+        "effect": null,
+        "image": "static/images/hecate.png",
+        "description": "Hecate, the goddess of magic, weaves spells from the shadows."
+    },
+    {
+        "name": "Hephaestus",
+        "type": "god",
+        "classes": ["Sages", "Warlords"],
+        "elements": ["Fire", "Earth"],
+        "hp": 110,
+        "attack": 14,
+        "defense": 8,
+        "speed": 7,
+        "effect": null,
+        "image": "static/images/hephaestus.png",
+        "description": "Hephaestus forges weapons of fire and stone with masterful precision."
+    },
+    {
+        "name": "Helios",
+        "type": "god",
+        "classes": ["Authorities", "Mystics"],
+        "elements": ["Fire", "Light"],
+        "hp": 115,
+        "attack": 13,
+        "defense": 7,
+        "speed": 10,
+        "effect": null,
+        "image": "static/images/helios.png",
+        "description": "Helios, the sun god, scorches enemies with celestial fire."
+    },
+    {
+        "name": "Hera",
+        "type": "god",
+        "classes": ["Authorities", "Sages"],
+        "elements": ["Wisdom", "Light"],
+        "hp": 110,
+        "attack": 11,
+        "defense": 9,
+        "speed": 9,
+        "effect": null,
+        "image": "static/images/hera.png",
+        "description": "Hera, the queen of the gods, exerts divine authority and resilience."
+    },
+    {
+        "name": "Heracles",
+        "type": "god",
+        "classes": ["Heroes", "Warlords"],
+        "elements": ["Earth", "Vitality"],
+        "hp": 120,
+        "attack": 15,
+        "defense": 9,
+        "speed": 8,
+        "effect": null,
+        "image": "static/images/heracles.png",
+        "description": "Heracles, the legendary hero, overpowers foes with sheer might."
+    },
+    {
+        "name": "Hermes",
+        "type": "god",
+        "classes": ["Wildkeepers", "Mystics"],
+        "elements": ["Air", "Wisdom"],
+        "hp": 95,
+        "attack": 11,
+        "defense": 6,
+        "speed": 14,
+        "effect": null,
+        "image": "static/images/hermes.png",
+        "description": "Hermes, the fleet-footed messenger, moves faster than the eye can see."
+    },
+    {
+        "name": "Hestia",
+        "type": "god",
+        "classes": ["Caretakers", "Authorities"],
+        "elements": ["Vitality", "Light"],
+        "hp": 100,
+        "attack": 9,
+        "defense": 7,
+        "speed": 10,
+        "effect": null,
+        "image": "static/images/hestia.png",
+        "description": "Hestia, guardian of the hearth, brings warmth and protection."
+    },
+    {
+        "name": "Hyperion",
+        "type": "god",
+        "classes": ["Warlords", "Sages"],
+        "elements": ["Fire", "Light"],
+        "hp": 90,
+        "attack": 12,
+        "defense": 7,
+        "speed": 12,
+        "effect": "Boosts Fire damage by 20% for all allies.",
+        "image": "static/images/hyperion.png",
+        "description": "Titan of light and celestial fire, Hyperion burns through the darkness with unmatched brilliance."
+    },
+    {
+        "name": "Hypnos",
+        "type": "god",
+        "classes": ["Mystics", "Caretakers"],
+        "elements": ["Shadow", "Vitality"],
+        "hp": 75,
+        "attack": 6,
+        "defense": 8,
+        "speed": 5,
+        "effect": "Has a 50% chance to put an enemy to sleep for 2 turns.",
+        "image": "static/images/hypnos.png",
+        "description": "God of sleep, Hypnos lulls even the strongest warriors into a peaceful slumber."
+    },
+    {
+        "name": "Iapetus",
+        "type": "god",
+        "classes": ["Warlords", "Wildkeepers"],
+        "elements": ["Earth", "Decay"],
+        "hp": 95,
+        "attack": 10,
+        "defense": 9,
+        "speed": 6,
+        "effect": "Reduces enemy defense by 15% when attacking.",
+        "image": "static/images/iapetus.png",
+        "description": "A warrior among Titans, Iapetus is known for his brutal strength and tactical warfare."
+    },
+    {
+        "name": "Iris",
+        "type": "god",
+        "classes": ["Oracles", "Heroes"],
+        "elements": ["Air", "Light"],
+        "hp": 80,
+        "attack": 7,
+        "defense": 8,
+        "speed": 12,
+        "effect": "Increases ally speed by 20% for 3 turns.",
+        "image": "static/images/iris.png",
+        "description": "Messenger of the gods and goddess of the rainbow, Iris bridges the realms with divine speed."
+    },
+    {
+        "name": "Mnemosyne",
+        "type": "god",
+        "classes": ["Sages", "Oracles"],
+        "elements": ["Wisdom", "Light"],
+        "hp": 85,
+        "attack": 6,
+        "defense": 8,
+        "speed": 8,
+        "effect": "Grants knowledge, increasing allies' attack by 10% for each turn active.",
+        "image": "static/images/mnemosyne.png",
+        "description": "Titaness of memory, Mnemosyne grants divine wisdom to those who seek knowledge."
+    },
+    {
+        "name": "Nemesis",
+        "type": "god",
+        "classes": ["Sages", "Authorities"],
+        "elements": ["Wisdom", "Light"],
+        "hp": 75,
+        "attack": 12,
+        "defense": 8,
+        "speed": 12,
+        "effect": "Deals extra damage to enemies with boosted stats.",
+        "image": "static/images/nemesis.png",
+        "description": "Goddess of retribution, Nemesis ensures that hubris never goes unpunished."
+    },
+    {
+        "name": "Nike",
+        "type": "god",
+        "classes": ["Heroes"],
+        "elements": ["Vitality", "Light"],
+        "hp": 90,
+        "attack": 10,
+        "defense": 8,
+        "speed": 14,
+        "effect": "Boosts the attack of allies by 15% when active.",
+        "image": "static/images/nike.png",
+        "description": "Goddess of victory, Nike grants triumph to those worthy of greatness."
+    },
+    {
+        "name": "Nyx",
+        "type": "god",
+        "classes": ["Mystics", "Sages"],
+        "elements": ["Shadow", "Wisdom"],
+        "hp": 100,
+        "attack": 9,
+        "defense": 8,
+        "speed": 7,
+        "effect": "Shrouds the battlefield in darkness, reducing enemy accuracy by 20%.",
+        "image": "static/images/nyx.png",
+        "description": "Primordial goddess of the night, Nyx holds dominion over the deepest shadows."
+    },
+    {
+        "name": "Oceanus",
+        "type": "god",
+        "classes": ["Caretakers", "Wildkeepers"],
+        "elements": ["Water", "Vitality"],
+        "hp": 95,
+        "attack": 7,
+        "defense": 10,
+        "speed": 6,
+        "effect": "Heals all allies for 10% HP at the end of each turn.",
+        "image": "static/images/oceanus.png",
+        "description": "The Titan of the vast ocean, Oceanus nurtures and sustains all life through his endless tides."
+    },
+	{
+        "name": "Pan",
+        "type": "god",
+        "classes": ["Ecstatics", "Wildkeepers"],
+        "elements": ["Vitality", "Earth"],
+        "hp": 95,
+        "attack": 7,
+        "defense": 7,
+        "speed": 8,
+        "effect": "Pan's Flute: Calms enemies, reducing their attack by 15% for two turns.",
+        "image": "static/images/pan.png",
+        "description": "The god of the wild, shepherds, and flocks, known for his playful and mischievous nature."
+    },
+    {
+        "name": "Persephone",
+        "type": "god",
+        "classes": ["Caretakers", "Mystics"],
+        "elements": ["Decay", "Vitality"],
+        "hp": 100,
+        "attack": 10,
+        "defense": 8,
+        "speed": 8,
+        "effect": "Cycle of Life: Revives one fallen ally with 50% HP at the start of her turn.",
+        "image": "static/images/persephone.png",
+        "description": "The queen of the underworld and goddess of spring growth, embodying life and death."
+    },
+    {
+        "name": "Phobos & Deimos",
+        "type": "god",
+        "classes": ["Malevolents", "Warlords"],
+        "elements": ["Air", "Shadow"],
+        "hp": 100,
+        "attack": 12,
+        "defense": 6,
+        "speed": 10,
+        "effect": null,
+        "image": "static/images/phobos_deimos.png",
+        "description": "Phobos & Deimos, the twins of fear, strike terror into their enemies."
+    },
+    {
+        "name": "Phoebe",
+        "type": "god",
+        "classes": ["Sages", "Oracles"],
+        "elements": ["Insight", "Light"],
+        "hp": 100,
+        "attack": 11,
+        "defense": 6,
+        "speed": 10,
+        "effect": null,
+        "image": "static/images/phoebe.png",
+        "description": "Phoebe, the radiant Titaness, grants prophetic insight and celestial wisdom."
+    },
+    {
+        "name": "Poseidon",
+        "type": "god",
+        "classes": ["Authorities", "Wildkeepers"],
+        "elements": ["Water", "Earth"],
+        "hp": 110,
+        "attack": 13,
+        "defense": 8,
+        "speed": 9,
+        "effect": null,
+        "image": "static/images/poseidon.png",
+        "description": "Poseidon rules the seas, causing tidal waves and earthquakes with his mighty trident."
+    },
+    {
+        "name": "Rhea",
+        "type": "god",
+        "classes": ["Caretakers", "Authorities"],
+        "elements": ["Earth", "Vitality"],
+        "hp": 105,
+        "attack": 10,
+        "defense": 7,
+        "speed": 10,
+        "effect": null,
+        "image": "static/images/rhea.png",
+        "description": "Rhea, the mother of the gods, nurtures and protects with unwavering strength."
+    },
+    {
+        "name": "Selene",
+        "type": "god",
+        "classes": ["Mystics", "Oracles"],
+        "elements": ["Light", "Shadow"],
+        "hp": 100,
+        "attack": 11,
+        "defense": 6,
+        "speed": 11,
+        "effect": null,
+        "image": "static/images/selene.png",
+        "description": "Selene, goddess of the moon, illuminates the night with her divine glow."
+    },
+    {
+        "name": "Tethys",
+        "type": "god",
+        "classes": ["Caretakers", "Authorities"],
+        "elements": ["Water"],
+        "hp": 105,
+        "attack": 10,
+        "defense": 7,
+        "speed": 9,
+        "effect": null,
+        "image": "static/images/tethys.png",
+        "description": "Tethys, the nourishing ocean goddess, grants life to all living beings."
+    },
+    {
+        "name": "Thanatos",
+        "type": "god",
+        "classes": ["Malevolents", "Oracles"],
+        "elements": ["Shadow", "Decay"],
+        "hp": 100,
+        "attack": 12,
+        "defense": 6,
+        "speed": 12,
+        "effect": null,
+        "image": "static/images/thanatos.png",
+        "description": "Thanatos, the personification of death, moves swiftly to claim souls."
+    },
+    {
+        "name": "Theia",
+        "type": "god",
+        "classes": ["Mystics", "Authorities"],
+        "elements": ["Light", "Wisdom"],
+        "hp": 105,
+        "attack": 11,
+        "defense": 7,
+        "speed": 10,
+        "effect": null,
+        "image": "static/images/theia.png",
+        "description": "Theia, the goddess of sight, sees through deception and illuminates truth."
+    },
+    {
+        "name": "Triton",
+        "type": "god",
+        "classes": ["Wildkeepers", "Authorities"],
+        "elements": ["Water"],
+        "hp": 110,
+        "attack": 12,
+        "defense": 8,
+        "speed": 9,
+        "effect": null,
+        "image": "static/images/triton.png",
+        "description": "Triton, the herald of the seas, commands ocean waves with his mighty conch shell."
+    },
+    {
+        "name": "Tyche",
+        "type": "god",
+        "classes": ["Mystics", "Authorities"],
+        "elements": ["Luck", "Wisdom"],
+        "hp": 100,
+        "attack": 10,
+        "defense": 6,
+        "speed": 11,
+        "effect": null,
+        "image": "static/images/tyche.png",
+        "description": "Tyche, the goddess of fortune, grants luck to those she favors."
+    },
+    {
+        "name": "Uranus",
+        "type": "god",
+        "classes": ["Mystics", "Authorities"],
+        "elements": ["Air", "Wisdom"],
+        "hp": 115,
+        "attack": 12,
+        "defense": 7,
+        "speed": 9,
+        "effect": null,
+        "image": "static/images/uranus.png",
+        "description": "Uranus, the primordial sky god, watches over the heavens with celestial might."
+    },
+    {
+        "name": "Zeus",
+        "type": "god",
+        "classes": ["Authorities", "Warlords"],
+        "elements": ["Electricity", "Light"],
+        "hp": 120,
+        "attack": 14,
+        "defense": 8,
+        "speed": 10,
+        "effect": null,
+        "image": "static/images/zeus.png",
+        "description": "Zeus, the king of the gods, wields thunderbolts and commands the skies."
+    }
+],
+"elementAttacks": [
+    {
+        "name": "Boulder",
+        "element": "Earth",
+        "damage": 18,
+        "effect": "Stun",
+        "speed": 7,
+        "image": "static/images/boulder.png",
+        "description": "Hurls a massive boulder at the opponent, causing them to be stunned."
+    },
+    {
+        "name": "Wave",
+        "element": "Water",
+        "damage": 16,
+        "effect": "Drench",
+        "speed": 9,
+        "image": "static/images/wave.png",
+        "description": "Summons a powerful wave that drenches the enemy, reducing their speed."
+    },
+    {
+        "name": "Wind",
+        "element": "Air",
+        "damage": 14,
+        "effect": "Gust",
+        "speed": 12,
+        "image": "static/images/wind.png",
+        "description": "Creates a powerful gust of wind that pushes the enemy back, delaying their next move."
+    },
+    {
+        "name": "Lightning",
+        "element": "Electricity",
+        "damage": 20,
+        "effect": "Shock",
+        "speed": 15,
+        "image": "static/images/lightning.png",
+        "description": "Strikes the enemy with a bolt of lightning, paralyzing them temporarily."
+    },
+    {
+        "name": "Fire",
+        "element": "Fire",
+        "damage": 16,
+        "effect": "Burn",
+        "speed": 10,
+        "image": "static/images/fire.png",
+        "description": "Unleashes flames that cause the target to take burning damage over time."
+    },
+    {
+        "name": "Growth",
+        "element": "Vitality",
+        "damage": 12,
+        "effect": "Heal",
+        "speed": 8,
+        "image": "static/images/growth.png",
+        "description": "Promotes rapid growth, healing the user and boosting their stats."
+    },
+    {
+        "name": "Decay",
+        "element": "Decay",
+        "damage": 18,
+        "effect": "Rot",
+        "speed": 6,
+        "image": "static/images/decay.png",
+        "description": "Causes the enemy to decay, reducing their stats over time."
+    },
+    {
+        "name": "Light",
+        "element": "Light",
+        "damage": 15,
+        "effect": "Blind",
+        "speed": 10,
+        "image": "static/images/light.png",
+        "description": "Blinds the enemy with a burst of light, reducing their accuracy."
+    },
+    {
+        "name": "Shadow",
+        "element": "Shadow",
+        "damage": 17,
+        "effect": "Fear",
+        "speed": 11,
+        "image": "static/images/shadow.png",
+        "description": "Shrouds the enemy in darkness, causing them to flee in fear."
+    },
+    {
+        "name": "Love",
+        "element": "Love",
+        "damage": 14,
+        "effect": "Charm",
+        "speed": 9,
+        "image": "static/images/love.png",
+        "description": "Charms the enemy, causing them to act against their allies."
+    },
+    {
+        "name": "Malice",
+        "element": "Malice",
+        "damage": 19,
+        "effect": "Corrupt",
+        "speed": 8,
+        "image": "static/images/malice.png",
+        "description": "Infuses the enemy with malice, causing them to attack themselves."
+    },
+    {
+        "name": "Wisdom",
+        "element": "Wisdom",
+        "damage": 13,
+        "effect": "Enlighten",
+        "speed": 10,
+        "image": "static/images/wisdom.png",
+        "description": "Enlightens the user, increasing their attack and defense."
+    },
+    {
+        "name": "Hubris",
+        "element": "Hubris",
+        "damage": 20,
+        "effect": "Overconfidence",
+        "speed": 7,
+        "image": "static/images/hubris.png",
+        "description": "Exploits the enemy's overconfidence, dealing massive damage."
+    }
+],
+    "classAttacks": [
+        {
+            "name": "Athletics",
+            "power": 15,
+            "effect": "Boosts speed and evasion.",
+            "image": "static/images/athletics.png",
+            "classes": ["Warlords", "Wildkeepers", "Heroes"],
+            "specialAttack": {
+                "name": "Discus Throw",
+                "power": 20,
+                "effect": "Hurls a mighty discus at the enemy, dealing damage and stunning them for the next turn.",
+                "image": "static/images/discus_throw.png"
+            },
+            "ultraAttack": {
+                "name": "Herculean Strength",
+                "power": 30,
+                "effect": "+30% Attack & Speed for all friendly cards on the board.",
+                "image": "static/images/herculean_strength.png",
+                "ultraUser": "Heracles"
+            }
+        },
+        {
+            "name": "Beast",
+            "power": 14,
+            "effect": "Summons a powerful beast to attack the enemy.",
+            "image": "static/images/beast.png",
+            "classes": ["Wildkeepers", "Malevolents"],
+            "specialAttack": {
+                "name": "Savage Pounce",
+                "power": 18,
+                "effect": "A ferocious leap deals extra damage and causes the enemy to flinch, lowering their attack power.",
+                "image": "static/images/savage_pounce.png"
+            },
+            "ultraAttack": {
+                "name": "Pack Ambush",
+                "power": 32,
+                "effect": "Summons a pack of beasts to attack all enemies at once, reducing their speed.",
+                "image": "static/images/pack_ambush.png",
+                "ultraUser": "Pan"
+            }
+        },
+        {
+            "name": "Blessing",
+            "power": 12,
+            "effect": "Restores a small amount of HP and boosts defense.",
+            "image": "static/images/blessing.png",
+            "classes": ["Caretakers", "Sages"],
+            "specialAttack": {
+                "name": "Divine Favor",
+                "power": 18,
+                "effect": "A holy light restores HP to all allies and grants them increased resistance to debuffs.",
+                "image": "static/images/divine_favor.png"
+            },
+            "ultraAttack": {
+                "name": "Divine Blessing",
+                "power": 30,
+                "effect": "All allies gain 30% HP back & 20% Defense boost.",
+                "image": "static/images/divine_blessing.png",
+                "ultraUser": "Eileithyia"
+            }
+        },
+        {
+            "name": "Cannon",
+            "power": 20,
+            "effect": "Heavy impact attack.",
+            "image": "static/images/cannon.png",
+            "classes": ["Warlords", "Authorities", "Heroes"],
+            "specialAttack": {
+                "name": "Explosive Barrage",
+                "power": 25,
+                "effect": "Fires a rapid volley of cannonballs, dealing damage to all enemies.",
+                "image": "static/images/explosive_barrage.png"
+            },
+            "ultraAttack": {
+                "name": "Scorched Earth",
+                "power": 40,
+                "effect": "All enemies take 40% HP damage.",
+                "image": "static/images/scorched_earth.png",
+                "ultraUser": "Ares"
+            }
+        },
+        {
+            "name": "Curse",
+            "power": 16,
+            "effect": "Afflicts the enemy with a weakening hex, reducing their attack power.",
+            "image": "static/images/curse.png",
+            "classes": ["Malevolents", "Oracles"],
+            "specialAttack": {
+                "name": "Hex Mark",
+                "power": 22,
+                "effect": "Places a dark curse on the enemy, lowering their attack and speed for 3 turns.",
+                "image": "static/images/hex_mark.png"
+            },
+            "ultraAttack": {
+                "name": "Eternal Curse",
+                "power": 35,
+                "effect": "All enemies permanently lose 15% Attack & Speed.",
+                "image": "static/images/eternal_curse.png",
+                "ultraUser": "Hecate"
+            }
+        },
+        {
+            "name": "Decree",
+            "power": 17,
+            "effect": "Forces the enemy to skip their turn.",
+            "image": "static/images/decree.png",
+            "classes": ["Warlords", "Authorities"],
+            "specialAttack": {
+                "name": "Royal Command",
+                "power": 22,
+                "effect": "Issues a commanding decree that forces the enemy to skip their next turn and lowers their morale, reducing their attack power.",
+                "image": "static/images/royal_command.png"
+            },
+            "ultraAttack": {
+                "name": "Absolute Decree",
+                "power": 36,
+                "effect": "All enemies skip their next turn.",
+                "image": "static/images/absolute_decree.png",
+                "ultraUser": "Zeus"
+            }
+        },
+        {
+            "name": "Dream",
+            "power": 12,
+            "effect": "Puts enemies to sleep.",
+            "image": "static/images/dream.png",
+            "classes": ["Ecstatics", "Sages", "Oracles"],
+            "specialAttack": {
+                "name": "Lucid Nightmare",
+                "power": 18,
+                "effect": "Plunges the enemy into a vivid nightmare, putting them to sleep and dealing damage over time for 3 turns.",
+                "image": "static/images/lucid_nightmare.png"
+            },
+            "ultraAttack": {
+                "name": "Endless Dream",
+                "power": 25,
+                "effect": "All enemies sleep for 2 turns. They wake up if hit, but take double damage.",
+                "image": "static/images/endless_dream.png",
+                "ultraUser": "Hypnos"
+            }
+        },
+        {
+            "name": "Influence",
+            "power": 15,
+            "effect": "Persuades the enemy to lower their guard, reducing their defense.",
+            "image": "static/images/influence.png",
+            "classes": ["Ecstatics", "Malevolents", "Mystics"],
+            "specialAttack": {
+                "name": "Compel",
+                "power": 20,
+                "effect": "Forces the enemy to act against their will, skipping their next turn.",
+                "image": "static/images/compel.png"
+            },
+            "ultraAttack": {
+                "name": "Mass Hysteria",
+                "power": 30,
+                "effect": "All enemies attack each other (50% chance per enemy to randomly hit an ally or themselves).",
+                "image": "static/images/mass_hysteria.png",
+                "ultraUser": "Dionysus"
+            }
+        },
+        {
+            "name": "Luck",
+            "power": 14,
+            "effect": "Increases critical hit chance for the next attack.",
+            "image": "static/images/luck.png",
+            "classes": ["Mystics", "Authorities"],
+            "specialAttack": {
+                "name": "Gambler’s Favor",
+                "power": 19,
+                "effect": "Increases the user's attack power significantly, but has a 50% chance of missing.",
+                "image": "static/images/gamblers_favor.png"
+            },
+            "ultraAttack": {
+                "name": "Opportunist",
+                "power": 28,
+                "effect": "User attacks twice next turn, both guaranteed crits.",
+                "image": "static/images/opportunist.png",
+                "ultraUser": "Tyche"
+            }
+        },
+        {
+            "name": "Medicine",
+            "power": 12,
+            "effect": "Restores a small amount of HP and removes minor debuffs.",
+            "image": "static/images/medicine.png",
+            "classes": ["Caretakers", "Heroes"],
+            "specialAttack": {
+                "name": "Panacea",
+                "power": 20,
+                "effect": "Fully restores HP of one ally and cures all status effects.",
+                "image": "static/images/panacea.png"
+            },
+            "ultraAttack": {
+                "name": "Comforts of Home",
+                "power": 30,
+                "effect": "Fully heals 1 ally and removes all debuffs.",
+                "image": "static/images/comforts_of_home.png",
+                "ultraUser": "Hestia"
+            }
+        },
+		{
+			"name": "Prophecy",
+			"power": 18,
+			"effect": "Marks an enemy with a doomed fate, dealing heavy damage after 2 turns.",
+			"image": "static/images/prophecy.png",
+			"classes": ["Sages", "Oracles"],
+			"specialAttack": {
+				"name": "Fated End",
+				"power": 24,
+				"effect": "Marks an enemy for destruction—after 1 turn, they take 30% of their max HP as damage.",
+				"image": "static/images/fated_end.png"
+		},
+			"ultraAttack": {
+				"name": "Judgment Foretold",
+				"power": 36,
+				"effect": "Marks all enemies—after 2 turns, they take 40% of their max HP as damage.",
+				"image": "static/images/judgment_foretold.png",
+				"ultraUser": "Phoebe"
+			}
+		},
+ 		{
+            "name": "Vine",
+            "power": 14,
+            "effect": "Entangles the enemy, reducing their speed and evasion.",
+            "image": "static/images/vine.png",
+            "classes": ["Ecstatics", "Caretakers", "Wildkeepers"],
+            "specialAttack": {
+                "name": "Strangling Roots",
+                "power": 18,
+                "effect": "Roots the enemy in place, preventing movement and dealing damage over time.",
+                "image": "static/images/strangling_roots.png"
+            },
+            "ultraAttack": {
+                "name": "Overgrowth",
+                "power": 28,
+                "effect": "All enemies immobilized for 2 turns. -25% Speed.",
+                "image": "static/images/overgrowth.png",
+                "ultraUser": "Demeter"
+            }
+        }
+	]
+}
