@@ -78,7 +78,7 @@ function showStartPopup() {
         document.body.removeChild(startPopup);
         initializeGame();
     });
-}
+})
 
 // 🎮 Initialize Game
 function initializeGame() {
@@ -150,7 +150,7 @@ function displayPlayerHand(playerId, hand) {
         console.log(`Adding card: ${card.name}`); // Debugging
         const cardElement = createCardElement(card);
         handContainer.appendChild(cardElement);
-}
+})
 
 // 🎴 Create Card Element with Stats and Description
 function createCardElement(card) {
