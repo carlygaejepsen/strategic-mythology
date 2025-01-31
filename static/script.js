@@ -3,20 +3,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.log("Loading Strategic Mythology...");
 
     // Show loading popup
-    const startPopup = document.createElement("div");
-    startPopup.id = "start-popup";
-    startPopup.innerHTML = `
-        <h2>Welcome to Strategic Mythology</h2>
+    const loadingPopup = document.createElement("div");
+    loadingPopup.id = "loading-popup";
+    loadingPopup.innerHTML = `
+        <h2>Loading Strategic Mythology...</h2>
         <div id="loading-screen"><h2>Loading...</h2></div>
-        <button id="start-game" style="display: none;">Start</button>
     `;
-    document.body.appendChild(startPopup);
+    document.body.appendChild(loadingPopup);
 
     try {
-        // Step 1: Fetch JSON files simultaneously
-        const [cardData, battleSystem] = await Promise.all([
+        // Step 1: Fetch JSON files and additional assets simultaneously
+        const [cardData, battleSystem, imagesLoaded] = await Promise.all([
             fetch("static/data.json").then(res => res.json()),
-            fetch("static/battle-system.json").then(res => res.json())
+            fetch("static/battle-system.json").then(res => res.json()),
+            loadAllImages([
+                "static/images/default-card.png",
+                "static/images/default-special.png",
+                "static/images/default-ultra.png",
+                "static/images/default-elemental.png"
+            ]) // Add other required assets
         ]);
 
         console.log("Game data successfully loaded.");
@@ -32,14 +37,43 @@ document.addEventListener("DOMContentLoaded", async () => {
             battleSystem: battleSystem
         };
 
-        // Step 4: Remove loading message & show Start button only after everything is fully loaded
-        document.getElementById("loading-screen").remove();
-        document.getElementById("start-game").style.display = "block";
+        // Step 4: Remove loading popup and show Start Game popup
+        document.body.removeChild(loadingPopup);
+        showStartPopup();
     } catch (error) {
         console.error("Error loading game data:", error);
         document.getElementById("loading-screen").innerHTML = "<h2>Error loading game data. Please refresh.</h2>";
     }
 });
+
+// 🎮 Show Start Game Popup
+function showStartPopup() {
+    const startPopup = document.createElement("div");
+    startPopup.id = "start-popup";
+    startPopup.innerHTML = `
+        <h2>Welcome to Strategic Mythology</h2>
+        <button id="start-game">Start</button>
+    `;
+    document.body.appendChild(startPopup);
+
+    document.getElementById("start-game").addEventListener("click", () => {
+        console.log("Start button clicked!");
+        document.body.removeChild(startPopup);
+        startGame();
+    });
+}
+
+// Function to load all images before allowing the game to start
+function loadAllImages(imagePaths) {
+    return Promise.all(imagePaths.map(path => {
+        return new Promise(resolve => {
+            const img = new Image();
+            img.src = path;
+            img.onload = resolve;
+            img.onerror = resolve; // Prevent loading failure from blocking game
+        });
+    }));
+}
 
 // 🎴 Define and Validate Cards Before Creating Decks
 function processCardData(rawCards) {
@@ -84,12 +118,6 @@ function processCardData(rawCards) {
 document.addEventListener("DOMContentLoaded", function () {
     let canvas = document.getElementById("gameCanvas");
     let ctx = canvas.getContext("2d");
-
-    document.getElementById("start-game").addEventListener("click", () => {
-        console.log("Start button clicked!");
-        document.getElementById("start-popup").remove();
-        startGame();
-    });
 
     function startGame() {
         console.log("Game started!");
