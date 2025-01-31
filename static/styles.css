@@ -144,10 +144,12 @@ body {
 
 /* Card Container */
 .card-container {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(100px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 10px;
-    width: 100%;
+    max-width: 100%;
+    padding: 10px;
 }
 
 /* Individual Cards */
