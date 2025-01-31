@@ -1,6 +1,0 @@
-{
-  "cards": [
-    { "name": "Zeus", "type": "god", "health": 30, "power": 8, "speed": 7, "classes": ["Authorities", "Warlords"], "image": "https://carlygaejepsen.github.io/strategic-mythology/static/images/zeus.png" },
-    { "name": "Lightning", "type": "action", "effect": "Deals 10 damage", "classes": ["Authorities"], "image": "https://carlygaejepsen.github.io/strategic-mythology/static/images/lightning.png" }
-  ]
-}
