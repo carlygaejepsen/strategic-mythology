@@ -39,6 +39,16 @@ body {
     pointer-events: auto;
 }
 
+#start-button {
+  padding: 10px 20px;
+  font-size: 18px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  z-index: 1001; /* Ensure it's above the loading screen */
+}
+
 /* 🕶 Darken background while popup is open */
 #start-popup::before {
     content: "";
