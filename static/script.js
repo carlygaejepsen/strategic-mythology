@@ -1,6 +1,11 @@
 // 🚀 Load Core Game Data
 document.addEventListener("DOMContentLoaded", async () => {
     console.log("Loading Strategic Mythology...");
+document.body.addEventListener("click", function (event) {
+    if (event.target && event.target.id === "startButton") {
+        startGame();
+    }
+});
 
     // Show loading screen
     const loadingScreen = document.createElement("div");
