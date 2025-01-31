@@ -11,8 +11,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
         // Step 1: Fetch JSON files simultaneously
         const [cardData, battleSystem] = await Promise.all([
-            fetch("data.json").then(res => res.json()),
-            fetch("battle-system.json").then(res => res.json())
+            fetch("static/data.json").then(res => res.json()),
+            fetch("static/battle-system.json").then(res => res.json())
         ]);
 
         console.log("Game data successfully loaded.");
