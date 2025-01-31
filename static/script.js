@@ -59,7 +59,6 @@ function showStartPopup() {
     document.getElementById("start-game").addEventListener("click", () => {
         console.log("Start button clicked!");
         document.body.removeChild(startPopup);
-        startGame();
     });
 }
 
@@ -113,22 +112,6 @@ function processCardData(rawCards) {
         } : null
     }));
 }
-
-// 🎮 Initialize Game Canvas
-document.addEventListener("DOMContentLoaded", function () {
-    let canvas = document.getElementById("gameCanvas");
-    let ctx = canvas.getContext("2d");
-
-    function startGame() {
-        console.log("Game started!");
-        ctx.fillStyle = "black";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "white";
-        ctx.font = "30px Arial";
-        ctx.fillText("Game Loaded!", canvas.width / 4, canvas.height / 2);
-    }
-});
-
 
 // 🎮 Initialize Game (Now ensuring cards are structured first)
 function initializeGame() {
