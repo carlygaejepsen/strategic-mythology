@@ -13,6 +13,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (!cardData || !Array.isArray(cardData.cards) || !battleSystem) {
             throw new Error("Invalid JSON format.");
         }
+    document.getElementById("start-game").addEventListener("click", () => {
+        console.log("Start button clicked!");
+        document.getElementById("start-popup").remove();
+        initializeGame();
+});
 
         window.gameData = { cards: cardData.cards, battleSystem };
         showStartPopup();
