@@ -1,3 +1,4 @@
+
 /* Fullscreen layout */
 body {
     font-family: Arial, sans-serif;
@@ -154,13 +155,21 @@ body {
 
 /* Individual Cards */
 .card {
-    width: 150px;
-    background: white;
-    border: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f9f9f9;
     border-radius: 8px;
     padding: 10px;
     box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
     text-align: center;
+    width: 100%;
+    max-width: 130px;
+    cursor: pointer;
+    pointer-events: all !important;
+    user-select: none;
+    position: relative;
+    z-index: 10;
 }
 
 .card h3, .card p {
@@ -184,8 +193,9 @@ body {
 
 /* Ensure Card Images Scale Properly */
 .card img {
-    width: 100px;
-    height: 100px;
+    width: 100%;
+    max-width: 130px;
+    max-height: 160px;
     object-fit: cover;
     border-radius: 6px;
 }
