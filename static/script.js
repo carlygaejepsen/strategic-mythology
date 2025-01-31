@@ -57,7 +57,7 @@ function showStartPopup() {
     startPopup.innerHTML = `
         <div class="popup-content">
             <h2>Welcome to Strategic Mythology</h2>
-            <button id="start-game">Start</button>
+            <button id="start-game" type="button">Start</button>
         </div>
     `;
     document.body.appendChild(startPopup);
