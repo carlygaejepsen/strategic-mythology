@@ -2,20 +2,25 @@
 document.addEventListener("DOMContentLoaded", async () => {
     console.log("Loading Strategic Mythology...");
 
-    const [cardData, battleSystem] = await Promise.all([
-        fetch("static/data.json").then(res => res.json()),
-        fetch("static/battle-system.json").then(res => res.json())
-    ]);
+    try {
+        const [cardData, battleSystem] = await Promise.all([
+            fetch("static/data.json").then(res => res.json()),
+            fetch("static/battle-system.json").then(res => res.json())
+        ]);
 
-    console.log("Game data loaded.");
+        console.log("Game data loaded.");
 
-    if (!cardData || !Array.isArray(cardData.cards) || !battleSystem) {
-        throw new Error("Invalid JSON format.");
+        if (!cardData || !Array.isArray(cardData.cards) || !battleSystem) {
+            throw new Error("Invalid JSON format.");
+        }
+
+        window.gameData = { cards: cardData.cards, battleSystem };
+        showStartPopup();
+    } catch (error) {
+        console.error("Error loading game data:", error);
     }
-
-    window.gameData = { cards: cardData.cards, battleSystem };
-    showStartPopup();
 });
+
 document.head.insertAdjacentHTML("beforeend", `
     <style>
         #start-popup {
@@ -50,7 +55,8 @@ document.head.insertAdjacentHTML("beforeend", `
         }
     </style>
 `);
-// 🎮 Show Start Game Popup as a Modal
+
+// 🎮 Show Start Game Popup
 function showStartPopup() {
     const startPopup = document.createElement("div");
     startPopup.id = "start-popup";
@@ -63,15 +69,15 @@ function showStartPopup() {
     document.body.appendChild(startPopup);
 
     document.getElementById("start-game").addEventListener("click", () => {
+        console.log("Start button clicked!");
         document.body.removeChild(startPopup);
         initializeGame();
-      
     });
 }
 
 // 🎮 Initialize Game
 function initializeGame() {
-    console.log("Initializing game..."); // Debug log
+    console.log("Initializing game...");
 
     if (!window.gameData?.cards?.length) {
         console.error("No card data available.");
@@ -84,9 +90,8 @@ function initializeGame() {
     drawInitialHands();
     updateUI();
 
-    console.log("Game initialized successfully!"); // Debug log
+    console.log("Game initialized successfully!");
 }
-
 
 // 🃏 Create Player Deck
 function createPlayerDeck(cards) {
@@ -128,7 +133,7 @@ function displayPlayerHand(playerId, hand) {
         return;
     }
 
-    handContainer.innerHTML = ""; // Clear previous cards
+    handContainer.innerHTML = "";
 
     hand.forEach((card) => {
         const cardElement = createCardElement(card);
@@ -140,19 +145,20 @@ function displayPlayerHand(playerId, hand) {
 
 // 🎴 Create Card Element with Stats and Description
 function createCardElement(card) {
-    return `
-        <div class="card">
-            <img src="${card.image || 'images/default-card.png'}" alt="${card.name}">
-            <h3>${card.name}</h3>
-            <p>Type: ${card.type}</p>
-            ${card.classes.length > 0 ? `<p>Classes: ${card.classes.join(", ")}</p>` : ""}
-            ${card.elements.length > 0 ? `<p>Elements: ${card.elements.join(", ")}</p>` : ""}
-            <p>HP: ${card.hp}</p>
-            <p>ATK: ${card.attack}</p>
-            <p>DEF: ${card.defense}</p>
-            <p>SPD: ${card.speed}</p>
-            ${card.effect ? `<p>Effect: ${card.effect}</p>` : ""}
-            ${card.description ? `<p>${card.description}</p>` : ""}
-        </div>
+    const cardElement = document.createElement("div");
+    cardElement.classList.add("card");
+    cardElement.innerHTML = `
+        <img src="${card.image || 'images/default-card.png'}" alt="${card.name}">
+        <h3>${card.name}</h3>
+        <p>Type: ${card.type}</p>
+        ${card.classes.length > 0 ? `<p>Classes: ${card.classes.join(", ")}</p>` : ""}
+        ${card.elements.length > 0 ? `<p>Elements: ${card.elements.join(", ")}</p>` : ""}
+        <p>HP: ${card.hp}</p>
+        <p>ATK: ${card.attack}</p>
+        <p>DEF: ${card.defense}</p>
+        <p>SPD: ${card.speed}</p>
+        ${card.effect ? `<p>Effect: ${card.effect}</p>` : ""}
+        ${card.description ? `<p>${card.description}</p>` : ""}
     `;
+    return cardElement;
 }
