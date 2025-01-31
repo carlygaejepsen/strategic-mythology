@@ -65,10 +65,7 @@ function showStartPopup() {
     document.getElementById("start-game").addEventListener("click", () => {
         document.body.removeChild(startPopup);
         initializeGame();
-        } else {
-            console.error("Start button not found!");
-        }
-    }, 100);
+      
     });
 }
 
