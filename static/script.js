@@ -115,14 +115,20 @@ function updateUI() {
 
 // 🎴 Display Player's Hand
 function displayPlayerHand(playerId, hand) {
-    let handContainer = document.getElementById(`${playerId}-hand`);
+    const handContainer = document.getElementById(`${playerId}-hand`);
     if (!handContainer) {
-        handContainer = document.createElement("div");
-        handContainer.id = `${playerId}-hand`;
-        handContainer.classList.add("hand-container");
-        document.body.appendChild(handContainer);
+        console.error(`Hand container for ${playerId} not found.`);
+        return;
     }
-    handContainer.innerHTML = hand.map(createCardElement).join("");
+
+    handContainer.innerHTML = ""; // Clear previous cards
+
+    hand.forEach((card) => {
+        const cardElement = createCardElement(card);
+        handContainer.appendChild(cardElement);
+    });
+
+    console.log(`${playerId} hand updated.`);
 }
 
 // 🎴 Create Card Element with Stats and Description
