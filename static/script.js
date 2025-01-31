@@ -2,14 +2,7 @@
 document.addEventListener("DOMContentLoaded", async () => {
     console.log("Loading Strategic Mythology...");
 
-    // Show loading popup
-    const loadingPopup = document.createElement("div");
-    loadingPopup.id = "loading-popup";
-    loadingPopup.innerHTML = `
-        <h2>Loading Strategic Mythology...</h2>
-        <div id="loading-screen"><h2>Loading...</h2></div>
-    `;
-    document.body.appendChild(loadingPopup);
+
 
     try {
         // Step 1: Fetch JSON files and additional assets simultaneously
@@ -31,14 +24,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             cards: processCardData(cardData.cards),  // Ensure processed cards are stored
             battleSystem: battleSystem
         };
-
-        // Step 4: Remove loading popup and show Start Game popup
-        document.body.removeChild(loadingPopup);
         showStartPopup();
-    } catch (error) {
-        console.error("Error loading game data:", error);
-        document.getElementById("loading-screen").innerHTML = "<h2>Error loading game data. Please refresh.</h2>";
-    }
+   
+
 });
 
 // 🎮 Show Start Game Popup
@@ -114,7 +102,6 @@ function initializeGame() {
     window.player2 = createPlayerDeck(structuredCards);
 
     console.log("Player decks created and shuffled.");
-}
 
 // 🃏 Create Player Deck
 function createPlayerDeck(cards) {
@@ -159,7 +146,7 @@ function drawCards(deck, numCards) {
     }
     return drawnCards;
 }
-
+}
 // 🎮 Update Game UI After Drawing Hands
 function updateUI() {
     console.log("Updating game UI...");
