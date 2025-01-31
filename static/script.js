@@ -16,7 +16,40 @@ document.addEventListener("DOMContentLoaded", async () => {
     window.gameData = { cards: cardData.cards, battleSystem };
     showStartPopup();
 });
-
+document.head.insertAdjacentHTML("beforeend", `
+    <style>
+        #start-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            text-align: center;
+        }
+        .popup-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #start-game {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+        }
+        #start-game:hover {
+            background-color: #0056b3;
+        }
+    </style>
+`);
 // 🎮 Show Start Game Popup as a Modal
 function showStartPopup() {
     const startPopup = document.createElement("div");
