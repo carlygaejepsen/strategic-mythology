@@ -2,7 +2,7 @@
 document.addEventListener("DOMContentLoaded", async () => {
     console.log("Loading Strategic Mythology...");
 
-    try {
+ 
         const [cardData, battleSystem] = await Promise.all([
             fetch("static/data.json").then(res => res.json()),
             fetch("static/battle-system.json").then(res => res.json())
@@ -16,9 +16,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         window.gameData = { cards: cardData.cards, battleSystem };
         showStartPopup();
-    } catch (error) {
-        console.error("Error loading game data:", error);
-    }
+
 });
 
 // 🎮 Show Start Game Popup
