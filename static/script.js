@@ -84,14 +84,19 @@ function initializeGame() {
         return;
     }
 
+    console.log("Creating player decks...");
     window.player1 = createPlayerDeck(window.gameData.cards);
     window.player2 = createPlayerDeck(window.gameData.cards);
 
     drawInitialHands();
-    updateUI();
+
+    console.log("Displaying hands in UI...");
+    displayPlayerHand("player1", window.player1.hand);
+    displayPlayerHand("player2", window.player2.hand);
 
     console.log("Game initialized successfully!");
 }
+
 
 // 🃏 Create Player Deck
 function createPlayerDeck(cards) {
