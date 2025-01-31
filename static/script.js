@@ -2,30 +2,30 @@
 document.addEventListener("DOMContentLoaded", async () => {
     console.log("Loading Strategic Mythology...");
 
- 
-        const [cardData, battleSystem] = await Promise.all([
-            fetch("static/data.json").then(res => res.json()),
-            fetch("static/battle-system.json").then(res => res.json())
-        ]);
+    const [cardData, battleSystem] = await Promise.all([
+        fetch("static/data.json").then(res => res.json()),
+        fetch("static/battle-system.json").then(res => res.json())
+    ]);
 
-        console.log("Game data loaded.");
+    console.log("Game data loaded.");
 
-        if (!cardData || !Array.isArray(cardData.cards) || !battleSystem) {
-            throw new Error("Invalid JSON format.");
-        }
+    if (!cardData || !Array.isArray(cardData.cards) || !battleSystem) {
+        throw new Error("Invalid JSON format.");
+    }
 
-        window.gameData = { cards: cardData.cards, battleSystem };
-        showStartPopup();
-
+    window.gameData = { cards: cardData.cards, battleSystem };
+    showStartPopup();
 });
 
-// 🎮 Show Start Game Popup
+// 🎮 Show Start Game Popup as a Modal
 function showStartPopup() {
     const startPopup = document.createElement("div");
     startPopup.id = "start-popup";
     startPopup.innerHTML = `
-        <h2>Welcome to Strategic Mythology</h2>
-        <button id="start-game">Start</button>
+        <div class="popup-content">
+            <h2>Welcome to Strategic Mythology</h2>
+            <button id="start-game">Start</button>
+        </div>
     `;
     document.body.appendChild(startPopup);
 
@@ -45,6 +45,7 @@ function initializeGame() {
     window.player1 = createPlayerDeck(window.gameData.cards);
     window.player2 = createPlayerDeck(window.gameData.cards);
     drawInitialHands();
+    updateUI();
 }
 
 // 🃏 Create Player Deck
@@ -81,8 +82,13 @@ function updateUI() {
 
 // 🎴 Display Player's Hand
 function displayPlayerHand(playerId, hand) {
-    const handContainer = document.getElementById(`${playerId}-hand`);
-    if (!handContainer) return;
+    let handContainer = document.getElementById(`${playerId}-hand`);
+    if (!handContainer) {
+        handContainer = document.createElement("div");
+        handContainer.id = `${playerId}-hand`;
+        handContainer.classList.add("hand-container");
+        document.body.appendChild(handContainer);
+    }
     handContainer.innerHTML = hand.map(createCardElement).join("");
 }
 
