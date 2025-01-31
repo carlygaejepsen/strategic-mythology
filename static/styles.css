@@ -9,58 +9,60 @@ body {
     height: 100vh;
     display: flex;
 }
-document.head.insertAdjacentHTML("beforeend", `
-    <style>
-        #start-popup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-            z-index: 1000;
-            text-align: center;
-        }
-        .popup-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        #start-game {
-            margin-top: 10px;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            border: none;
-            background-color: #007bff;
-            color: white;
-            border-radius: 5px;
-        }
-        #start-game:hover {
-            background-color: #0056b3;
-        }
-    </style>
-`);
 
+/* Start Popup */
+#start-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    text-align: center;
+}
+
+.popup-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#start-game {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+}
+
+#start-game:hover {
+    background-color: #0056b3;
+}
+
+/* Start Button */
 #start-button {
-  padding: 10px 20px;
-  font-size: 18px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  cursor: pointer;
-  z-index: 1001; /* Ensure it's above the loading screen */
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    z-index: 1001;
 }
 
 /* Game Board Layout */
 #game-board {
-   display: flex;
-    justify-content: space-between; /* Space out Player 1, Center, and Player 2 */
+    display: flex;
+    justify-content: space-between;
     align-items: flex-start;
     width: 90%;
-    max-width: 1100px; /* Keeps everything centered */
+    max-width: 1100px;
     margin: 0;
     padding: 20px;
     gap: 20px;
@@ -68,13 +70,13 @@ document.head.insertAdjacentHTML("beforeend", `
 
 /* Player Areas */
 .player-area {
-     flex: 1;
-    max-width: 600px; /* Controls the width of player zones */
-    min-height: 600px; /* Prevents collapse */
+    flex: 1;
+    max-width: 600px;
+    min-height: 600px;
     background-color: white;
     padding: 15px;
     border-radius: 8px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -101,10 +103,9 @@ document.head.insertAdjacentHTML("beforeend", `
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 1vh; /* Keep it close to Battle Zone */
-    gap: 10px; /* Space between buttons */
+    margin-bottom: 1vh;
+    gap: 10px;
 }
-
 
 #controls button {
     padding: 8px 16px;
@@ -117,7 +118,7 @@ document.head.insertAdjacentHTML("beforeend", `
     background-color: #ddd;
 }
 
-/* 🔹 Battle Zone - Smaller & Ensures Cards Stay Inside */
+/* Battle Zone */
 .battle-zone {
     width: 100%;
     min-height: 150px;
@@ -128,33 +129,30 @@ document.head.insertAdjacentHTML("beforeend", `
     padding: 10px;
 }
 
-/* 🔹 Results Log - Same Size as Battle Zone */
-/* Ensure the results log is visible */
+/* Results Log */
 .results-container {
     width: 100%;
-    max-width: 350px; /* Adjust width as needed */
-    min-height: 120px; /* Ensures it doesn’t disappear */
+    max-width: 350px;
+    min-height: 120px;
     background-color: white;
     padding: 10px;
     border-radius: 8px;
     box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
     text-align: center;
-    overflow-y: auto; /* Adds scrolling if needed */
+    overflow-y: auto;
 }
 
-
-// Card Container
+/* Card Container */
 .card-container {
     display: grid;
-    grid-template-columns: repeat(3, minmax(100px, 1fr)); /* Ensure uniform grid */
+    grid-template-columns: repeat(3, minmax(100px, 1fr));
     gap: 10px;
     width: 100%;
 }
 
-
 /* Individual Cards */
 .card {
-       display: flex;
+    display: flex;
     flex-direction: column;
     align-items: center;
     background-color: #f9f9f9;
@@ -164,24 +162,22 @@ document.head.insertAdjacentHTML("beforeend", `
     text-align: center;
     width: 100%;
     max-width: 130px;
- cursor: pointer;
+    cursor: pointer;
     pointer-events: all !important;
     user-select: none;
-      position: relative;
+    position: relative;
     z-index: 10;
 }
 
-
 .card h3, .card p {
-    font-size: 12px; /* Makes text proportionally smaller */
+    font-size: 12px;
     line-height: 1.2;
     margin: 2px 0;
 }
 
-
 /* Ensure Battle Zone Cards Fit Properly */
 .battle-zone .card {
-    width: 120px; /* Bigger so they are clear in battle */
+    width: 120px;
     max-width: 140px;
     height: auto;
     aspect-ratio: 3 / 4;
@@ -192,12 +188,11 @@ document.head.insertAdjacentHTML("beforeend", `
     justify-content: center;
 }
 
-
 /* Ensure Card Images Scale Properly */
 .card img {
     width: 100%;
-    max-width: 130px; /* Keeps images from getting too big */
-    max-height: 160px; /* Prevents it from taking over */
-    object-fit: cover; /* Fits the image nicely */
+    max-width: 130px;
+    max-height: 160px;
+    object-fit: cover;
     border-radius: 6px;
 }
