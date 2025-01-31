@@ -16,12 +16,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const [cardData, battleSystem, imagesLoaded] = await Promise.all([
             fetch("static/data.json").then(res => res.json()),
             fetch("static/battle-system.json").then(res => res.json()),
-            loadAllImages([
-                "static/images/default-card.png",
-                "static/images/default-special.png",
-                "static/images/default-ultra.png",
-                "static/images/default-elemental.png"
-            ]) // Add other required assets
+         
         ]);
 
         console.log("Game data successfully loaded.");
