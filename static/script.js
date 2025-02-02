@@ -43,7 +43,7 @@ async function loadData() {
         window.elementMultipliers = battleData.elementMultipliers;
         window.elementStatusEffects = battleData.elementStatusEffects;
 
-        initializeGame(); // Start game setup after loading data
+        initializeGame(cardData, battleData, characterData); // Start game setup after loading data
 
         return { cardData, battleData, characterData }; // Optional return
     } catch (error) {
