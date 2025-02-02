@@ -369,6 +369,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Play Turn Button
     document.getElementById("play-turn").addEventListener("click", playTurn);
-
-
 });
