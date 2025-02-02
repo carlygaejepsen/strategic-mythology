@@ -44,9 +44,6 @@ async function loadData() {
 }
         
         // Assign data to global variables
-        characterCards = cardData.cards.filter(card => card.type === "character");
-        actionCards = cardData.classAttacks;
-        elementCards = cardData.elementAttacks;
         classMatchingRules = battleData.classMatchingRules;
         elementMultipliers = battleData.elementMultipliers;
         elementtatusEffects = battleData.elementtatusEffects;
