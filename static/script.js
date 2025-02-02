@@ -370,6 +370,5 @@ document.addEventListener("DOMContentLoaded", () => {
     // Play Turn Button
     document.getElementById("play-turn").addEventListener("click", playTurn);
 
-    // Reset Game Button
-    document.getElementById("reset-game").addEventListener("click", resetGame);
+
 });
