@@ -53,7 +53,7 @@ async function loadData() {
 
         console.log("Game data successfully loaded.");
         initializeGame(); // Start game setup after loading data
-    } catch (error) {
+     catch (error) {
         console.error("Error loading data:", error);
     }
 }
