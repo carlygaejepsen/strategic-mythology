@@ -14,7 +14,7 @@ let actionCards = [];
 let elementCards = [];
 let classMatchingRules = {};
 let elementMultipliers = {};
-let elementStatusEffects = {};
+let elementtatusEffects = {};
 
 const HAND_SIZE = 5;
 const MAX_TURNS = 20; // Optional rule to limit infinite battles
@@ -41,7 +41,7 @@ async function loadData() {
         elementCards = cardData.elementAttacks;
         classMatchingRules = battleData.classMatchingRules;
         elementMultipliers = battleData.elementMultipliers;
-        elementStatusEffects = battleData.elementStatusEffects;
+        elementtatusEffects = battleData.elementtatusEffects;
 
         console.log("Game data successfully loaded.");
         initializeGame(); // Start game setup after loading data
@@ -103,7 +103,7 @@ function formatCardHTML(card) {
     
     if (card.type === "character") {
         cardHTML += `<p>Class: ${card.classes.join(", ")}</p>
-                     <p>Elements: ${card.elements.join(", ")}</p>
+                     <p>element: ${card.element.join(", ")}</p>
                      <p>❤️ HP: ${card.hp} ⚔️ ATK: ${card.attack} 🛡️ DEF: ${card.defense} 🌪️ SPD: ${card.speed}</p>`;
     } else if (card.type === "action") {
         cardHTML += `<p>Effect: ${card.effect || "None"}</p>`;
@@ -114,7 +114,7 @@ function formatCardHTML(card) {
             cardHTML += `<p>Ultra Attack: ${card.ultraAttack.name} - ${card.ultraAttack.effect} (User: ${card.ultraAttack.ultraUser})</p>`;
         }
     } else if (card.type === "element") {
-        cardHTML += `<p>Element: ${card.elements.join(", ")}</p>
+        cardHTML += `<p>Element: ${card.element.join(", ")}</p>
                      <p>⚔️ Damage: ${card.damage} 🛡️ Defense: ${card.defense}</p>
                      <p>${card.description}</p>`;
     }
@@ -192,7 +192,7 @@ function highlightSelectedCards(playerId) {
     const container = document.getElementById(`${playerId}-cards`);
     if (!container) return;
     
-    const cards = container.getElementsByClassName("card");
+    const cards = container.getelementByClassName("card");
     Array.from(cards).forEach((cardElement, index) => {
         cardElement.classList.remove("selected");
         if (index === selectedCardPlayer1.characterCard?.index || index === selectedCardPlayer1.actionCard?.index) {
@@ -308,8 +308,8 @@ function applyElementEffect(elementCard, targetCard) {
     logResult(`${elementCard.name} deals ${Math.round(damage)} damage to ${targetCard.name}.`);
     
     // Apply status effect if applicable
-    if (elementStatusEffects[elementCard.element]) {
-        applyStatusEffect(targetCard, elementStatusEffects[elementCard.element]);
+    if (elementtatusEffects[elementCard.element]) {
+        applyStatusEffect(targetCard, elementtatusEffects[elementCard.element]);
     }
 }
 
