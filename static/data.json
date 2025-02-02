@@ -1,4 +1,6 @@
 {
+	"cards": [
+{
 "element": [
     {"name": "Love", "strongAgainst": "Malice", "weakAgainst": "Hubris"},
     {"name": "Wisdom", "strongAgainst": "Hubris", "weakAgainst": "Malice"},
@@ -377,4 +379,5 @@
         }
 	]
 }
-
+	]
+}
