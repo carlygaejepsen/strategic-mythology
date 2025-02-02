@@ -14,7 +14,7 @@ let actionCards = [];
 let elementCards = [];
 let classMatchingRules = {};
 let elementMultipliers = {};
-let elementtatusEffects = {};
+let elementStatusEffects = {};
 
 const HAND_SIZE = 5;
 const MAX_TURNS = 20; // Optional rule to limit infinite battles
@@ -36,22 +36,24 @@ async function loadData() {
         const battleData = await battleResponse.json();
         const characterData = await characterResponse.json();
 
-        return { cardData, battleData, characterData };
+        console.log("Game data successfully loaded.");
+        
+        // Assign data to global variables AFTER loading
+        window.classMatchingRules = battleData.classMatchingRules;
+        window.elementMultipliers = battleData.elementMultipliers;
+        window.elementStatusEffects = battleData.elementStatusEffects;
+
+        initializeGame(); // Start game setup after loading data
+
+        return { cardData, battleData, characterData }; // Optional return
     } catch (error) {
         console.error("Error loading data:", error);
         throw error;
     }
 }
-        
-        // Assign data to global variables
-        classMatchingRules = battleData.classMatchingRules;
-        elementMultipliers = battleData.elementMultipliers;
-        elementtatusEffects = battleData.elementtatusEffects;
 
-        console.log("Game data successfully loaded.");
-        initializeGame(); // Start game setup after loading data
-     
-
+// Call the function to ensure data loads before the game starts
+loadData();
 
 // Shuffle a deck of cards using Fisher-Yates algorithm
 function shuffleDeck(deck) {
@@ -67,20 +69,20 @@ function initializeGame(cardData, battleData, characterData) {
     console.log("Initializing game...");
 
     // Extract the necessary data from the fetched JSON
-    const characterCards = characterData; // Assuming characterData is an array of character cards
-    const actionCards = cardData.actionCards; // Assuming actionCards are part of cardData
-    const elementCards = cardData.elementCards; // Assuming elementCards are part of cardData
+    characterCards = characterData; // Assuming characterData is an array of character cards
+    actionCards = cardData.actionCards; // Assuming actionCards are part of cardData
+    elementCards = cardData.elementCards; // Assuming elementCards are part of cardData
 
     // Shuffle and deal decks for both players
-    const player1Deck = shuffleDeck([...characterCards, ...actionCards, ...elementCards]);
-    const player2Deck = shuffleDeck([...characterCards, ...actionCards, ...elementCards]);
+    player1Deck = shuffleDeck([...characterCards, ...actionCards, ...elementCards]);
+    player2Deck = shuffleDeck([...characterCards, ...actionCards, ...elementCards]);
 
-    const player1Hand = drawInitialHand(player1Deck);
-    const player2Hand = drawInitialHand(player2Deck);
+    player1Hand = drawInitialHand(player1Deck);
+    player2Hand = drawInitialHand(player2Deck);
 
     // Reset selections and game state
-    const selectedCardPlayer1 = { characterCard: null, actionCard: null, elementCard: null };
-    const selectedCardPlayer2 = { characterCard: null, actionCard: null, elementCard: null };
+    selectedCardPlayer1 = { characterCard: null, actionCard: null, elementCard: null };
+    selectedCardPlayer2 = { characterCard: null, actionCard: null, elementCard: null };
 
     console.log("Game setup complete. Ready to begin.");
     console.log("Player 1 Hand:", player1Hand);
@@ -128,10 +130,16 @@ document.getElementById("start-game").addEventListener("click", async () => {
     });
 
     // Reset Game Button
-    document.getElementById("reset-game").addEventListener("click", () => {
-        console.log("Reset Game clicked");
-        initializeGame(); // Reset the game
-    });
+document.getElementById("reset-game").addEventListener("click", async () => {
+    console.log("Reset Game clicked");
+    try {
+        const { cardData, battleData, characterData } = await loadData();
+        initializeGame(cardData, battleData, characterData);
+    } catch (error) {
+        console.error("Error during reset:", error);
+    }
+});
+
 });
 ///// SECTION 2: CARD SELECTION & RENDERING /////
 ///// SECTION: CARD DISPLAY FORMATTING /////
@@ -202,7 +210,7 @@ function selectCard(playerId, card, index) {
     
     console.log(`${playerId} selected ${card.name} (${card.type})`);
     updatePlayButton();
-    highlightSelectedCards(playerId);
+  
 }
 
 // Ensure a valid card combination is selected before enabling the play button
@@ -228,19 +236,6 @@ function doClassesMatch(characterCard, actionCard) {
     return characterCard.classes.some(cls => actionCard.classes.includes(cls));
 }
 
-// Highlight selected cards in the player's hand
-function highlightSelectedCards(playerId) {
-    const container = document.getElementById(`${playerId}-cards`);
-    if (!container) return;
-    
-    const cards = container.getelementByClassName("card");
-    Array.from(cards).forEach((cardElement, index) => {
-        cardElement.classList.remove("selected");
-        if (index === selectedCardPlayer1.characterCard?.index || index === selectedCardPlayer1.actionCard?.index) {
-            cardElement.classList.add("selected");
-        }
-    });
-}
 
 // AI selects a random valid card
 function selectAICard() {
@@ -349,8 +344,9 @@ function applyElementEffect(elementCard, targetCard) {
     logResult(`${elementCard.name} deals ${Math.round(damage)} damage to ${targetCard.name}.`);
     
     // Apply status effect if applicable
-    if (elementtatusEffects[elementCard.element]) {
-        applyStatusEffect(targetCard, elementtatusEffects[elementCard.element]);
+    if (elementStatusEffects[elementCard.element]) {
+       applyStatusEffect(targetCard, elementStatusEffects[elementCard.element]);
+
     }
 }
 
@@ -383,8 +379,7 @@ function resetSelections() {
     const battleZone = document.getElementById("battle-zone");
     if (battleZone) battleZone.innerHTML = ""; // Clear battle zone display
 
-    highlightSelectedCards("player1");
-    highlightSelectedCards("player2");
+
 }
 
 // Function to log battle results in the UI
