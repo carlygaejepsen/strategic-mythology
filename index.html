@@ -3,42 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Strategic Mythology</title>
-    <link rel="stylesheet" href="static/styles.css">
-    <script src="static/script.js" defer></script>
+    <title>Greek Gods Card Game</title>
+    <link rel="stylesheet" href="/static/style.css"> <!-- Ensure the path to your CSS is correct -->
 </head>
 <body>
-    <!-- Start Game Popup -->
-    <div id="start-popup" class="popup">
-        <div class="popup-content">
-            <h2>Welcome to Strategic Mythology</h2>
-            <button id="start-game">Start</button>
+    <div class="container">
+        <!-- Game Board -->
+        <div class="game-board">
+            <!-- Player 1 Area -->
+            <div id="player1-area" class="player-area">
+                <h2>Player 1</h2>
+                <div id="player1-hand" class="card-container">
+                    <!-- Player 1 cards will be dynamically inserted here -->
+                </div>
+            </div>
+
+            <!-- Center Area (Buttons, Battle Zone, and Results Log) -->
+            <div id="center-area">
+                <div id="controls">
+                    <button id="start-game" class="button">New Game</button>
+                    <button id="play-turn" class="button" disabled>Play Turn</button>
+                </div>
+                <div id="battle-zone" class="battle-zone">
+                    <!-- Battle zone content will be dynamically inserted here -->
+                </div>
+                <div id="results-log" class="results-container">
+                    <h2>Results Log</h2>
+                    <!-- Results will be dynamically inserted here -->
+                </div>
+            </div>
+
+            <!-- Player 2 Area -->
+            <div id="player2-area" class="player-area">
+                <h2>Player 2</h2>
+                <div id="player2-hand" class="card-container">
+                    <!-- Player 2 cards will be dynamically inserted here -->
+                </div>
+            </div>
         </div>
     </div>
-    
-    <div id="game-board">
-        <!-- Player 1 Area -->
-        <div id="player1-area" class="player-area">
-            <h2>Player 1</h2>
-            <div id="player1-hand" class="card-container"></div>
-        </div>
 
-        <!-- Center Area (Buttons, Battle Zone, and Results Log) -->
-        <div id="center-area">
-            <div id="controls">
-                <button id="play-turn" disabled>Play Turn</button>
-            </div>
-            <div id="battle-zone" class="battle-zone"></div>
-            <div id="results-log" class="results-container">
-                <h2>Results Log</h2>
-            </div>
-        </div>
-
-        <!-- Player 2 Area -->
-        <div id="player2-area" class="player-area">
-            <h2>Player 2</h2>
-            <div id="player2-hand" class="card-container"></div>
-        </div>
-    </div>
+    <!-- Link the JavaScript -->
+    <script src="/static/script.js" defer></script>
 </body>
 </html>
