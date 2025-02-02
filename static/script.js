@@ -65,7 +65,7 @@ function initializeGame(cardData, battleData, characterData) {
     console.log("Initializing game...");
 
     // Extract the necessary data from the fetched JSON
-    gameState.characterCards = characterData;
+    gameState.characterCards = characterData.characterCards;
     gameState.actionCards = cardData.actionCards;
     gameState.elementCards = cardData.elementCards;
 
