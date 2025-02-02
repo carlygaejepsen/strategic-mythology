@@ -54,7 +54,7 @@ async function loadData() {
         console.log("Game data successfully loaded.");
         initializeGame(); // Start game setup after loading data
      
-}
+
 
 // Shuffle a deck of cards using Fisher-Yates algorithm
 function shuffleDeck(deck) {
