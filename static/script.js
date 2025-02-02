@@ -22,18 +22,26 @@ const MAX_TURNS = 20; // Optional rule to limit infinite battles
 // Load external JSON files and store data in global variables
 async function loadData() {
     try {
-        const [cardResponse, battleResponse] = await Promise.all([
+        const [cardResponse, battleResponse, characterResponse] = await Promise.all([
             fetch("https://carlygaejepsen.github.io/strategic-mythology/static/data.json"),
             fetch("https://carlygaejepsen.github.io/strategic-mythology/static/battle-system.json"),
             fetch("https://carlygaejepsen.github.io/strategic-mythology/static/character-cards.json")
-		]);
+        ]);
         
-        if (!cardResponse.ok || !battleResponse.ok) {
+        if (!cardResponse.ok || !battleResponse.ok || !characterResponse.ok) {
             throw new Error("Failed to load one or more JSON files.");
         }
         
         const cardData = await cardResponse.json();
         const battleData = await battleResponse.json();
+        const characterData = await characterResponse.json();
+
+        return { cardData, battleData, characterData };
+    } catch (error) {
+        console.error("Error loading data:", error);
+        throw error;
+    }
+}
         
         // Assign data to global variables
         characterCards = cardData.cards.filter(card => card.type === "character");
@@ -60,23 +68,32 @@ function shuffleDeck(deck) {
 }
 
 // Initialize the game
-function initializeGame() {
+function initializeGame(cardData, battleData, characterData) {
     console.log("Initializing game...");
 
-    // Shuffle and deal decks for both players
-    player1Deck = shuffleDeck([...characterCards, ...actionCards, ...elementCards]);
-    player2Deck = shuffleDeck([...characterCards, ...actionCards, ...elementCards]);
+    // Extract the necessary data from the fetched JSON
+    const characterCards = characterData; // Assuming characterData is an array of character cards
+    const actionCards = cardData.actionCards; // Assuming actionCards are part of cardData
+    const elementCards = cardData.elementCards; // Assuming elementCards are part of cardData
 
-    player1Hand = drawInitialHand(player1Deck);
-    player2Hand = drawInitialHand(player2Deck);
+    // Shuffle and deal decks for both players
+    const player1Deck = shuffleDeck([...characterCards, ...actionCards, ...elementCards]);
+    const player2Deck = shuffleDeck([...characterCards, ...actionCards, ...elementCards]);
+
+    const player1Hand = drawInitialHand(player1Deck);
+    const player2Hand = drawInitialHand(player2Deck);
 
     // Reset selections and game state
-    selectedCardPlayer1 = { characterCard: null, actionCard: null, elementCard: null };
-    selectedCardPlayer2 = { characterCard: null, actionCard: null, elementCard: null };
+    const selectedCardPlayer1 = { characterCard: null, actionCard: null, elementCard: null };
+    const selectedCardPlayer2 = { characterCard: null, actionCard: null, elementCard: null };
 
     console.log("Game setup complete. Ready to begin.");
-}
+    console.log("Player 1 Hand:", player1Hand);
+    console.log("Player 2 Hand:", player2Hand);
 
+    // Return the game state if needed
+    return { player1Deck, player2Deck, player1Hand, player2Hand, selectedCardPlayer1, selectedCardPlayer2 };
+}
 // Draw initial hand of cards from the deck
 function drawInitialHand(deck) {
     if (!Array.isArray(deck) || deck.length === 0) {
@@ -87,10 +104,39 @@ function drawInitialHand(deck) {
 }
 
 // Event Listeners for UI Buttons
+// Event Listeners for UI Buttons
 document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("start-game").addEventListener("click", loadData);
-    document.getElementById("play-turn").addEventListener("click", () => console.log("Play Turn clicked"));
-    document.getElementById("reset-game").addEventListener("click", initializeGame);
+    // Start Game Button
+document.getElementById("start-game").addEventListener("click", async () => {
+        try {
+            // Fetch the data
+            const { cardData, battleData, characterData } = await loadData();
+            
+            // Log the data to the console to verify it's working
+            console.log("Card Data:", cardData);
+            console.log("Battle Data:", battleData);
+            console.log("Character Data:", characterData);
+
+            // Initialize the game with the fetched data
+            initializeGame(cardData, battleData, characterData);
+        } catch (error) {
+            console.error("Failed to load data:", error);
+            // Display an error message to the user if needed
+            alert("Failed to load game data. Please try again.");
+        }
+    });
+
+    // Play Turn Button
+    document.getElementById("play-turn").addEventListener("click", () => {
+        console.log("Play Turn clicked");
+        // Add your "play turn" logic here
+    });
+
+    // Reset Game Button
+    document.getElementById("reset-game").addEventListener("click", () => {
+        console.log("Reset Game clicked");
+        initializeGame(); // Reset the game
+    });
 });
 ///// SECTION 2: CARD SELECTION & RENDERING /////
 ///// SECTION: CARD DISPLAY FORMATTING /////
