@@ -1,4 +1,4 @@
-/* Fullscreen layout */
+/* === Global Reset and Typography === */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f9;
@@ -8,55 +8,11 @@ body {
     overflow: hidden;
     height: 100vh;
     display: flex;
-}
-
-/* Start Popup */
-#start-popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-    z-index: 1000;
-    text-align: center;
-}
-
-.popup-content {
-    display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
 }
 
-#start-game {
-    margin-top: 10px;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border: none;
-    background-color: #007bff;
-    color: white;
-    border-radius: 5px;
-}
-
-#start-game:hover {
-    background-color: #0056b3;
-}
-
-/* Start Button */
-#start-button {
-    padding: 10px 20px;
-    font-size: 18px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
-    z-index: 1001;
-}
-
-/* Game Board Layout */
+/* === Game Board Layout === */
 #game-board {
     display: flex;
     justify-content: space-between;
@@ -68,7 +24,7 @@ body {
     gap: 20px;
 }
 
-/* Player Areas */
+/* === Player Areas === */
 .player-area {
     flex: 1;
     max-width: 600px;
@@ -88,7 +44,7 @@ body {
     align-items: center;
 }
 
-/* Center Area */
+/* === Center Area === */
 #center-area {
     display: flex;
     flex-direction: column;
@@ -98,7 +54,7 @@ body {
     min-width: 350px;
 }
 
-/* Buttons */
+/* === Buttons === */
 #controls {
     display: flex;
     justify-content: center;
@@ -112,13 +68,23 @@ body {
     font-size: 14px;
     margin: 0 5px;
     cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.2s;
 }
 
 #controls button:hover {
-    background-color: #ddd;
+    background-color: #0056b3;
 }
 
-/* Battle Zone */
+#controls button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* === Battle Zone === */
 .battle-zone {
     width: 100%;
     min-height: 150px;
@@ -129,7 +95,7 @@ body {
     padding: 10px;
 }
 
-/* Results Log */
+/* === Results Log === */
 .results-container {
     width: 100%;
     max-width: 350px;
@@ -142,15 +108,14 @@ body {
     overflow-y: auto;
 }
 
-/* Card Container */
+/* === Cards === */
 .card-container {
     display: grid;
-    grid-template-columns: repeat(3, minmax(100px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 10px;
     width: 100%;
 }
 
-/* Individual Cards */
 .card {
     display: flex;
     flex-direction: column;
@@ -163,10 +128,14 @@ body {
     width: 100%;
     max-width: 130px;
     cursor: pointer;
-    pointer-events: all !important;
+    pointer-events: auto;
     user-select: none;
-    position: relative;
-    z-index: 10;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .card h3, .card p {
@@ -175,7 +144,7 @@ body {
     margin: 2px 0;
 }
 
-/* Ensure Battle Zone Cards Fit Properly */
+/* === Battle Zone Cards === */
 .battle-zone .card {
     width: 120px;
     max-width: 140px;
@@ -188,11 +157,34 @@ body {
     justify-content: center;
 }
 
-/* Ensure Card Images Scale Properly */
+/* === Card Images === */
 .card img {
     width: 100%;
     max-width: 130px;
     max-height: 160px;
     object-fit: cover;
     border-radius: 6px;
+}
+
+/* === Responsive Design === */
+@media (max-width: 768px) {
+    #game-board {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .player-area {
+        max-width: 100%;
+        min-height: auto;
+    }
+
+    .card-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .card-container {
+        grid-template-columns: 1fr;
+    }
 }
