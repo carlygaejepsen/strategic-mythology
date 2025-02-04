@@ -11,14 +11,14 @@ let currentPlayer;
 function createCardElement(card) {
     const cardDiv = document.createElement('div');
     cardDiv.classList.add('card');
-    
-    // Create the name element
+
+    // Name
     const nameElement = document.createElement('div');
     nameElement.classList.add('card-name');
     nameElement.textContent = card.name;
     cardDiv.appendChild(nameElement);
-    
-    // Create the image element
+
+    // Image
     if (card.image) {
         const imgElement = document.createElement('img');
         imgElement.src = card.image;
@@ -26,6 +26,39 @@ function createCardElement(card) {
         imgElement.classList.add('card-image');
         cardDiv.appendChild(imgElement);
     }
+
+    // Type & Attributes
+    const attributesElement = document.createElement('div');
+    attributesElement.classList.add('card-attributes');
+    attributesElement.textContent = `[${card.type}]`;
+
+    if (card.classes && card.classes.length > 0) {
+        attributesElement.textContent += ` [${card.classes.join(', ')}]`;
+    }
+    if (card.element && card.element.length > 0) {
+        attributesElement.textContent += ` [${card.element.join(', ')}]`;
+    }
+    cardDiv.appendChild(attributesElement);
+
+    // Stats (Only for characters)
+    if (card.type === "character") {
+        const statsElement = document.createElement('div');
+        statsElement.classList.add('card-stats');
+        statsElement.innerHTML = `❤️: ${card.hp} ⚔️: ${card.attack} 🛡️: ${card.defense}`;
+        cardDiv.appendChild(statsElement);
+    }
+
+    // Description (Smaller font)
+    if (card.description) {
+        const descriptionElement = document.createElement('div');
+        descriptionElement.classList.add('card-description');
+        descriptionElement.textContent = card.description;
+        cardDiv.appendChild(descriptionElement);
+    }
+
+    return cardDiv;
+}
+
     
     // Create the type and attributes line
     const attributesElement = document.createElement('div');
@@ -66,20 +99,13 @@ function createCardElement(card) {
 function buildDeck() {
     const deck = [];
 
-    // Handle character cards (assuming characters.json has direct array)
-    if (characters && Array.isArray(characters)) {
-        deck.push(...characters);
-    }
-
-    // Handle action cards with nested structure
-    if (actionCards?.actionCards) {
-        if (actionCards.actionCards.elementActions) {
-            deck.push(...actionCards.actionCards.elementActions);
+    allCards.forEach(card => {
+        if (card.type === "character" || card.type === "action") {
+            deck.push(card); // Only add valid cards
+        } else {
+            console.warn("Unknown card type detected:", card);
         }
-        if (actionCards.actionCards.classActions) {
-            deck.push(...actionCards.actionCards.classActions);
-        }
-    }
+    });
 
     shuffleDeck(deck);
     return deck;
