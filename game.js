@@ -6,6 +6,9 @@ let player2Hand = [];
 let player1BattleZone = [];
 let player2BattleZone = [];
 let currentPlayer;
+let characters;
+let actionCards;
+let battleSystem;
 
 // ============= HELPER FUNCTIONS =============
 function createCardElement(card) {
@@ -170,17 +173,27 @@ function doAiMove() {
 async function loadGameData() {
     try {
         const charactersResponse = await fetch("https://carlygaejepsen.github.io/strategic-mythology/data/character-cards.json");
+                if (!charactersResponse.ok) throw new Error(`HTTP error! status: ${charactersResponse.status}`);
         const actionCardsResponse = await fetch("https://carlygaejepsen.github.io/strategic-mythology/data/action-cards.json");
+                if (!actionCardsResponse.ok) throw new Error(`HTTP error! status: ${actionCardsResponse.status}`);
         const battleSystemResponse = await fetch("https://carlygaejepsen.github.io/strategic-mythology/data/battle-system.json");
-
+            if (!battleSystemResponse.ok) throw new Error(`HTTP error! status: ${battleSystemResponse.status}`);
+        battleSystem = await battleSystemResponse.json();
+        
         characters = await charactersResponse.json();
         actionCards = await actionCardsResponse.json();
         battleSystem = await battleSystemResponse.json();
 
-            console.log("Loaded action cards structure:", actionCards);
-        console.log("Sample element action:", actionCards?.actionCards?.elementActions?.[0]);
+
+        // Debug logging with null checks
+        console.log("Loaded character structure:", characters?.length ? "Valid" : "Empty");
+        console.log("Action cards container:", actionCards?.actionCards ? "Exists" : "Missing");
+        console.log("Sample element action:", actionCards?.actionCards?.elementActions?.[0]?.name || "Not found");
+        
     } catch (error) {
-        console.error("Error loading game data:", error);
+        console.error("Critical loading error:", error);
+        // Add error recovery or UI notification here
+        throw error; // Re-throw to prevent game from starting with bad data
     }
 }
 
