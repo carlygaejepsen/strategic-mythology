@@ -1,0 +1,32 @@
+{
+  "combos": {
+    "character_alone": 20,
+    "elementAction_alone": 10,
+    "classAction_alone": 10,
+    "character_plus_action": 40,
+    "full_combo": 60
+  },
+  "baseHP": {
+    "character": 100,
+    "action": 50
+  },
+  "turnStructure": [
+    {
+      "turn": 1,
+      "description": "Player 1 and Player 2 each select one character card to add to their battle zone. The two cards attack each other immediately."
+    },
+    {
+      "turn": 2,
+      "description": "Both players add another card to their battle zone, then choose attack targets. Players can also opt to discard cards back into their deck."
+    },
+    {
+      "turn": 3,
+      "description": "Both players add a third card. Now, each card chooses its attack target from the opponent’s battle zone. Players may also return cards from the battle zone to their deck."
+    }
+  ],
+  "rules": [
+    "A character card can be combined with an action card if their elements match (for element actions) or classes match (for class actions).",
+    "Healing cards can target other cards in your battle zone.",
+    "If a card reaches 0 HP, it is discarded permanently."
+  ]
+}

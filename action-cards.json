@@ -1,0 +1,280 @@
+{
+  "actionCards": 
+  {
+	"elementActions": [
+    {
+      "id": "flamethrower",
+      "name": "Flamethrower",
+      "subtype": "element",
+      "element": "fire",
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+      "spd": 0
+    },
+    {
+      "id": "tidalWave",
+      "name": "Tidal Wave",
+      "subtype": "element",
+      "element": "water",
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+      "spd": 0
+    },
+    {
+      "id": "whirlwind",
+      "name": "Whirlwind",
+      "subtype": "element",
+      "element": "air",
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+      "spd": 0
+    },
+    {
+      "id": "rockslide",
+      "name": "Rockslide",
+      "subtype": "element",
+      "element": "earth",
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+      "spd": 0
+    },
+    {
+      "id": "lightning",
+      "name": "Lightning Strike",
+      "subtype": "element",
+      "element": "electricity",
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+      "spd": 0
+    },
+    {
+      "id": "love",
+      "name": "Infatuation",
+      "subtype": "element",
+      "element": "love",
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+      "spd": 0
+    },
+    {
+      "id": "malice",
+      "name": "Betrayal",
+      "subtype": "element",
+      "element": "malice",
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+      "spd": 0
+    },
+    {
+      "id": "hubris",
+      "name": "Charge",
+      "subtype": "element",
+      "element": "hubris",
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+      "spd": 0
+    },
+    {
+      "id": "wisdom",
+      "name": "Counsel",
+      "subtype": "element",
+      "element": "wisdom",
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+      "spd": 0
+    },
+    {
+      "id": "light",
+      "name": "Revelation",
+      "subtype": "element",
+      "element": "light",
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+      "spd": 0
+    },
+    {
+      "id": "dark",
+      "name": "Shadow",
+      "subtype": "element",
+      "element": "dark",
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+      "spd": 0
+    },
+    {
+      "id": "vitality",
+      "name": "Growth",
+      "subtype": "element",
+      "element": "vitality",
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+      "spd": 0
+    },
+    {
+      "id": "death",
+      "name": "Decay",
+      "subtype": "element",
+      "element": "death",
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+      "spd": 0
+    },
+    {
+      "id": "justice",
+      "name": "Judgment",
+      "subtype": "element",
+      "element": "justice",
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+      "spd": 0
+    },
+    {
+      "id": "luck",
+      "name": "Favor of the Gods",
+      "subtype": "element",
+      "element": "luck",
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+      "spd": 0
+    },
+    {
+      "id": "heal",
+      "name": "Divine Healing",
+      "subtype": "element",
+      "element": "vitality",
+      "hp": 50,
+      "atk": 0,
+      "def": 0,
+      "spd": 0,
+      "healAmount": 30
+    }
+  ],
+  "classActions": [
+    {
+      "id": "athletics",
+      "name": "Athletics",
+      "subtype": "class",
+      "classes": ["warriors", "heroes", "wildkeepers"],
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+      "spd": 0
+    },
+    {
+      "id": "beast",
+      "name": "Beast",
+      "subtype": "class",
+      "classes": ["malevolents", "wildkeepers"],
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+      "spd": 0
+    },
+    {
+      "id": "blessing",
+      "name": "Blessing",
+      "subtype": "class",
+      "classes": ["oracles", "ecstatics", "caretakers"],
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+      "spd": 0
+    },
+    {
+      "id": "cannon",
+      "name": "Cannon",
+      "subtype": "class",
+      "classes": ["warriors", "authorities"],
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+      "spd": 0
+    },
+    {
+      "id": "curse",
+      "name": "Curse",
+      "subtype": "class",
+      "classes": ["malevolents", "oracles", "mystics"],
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+      "spd": 0
+    },
+    {
+      "id": "decree",
+      "name": "Decree",
+      "subtype": "class",
+      "classes": ["warriors", "authorities"],
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+      "spd": 0
+    },
+    {
+      "id": "dream",
+      "name": "Dream",
+      "subtype": "class",
+      "classes": ["sages", "ecstatics", "mystics"],
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+      "spd": 0
+    },
+    {
+      "id": "influence",
+      "name": "Influence",
+      "subtype": "class",
+      "classes": ["malevolents", "sages", "authorities", "heroes"],
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+      "spd": 0
+    },
+    {
+      "id": "medicine",
+      "name": "Medicine",
+      "subtype": "class",
+      "classes": ["sages", "caretakers", "heroes"],
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+      "spd": 0
+    },
+    {
+      "id": "prophecy",
+      "name": "Prophecy",
+      "subtype": "class",
+      "classes": ["oracles", "mystics"],
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+      "spd": 0
+    },
+    {
+      "id": "vine",
+      "name": "Vine",
+      "subtype": "class",
+      "classes": ["ecstatics", "caretakers", "wildkeepers"],
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+      "spd": 0
+    }
+  ]
+}
+}
