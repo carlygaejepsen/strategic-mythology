@@ -34,7 +34,9 @@ function createCardElement(card) {
     // Type & Attributes
     const attributesElement = document.createElement('div');
     attributesElement.classList.add('card-attributes');
-    attributesElement.textContent = `[${card.subtype || card.type || 'No Type'}]`; // Use subtype/type
+    const cardType = card.subtype ? `${card.subtype} action` : card.type;
+    attributesElement.textContent = `[${cardType}]`;
+  
 
     // Handle both element and class attributes
     if (card.element) {
@@ -63,19 +65,19 @@ function createCardElement(card) {
 
     return cardDiv;
 }
-function buildDeck() {
-    const deck = [];
 
-    allCards.forEach(card => {
-        if (card.type === "character" || card.type === "action") {
-            deck.push(card); // Only add valid cards
-        } else {
-            console.warn("Unknown card type detected:", card);
-        }
+function buildDeck() {
+    // Create a copy of allCards to avoid modifying the original array
+    const deck = [...allCards];
+
+    // Filter out invalid cards
+    const validDeck = deck.filter(card => {
+        const isValid = card.type === "character" || card.subtype === "element" || card.subtype === "class";
+        if (!isValid) console.warn("Invalid card filtered out:", card);
+        return isValid;
     });
 
-    shuffleDeck(deck);
-    return deck;
+    return shuffleDeck(validDeck);
 }
 
 function shuffleDeck(deck) {
@@ -100,27 +102,21 @@ function playCard(card, playerHand, playerBattleZone, battleZoneId) {
 
 function renderHand(hand, containerId, whichPlayer) {
     const container = document.getElementById(containerId);
-    if (!container) {
-        console.error(`Container with id '${containerId}' not found.`);
-        return;
-    }
+    if (!container) return;
 
     container.innerHTML = '';
     hand.forEach((card) => {
-        const cardDiv = document.createElement('div');
-        cardDiv.classList.add('card');
-        cardDiv.textContent = card.name || 'Unnamed Card';
-
-        cardDiv.addEventListener('click', () => {
+        // Use createCardElement instead of basic div
+        const cardElement = createCardElement(card); 
+        
+        cardElement.addEventListener('click', () => {
             if (whichPlayer === 'player1') {
                 playCard(card, player1Hand, player1BattleZone, 'player1-battlezone');
-            } else {
-                playCard(card, player2Hand, player2BattleZone, 'player2-battlezone');
             }
             renderHand(hand, containerId, whichPlayer);
         });
 
-        container.appendChild(cardDiv);
+        container.appendChild(cardElement);
     });
 }
 
@@ -185,8 +181,17 @@ async function loadGameData() {
         actionCards = await actionCardsResponse.json();
         battleSystem = await battleSystemResponse.json();
 
+        // Combine all cards into allCards array
+        allCards = [
+            ...(Array.isArray(characters) ? characters : []),
+            ...(actionCards?.actionCards?.elementActions || []),
+            ...(actionCards?.actionCards?.classActions || [])
+        ];
 
-        // Debug logging with null checks
+         // Debug logging with null checks
+        console.log("Total cards loaded:", allCards.length);
+        console.log("Sample character:", allCards.find(c => c.type === "character"));
+        console.log("Sample action:", allCards.find(c => c.subtype === "element"));
         console.log("Loaded character structure:", characters?.length ? "Valid" : "Empty");
         console.log("Action cards container:", actionCards?.actionCards ? "Exists" : "Missing");
         console.log("Sample element action:", actionCards?.actionCards?.elementActions?.[0]?.name || "Not found");
