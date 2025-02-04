@@ -160,7 +160,8 @@ h1, h2 {
 
 .button:hover,
 button:hover {
-  background-color: #000;
+  background-color: #284177;
+  color: #fff;
 }
 
 /* Disabled button state */
