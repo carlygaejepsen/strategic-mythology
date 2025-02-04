@@ -104,9 +104,9 @@ function playCard(card, playerHand, playerBattleZone, battleZoneId) {
     }
 }
 
-function validateActionCard(actionCard, battleZone) {
-    const hasElements = battleZone.some(c => c.type === 'element');
-    const hasClasses = battleZone.some(c => c.type === 'class');
+function validateActionCard(actionCard, player-battlezone) {
+    const hasElements = player-battlezone.some(c => c.type === 'element');
+    const hasClasses = player-battlezone.some(c => c.type === 'class');
     
     if (actionCard.type === 'element' && hasClasses) {
         alert("Can't mix elements and classes!");
@@ -114,7 +114,7 @@ function validateActionCard(actionCard, battleZone) {
     }
 
   // Find matching character
-  const hasMatch = battleZone.some(character => {
+  const hasMatch = player-battlezone.some(character => {
     if (!character.classes) return false; // Only check characters
     
     return actionCard.type === 'element'
