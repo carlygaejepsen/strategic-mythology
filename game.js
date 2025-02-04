@@ -7,6 +7,53 @@ let player1BattleZone = [];
 let player2BattleZone = [];
 
 // ============= HELPER FUNCTIONS =============
+function createCardElement(card) {
+    const cardDiv = document.createElement('div');
+    cardDiv.classList.add('card');
+    
+    // Create the name element
+    const nameElement = document.createElement('div');
+    nameElement.classList.add('card-name');
+    nameElement.textContent = card.name;
+    cardDiv.appendChild(nameElement);
+    
+    // Create the image element
+    if (card.image) {
+        const imgElement = document.createElement('img');
+        imgElement.src = card.image;
+        imgElement.alt = card.name;
+        imgElement.classList.add('card-image');
+        cardDiv.appendChild(imgElement);
+    }
+    
+    // Create the type and attributes line
+    const attributesElement = document.createElement('div');
+    attributesElement.classList.add('card-attributes');
+    attributesElement.textContent = `[${card.type}]`;
+    
+    if (card.classes && card.classes.length > 0) {
+        attributesElement.textContent += ` [${card.classes.join(', ')}]`;
+    }
+    if (card.element && card.element.length > 0) {
+        attributesElement.textContent += ` [${card.element.join(', ')}]`;
+    }
+    
+    cardDiv.appendChild(attributesElement);
+    
+    // Create the stats line
+    const statsElement = document.createElement('div');
+    statsElement.classList.add('card-stats');
+    statsElement.innerHTML = `❤️: ${card.hp} ⚔️: ${card.attack} 🛡️: ${card.defense}`;
+    cardDiv.appendChild(statsElement);
+    
+    // Create the description element
+    const descriptionElement = document.createElement('div');
+    descriptionElement.classList.add('card-description');
+    descriptionElement.textContent = card.description;
+    cardDiv.appendChild(descriptionElement);
+    
+    return cardDiv;
+}
 
 function buildDeck() {
     const deck = [];
