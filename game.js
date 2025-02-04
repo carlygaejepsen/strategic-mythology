@@ -1,4 +1,5 @@
 // ============= GLOBAL VARIABLES =============
+let currentPlayer = 'player1';
 
 let characters = {};
 let actionCards = {};
@@ -97,8 +98,52 @@ function renderBattleZone(battleZone, containerId) {
 }
 
 function handleTurn() {
-    console.log('Play Turn button clicked!');
+  console.log(`Play Turn clicked. Current player is: ${currentPlayer}`);
+
+  // If it's Player 1's turn, finalize that and let Player 2's AI move
+  if (currentPlayer === 'player1') {
+    console.log("Ending Player 1 turn; now it's Player 2's (AI) turn.");
+    currentPlayer = 'player2';
+
+    // AI does something immediately
+    doAiMove();
+
+    // Switch back to Player 1 for the next turn
+    currentPlayer = 'player1';
+  } else {
+    // If for some reason it's already 'player2', just do the AI move again
+    // or skip directly back to player1 if you want strictly alternate turns
+    console.log("Player 2 (AI) turn triggered again.");
+    doAiMove();
+    currentPlayer = 'player1';
+  }
 }
+function doAiMove() {
+  // If the AI has no cards, it does nothing
+  if (player2Hand.length === 0) {
+    console.log("AI (Player 2) has no cards left to play.");
+    return;
+  }
+
+  // Pick a random card from Player 2's hand
+  const randomIndex = Math.floor(Math.random() * player2Hand.length);
+  const chosenCard = player2Hand[randomIndex];
+
+  console.log(`AI (Player 2) chooses: ${chosenCard.name}`);
+
+  // Actually play the card
+  playCard(chosenCard, player2Hand, player2BattleZone);
+
+  // Re-render Player 2’s hand (so the card disappears there)
+  renderHand(player2Hand, 'player2-hand', 'player2');
+
+  // If you have a single combined zone, do:
+  renderBattleZone([...player1BattleZone, ...player2BattleZone], 'battle-zone');
+
+  // You could add attack logic here if you want the AI
+  // to choose a target from Player 1's battle zone, etc.
+}
+
 
 // ============= DATA LOADING =============
 
