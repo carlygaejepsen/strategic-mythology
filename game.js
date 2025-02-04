@@ -44,8 +44,15 @@ function createCardElement(card) {
     // Create the stats line
     const statsElement = document.createElement('div');
     statsElement.classList.add('card-stats');
-    statsElement.innerHTML = `❤️: ${card.hp} ⚔️: ${card.attack} 🛡️: ${card.defense}`;
-    cardDiv.appendChild(statsElement);
+    statsElement.innerHTML = `❤️: ${card.hp || 0} ⚔️: ${card.atk || 0} 🛡️: ${card.def || 0}`;
+    
+    // Add element/class display
+    if (card.element) {
+        attributesElement.textContent += ` [${card.element}]`;
+    }
+    if (card.classes) {
+        attributesElement.textContent += ` [${card.classes.join(', ')}]`;
+    }
     
     // Create the description element
     const descriptionElement = document.createElement('div');
@@ -59,15 +66,19 @@ function createCardElement(card) {
 function buildDeck() {
     const deck = [];
 
-    if (characters.characterCards) {
-        deck.push(...characters.characterCards);
+    // Handle character cards (assuming characters.json has direct array)
+    if (characters && Array.isArray(characters)) {
+        deck.push(...characters);
     }
 
-    if (actionCards.elementActions) {
-        deck.push(...actionCards.elementActions);
-    }
-    if (actionCards.classActions) {
-        deck.push(...actionCards.classActions);
+    // Handle action cards with nested structure
+    if (actionCards?.actionCards) {
+        if (actionCards.actionCards.elementActions) {
+            deck.push(...actionCards.actionCards.elementActions);
+        }
+        if (actionCards.actionCards.classActions) {
+            deck.push(...actionCards.actionCards.classActions);
+        }
     }
 
     shuffleDeck(deck);
@@ -177,7 +188,8 @@ async function loadGameData() {
         actionCards = await actionCardsResponse.json();
         battleSystem = await battleSystemResponse.json();
 
-        console.log("Game data loaded successfully!");
+            console.log("Loaded action cards structure:", actionCards);
+        console.log("Sample element action:", actionCards?.actionCards?.elementActions?.[0]);
     } catch (error) {
         console.error("Error loading game data:", error);
     }
