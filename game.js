@@ -30,25 +30,26 @@ function createCardElement(card) {
     // Type & Attributes
     const attributesElement = document.createElement('div');
     attributesElement.classList.add('card-attributes');
-    attributesElement.textContent = `[${card.type}]`;
+    attributesElement.textContent = `[${card.subtype || card.type || 'No Type'}]`; // Use subtype/type
 
-    if (card.classes && card.classes.length > 0) {
-        attributesElement.textContent += ` [${card.classes.join(', ')}]`;
+    // Handle both element and class attributes
+    if (card.element) {
+        attributesElement.textContent += ` [${card.element}]`;
     }
-    if (card.element && card.element.length > 0) {
-        attributesElement.textContent += ` [${card.element.join(', ')}]`;
+    if (card.classes?.length > 0) {
+        attributesElement.textContent += ` [${card.classes.join(', ')}]`;
     }
     cardDiv.appendChild(attributesElement);
 
-    // Stats (Only for characters)
-    if (card.type === "character") {
+    // Stats - Use JSON property names (atk/def)
+    if (card.hp || card.atk || card.def) {
         const statsElement = document.createElement('div');
         statsElement.classList.add('card-stats');
-        statsElement.innerHTML = `❤️: ${card.hp} ⚔️: ${card.attack} 🛡️: ${card.defense}`;
+        statsElement.innerHTML = `❤️: ${card.hp || 0} ⚔️: ${card.atk || 0} 🛡️: ${card.def || 0}`;
         cardDiv.appendChild(statsElement);
     }
 
-    // Description (Smaller font)
+    // Description
     if (card.description) {
         const descriptionElement = document.createElement('div');
         descriptionElement.classList.add('card-description');
@@ -58,43 +59,6 @@ function createCardElement(card) {
 
     return cardDiv;
 }
-    
-    // Create the type and attributes line
-    const attributesElement = document.createElement('div');
-    attributesElement.classList.add('card-attributes');
-    attributesElement.textContent = `[${card.type}]`;
-    
-    if (card.classes && card.classes.length > 0) {
-        attributesElement.textContent += ` [${card.classes.join(', ')}]`;
-    }
-    if (card.element && card.element.length > 0) {
-        attributesElement.textContent += ` [${card.element.join(', ')}]`;
-    }
-    
-    cardDiv.appendChild(attributesElement);
-    
-    // Create the stats line
-    const statsElement = document.createElement('div');
-    statsElement.classList.add('card-stats');
-    statsElement.innerHTML = `❤️: ${card.hp || 0} ⚔️: ${card.atk || 0} 🛡️: ${card.def || 0}`;
-    
-    // Add element/class display
-    if (card.element) {
-        attributesElement.textContent += ` [${card.element}]`;
-    }
-    if (card.classes) {
-        attributesElement.textContent += ` [${card.classes.join(', ')}]`;
-    }
-    
-    // Create the description element
-    const descriptionElement = document.createElement('div');
-    descriptionElement.classList.add('card-description');
-    descriptionElement.textContent = card.description;
-    cardDiv.appendChild(descriptionElement);
-    
-    return cardDiv;
-}
-
 function buildDeck() {
     const deck = [];
 
