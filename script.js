@@ -6,7 +6,8 @@ let characters = [];      // Will store character cards
 let actionCards = [];     // Will store ALL action cards (elements + classes)
 let battleLog = [];       // Track battle events
 let playerHand = [];      // Cards in player's hand
-let battlefield = [];     // Cards in play
+let player1BattleZone = [];     // Player1 cards in play
+let player2BattleZone = []; 
 
 // =======================
 // Load Game Data
@@ -51,10 +52,14 @@ function renderGame() {
     document.getElementById('player-hand').appendChild(cardElement);
   });
 
-  // Render battlefield
-  battlefield.forEach(card => {
+  // Render battlezones
+  player1BattleZone.forEach(card => {
     const cardElement = createCardElement(card);
-    document.getElementById('battlefield').appendChild(cardElement);
+    document.getElementById('player1BattleZone').appendChild(cardElement);
+  }
+  player2BattleZone.forEach(card => {
+    const cardElement = createCardElement(card);
+    document.getElementById('player2BattleZone').appendChild(cardElement);
   });
 }
 
