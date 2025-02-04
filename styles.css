@@ -8,8 +8,8 @@
 /* Body styling */
 body {
   font-family: sans-serif;
-  background: #f4f4f4;
-  color: #333;
+  background: #284177;
+  color: #FFFFFF;
 }
 
 /* Container that wraps the entire game */
@@ -39,10 +39,10 @@ h1, h2 {
 .player-area {
   flex: 1;
   min-width: 200px;
-  border: 2px solid #ccc;
+  border: 2px solid #FFFFFF;
   border-radius: 8px;
   padding: 10px;
-  background: #fff;
+  background: #006BBD;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -53,9 +53,9 @@ h1, h2 {
 .player-hand {
   width: 90%;
   min-height: 100px;
-  border: 2px solid #007bff;
+  border: 2px solid #C2AFA8;
   border-radius: 8px;
-  background: #e0f0ff;
+  background: #EDE8E4;
   padding: 10px;
   display: flex;
   gap: 10px;
@@ -68,9 +68,9 @@ h1, h2 {
 .player-battlezone {
   width: 90%;
   min-height: 120px;
-  border: 3px solid #ff0000;
+  border: 3px solid #284177;
   border-radius: 8px;
-  background: #ffdddd;
+  background: #83CEEC;
   padding: 10px;
   display: flex;
   gap: 10px;
@@ -101,9 +101,9 @@ h1, h2 {
 /* Results log styling */
 #results-log {
   margin-top: 20px;
-  border: 2px solid #ccc;
+  border: 2px solid #83CEEC;
   border-radius: 8px;
-  background: #fff;
+  background: #284177;
   padding: 10px;
   width: 100%;
 }
@@ -147,11 +147,11 @@ h1, h2 {
 
 /* Buttons */
 .button, button {
-  background-color: #007bff;
+  background-color: #ffffff;
   border: none;
   padding: 12px 16px;
   border-radius: 6px;
-  color: #fff;
+  color: #284177;
   font-size: 14px;
   cursor: pointer;
   transition: background-color 0.25s;
@@ -159,7 +159,7 @@ h1, h2 {
 
 .button:hover,
 button:hover {
-  background-color: #0056b3;
+  background-color: #000;
 }
 
 /* Disabled button state */
