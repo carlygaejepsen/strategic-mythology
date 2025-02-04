@@ -14,19 +14,27 @@ h1 {
 }
 
 /* Card Styles */
-.card {
-    background: #34495e;
-    border-radius: 10px;
-    padding: 15px;
-    margin: 10px;
-    width: 200px;
-    display: inline-block;
-    vertical-align: top;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    transition: transform 0.2s;
-    cursor: pointer;
+.card-container {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
+.card {
+  background-color: #fff;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  padding: 10px;
+  width: 120px; /* or whatever width you like */
+  text-align: center;
+}
+
+.card-image {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto 8px; /* center the image with some bottom spacing */
+}
 .card:hover {
     transform: translateY(-5px);
 }
