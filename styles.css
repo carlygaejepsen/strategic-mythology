@@ -68,9 +68,9 @@ h1, h2 {
 .player-battlezone {
   width: 90%;
   min-height: 120px;
-  border: 3px solid #C2AFA8;
+  border: 3px solid #fff;
   border-radius: 8px;
-  background: #EDE8E4;
+  background: #006BBD;
   padding: 10px;
   display: flex;
   gap: 10px;
@@ -103,7 +103,7 @@ h1, h2 {
   border: 2px solid #C2AFA8;
   border-radius: 8px;
   color: #284177;
-  background: #EDE8E4;
+  background: #fff;
   padding: 10px;
   width: 100%;
 }
@@ -123,8 +123,8 @@ h1, h2 {
 
 /* Card styling */
 .card {
-  background-color: #fff;
-  border: 2px solid #eee;
+  background-color: #EDE8E4;
+  border: 2px solid #C2AFA8;
   border-radius: 6px;
   color: #284177;
   width: 80px;
@@ -161,6 +161,8 @@ h1, h2 {
 .button:hover,
 button:hover {
   background-color: #284177;
+  border: #fff
+  border-radius: 2px;
   color: #fff;
 }
 
