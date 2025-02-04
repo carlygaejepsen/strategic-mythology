@@ -81,12 +81,18 @@ async function initGame() {
   await loadGameData();
   player1Deck = buildDeck();
   player2Deck = buildDeck();
-const player1Hand = player1Deck.splice(0, 5);
-const player2Hand = player2Deck.splice(0, 5);
- 
-  console.log('Deck sizes:', player1Deck.length, player2Deck.length);
-  console.log('Player 1 Hand:', player1Hand);
-console.log('Player 2 Hand:', player2Hand);
+  
+  //Draw initial cards
+	player1Hand = player1Deck.splice(0, 5);
+	player2Hand = player2Deck.splice(0, 5);
+
+	console.log('Deck sizes:', player1Deck.length, player2Deck.length);
+	console.log('Player 1 Hand:', player1Hand);
+	console.log('Player 2 Hand:', player2Hand);
+	
+	renderHand(player1Hand, 'player1-hand');
+	renderHand(player2Hand, 'player2-hand');
+
  if (player1Hand.length > 0) {
     const cardToPlay = player1Hand[0];
     playCard(cardToPlay, player1Hand, player1BattleZone);
