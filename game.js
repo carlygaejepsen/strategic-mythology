@@ -5,6 +5,7 @@ let player1Hand = [];
 let player2Hand = [];
 let player1BattleZone = [];
 let player2BattleZone = [];
+let currentPlayer;
 
 // ============= HELPER FUNCTIONS =============
 function createCardElement(card) {
@@ -142,14 +143,12 @@ function handleTurn() {
         console.log("Ending Player 1 turn; now it's Player 2's (AI) turn.");
         currentPlayer = 'player2';
         doAiMove();
-        currentPlayer = 'player1';
+        // Don't switch back here - let the AI take their full turn
     } else {
-        console.log("Player 2 (AI) turn triggered again.");
-        doAiMove();
+        console.log("Player 2 (AI) turn completed.");
         currentPlayer = 'player1';
     }
 }
-
 function doAiMove() {
     if (player2Hand.length === 0) {
         console.log("AI (Player 2) has no cards left to play.");
@@ -193,6 +192,7 @@ async function initGame() {
     player2Hand = [];
     player1BattleZone = [];
     player2BattleZone = [];
+    currentPlayer = "player1";
 
     await loadGameData();
 
