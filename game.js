@@ -58,7 +58,7 @@ function createCardElement(card) {
 
     return cardDiv;
 }
-
+}
     
     // Create the type and attributes line
     const attributesElement = document.createElement('div');
