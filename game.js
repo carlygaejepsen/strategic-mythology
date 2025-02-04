@@ -62,12 +62,12 @@ function renderHand(hand, containerId, whichPlayer = 'player1') {
             if (whichPlayer === 'player1') {
                 playCard(card, player1Hand, player1BattleZone);
                 renderHand(player1Hand, 'player1-hand', 'player1');
-                renderBattleZone(player1BattleZone, 'player1-battleZone');
+                renderBattleZone(player1BattleZone, 'player-battlezone');
 
             } else {
                 playCard(card, player2Hand, player2BattleZone);
                 renderHand(player2Hand, 'player2-hand', 'player2');
-                renderBattleZone(player2BattleZone, 'player2-battleZone');
+                renderBattleZone(player2BattleZone, 'player-battlezone');
             }
         });
 
