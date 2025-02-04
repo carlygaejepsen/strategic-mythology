@@ -63,12 +63,12 @@ function renderHand(hand, containerId, whichPlayer = 'player1') {
             if (whichPlayer === 'player1') {
                 playCard(card, player1Hand, player1BattleZone);
                 renderHand(player1Hand, 'player1-hand', 'player1');
-                renderBattleZone(player1BattleZone, 'battleZone');
+                renderBattleZone(player1BattleZone, 'player1-battleZone');
 
             } else {
                 playCard(card, player2Hand, player2BattleZone);
                 renderHand(player2Hand, 'player2-hand', 'player2');
-                renderBattleZone(player2BattleZone, 'battleZone');
+                renderBattleZone(player2BattleZone, 'player2-battleZone');
             }
         });
 
@@ -76,7 +76,7 @@ function renderHand(hand, containerId, whichPlayer = 'player1') {
     });
 }
 
-function renderBattleZone(battleZone, containerId) {
+function renderBattleZone(playerBattleZone, containerId) {
     const container = document.getElementById(containerId);
     if (!container) {
         console.error(`Container with id '${containerId}' not found.`);
@@ -84,7 +84,7 @@ function renderBattleZone(battleZone, containerId) {
     }
 
     container.innerHTML = '';
-    battleZone.forEach(card => {
+    playerBattleZone.forEach(card => {
         const cardDiv = document.createElement('div');
         cardDiv.classList.add('card');
         cardDiv.textContent = card.name;
