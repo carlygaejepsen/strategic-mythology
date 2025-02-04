@@ -2,105 +2,119 @@
 // Game Data Initialization
 // =======================
 
-let characters = [];      // Will store character cards
-let actionCards = [];     // Will store ALL action cards (elements + classes)
+let allCards = [];        // Will store both character and action cards
 let battleLog = [];       // Track battle events
-let playerHand = [];      // Cards in player's hand
-let player1BattleZone = [];     // Player1 cards in play
-let player2BattleZone = []; 
+let player1Hand = [];     // Cards in Player 1's hand
+let player2Hand = [];     // Cards in Player 2's hand
+let player1BattleZone = [];
+let player2BattleZone = [];
+
 
 // =======================
 // Load Game Data
 // =======================
 
 async function loadGameData() {
-  // Load characters
-  const chars = await fetch('https://carlygaejepsen.github.io/strategic-mythology/data/character-cards.json');
-  characters = await chars.json();
-  
-  // Load action cards (elements + classes)
-  const actions = await fetch('https://carlygaejepsen.github.io/strategic-mythology/data/action-cards.json');
-  actionCards = await actions.json();
-  
-  // Initialize game
-  startGame();
+    try {
+        const charsResponse = await fetch('https://carlygaejepsen.github.io/strategic-mythology/data/character-cards.json');
+        const actionsResponse = await fetch('https://carlygaejepsen.github.io/strategic-mythology/data/action-cards.json');
+        
+        const characters = await charsResponse.json();
+        const actionCards = await actionsResponse.json();
+        
+        allCards = [...characters, ...actionCards]; // Combine both into one deck
+        shuffleDeck(allCards);
+        startGame();
+    } catch (error) {
+        console.error("Error loading game data:", error);
+    }
 }
+
 
 // =======================
 // Core Game Functions
 // =======================
 
+function shuffleDeck(deck) {
+    for (let i = deck.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [deck[i], deck[j]] = [deck[j], deck[i]];
+    }
+}
+
 function startGame() {
-  // Deal initial cards (3 characters + 2 random actions)
-  playerHand = [
-    ...characters.slice(0, 3),
-    ...actionCards.sort(() => Math.random() - 0.5).slice(0, 2)
-  ];
-  
-  renderGame();
+    // Deal initial hands randomly from the shuffled deck
+    player1Hand = allCards.splice(0, 5);
+    player2Hand = allCards.splice(0, 5);
+    
+    renderGame();
 }
 
 function renderGame() {
-  // Clear previous state
-  document.getElementById('player-hand').innerHTML = '';
-  document.getElementById('battlefield').innerHTML = '';
+    // Clear previous state
+    document.getElementById('player1-hand').innerHTML = '';
+    document.getElementById('player2-hand').innerHTML = '';
+    document.getElementById('player1BattleZone').innerHTML = '';
+    document.getElementById('player2BattleZone').innerHTML = '';
 
-  // Render player hand
-  playerHand.forEach(card => {
-    const cardElement = createCardElement(card);
-    cardElement.onclick = () => playCard(card);
-    document.getElementById('player-hand').appendChild(cardElement);
-  });
+    // Render Player 1's hand
+    player1Hand.forEach(card => {
+        const cardElement = createCardElement(card);
+        cardElement.onclick = () => playCard(card, player1Hand, player1BattleZone, 'player1BattleZone');
+        document.getElementById('player1-hand').appendChild(cardElement);
+    });
 
-  // Render battlezones
-  player1BattleZone.forEach(card => {
-    const cardElement = createCardElement(card);
-    document.getElementById('player1BattleZone').appendChild(cardElement);
-  }
-  player2BattleZone.forEach(card => {
-    const cardElement = createCardElement(card);
-    document.getElementById('player2BattleZone').appendChild(cardElement);
-  });
+    // Render Player 2's hand
+    player2Hand.forEach(card => {
+        const cardElement = createCardElement(card);
+        cardElement.onclick = () => playCard(card, player2Hand, player2BattleZone, 'player2BattleZone');
+        document.getElementById('player2-hand').appendChild(cardElement);
+    });
+
+      // Render Player 1's battle zone
+    player1BattleZone.forEach(card => {
+        const cardElement = createCardElement(card);
+        document.getElementById('player1-battlezone').appendChild(cardElement);
+    });
+
+    // Render Player 2's battle zone
+    player2BattleZone.forEach(card => {
+        const cardElement = createCardElement(card);
+        document.getElementById('player2-battlezone').appendChild(cardElement);
+    });
 }
+
 
 // =======================
 // Card Interactions
 // =======================
 
-function playCard(card) {
-  // Character cards go directly to battlefield
-  if (!card.type) {
-    battlefield.push(card);
-    playerHand = playerHand.filter(c => c !== card);
-    renderGame();
-    return;
-  }
+function playCard(card, playerHand, playerBattleZone, battleZoneId) {
+    if (!card.type) {
+        playerBattleZone.push(card);
+        playerHand.splice(playerHand.indexOf(card), 1);
+        renderGame();
+        return;
+    }
 
-  // Action cards need validation
-  if (validateActionCard(card)) {
-    battlefield.push(card);
-    playerHand = playerHand.filter(c => c !== card);
-    renderGame();
-  }
+    if (validateActionCard(card, playerBattleZone)) {
+        playerBattleZone.push(card);
+        playerHand.splice(playerHand.indexOf(card), 1);
+        renderGame();
+    }
 }
 
-function validateActionCard(actionCard) {
-  // Check if we're mixing types
-  const hasElements = battlefield.some(c => c.type === 'element');
-  const hasClasses = battlefield.some(c => c.type === 'class');
-  
-  if (actionCard.type === 'element' && hasClasses) {
-    alert("Can't mix elements and classes!");
-    return false;
-  }
-  
-  if (actionCard.type === 'class' && hasElements) {
-    alert("Can't mix classes and elements!");
-    return false;
-  }
+function validateActionCard(actionCard, battleZone) {
+    const hasElements = battleZone.some(c => c.type === 'element');
+    const hasClasses = battleZone.some(c => c.type === 'class');
+    
+    if (actionCard.type === 'element' && hasClasses) {
+        alert("Can't mix elements and classes!");
+        return false;
+    }
 
   // Find matching character
-  const hasMatch = battlefield.some(character => {
+  const hasMatch = battleZone.some(character => {
     if (!character.classes) return false; // Only check characters
     
     return actionCard.type === 'element'
@@ -109,7 +123,7 @@ function validateActionCard(actionCard) {
   });
 
   if (!hasMatch) {
-    alert(`No matching ${actionCard.type} on battlefield!`);
+    alert(`No matching ${actionCard.type} in battle zone!`);
     return false;
   }
 
