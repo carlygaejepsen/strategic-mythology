@@ -34,18 +34,19 @@ function shuffleDeck(deck) {
     return deck;
 }
 
-function playCard(card, playerHand, playerBattleZone) {
+function playCard(card, playerHand, playerBattleZone, battleZoneId) {
     const cardIndex = playerHand.indexOf(card);
     if (cardIndex !== -1) {
         playerHand.splice(cardIndex, 1);
         playerBattleZone.push(card);
         console.log(`Played card: ${card.name} into the battle zone.`);
+        renderBattleZone(playerBattleZone, battleZoneId);
     } else {
         console.log("Card not found in hand!");
     }
 }
 
-function renderHand(hand, containerId, whichPlayer = 'player1') {
+function renderHand(hand, containerId, whichPlayer) {
     const container = document.getElementById(containerId);
     if (!container) {
         console.error(`Container with id '${containerId}' not found.`);
@@ -60,15 +61,11 @@ function renderHand(hand, containerId, whichPlayer = 'player1') {
 
         cardDiv.addEventListener('click', () => {
             if (whichPlayer === 'player1') {
-                playCard(card, player1Hand, player1BattleZone);
-                renderHand(player1Hand, 'player1-hand', 'player1');
-                renderBattleZone(player1BattleZone, 'player-battlezone');
-
+                playCard(card, player1Hand, player1BattleZone, 'player1-battlezone');
             } else {
-                playCard(card, player2Hand, player2BattleZone);
-                renderHand(player2Hand, 'player2-hand', 'player2');
-                renderBattleZone(player2BattleZone, 'player-battlezone');
+                playCard(card, player2Hand, player2BattleZone, 'player2-battlezone');
             }
+            renderHand(hand, containerId, whichPlayer);
         });
 
         container.appendChild(cardDiv);
@@ -92,50 +89,33 @@ function renderBattleZone(playerBattleZone, containerId) {
 }
 
 function handleTurn() {
-  console.log(`Play Turn clicked. Current player is: ${currentPlayer}`);
+    console.log(`Play Turn clicked. Current player is: ${currentPlayer}`);
 
-  // If it's Player 1's turn, finalize that and let Player 2's AI move
-  if (currentPlayer === 'player1') {
-    console.log("Ending Player 1 turn; now it's Player 2's (AI) turn.");
-    currentPlayer = 'player2';
-
-    // AI does something immediately
-    doAiMove();
-
-    // Switch back to Player 1 for the next turn
-    currentPlayer = 'player1';
-  } else {
-    // If for some reason it's already 'player2', just do the AI move again
-    // or skip directly back to player1 if you want strictly alternate turns
-    console.log("Player 2 (AI) turn triggered again.");
-    doAiMove();
-    currentPlayer = 'player1';
-  }
+    if (currentPlayer === 'player1') {
+        console.log("Ending Player 1 turn; now it's Player 2's (AI) turn.");
+        currentPlayer = 'player2';
+        doAiMove();
+        currentPlayer = 'player1';
+    } else {
+        console.log("Player 2 (AI) turn triggered again.");
+        doAiMove();
+        currentPlayer = 'player1';
+    }
 }
+
 function doAiMove() {
-  // If the AI has no cards, it does nothing
-  if (player2Hand.length === 0) {
-    console.log("AI (Player 2) has no cards left to play.");
-    return;
-  }
+    if (player2Hand.length === 0) {
+        console.log("AI (Player 2) has no cards left to play.");
+        return;
+    }
 
-  // Pick a random card from Player 2's hand
-  const randomIndex = Math.floor(Math.random() * player2Hand.length);
-  const chosenCard = player2Hand[randomIndex];
+    const randomIndex = Math.floor(Math.random() * player2Hand.length);
+    const chosenCard = player2Hand[randomIndex];
 
-  console.log(`AI (Player 2) chooses: ${chosenCard.name}`);
+    console.log(`AI (Player 2) chooses: ${chosenCard.name}`);
 
-  // Actually play the card
-  playCard(chosenCard, player2Hand, player2BattleZone);
-
-  // Re-render Player 2’s hand (so the card disappears there)
-  renderHand(player2Hand, 'player2-hand', 'player2');
-
-  // If you have a single combined zone, do:
-  renderBattleZone([...player1BattleZone, ...player2BattleZone], 'battleZone');
-
-  // You could add attack logic here if you want the AI
-  // to choose a target from Player 1's battle zone, etc.
+    playCard(chosenCard, player2Hand, player2BattleZone, 'player2-battlezone');
+    renderHand(player2Hand, 'player2-hand', 'player2');
 }
 
 
