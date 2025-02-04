@@ -45,7 +45,7 @@ h1, h2 {
   background: #fff;
 }
 
-/* Center area: buttons, battle zone, results */
+/* Center area: buttons, battle zones, results */
 #center-area {
   flex-basis: 350px;
   min-width: 300px;
@@ -63,10 +63,10 @@ h1, h2 {
   margin-bottom: 20px;
 }
 
-/* Battle zone styling */
-.battle-zone {
+/* Player battle zones */
+#player1-battlezone, #player2-battlezone {
   width: 100%;
-  min-height: 100px;
+  min-height: 120px;
   border: 2px solid #ccc;
   border-radius: 8px;
   background: #fff;
