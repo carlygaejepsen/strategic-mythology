@@ -8,7 +8,7 @@ let player1Hand = [];     // Cards in Player 1's hand
 let player2Hand = [];     // Cards in Player 2's hand
 let player1BattleZone = [];
 let player2BattleZone = [];
-
+let currentPlayer= [];
 
 // =======================
 // Load Game Data
