@@ -55,6 +55,21 @@ function playCard(card, playerHand, playerBattleZone) {
     console.log("Card not found in hand!");
   }
 }
+function renderHand(hand, containerId) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+
+  hand.forEach((card) => {
+    const cardDiv = document.createElement('div');
+    cardDiv.classList.add('card');
+
+    const cardName = document.createElement('h3');
+    cardName.textContent = card.name;
+    cardDiv.appendChild(cardName);
+
+    container.appendChild(cardDiv);
+  });
+}
 
 
 // ============= DATA LOADING ============= 
