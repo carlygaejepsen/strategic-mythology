@@ -1,5 +1,4 @@
 // ============= GLOBAL VARIABLES =============
-let currentPlayer = 'player1';
 let player1Deck = [];
 let player2Deck = [];
 let player1Hand = [];
