@@ -1,213 +1,149 @@
-/* Base Styles */
+/* Basic reset to remove default browser padding/margin */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Body styling */
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #2c3e50;
-    color: #ecf0f1;
-    margin: 0;
-    padding: 20px;
+  font-family: sans-serif;
+  background: #f4f4f4;
+  color: #333;
 }
 
-h1 {
-    text-align: center;
-    color: #f1c40f;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+/* Container that wraps the entire game */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-/* Card Styles */
-.card-container {
+/* Basic heading styles */
+h1, h2 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* Game Board layout */
+.game-board {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Player area */
+.player-area {
+  flex: 1;
+  min-width: 200px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  background: #fff;
+}
+
+/* Center area: buttons, battle zone, results */
+#center-area {
+  flex-basis: 350px;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Controls (buttons) in the center area */
+#controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+/* Battle zone styling */
+.battle-zone {
+  width: 100%;
+  min-height: 100px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  background: #fff;
+  padding: 10px;
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
-.card {
-  background-color: #fff;
+/* Results log styling */
+#results-log {
+  margin-top: 20px;
   border: 2px solid #ccc;
-  border-radius: 6px;
+  border-radius: 8px;
+  background: #fff;
   padding: 10px;
-  width: 120px; /* or whatever width you like */
+  width: 100%;
+}
+
+.results-container h2 {
+  margin-bottom: 10px;
   text-align: center;
 }
 
-.card-image {
-  max-width: 100%;
-  height: auto;
-  display: block;
-  margin: 0 auto 8px; /* center the image with some bottom spacing */
-}
-.card:hover {
-    transform: translateY(-5px);
+/* Card container for each player's hand */
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
 }
 
-.character {
-    border: 2px solid #3498db;
-}
-
-.element {
-    border: 2px solid #2ecc71;
-}
-
-.class {
-    border: 2px solid #e74c3c;
-}
-
-/* Game Areas */
-.game-area {
-    margin: 20px auto;
-    max-width: 1200px;
-}
-
-.hand {
-    background: #1a252f;
-    padding: 20px;
-    border-radius: 10px;
-    min-height: 200px;
-}
-
-.battle-area {
-    background: #2c3e50;
-    padding: 20px;
-    border-radius: 10px;
-    min-height: 200px;
-    border: 3px dashed #7f8c8d;
-    margin: 20px 0;
-}
-
-.log {
-    background: #1a252f;
-    padding: 15px;
-    border-radius: 10px;
-    height: 150px;
-    overflow-y: auto;
-}
-
-/* Button Styles */
-#end-turn {
-    display: block;
-    margin: 20px auto;
-    padding: 12px 30px;
-    background: #e74c3c;
-    border: none;
-    border-radius: 25px;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-#end-turn:hover {
-    background: #c0392b;
-}
-
-/* Card Content Styling */
-.card h3 {
-    margin: 0 0 10px 0;
-    color: #f1c40f;
-}
-
-.card p {
-    margin: 5px 0;
-    font-size: 14px;
-}/* Base Styles */
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #2c3e50;
-    color: #ecf0f1;
-    margin: 0;
-    padding: 20px;
-}
-
-h1 {
-    text-align: center;
-    color: #f1c40f;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-}
-
-/* Card Styles */
+/* Card styling */
 .card {
-    background: #34495e;
-    border-radius: 10px;
-    padding: 15px;
-    margin: 10px;
-    width: 200px;
-    display: inline-block;
-    vertical-align: top;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    transition: transform 0.2s;
-    cursor: pointer;
+  background-color: #fff;
+  border: 2px solid #eee;
+  border-radius: 6px;
+  width: 80px;
+  height: 110px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  font-size: 14px;
+  word-wrap: break-word;
 }
 
+/* Hover effect on cards */
 .card:hover {
-    transform: translateY(-5px);
+  transform: scale(1.05);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
-.character {
-    border: 2px solid #3498db;
+/* Buttons */
+.button, button {
+  background-color: #007bff;
+  border: none;
+  padding: 12px 16px;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.25s;
 }
 
-.element {
-    border: 2px solid #2ecc71;
+.button:hover,
+button:hover {
+  background-color: #0056b3;
 }
 
-.class {
-    border: 2px solid #e74c3c;
-}
-
-/* Game Areas */
-.game-area {
-    margin: 20px auto;
-    max-width: 1200px;
-}
-
-.hand {
-    background: #1a252f;
-    padding: 20px;
-    border-radius: 10px;
-    min-height: 200px;
-}
-
-.battle-area {
-    background: #2c3e50;
-    padding: 20px;
-    border-radius: 10px;
-    min-height: 200px;
-    border: 3px dashed #7f8c8d;
-    margin: 20px 0;
-}
-
-.log {
-    background: #1a252f;
-    padding: 15px;
-    border-radius: 10px;
-    height: 150px;
-    overflow-y: auto;
-}
-
-/* Button Styles */
-#end-turn {
-    display: block;
-    margin: 20px auto;
-    padding: 12px 30px;
-    background: #e74c3c;
-    border: none;
-    border-radius: 25px;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-#end-turn:hover {
-    background: #c0392b;
-}
-
-/* Card Content Styling */
-.card h3 {
-    margin: 0 0 10px 0;
-    color: #f1c40f;
-}
-
-.card p {
-    margin: 5px 0;
-    font-size: 14px;
+/* Disabled button state */
+button:disabled,
+.button:disabled {
+  background-color: #ccc;
+  cursor: default;
 }
