@@ -60,14 +60,14 @@ function renderGame() {
     // Render Player 1's hand
     player1Hand.forEach(card => {
         const cardElement = createCardElement(card);
-        cardElement.onclick = () => playCard(card, player1Hand, player1BattleZone, 'player1-battlezone');
+        cardElement.onclick = () => playCard(card, player1Hand, player1BattleZone, 'player1-hand', 'player1-battlezone');
         document.getElementById('player1-hand').appendChild(cardElement);
     });
 
     // Render Player 2's hand
     player2Hand.forEach(card => {
         const cardElement = createCardElement(card);
-        cardElement.onclick = () => playCard(card, player2Hand, player2BattleZone, 'player2-battlezone');
+        cardElement.onclick = () => playCard(card, player2Hand, player2BattleZone, 'player2-hand', 'player2-battlezone');
         document.getElementById('player2-hand').appendChild(cardElement);
     });
 
