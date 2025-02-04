@@ -174,12 +174,12 @@ function doAiMove() {
 async function loadGameData() {
     try {
         const charactersResponse = await fetch("https://carlygaejepsen.github.io/strategic-mythology/data/character-cards.json");
-                if (!charactersResponse.ok) throw new Error(`HTTP error! status: ${charactersResponse.status}`);
+                if (!charactersResponse.ok) throw new Error(`HTTP error! status: ${charactersResponse.status}`),
         const actionCardsResponse = await fetch("https://carlygaejepsen.github.io/strategic-mythology/data/action-cards.json");
-                if (!actionCardsResponse.ok) throw new Error(`HTTP error! status: ${actionCardsResponse.status}`);
+                if (!actionCardsResponse.ok) throw new Error(`HTTP error! status: ${actionCardsResponse.status}`),
         const battleSystemResponse = await fetch("https://carlygaejepsen.github.io/strategic-mythology/data/battle-system.json");
-            if (!battleSystemResponse.ok) throw new Error(`HTTP error! status: ${battleSystemResponse.status}`);
-        battleSystem = await battleSystemResponse.json();
+            if (!battleSystemResponse.ok) throw new Error(`HTTP error! status: ${battleSystemResponse.status}`),
+       
         
         characters = await charactersResponse.json();
         actionCards = await actionCardsResponse.json();
