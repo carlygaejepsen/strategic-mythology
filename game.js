@@ -5,6 +5,7 @@ let player1Hand = [];
 let player2Hand = [];
 let player1BattleZone = [];
 let player2BattleZone = [];
+let allCards = [];
 let currentPlayer;
 let characters;
 let actionCards;
