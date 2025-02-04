@@ -1,10 +1,5 @@
 // ============= GLOBAL VARIABLES =============
 let currentPlayer = 'player1';
-
-let characters = {};
-let actionCards = {};
-let battleSystem = {};
-
 let player1Deck = [];
 let player2Deck = [];
 let player1Hand = [];
@@ -68,12 +63,12 @@ function renderHand(hand, containerId, whichPlayer = 'player1') {
             if (whichPlayer === 'player1') {
                 playCard(card, player1Hand, player1BattleZone);
                 renderHand(player1Hand, 'player1-hand', 'player1');
-                renderBattleZone(player1BattleZone, 'battle-zone');
+                renderBattleZone(player1BattleZone, 'battleZone');
 
             } else {
                 playCard(card, player2Hand, player2BattleZone);
                 renderHand(player2Hand, 'player2-hand', 'player2');
-                renderBattleZone(player2BattleZone, 'battle-zone');
+                renderBattleZone(player2BattleZone, 'battleZone');
             }
         });
 
@@ -138,7 +133,7 @@ function doAiMove() {
   renderHand(player2Hand, 'player2-hand', 'player2');
 
   // If you have a single combined zone, do:
-  renderBattleZone([...player1BattleZone, ...player2BattleZone], 'battle-zone');
+  renderBattleZone([...player1BattleZone, ...player2BattleZone], 'battleZone');
 
   // You could add attack logic here if you want the AI
   // to choose a target from Player 1's battle zone, etc.
@@ -188,7 +183,7 @@ async function initGame() {
     renderHand(player1Hand, 'player1-hand', 'player1');
     renderHand(player2Hand, 'player2-hand', 'player2');
 
-    const battleZoneEl = document.getElementById('battle-zone');
+    const battleZoneEl = document.getElementById('battleZone');
     if (battleZoneEl) {
         battleZoneEl.innerHTML = '';
     }
