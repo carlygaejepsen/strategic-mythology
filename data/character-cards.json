@@ -1,5 +1,4 @@
-{
-  "characterCards": [
+[
     {"name": "Aether", "type": "character", "classes": ["Mystics", "Authorities"], "element": ["Air", "Light"], "hp": 100, "attack": 10, "defense": 5, "speed": 10, "image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/aether.png", "description": "Aether commands the upper sky, controlling air and cosmic insight."},
     {"name": "Amphitrite", "type": "character", "classes": ["Caretakers", "Wildkeepers"], "element": ["Water", "Vitality"], "hp": 100, "attack": 10, "defense": 5, "speed": 10, "image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/amphitrite.png", "description": "Amphitrite is the queen of the sea, using powerful water-based healing magic."},
     {"name": "Aphrodite", "type": "character", "classes": ["Ecstatics", "Mystics"], "element": ["Love", "Vitality"], "hp": 100, "attack": 10, "defense": 5, "speed": 10, "image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/aphrodite.png", "description": "Aphrodite is over this. She can cast ultra love attacks in her sleep."},
@@ -56,4 +55,3 @@
     {"name": "Uranus", "type": "character", "classes": ["Mystics", "Authorities"], "element": ["Air", "Wisdom"], "hp": 115, "attack": 12, "defense": 7, "speed": 9, "image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/uranus.png", "description": "Uranus, the primordial sky character, watches over the heavens with celestial might."},
     {"name": "Zeus", "type": "character", "classes": ["Authorities", "warriors"], "element": ["Electricity", "Light"], "hp": 120, "attack": 14, "defense": 8, "speed": 10, "image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/zeus.png", "description": "Zeus, the king of the gods, wields thunderbolts and commands the skies."}
 	]
-}
