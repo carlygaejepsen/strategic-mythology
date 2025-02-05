@@ -8,7 +8,7 @@
 /* Body styling */
 body {
   font-family: sans-serif;
-  background: #284177;
+  background: #83CEEC;
   color: #FFFFFF;
 }
 
@@ -192,7 +192,7 @@ h1, h2 {
 /* Card Elements */
 .card-name {
   font-weight: bold;
-  font-size: 16px;
+  font-size: 14px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -207,7 +207,7 @@ h1, h2 {
 }
 
 .card-header .element-emoji {
-  font-size: 16px;
+  font-size: 12px;
 }
 
 .card-image {
@@ -296,4 +296,27 @@ button:disabled,
 .button:disabled {
   background-color: #ccc;
   cursor: default;
+}
+
+/* Phase indicators */
+.turn-phase {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 20px;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    border-radius: 5px;
+}
+
+/* Interactive states */
+.selectable {
+    box-shadow: 0 0 10px yellow;
+    cursor: pointer;
+}
+
+.targetable {
+    box-shadow: 0 0 10px red;
+    cursor: crosshair;
 }
