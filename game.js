@@ -397,38 +397,44 @@ async function loadGameData() {
 // ============= INITIALIZE THE GAME =============
 
 async function initGame() {
-    player1Deck = [];
-    player2Deck = [];
-    player1Hand = [];
-    player2Hand = [];
-    player1BattleZone = [];
-    player2BattleZone = [];
-    currentPlayer = "player1";
+    try {
+        console.log("Initializing game...");
+        player1Deck = [];
+        player2Deck = [];
+        player1Hand = [];
+        player2Hand = [];
+        player1BattleZone = [];
+        player2BattleZone = [];
+        currentPlayer = "player1";
 
-    await loadGameData();
+        await loadGameData(); // Ensure JSON data loads correctly
 
-    player1Deck = buildDeck();
-    player2Deck = buildDeck();
+        player1Deck = buildDeck();
+        player2Deck = buildDeck();
 
-    player1Hand = player1Deck.splice(0, 5);
-    player2Hand = player2Deck.splice(0, 5);
+        player1Hand = player1Deck.splice(0, 5);
+        player2Hand = player2Deck.splice(0, 5);
 
-    console.log('Deck sizes:', player1Deck.length, player2Deck.length);
-    console.log('Player 1 Hand:', player1Hand);
-    console.log('Player 2 Hand:', player2Hand);
+        console.log('Deck sizes:', player1Deck.length, player2Deck.length);
+        console.log('Player 1 Hand:', player1Hand);
+        console.log('Player 2 Hand:', player2Hand);
 
-    renderHand(player1Hand, 'player1-hand', 'player1');
-    renderHand(player2Hand, 'player2-hand', 'player2');
+        renderHand(player1Hand, 'player1-hand', 'player1');
+        renderHand(player2Hand, 'player2-hand', 'player2');
 
-    const battleZoneEl = document.getElementById('battleZone');
-    if (battleZoneEl) {
-        battleZoneEl.innerHTML = '';
-    }
+        const battleZoneEl = document.getElementById('battleZone');
+        if (battleZoneEl) {
+            battleZoneEl.innerHTML = '';
+        }
 
-    if (playTurnBtn) {
-        playTurnBtn.disabled = false;
+        if (playTurnBtn) {
+            playTurnBtn.disabled = false;
+        }
+    } catch (error) {
+        console.error("Error initializing game:", error);
     }
 }
+
 
 // ============= EVENT LISTENERS =============
 
