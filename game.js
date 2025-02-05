@@ -35,22 +35,28 @@ function createCardElement(card) {
     const cardDiv = document.createElement('div');
     cardDiv.classList.add('card');
 
-    // Name
-// Name with Element Emoji
+// Name with Element Emoji (Smaller Font)
 const nameElement = document.createElement('div');
 nameElement.classList.add('card-name');
 
-let elementEmoji = "";
+const nameText = document.createElement('span');
+nameText.textContent = card.name;
+nameText.classList.add('card-name-text'); // Add a class for font size
+
+const elementEmojiSpan = document.createElement('span');
+elementEmojiSpan.classList.add('card-elements'); // Add a CSS class for smaller font
 if (card.element) {
     if (Array.isArray(card.element)) {
-        elementEmoji = card.element.map(el => elementEmojis[el] || "").join(" ");
+        elementEmojiSpan.textContent = " " + card.element.map(el => elementEmojis[el] || "").join(" ");
     } else {
-        elementEmoji = elementEmojis[card.element] || "";
+        elementEmojiSpan.textContent = " " + (elementEmojis[card.element] || "");
     }
 }
 
-nameElement.textContent = `${card.name} ${elementEmoji}`;
+nameElement.appendChild(nameText);
+nameElement.appendChild(elementEmojiSpan);
 cardDiv.appendChild(nameElement);
+
 
 
     // Image
