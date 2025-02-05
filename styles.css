@@ -77,7 +77,7 @@ h1, h2 {
 
 /* Battle zone container - center with labels */
 .battle-zone-container {
-  width: 100%;
+  width: 90%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -121,7 +121,7 @@ h1, h2 {
   color: #284177;
   background: #fff;
   padding: 10px;
-  width: 100%;
+  width: 90%;
 }
 
 .results-container h2 {
