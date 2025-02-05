@@ -533,7 +533,17 @@ function renderBattleZone(playerBattleZone, containerId) {
         hpElement.textContent = `HP: ${card.hp}`;
         miniCard.appendChild(hpElement);
         
-        // Rest of your existing rendering code...
+        const nameElement = document.createElement('div');
+        nameElement.classList.add('mini-card-name');
+        nameElement.textContent = card.name;
+        miniCard.appendChild(nameElement);
+
+        if (card.image) {
+            const imgElement = document.createElement('img');
+            imgElement.src = card.image;
+            imgElement.alt = card.name;
+            imgElement.classList.add('mini-card-image');
+            miniCard.appendChild(imgElement);
         
         container.appendChild(miniCard);
     });
@@ -650,128 +660,6 @@ async function initGame() {
         }
     } catch (error) {
         console.error("Error initializing game:", error);
-    }
-}
-
-// ============= BATTLE SYSTEM =============
-function initAttackSystem() {
-    // Clear previous selections
-    selectedAttacker = null;
-    currentBattlePhase = 'select-attacker';
-    
-    // Add battle zone click handlers
-    addBattleZoneListeners();
-}
-
-function addBattleZoneListeners() {
-    const battleZones = {
-        'player1-battlezone': 'player1',
-        'player2-battlezone': 'player2'
-    };
-
-    Object.entries(battleZones).forEach(([zoneId, player]) => {
-        const zone = document.getElementById(zoneId);
-        zone.querySelectorAll('.mini-card').forEach(cardEl => {
-            cardEl.classList.add('selectable');
-            cardEl.onclick = () => handleBattleSelection(cardEl, player);
-        });
-    });
-}
-
-function handleBattleSelection(cardElement, player) {
-    const card = getCardFromElement(cardElement);
-    
-    if (currentBattlePhase === 'select-attacker' && player === currentPlayer) {
-        if (card.atk > 0) { // Only cards with attack can be attackers
-            selectedAttacker = card;
-            currentBattlePhase = 'select-defender';
-            highlightValidTargets();
-            logBattleEvent(`${card.name} selected as attacker. Choose target!`);
-        }
-    } else if (currentBattlePhase === 'select-defender' && player !== currentPlayer) {
-        const defender = card;
-        resolveCombat(selectedAttacker, defender);
-        cleanupBattleSelection();
-    }
-}
-
-function resolveCombat(attacker, defender) {
-    // Calculate base damage
-    let damage = attacker.atk - defender.def;
-    
-    // Apply elemental bonuses
-    const elementBonus = calculateElementBonus([attacker], [defender]);
-    damage += elementBonus;
-    
-    // Apply class bonuses
-    const classBonus = calculateClassBonus([attacker], [defender]);
-    damage += classBonus;
-    
-    // Ensure minimum damage
-    damage = Math.max(damage, 0);
-
-    // Apply damage
-    defender.hp -= damage;
-    
-    logBattleEvent(`${attacker.name} attacks ${defender.name} for ${damage} damage!`);
-
-    // Check if defender is destroyed
-    if (defender.hp <= 0) {
-        removeDestroyedCard(defender);
-        logBattleEvent(`${defender.name} was destroyed!`);
-    }
-
-    // Update battle zone displays
-    renderBattleZone(player1BattleZone, 'player1-battlezone');
-    renderBattleZone(player2BattleZone, 'player2-battlezone');
-}
-
-function removeDestroyedCard(card) {
-    // Remove from appropriate battle zone
-    const p1Index = player1BattleZone.indexOf(card);
-    const p2Index = player2BattleZone.indexOf(card);
-    
-    if (p1Index !== -1) player1BattleZone.splice(p1Index, 1);
-    if (p2Index !== -1) player2BattleZone.splice(p2Index, 1);
-}
-
-function highlightValidTargets() {
-    // Highlight enemy battle zone cards
-    const enemyZone = currentPlayer === 'player1' ? 
-        document.getElementById('player2-battlezone') :
-        document.getElementById('player1-battlezone');
-    
-    enemyZone.querySelectorAll('.mini-card').forEach(cardEl => {
-        cardEl.classList.add('targetable');
-    });
-}
-
-function cleanupBattleSelection() {
-    // Clear selections and styles
-    selectedAttacker = null;
-    currentBattlePhase = 'select-attacker';
-    
-    document.querySelectorAll('.selectable, .targetable').forEach(el => {
-        el.classList.remove('selectable', 'targetable');
-    });
-    
-    // Remove temporary click handlers
-    addBattleZoneListeners();
-}
-
-function getCardFromElement(cardElement) {
-    // Find card data by name from battle zones
-    const cardName = cardElement.querySelector('.mini-card-name').textContent;
-    return [...player1BattleZone, ...player2BattleZone]
-        .find(c => c.name === cardName);
-}
-    
-// ============= WIN CONDITION CHECKING =============
-function checkWinConditions() {
-    if (player1BattleZone.length === 0) {
-        endGame('player2');
-    } else if (player2BattleZone.length === 0) {
-        endGame('player1');
     }
 }
 
