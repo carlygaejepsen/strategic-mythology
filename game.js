@@ -542,7 +542,7 @@ function renderBattleZone(playerBattleZone, containerId) {
             miniCard.appendChild(imgElement);
         
         container.appendChild(miniCard);
-    });
+    }
 }
 
 // ============= WIN CONDITION CHECKING =============
