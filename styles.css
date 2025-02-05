@@ -14,8 +14,8 @@ body {
 
 /* Container that wraps the entire game */
 .container {
-  width: 90%;
-  max-width: 1200px;
+  width: 95%;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 20px;
 }
@@ -132,11 +132,13 @@ h1, h2 {
 
 /* Card container for each player's hand */
 .card-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px; /* Reduce the spacing */
+  width: 100%;
+  justify-content: center;
 }
+
 
 /* Card styling */
 .card {
