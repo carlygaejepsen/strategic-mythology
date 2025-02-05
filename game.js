@@ -36,10 +36,22 @@ function createCardElement(card) {
     cardDiv.classList.add('card');
 
     // Name
-    const nameElement = document.createElement('div');
-    nameElement.classList.add('card-name');
-    nameElement.textContent = card.name;
-    cardDiv.appendChild(nameElement);
+// Name with Element Emoji
+const nameElement = document.createElement('div');
+nameElement.classList.add('card-name');
+
+let elementEmoji = "";
+if (card.element) {
+    if (Array.isArray(card.element)) {
+        elementEmoji = card.element.map(el => elementEmojis[el] || "").join(" ");
+    } else {
+        elementEmoji = elementEmojis[card.element] || "";
+    }
+}
+
+nameElement.textContent = `${card.name} ${elementEmoji}`;
+cardDiv.appendChild(nameElement);
+
 
     // Image
     if (card.image) {
@@ -53,16 +65,6 @@ function createCardElement(card) {
     // Type & Attributes
     const attributesElement = document.createElement('div');
     attributesElement.classList.add('card-attributes');
-
-if (card.element) {
-    let elementText = card.element;
-    if (Array.isArray(elementText)) {
-        elementText = elementText.map(el => elementEmojis[el] || el).join(" ");
-    } else {
-        elementText = elementEmojis[elementText] || elementText;
-    }
-    attributesElement.textContent += ` ${elementText}`;
-}
 
     if (card.classes?.length > 0) {
         attributesElement.textContent += `${card.classes.join(', ')}`;
