@@ -11,6 +11,25 @@ let characters;
 let actionCards;
 let battleSystem;
 
+const elementEmojis = {
+    "fire": "🔥",
+    "water": "💧",
+    "air": "🌬️",
+    "earth": "🌿",
+    "electricity": "⚡",
+    "love": "💖",
+    "malice": "☠️",
+    "hubris": "👑",
+    "wisdom": "📖",
+    "light": "🌟",
+    "shadow": "🌑",
+    "vitality": "🌱",
+    "decay": "💀",
+    "luck": "🍀",
+    "justice": "⚖️"
+};
+
+
 // ============= HELPER FUNCTIONS =============
 function createCardElement(card) {
     const cardDiv = document.createElement('div');
@@ -37,9 +56,16 @@ function createCardElement(card) {
 
     attributesElement.textContent = `[${card.type}${card.subtype ? ` - ${card.subtype}` : ""}]`;
 
-    if (card.element) {
-        attributesElement.textContent += ` [${card.element}]`;
+if (card.element) {
+    let elementText = card.element;
+    if (Array.isArray(elementText)) {
+        elementText = elementText.map(el => elementEmojis[el] || el).join(" ");
+    } else {
+        elementText = elementEmojis[elementText] || elementText;
     }
+    attributesElement.textContent += ` [${elementText}]`;
+}
+
     if (card.classes?.length > 0) {
         attributesElement.textContent += ` [${card.classes.join(', ')}]`;
     }
