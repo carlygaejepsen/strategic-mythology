@@ -98,7 +98,7 @@ cardDiv.appendChild(nameElement);
         cardDiv.appendChild(descriptionElement);
     }
 
-    return cardDiv;
+   
 }
     
     const cardName = nameElement.textContent;
@@ -655,39 +655,27 @@ function doAiAttack() {
 
 async function loadGameData() {
     try {
-        const charactersResponse = await fetch("https://carlygaejepsen.github.io/strategic-mythology/data/character-cards.json");
-                if (!charactersResponse.ok) throw new Error(`HTTP error! status: ${charactersResponse.status}`);
-        const actionCardsResponse = await fetch("https://carlygaejepsen.github.io/strategic-mythology/data/action-cards.json");
-                if (!actionCardsResponse.ok) throw new Error(`HTTP error! status: ${actionCardsResponse.status}`);
-        const battleSystemResponse = await fetch("https://carlygaejepsen.github.io/strategic-mythology/data/battle-system.json");
-            if (!battleSystemResponse.ok) throw new Error(`HTTP error! status: ${battleSystemResponse.status}`);
-       
-        
+        const [charactersResponse, actionCardsResponse, battleSystemResponse] = await Promise.all([
+            fetch("https://carlygaejepsen.github.io/strategic-mythology/data/character-cards.json"),
+            fetch("https://carlygaejepsen.github.io/strategic-mythology/data/action-cards.json"),
+            fetch("https://carlygaejepsen.github.io/strategic-mythology/data/battle-system.json")
+        ]);
+
+        if (!charactersResponse.ok || !actionCardsResponse.ok || !battleSystemResponse.ok) {
+            throw new Error(`HTTP error! One or more files failed to load.`);
+        }
+
         characters = await charactersResponse.json();
         actionCards = await actionCardsResponse.json();
         battleSystem = await battleSystemResponse.json();
 
-        // Combine all cards into allCards array
-        allCards = [
-            ...(Array.isArray(characters) ? characters : []),
-            ...(Array.isArray(actionCards) ? actionCards : [])
-        ];
+        allCards = [...characters, ...actionCards];
 
-        console.log("All loaded cards:", allCards); // Debugging check
-
-
-         // Debug logging with null checks
-        console.log("Total cards loaded:", allCards.length);
-        console.log("Sample character:", allCards.find(c => c.type === "character"));
-        console.log("Sample action:", allCards.find(c => c.subtype === "element"));
-
-        
     } catch (error) {
         console.error("Critical loading error:", error);
-        // Add error recovery or UI notification here
-        throw error; // Re-throw to prevent game from starting with bad data
     }
 }
+
 
 // ============= INITIALIZE THE GAME =============
 
