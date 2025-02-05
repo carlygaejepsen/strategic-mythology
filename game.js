@@ -100,6 +100,27 @@ cardDiv.appendChild(nameElement);
 
     return cardDiv;
 }
+function getCardFromElement(cardElement) {
+    // Safely get card name with null checks
+    const nameElement = cardElement.querySelector('.mini-card-name');
+    if (!nameElement) {
+        console.error('Name element not found in card:', cardElement);
+        return null;
+    }
+    
+    const cardName = nameElement.textContent;
+    
+    // Search both battle zones
+    const allBattleCards = [...player1BattleZone, ...player2BattleZone];
+    const foundCard = allBattleCards.find(c => c.name === cardName);
+    
+    if (!foundCard) {
+        console.warn('Card data not found for:', cardName);
+    }
+    
+    return foundCard;
+}
+
 
 function buildDeck() {
     const deck = [...allCards];
