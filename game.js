@@ -34,20 +34,19 @@ function createCardElement(card) {
     // Type & Attributes
     const attributesElement = document.createElement('div');
     attributesElement.classList.add('card-attributes');
-    const cardType = card.subtype ? `${card.subtype} action` : card.type;
-    attributesElement.textContent = `[${cardType}]`;
-  
 
-    // Handle both element and class attributes
+    attributesElement.textContent = `[${card.type}${card.subtype ? ` - ${card.subtype}` : ""}]`;
+
     if (card.element) {
         attributesElement.textContent += ` [${card.element}]`;
     }
     if (card.classes?.length > 0) {
         attributesElement.textContent += ` [${card.classes.join(', ')}]`;
     }
+
     cardDiv.appendChild(attributesElement);
 
-    // Stats - Use JSON property names (atk/def)
+    // Stats
     if (card.hp || card.atk || card.def) {
         const statsElement = document.createElement('div');
         statsElement.classList.add('card-stats');
@@ -67,18 +66,18 @@ function createCardElement(card) {
 }
 
 function buildDeck() {
-    // Create a copy of allCards to avoid modifying the original array
     const deck = [...allCards];
 
-    // Filter out invalid cards
-    const validDeck = deck.filter(card => {
-        const isValid = card.type === "character" || card.subtype === "element" || card.subtype === "class";
-        if (!isValid) console.warn("Invalid card filtered out:", card);
-        return isValid;
-    });
+    // Include characters + all action cards (both element and class)
+    const validDeck = deck.filter(card => 
+        card.type === "character" || card.type === "action"
+    );
+console.log("Player 1 Hand:", player1Hand.map(c => `${c.name} [${c.type}/${c.subtype}]`));
+console.log("Player 2 Hand:", player2Hand.map(c => `${c.name} [${c.type}/${c.subtype}]`));
 
     return shuffleDeck(validDeck);
 }
+
 
 function shuffleDeck(deck) {
     for (let i = deck.length - 1; i > 0; i--) {
@@ -184,17 +183,17 @@ async function loadGameData() {
         // Combine all cards into allCards array
         allCards = [
             ...(Array.isArray(characters) ? characters : []),
-            ...(actionCards?.actionCards?.elementActions || []),
-            ...(actionCards?.actionCards?.classActions || [])
+            ...(Array.isArray(actionCards) ? actionCards : [])
         ];
+
+        console.log("All loaded cards:", allCards); // Debugging check
+
 
          // Debug logging with null checks
         console.log("Total cards loaded:", allCards.length);
         console.log("Sample character:", allCards.find(c => c.type === "character"));
         console.log("Sample action:", allCards.find(c => c.subtype === "element"));
-        console.log("Loaded character structure:", characters?.length ? "Valid" : "Empty");
-        console.log("Action cards container:", actionCards?.actionCards ? "Exists" : "Missing");
-        console.log("Sample element action:", actionCards?.actionCards?.elementActions?.[0]?.name || "Not found");
+
         
     } catch (error) {
         console.error("Critical loading error:", error);
