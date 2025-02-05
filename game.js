@@ -209,6 +209,7 @@ function playCard(card, playerHand, playerBattleZone, battleZoneId) {
             target.hp = Math.min(100, target.hp + card.healAmount);
             logBattleEvent(`${card.name} healed ${target.name} for ${card.healAmount} HP!`);
         }
+        }
 
     // Remove the card from hand and add it to the battle zone
     const cardIndex = playerHand.indexOf(card);
