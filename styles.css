@@ -29,7 +29,7 @@ h1, h2 {
 /* Game Board layout */
 .game-board {
   display: flex;
-  flex-wrap: wrap;
+  justify-content: space-between;
   gap: 20px;
   justify-content: center;
   margin-top: 20px;
@@ -37,8 +37,8 @@ h1, h2 {
 
 /* Player area */
 .player-area {
-  flex: 1;
-  min-width: 200px;
+  flex: 1 1 30%;
+  min-width: 250px;
   border: 2px solid #FFFFFF;
   border-radius: 8px;
   padding: 10px;
@@ -64,9 +64,37 @@ h1, h2 {
   margin-top: 10px;
 }
 
-/* Battle zone inside the player's area */
+
+
+/* Center area - now contains results log and battle zones */
+#center-area {
+  flex-basis: 1 1 40%; 
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px; /* Space between results log and battle zones */
+}
+
+/* Battle zone container - center with labels */
+.battle-zone-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px; /* Space between Player 1 and Player 2 battle zones */
+}
+
+.battle-zone-label {
+  font-size: 18px;
+  font-weight: bold;
+  color: #FFFFFF;
+  margin-bottom: 10px;
+}
+
+/* Battle zone styling */
 .player-battlezone {
-  width: 90%;
+  width: 100%;
   min-height: 120px;
   border: 3px solid #fff;
   border-radius: 8px;
@@ -76,18 +104,7 @@ h1, h2 {
   gap: 10px;
   flex-wrap: wrap;
   justify-content: center;
-  margin-top: 20px;
 }
-
-/* Center area: buttons and results */
-#center-area {
-  flex-basis: 350px;
-  min-width: 300px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 /* Controls (buttons) in the center area */
 #controls {
   display: flex;
