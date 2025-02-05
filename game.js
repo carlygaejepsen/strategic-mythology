@@ -243,6 +243,28 @@ function renderHand(hand, containerId, whichPlayer) {
     });
 }
 
+function createMiniCardElement(card) {
+    const cardDiv = document.createElement('div');
+    cardDiv.classList.add('mini-card');
+
+    // Name (smaller font)
+    const nameElement = document.createElement('div');
+    nameElement.classList.add('mini-card-name');
+    nameElement.textContent = card.name;
+    cardDiv.appendChild(nameElement);
+
+    // Image (scaled-down)
+    if (card.image) {
+        const imgElement = document.createElement('img');
+        imgElement.src = card.image;
+        imgElement.alt = card.name;
+        imgElement.classList.add('mini-card-image');
+        cardDiv.appendChild(imgElement);
+    }
+
+    return cardDiv;
+}
+
 function renderBattleZone(playerBattleZone, containerId) {
     const container = document.getElementById(containerId);
     if (!container) {
@@ -307,27 +329,6 @@ function renderBattleZone(playerBattleZone, containerId) {
     });
 }
 
-function createMiniCardElement(card) {
-    const cardDiv = document.createElement('div');
-    cardDiv.classList.add('mini-card');
-
-    // Name (smaller font)
-    const nameElement = document.createElement('div');
-    nameElement.classList.add('mini-card-name');
-    nameElement.textContent = card.name;
-    cardDiv.appendChild(nameElement);
-
-    // Image (scaled-down)
-    if (card.image) {
-        const imgElement = document.createElement('img');
-        imgElement.src = card.image;
-        imgElement.alt = card.name;
-        imgElement.classList.add('mini-card-image');
-        cardDiv.appendChild(imgElement);
-    }
-
-    return cardDiv;
-}
 
 function doAiMove() {
     if (player2Hand.length === 0) {
