@@ -13,19 +13,19 @@ let battleSystem;
 
 const elementEmojis = {
     "fire": "🔥",
-    "water": "💧",
-    "air": "🌬️",
-    "earth": "🌿",
+    "water": "🌊",
+    "air": "💨",
+    "earth": "🏔️",
     "electricity": "⚡",
-    "love": "💖",
-    "malice": "☠️",
-    "hubris": "👑",
+    "love": "💞",
+    "malice": "🩸",
+    "hubris": "🦚",
     "wisdom": "📖",
-    "light": "🌟",
+    "light": "🕯️",
     "shadow": "🌑",
-    "vitality": "🌱",
-    "decay": "💀",
-    "luck": "🍀",
+    "vitality": "🌿",
+    "decay": "🍂",
+    "luck": "🪙",
     "justice": "⚖️"
 };
 
