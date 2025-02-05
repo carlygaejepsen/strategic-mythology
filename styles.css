@@ -104,6 +104,7 @@ h1, h2 {
   gap: 10px;
   flex-wrap: wrap;
   justify-content: center;
+  overflow: visible;
 }
 /* Controls (buttons) in the center area */
 #controls {
