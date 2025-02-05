@@ -96,40 +96,34 @@ function enableHandInteraction(player) {
 }
 
 async function doAiDeploy() {
-    // AI plays a card automatically
     if (player2Hand.length > 0 && player2BattleZone.length < 3) {
-        const playable = player2Hand.filter(card => 
-            validateCardPlay(card, player2BattleZone)
-        );
+        const playable = player2Hand.filter(card => validateCardPlay(card, player2BattleZone));
         
         if (playable.length > 0) {
             const card = playable[Math.floor(Math.random() * playable.length)];
-            await new Promise(resolve => setTimeout(resolve, 1000)); // Pause for realism
+            await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate AI delay
             playCard(card, player2Hand, player2BattleZone, 'player2-battlezone');
+        } else {
+            console.warn("AI has no playable cards.");
         }
     }
 }
 
 function playCard(card, playerHand, playerBattleZone, battleZoneId) {
-    // If the battle zone is empty, allow any card to be played
     if (playerBattleZone.length === 0) {
         console.log(`Battle zone is empty. ${card.name} can be played freely.`);
     } else {
-        // Check if the battle zone already contains this card type
         const hasSameType = playerBattleZone.some(existingCard => existingCard.type === card.type);
         const hasSameSubtype = playerBattleZone.some(existingCard => existingCard.subtype === card.subtype);
 
-        // If it's a character card, enforce the matching rule
         if (card.type === "character") {
             const hasActionMatch = playerBattleZone.some(existingCard => {
                 if (existingCard.type === "action") {
-                    // Check if the character has a matching class with any class action card
                     const classMatch = existingCard.subtype === "class" &&
-                        existingCard.classes.some(cls => card.classes.includes(cls));
+                        (existingCard.classes || []).some(cls => (card.classes || []).includes(cls));
 
-                    // Check if the character has a matching element with any element action card
                     const elementMatch = existingCard.subtype === "element" &&
-                        card.element.includes(existingCard.element);
+                        (card.element || []).some(el => el === existingCard.element);
 
                     return classMatch || elementMatch;
                 }
@@ -142,17 +136,14 @@ function playCard(card, playerHand, playerBattleZone, battleZoneId) {
             }
         }
 
-        // If it's an action card (element or class), ensure it connects to a character
         if (card.type === "action") {
             const hasCharacterMatch = playerBattleZone.some(existingCard => {
                 if (existingCard.type === "character") {
-                    // Check for a matching class (for class action cards)
                     const classMatch = card.subtype === "class" &&
-                        existingCard.classes.some(cls => card.classes.includes(cls));
+                        (existingCard.classes || []).some(cls => (card.classes || []).includes(cls));
 
-                    // Check for a matching element (for element action cards)
                     const elementMatch = card.subtype === "element" &&
-                        existingCard.element.some(el => el === card.element);
+                        (existingCard.element || []).some(el => card.element.includes(el));
 
                     return classMatch || elementMatch;
                 }
@@ -165,6 +156,16 @@ function playCard(card, playerHand, playerBattleZone, battleZoneId) {
             }
         }
     }
+
+    const cardIndex = playerHand.indexOf(card);
+    if (cardIndex !== -1) {
+        playerHand.splice(cardIndex, 1);
+    }
+    
+    playerBattleZone.push(card);
+    renderBattleZone(playerBattleZone, battleZoneId);
+}
+
 
     // Prevent more than 3 cards in the battle zone
     if (playerBattleZone.length >= 3) {
@@ -196,21 +197,26 @@ function renderHand(hand, containerId, whichPlayer) {
     const container = document.getElementById(containerId);
     if (!container) return;
 
-    container.innerHTML = '';
-    hand.forEach((card) => {
-        // Use createCardElement instead of basic div
-        const cardElement = createCardElement(card); 
-        
-        cardElement.addEventListener('click', () => {
-            if (whichPlayer === 'player1') {
-                playCard(card, player1Hand, player1BattleZone, 'player1-battlezone');
-            }
-            renderHand(hand, containerId, whichPlayer);
-        });
+    const newContainer = document.createElement('div');
+    newContainer.id = containerId;
+    newContainer.className = container.className;
 
-        container.appendChild(cardElement);
+    hand.forEach((card) => {
+        const cardElement = createCardElement(card);
+        
+        if (whichPlayer === 'player1') {
+            cardElement.addEventListener('click', () => {
+                playCard(card, player1Hand, player1BattleZone, 'player1-battlezone');
+                renderHand(player1Hand, containerId, whichPlayer);
+            });
+        }
+
+        newContainer.appendChild(cardElement);
     });
+
+    container.replaceWith(newContainer);
 }
+
 
 function createCardElement(card) {
     const cardDiv = document.createElement('div');
@@ -383,11 +389,8 @@ function doAiMove() {
 
 // ============= BATTLE SYSTEM =============
 function initAttackSystem() {
-    // Clear previous selections
     selectedAttacker = null;
     currentBattlePhase = 'select-attacker';
-    
-    // Add battle zone click handlers
     addBattleZoneListeners();
 }
 
@@ -399,101 +402,90 @@ function addBattleZoneListeners() {
 
     Object.entries(battleZones).forEach(([zoneId, player]) => {
         const zone = document.getElementById(zoneId);
-        zone.querySelectorAll('.mini-card').forEach(cardEl => {
-            cardEl.classList.add('selectable');
-            cardEl.onclick = () => handleBattleSelection(cardEl, player);
-        });
+        if (zone) {
+            zone.querySelectorAll('.mini-card').forEach(cardEl => {
+                cardEl.classList.add('selectable');
+                cardEl.onclick = () => handleBattleSelection(cardEl, player);
+            });
+        }
     });
 }
 
 function handleBattleSelection(cardElement, player) {
     const card = getCardFromElement(cardElement);
-    
+    if (!card) return;
+
     if (currentBattlePhase === 'select-attacker' && player === currentPlayer) {
-        if (card.atk > 0) { // Only cards with attack can be attackers
+        if (card.atk > 0) {
             selectedAttacker = card;
             currentBattlePhase = 'select-defender';
             highlightValidTargets();
             logBattleEvent(`${card.name} selected as attacker. Choose target!`);
         }
     } else if (currentBattlePhase === 'select-defender' && player !== currentPlayer) {
-        const defender = card;
-        resolveCombat(selectedAttacker, defender);
+        resolveCombat(selectedAttacker, card);
         cleanupBattleSelection();
     }
 }
 
 function resolveCombat(attacker, defender) {
-    // Calculate base damage
-    let damage = attacker.atk - defender.def;
-    
-    // Apply elemental bonuses
-    const elementBonus = calculateElementBonus([attacker], [defender]);
-    damage += elementBonus;
-    
-    // Apply class bonuses
-    const classBonus = calculateClassBonus([attacker], [defender]);
-    damage += classBonus;
-    
-    // Ensure minimum damage
-    damage = Math.max(damage, 0);
-
-    // Apply damage
+    if (!attacker || !defender) return;
+    let damage = Math.max(attacker.atk - defender.def, 0);
+    damage += calculateElementBonus([attacker], [defender]);
+    damage += calculateClassBonus([attacker], [defender]);
     defender.hp -= damage;
-    
     logBattleEvent(`${attacker.name} attacks ${defender.name} for ${damage} damage!`);
-
-    // Check if defender is destroyed
+    
     if (defender.hp <= 0) {
         removeDestroyedCard(defender);
         logBattleEvent(`${defender.name} was destroyed!`);
     }
-
-    // Update battle zone displays
+    
     renderBattleZone(player1BattleZone, 'player1-battlezone');
     renderBattleZone(player2BattleZone, 'player2-battlezone');
 }
 
 function removeDestroyedCard(card) {
-    // Remove from appropriate battle zone
     const p1Index = player1BattleZone.indexOf(card);
     const p2Index = player2BattleZone.indexOf(card);
     
-    if (p1Index !== -1) player1BattleZone.splice(p1Index, 1);
-    if (p2Index !== -1) player2BattleZone.splice(p2Index, 1);
+    if (p1Index !== -1) {
+        player1BattleZone.splice(p1Index, 1);
+        renderBattleZone(player1BattleZone, 'player1-battlezone');
+    }
+    if (p2Index !== -1) {
+        player2BattleZone.splice(p2Index, 1);
+        renderBattleZone(player2BattleZone, 'player2-battlezone');
+    }
 }
 
 function highlightValidTargets() {
-    // Highlight enemy battle zone cards
-    const enemyZone = currentPlayer === 'player1' ? 
-        document.getElementById('player2-battlezone') :
-        document.getElementById('player1-battlezone');
-    
-    enemyZone.querySelectorAll('.mini-card').forEach(cardEl => {
-        cardEl.classList.add('targetable');
-    });
+    const enemyZoneId = currentPlayer === 'player1' ? 'player2-battlezone' : 'player1-battlezone';
+    const enemyZone = document.getElementById(enemyZoneId);
+    if (enemyZone) {
+        enemyZone.querySelectorAll('.mini-card').forEach(cardEl => {
+            cardEl.classList.add('targetable');
+        });
+    }
 }
 
 function cleanupBattleSelection() {
-    // Clear selections and styles
     selectedAttacker = null;
     currentBattlePhase = 'select-attacker';
-    
     document.querySelectorAll('.selectable, .targetable').forEach(el => {
         el.classList.remove('selectable', 'targetable');
     });
-    
-    // Remove temporary click handlers
     addBattleZoneListeners();
 }
 
 function getCardFromElement(cardElement) {
-    // Safely get card name with null checks
     const nameElement = cardElement.querySelector('.mini-card-name');
     if (!nameElement) {
         console.error('Name element not found in card:', cardElement);
         return null;
     }
+    const cardName = nameElement.textContent.trim();
+    return [...player1BattleZone, ...player2BattleZone].find(card => card.name === cardName) || null;
 }
 
 
@@ -501,9 +493,9 @@ function getCardFromElement(cardElement) {
 
 // ============= WIN CONDITION CHECKING =============
 function checkWinConditions() {
-    if (player1BattleZone.length === 0) {
+    if (player1BattleZone.length === 0 && player1Hand.length === 0 && player1Deck.length === 0) {
         endGame('player2');
-    } else if (player2BattleZone.length === 0) {
+    } else if (player2BattleZone.length === 0 && player2Hand.length === 0 && player2Deck.length === 0) {
         endGame('player1');
     }
 }
@@ -525,22 +517,19 @@ async function handleTurn() {
 
 async function handleDeploymentPhase() {
     if (turnStep === 0) {
-        // Player's deploy
         logBattleEvent("Your turn: Play a card to battle zone");
         enableHandInteraction('player1');
         turnStep = 1;
     } else if (turnStep === 1) {
-        // AI's deploy
         await doAiDeploy();
         currentPhase = 'attack';
         turnStep = 0;
-        handleTurn(); // Move to attack phase
+        handleTurn();
     }
 }
 
 async function handleAttackPhase() {
     if (turnStep === 0) {
-        // Player's attack
         if (player1BattleZone.length > 0 && player2BattleZone.length > 0) {
             logBattleEvent("Select your attacker and target");
             initPlayerAttackSystem();
@@ -550,7 +539,6 @@ async function handleAttackPhase() {
             handleTurn();
         }
     } else if (turnStep === 1) {
-        // AI's attack
         if (player2BattleZone.length > 0 && player1BattleZone.length > 0) {
             await doAiAttack();
         }
@@ -561,11 +549,9 @@ async function handleAttackPhase() {
 }
 
 function handleDrawPhase() {
-    // Both players draw
     drawCard(player1Hand, player1Deck);
     drawCard(player2Hand, player2Deck);
     
-    // Reset for next turn
     currentPhase = 'deploy';
     turnStep = 0;
     logBattleEvent("New turn starting...");
@@ -573,9 +559,9 @@ function handleDrawPhase() {
 }
 
 function initPlayerAttackSystem() {
-    // Enable attacker selection
     document.getElementById('player1-battlezone').querySelectorAll('.mini-card').forEach(cardEl => {
-        if (getCardFromElement(cardEl).atk > 0) {
+        const card = getCardFromElement(cardEl);
+        if (card && card.atk > 0) {
             cardEl.classList.add('selectable');
             cardEl.onclick = () => handlePlayerAttackSelection(cardEl);
         }
@@ -584,21 +570,22 @@ function initPlayerAttackSystem() {
 
 function handlePlayerAttackSelection(cardEl) {
     const attacker = getCardFromElement(cardEl);
+    if (!attacker) return;
     if (!selectedAttacker) {
-        // Select attacker
         selectedAttacker = attacker;
         document.querySelectorAll('.selectable').forEach(el => el.classList.remove('selectable'));
         
-        // Enable target selection
         document.getElementById('player2-battlezone').querySelectorAll('.mini-card').forEach(targetEl => {
-            targetEl.classList.add('targetable');
-            targetEl.onclick = () => {
-                const defender = getCardFromElement(targetEl);
-                resolveCombat(selectedAttacker, defender);
-                selectedAttacker = null;
-                document.querySelectorAll('.targetable').forEach(el => el.classList.remove('targetable'));
-                handleTurn(); // Progress to AI attack
-            };
+            const defender = getCardFromElement(targetEl);
+            if (defender) {
+                targetEl.classList.add('targetable');
+                targetEl.onclick = () => {
+                    resolveCombat(selectedAttacker, defender);
+                    selectedAttacker = null;
+                    document.querySelectorAll('.targetable').forEach(el => el.classList.remove('targetable'));
+                    handleTurn();
+                };
+            }
         });
     }
 }
@@ -607,15 +594,12 @@ function handlePlayerAttackSelection(cardEl) {
 function drawCard(hand, deck) {
     if (deck.length > 0) {
         hand.push(deck.shift());
-        renderHand(player1Hand, 'player1-hand', 'player1');
-        renderHand(player2Hand, 'player2-hand', 'player2');
+        renderHand(hand, hand === player1Hand ? 'player1-hand' : 'player2-hand', hand === player1Hand ? 'player1' : 'player2');
     }
 }
 
-
 // ============= AI ATTACK LOGIC =============
 function doAiAttack() {
-    // Simple AI: Random attacker and random target
     const attackers = player2BattleZone.filter(c => c.atk > 0);
     if (attackers.length === 0) return;
 
@@ -624,13 +608,12 @@ function doAiAttack() {
     if (targets.length === 0) return;
 
     const target = targets[Math.floor(Math.random() * targets.length)];
-    
     logBattleEvent(`AI attacks with ${attacker.name} targeting ${target.name}!`);
     resolveCombat(attacker, target);
     checkWinConditions();
 }
-// ============= DATA LOADING =============
 
+// ============= DATA LOADING =============
 async function loadGameData() {
     try {
         const [charactersResponse, actionCardsResponse, battleSystemResponse] = await Promise.all([
@@ -640,23 +623,20 @@ async function loadGameData() {
         ]);
 
         if (!charactersResponse.ok || !actionCardsResponse.ok || !battleSystemResponse.ok) {
-            throw new Error(`HTTP error! One or more files failed to load.`);
+            throw new Error("HTTP error! One or more files failed to load.");
         }
 
         characters = await charactersResponse.json();
         actionCards = await actionCardsResponse.json();
         battleSystem = await battleSystemResponse.json();
 
-        allCards = [...characters, ...actionCards];
-
+        allCards = [...characters, ...actionCards.elementActions, ...actionCards.classActions];
     } catch (error) {
         console.error("Critical loading error:", error);
     }
 }
 
-
 // ============= INITIALIZE THE GAME =============
-
 async function initGame() {
     try {
         console.log("Initializing game...");
@@ -667,9 +647,9 @@ async function initGame() {
         player1BattleZone = [];
         player2BattleZone = [];
         currentPlayer = "player1";
-        currentPhase = 'deploy'
+        currentPhase = 'deploy';
 
-        await loadGameData(); // Ensure JSON data loads correctly
+        await loadGameData();
 
         player1Deck = buildDeck();
         player2Deck = buildDeck();
@@ -684,10 +664,8 @@ async function initGame() {
         renderHand(player1Hand, 'player1-hand', 'player1');
         renderHand(player2Hand, 'player2-hand', 'player2');
 
-        const battleZoneEl = document.getElementById('battleZone');
-        if (battleZoneEl) {
-            battleZoneEl.innerHTML = '';
-        }
+        document.getElementById('player1-battlezone').innerHTML = '';
+        document.getElementById('player2-battlezone').innerHTML = '';
 
         if (playTurnBtn) {
             playTurnBtn.disabled = false;
@@ -699,7 +677,6 @@ async function initGame() {
 }
 
 // ============= EVENT LISTENERS =============
-
 const startGameBtn = document.getElementById('start-game');
 if (startGameBtn) {
     startGameBtn.addEventListener('click', initGame);
@@ -711,5 +688,4 @@ if (playTurnBtn) {
     playTurnBtn.disabled = true;
 }
 
-// Optional: initGame();
 initGame();
