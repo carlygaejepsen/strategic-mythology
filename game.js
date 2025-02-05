@@ -277,7 +277,7 @@ function renderBattleZone(playerBattleZone, containerId) {
             const elementIcons = elements.map(el => elementEmojis[el] || "").join(" ");
             const elementElement = document.createElement('div');
             elementElement.classList.add('mini-card-elements');
-            elementElement.textContent = `🌟 ${elementIcons}`;
+            elementElement.textContent = `${elementIcons}`;
             miniCardDiv.appendChild(elementElement);
         }
 
@@ -543,7 +543,7 @@ function renderBattleZone(playerBattleZone, containerId) {
         
         container.appendChild(miniCard);
     }
-}
+});
 
 // ============= WIN CONDITION CHECKING =============
 function checkWinConditions() {
