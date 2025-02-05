@@ -54,8 +54,6 @@ function createCardElement(card) {
     const attributesElement = document.createElement('div');
     attributesElement.classList.add('card-attributes');
 
-    attributesElement.textContent = `[${card.type}${card.subtype ? ` - ${card.subtype}` : ""}]`;
-
 if (card.element) {
     let elementText = card.element;
     if (Array.isArray(elementText)) {
@@ -63,11 +61,11 @@ if (card.element) {
     } else {
         elementText = elementEmojis[elementText] || elementText;
     }
-    attributesElement.textContent += ` [${elementText}]`;
+    attributesElement.textContent += ` ${elementText}`;
 }
 
     if (card.classes?.length > 0) {
-        attributesElement.textContent += ` [${card.classes.join(', ')}]`;
+        attributesElement.textContent += `${card.classes.join(', ')}`;
     }
 
     cardDiv.appendChild(attributesElement);
