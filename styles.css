@@ -178,11 +178,18 @@ h1, h2 {
 }
 
 /* Card Elements */
-.card-name {
+
+
+.card-name-text {
+  font-size: 16px;  /* Make the name larger */
   font-weight: bold;
-  font-size: 16px;
-  margin-bottom: 5px;
 }
+
+.card-elements {
+  font-size: 10px;  /* Make the element emojis smaller */
+  margin-left: 4px; /* Add a little spacing */
+}
+
 
 .card-image {
   width: 100px;
