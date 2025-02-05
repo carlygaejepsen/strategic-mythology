@@ -329,16 +329,6 @@ function createMiniCardElement(card) {
     return cardDiv;
 }
 
-
-function handleTurn() {
-    if (currentPlayer === 'player1') {
-        initAttackSystem();
-        logBattleEvent("Player 1: Select a card to attack with");
-    } else {
-        doAiAttack();
-    }
-}
-
 function doAiMove() {
     if (player2Hand.length === 0) {
         console.log("AI (Player 2) has no cards left to play.");
@@ -499,26 +489,6 @@ function getCardFromElement(cardElement) {
         .find(c => c.name === cardName);
 }
 
-// ============= UPDATED PLAY CARD FUNCTION =============
-function playCard(card, playerHand, playerBattleZone, battleZoneId) {
-    // Initialize card HP if not set
-    if (!card.hp) card.hp = card.type === 'character' ? 100 : 50;
-    
-    // Existing validation checks...
-    
-    // Add to battle zone
-    playerBattleZone.push(card);
-    renderBattleZone(playerBattleZone, battleZoneId);
-    
-    // Apply any immediate effects
-    if (card.healAmount) {
-        const target = playerBattleZone.find(c => c.type === 'character');
-        if (target) {
-            target.hp = Math.min(100, target.hp + card.healAmount);
-            logBattleEvent(`${card.name} healed ${target.name} for ${card.healAmount} HP!`);
-        }
-    }
-}
 
 
 
