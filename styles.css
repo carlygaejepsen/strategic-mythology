@@ -52,9 +52,9 @@ h1, h2 {
 .player-hand {
   width: 95%;
   min-height: 100px;
-  border: 2px solid #284177;
+  border: 2px solid #fff;
   border-radius: 8px;
-  background: #83CEEC;
+  background: #284177;
   padding: 10px;
   display: flex;
   gap: 10px;
@@ -190,18 +190,25 @@ h1, h2 {
 }
 
 /* Card Elements */
-
-
-.card-name-text {
-  font-size: 16px;  /* Make the name larger */
+.card-name {
   font-weight: bold;
+  font-size: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%; /* Ensures it doesn’t overflow */
 }
 
-.card-elements {
-  font-size: 10px;  /* Make the element emojis smaller */
-  margin-left: 4px; /* Add a little spacing */
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px; /* Keeps a little space between name and emoji */
 }
 
+.card-header .element-emoji {
+  font-size: 16px;
+}
 
 .card-image {
   width: 100px;
