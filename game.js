@@ -380,10 +380,6 @@ function doAiMove() {
     renderHand(player2Hand, 'player2-hand', 'player2');
 }
 
-// ============= UPDATED GLOBAL VARIABLES =============
-let selectedAttacker = null;
-let currentBattlePhase = 'select-attacker'; // States: 'select-attacker', 'select-defender'
-
 // ============= BATTLE SYSTEM =============
 function initAttackSystem() {
     // Clear previous selections
