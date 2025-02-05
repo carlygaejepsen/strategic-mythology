@@ -35,81 +35,6 @@ const elementEmojis = {
 
 
 // ============= HELPER FUNCTIONS =============
-function createCardElement(card) {
-    const cardDiv = document.createElement('div');
-    cardDiv.classList.add('card');
-
-// Name with Element Emoji (Smaller Font)
-const nameElement = document.createElement('div');
-nameElement.classList.add('card-name');
-
-const nameText = document.createElement('span');
-nameText.textContent = card.name;
-nameText.classList.add('card-name-text'); // Add a class for font size
-
-const elementEmojiSpan = document.createElement('span');
-elementEmojiSpan.classList.add('card-elements'); // Add a CSS class for smaller font
-if (card.element) {
-    if (Array.isArray(card.element)) {
-        elementEmojiSpan.textContent = " " + card.element.map(el => elementEmojis[el] || "").join(" ");
-    } else {
-        elementEmojiSpan.textContent = " " + (elementEmojis[card.element] || "");
-    }
-}
-
-nameElement.appendChild(nameText);
-nameElement.appendChild(elementEmojiSpan);
-cardDiv.appendChild(nameElement);
-
-
-
-    // Image
-    if (card.image) {
-        const imgElement = document.createElement('img');
-        imgElement.src = card.image;
-        imgElement.alt = card.name;
-        imgElement.classList.add('card-image');
-        cardDiv.appendChild(imgElement);
-    }
-
-    // Type & Attributes
-    const attributesElement = document.createElement('div');
-    attributesElement.classList.add('card-attributes');
-
-    if (card.classes?.length > 0) {
-        attributesElement.textContent += `${card.classes.join(', ')}`;
-    }
-
-    cardDiv.appendChild(attributesElement);
-
-    // Stats
-    if (card.hp || card.atk || card.def) {
-        const statsElement = document.createElement('div');
-        statsElement.classList.add('card-stats');
-        statsElement.innerHTML = `❤️: ${card.hp || 0} ⚔️: ${card.atk || 0} 🛡️: ${card.def || 0}`;
-        cardDiv.appendChild(statsElement);
-    }
-
-    // Description
-    if (card.description) {
-        const descriptionElement = document.createElement('div');
-        descriptionElement.classList.add('card-description');
-        descriptionElement.textContent = card.description;
-        cardDiv.appendChild(descriptionElement);
-    }
-
-   
-    
-    const cardName = nameElement.textContent;
-    
-    // Search both battle zones
-    const allBattleCards = [...player1BattleZone, ...player2BattleZone];
-    const foundCard = allBattleCards.find(c => c.name === cardName);
-    
-    if (!foundCard) {
-        console.warn('Card data not found for:', cardName);
-    }
-}
 
 function buildDeck() {
     const deck = [...allCards];
@@ -287,6 +212,70 @@ function renderHand(hand, containerId, whichPlayer) {
     });
 }
 
+function createCardElement(card) {
+    const cardDiv = document.createElement('div');
+    cardDiv.classList.add('card');
+
+    // Name with Element Emoji (Smaller Font)
+    const nameElement = document.createElement('div');
+    nameElement.classList.add('card-name');
+
+    const nameText = document.createElement('span');
+    nameText.textContent = card.name;
+    nameText.classList.add('card-name-text');
+
+    const elementEmojiSpan = document.createElement('span');
+    elementEmojiSpan.classList.add('card-elements');
+    if (card.element) {
+        if (Array.isArray(card.element)) {
+            elementEmojiSpan.textContent = " " + card.element.map(el => elementEmojis[el] || "").filter(Boolean).join(" ");
+        } else {
+            elementEmojiSpan.textContent = " " + (elementEmojis[card.element] || "");
+        }
+    }
+
+    nameElement.appendChild(nameText);
+    nameElement.appendChild(elementEmojiSpan);
+    cardDiv.appendChild(nameElement);
+
+    // Image
+    if (card.image) {
+        const imgElement = document.createElement('img');
+        imgElement.src = card.image;
+        imgElement.alt = card.name;
+        imgElement.classList.add('card-image');
+        cardDiv.appendChild(imgElement);
+    }
+
+    // Type & Attributes
+    const attributesElement = document.createElement('div');
+    attributesElement.classList.add('card-attributes');
+
+    if (card.classes?.length > 0) {
+        attributesElement.textContent = `${card.classes.join(', ')}`;
+    }
+
+    cardDiv.appendChild(attributesElement);
+
+    // Stats
+    if (card.hp || card.atk || card.def) {
+        const statsElement = document.createElement('div');
+        statsElement.classList.add('card-stats');
+        statsElement.innerHTML = `❤️: ${card.hp || 0} ⚔️: ${card.atk || 0} 🛡️: ${card.def || 0}`;
+        cardDiv.appendChild(statsElement);
+    }
+
+    // Description
+    if (card.description) {
+        const descriptionElement = document.createElement('div');
+        descriptionElement.classList.add('card-description');
+        descriptionElement.textContent = card.description;
+        cardDiv.appendChild(descriptionElement);
+    }
+
+    return cardDiv;
+}
+
 function renderBattleZone(playerBattleZone, containerId) {
     const container = document.getElementById(containerId);
     if (!container) {
@@ -316,9 +305,8 @@ function renderBattleZone(playerBattleZone, containerId) {
 
         // Display Elements (if available)
         if (card.element) {
-            // Handle both single elements (strings) and arrays
             const elements = Array.isArray(card.element) ? card.element : [card.element];
-            const elementIcons = elements.map(el => elementEmojis[el] || "").join(" ");
+            const elementIcons = elements.map(el => elementEmojis[el] || "").filter(Boolean).join(" ");
             const elementElement = document.createElement('div');
             elementElement.classList.add('mini-card-elements');
             elementElement.textContent = `${elementIcons}`;
@@ -340,12 +328,6 @@ function renderBattleZone(playerBattleZone, containerId) {
             statsElement.innerHTML = `❤️: ${card.hp || 0} ⚔️: ${card.atk || 0} 🛡️: ${card.def || 0}`;
             miniCard.appendChild(statsElement);
         }
-        
-        // Add HP display
-        const hpElement = document.createElement('div');
-        hpElement.classList.add('mini-card-hp');
-        hpElement.textContent = `HP: ${card.hp}`;
-        miniCard.appendChild(hpElement);
 
         container.appendChild(miniCard);
     });
