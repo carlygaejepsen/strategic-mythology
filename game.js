@@ -110,8 +110,7 @@ cardDiv.appendChild(nameElement);
     if (!foundCard) {
         console.warn('Card data not found for:', cardName);
     }
-    
-    return foundCard;
+   
 }
 
 
