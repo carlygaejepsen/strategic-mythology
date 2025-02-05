@@ -243,28 +243,6 @@ function renderHand(hand, containerId, whichPlayer) {
     });
 }
 
-function createMiniCardElement(card) {
-    const cardDiv = document.createElement('div');
-    cardDiv.classList.add('mini-card');
-
-    // Name (smaller font)
-    const nameElement = document.createElement('div');
-    nameElement.classList.add('mini-card-name');
-    nameElement.textContent = card.name;
-    cardDiv.appendChild(nameElement);
-
-    // Image (scaled-down)
-    if (card.image) {
-        const imgElement = document.createElement('img');
-        imgElement.src = card.image;
-        imgElement.alt = card.name;
-        imgElement.classList.add('mini-card-image');
-        cardDiv.appendChild(imgElement);
-    }
-
-    return cardDiv;
-}
-
 function renderBattleZone(playerBattleZone, containerId) {
     const container = document.getElementById(containerId);
     if (!container) {
@@ -274,14 +252,14 @@ function renderBattleZone(playerBattleZone, containerId) {
 
     container.innerHTML = '';
     playerBattleZone.forEach(card => {
-        const miniCardDiv = document.createElement('div');
-        miniCardDiv.classList.add('mini-card');
+        const miniCard = document.createElement('div');
+        miniCard.classList.add('mini-card');
 
         // Card Name
         const nameElement = document.createElement('div');
         nameElement.classList.add('mini-card-name');
         nameElement.textContent = card.name;
-        miniCardDiv.appendChild(nameElement);
+        miniCard.appendChild(nameElement);
 
         // Card Image (if available)
         if (card.image) {
@@ -289,7 +267,7 @@ function renderBattleZone(playerBattleZone, containerId) {
             imgElement.src = card.image;
             imgElement.alt = card.name;
             imgElement.classList.add('mini-card-image');
-            miniCardDiv.appendChild(imgElement);
+            miniCard.appendChild(imgElement);
         }
 
         // Display Elements (if available)
@@ -300,7 +278,7 @@ function renderBattleZone(playerBattleZone, containerId) {
             const elementElement = document.createElement('div');
             elementElement.classList.add('mini-card-elements');
             elementElement.textContent = `${elementIcons}`;
-            miniCardDiv.appendChild(elementElement);
+            miniCard.appendChild(elementElement);
         }
 
         // Display Classes (if available)
@@ -308,7 +286,7 @@ function renderBattleZone(playerBattleZone, containerId) {
             const classElement = document.createElement('div');
             classElement.classList.add('mini-card-classes');
             classElement.textContent = `${card.classes.join(', ')}`;
-            miniCardDiv.appendChild(classElement);
+            miniCard.appendChild(classElement);
         }
 
         // Display Stats (HP, ATK, DEF)
@@ -316,7 +294,7 @@ function renderBattleZone(playerBattleZone, containerId) {
             const statsElement = document.createElement('div');
             statsElement.classList.add('mini-card-stats');
             statsElement.innerHTML = `❤️: ${card.hp || 0} ⚔️: ${card.atk || 0} 🛡️: ${card.def || 0}`;
-            miniCardDiv.appendChild(statsElement);
+            miniCard.appendChild(statsElement);
         }
         
         // Add HP display
@@ -325,7 +303,7 @@ function renderBattleZone(playerBattleZone, containerId) {
         hpElement.textContent = `HP: ${card.hp}`;
         miniCard.appendChild(hpElement);
 
-        container.appendChild(miniCardDiv);
+        container.appendChild(miniCard);
     });
 }
 
