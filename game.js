@@ -120,6 +120,11 @@ function shuffleDeck(deck) {
 }
 
 function playCard(card, playerHand, playerBattleZone, battleZoneId) {
+    if (playerBattleZone.length >= 3) {
+        console.warn("Battle zone is full! Cannot play more than 3 cards.");
+        return;
+    }
+
     const cardIndex = playerHand.indexOf(card);
     if (cardIndex !== -1) {
         playerHand.splice(cardIndex, 1);
@@ -160,12 +165,33 @@ function renderBattleZone(playerBattleZone, containerId) {
 
     container.innerHTML = '';
     playerBattleZone.forEach(card => {
-        const cardDiv = document.createElement('div');
-        cardDiv.classList.add('card');
-        cardDiv.textContent = card.name;
-        container.appendChild(cardDiv);
+        const miniCard = createMiniCardElement(card);
+        container.appendChild(miniCard);
     });
+    
 }
+function createMiniCardElement(card) {
+    const cardDiv = document.createElement('div');
+    cardDiv.classList.add('mini-card');
+
+    // Name (smaller font)
+    const nameElement = document.createElement('div');
+    nameElement.classList.add('mini-card-name');
+    nameElement.textContent = card.name;
+    cardDiv.appendChild(nameElement);
+
+    // Image (scaled-down)
+    if (card.image) {
+        const imgElement = document.createElement('img');
+        imgElement.src = card.image;
+        imgElement.alt = card.name;
+        imgElement.classList.add('mini-card-image');
+        cardDiv.appendChild(imgElement);
+    }
+
+    return cardDiv;
+}
+
 
 function handleTurn() {
     console.log(`Play Turn clicked. Current player is: ${currentPlayer}`);
