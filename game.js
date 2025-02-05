@@ -119,6 +119,26 @@ function shuffleDeck(deck) {
     return deck;
 }
 
+function logBattleEvent(message) {
+    const logContainer = document.getElementById("results-log");
+    if (!logContainer) {
+        console.error("Results log container not found!");
+        return;
+    }
+
+    // Create a new log entry
+    const logEntry = document.createElement("div");
+    logEntry.classList.add("log-entry");
+    logEntry.textContent = message;
+
+    // Append to the log container
+    logContainer.appendChild(logEntry);
+
+    // Auto-scroll to the latest message
+    logContainer.scrollTop = logContainer.scrollHeight;
+}
+
+
 function playCard(card, playerHand, playerBattleZone, battleZoneId) {
     // If the battle zone is empty, allow any card to be played
     if (playerBattleZone.length === 0) {
@@ -186,7 +206,7 @@ function playCard(card, playerHand, playerBattleZone, battleZoneId) {
     if (cardIndex !== -1) {
         playerHand.splice(cardIndex, 1);
         playerBattleZone.push(card);
-        console.log(`Played card: ${card.name} into the battle zone.`);
+       logBattleEvent(`Player played ${card.name}!`);
         renderBattleZone(playerBattleZone, battleZoneId);
     } else {
         console.log("Card not found in hand!");
@@ -350,7 +370,8 @@ function doAiMove() {
     // AI chooses a random playable card
     const chosenCard = playableCards[Math.floor(Math.random() * playableCards.length)];
 
-    console.log(`AI (Player 2) chooses: ${chosenCard.name}`);
+    logBattleEvent(`AI played ${chosenCard.name}!`);
+
     playCard(chosenCard, player2Hand, player2BattleZone, 'player2-battlezone');
 
     renderHand(player2Hand, 'player2-hand', 'player2');
