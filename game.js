@@ -120,11 +120,68 @@ function shuffleDeck(deck) {
 }
 
 function playCard(card, playerHand, playerBattleZone, battleZoneId) {
+    // If the battle zone is empty, allow any card to be played
+    if (playerBattleZone.length === 0) {
+        console.log(`Battle zone is empty. ${card.name} can be played freely.`);
+    } else {
+        // Check if the battle zone already contains this card type
+        const hasSameType = playerBattleZone.some(existingCard => existingCard.type === card.type);
+        const hasSameSubtype = playerBattleZone.some(existingCard => existingCard.subtype === card.subtype);
+
+        // If it's a character card, enforce the matching rule
+        if (card.type === "character") {
+            const hasActionMatch = playerBattleZone.some(existingCard => {
+                if (existingCard.type === "action") {
+                    // Check if the character has a matching class with any class action card
+                    const classMatch = existingCard.subtype === "class" &&
+                        existingCard.classes.some(cls => card.classes.includes(cls));
+
+                    // Check if the character has a matching element with any element action card
+                    const elementMatch = existingCard.subtype === "element" &&
+                        card.element.includes(existingCard.element);
+
+                    return classMatch || elementMatch;
+                }
+                return false;
+            });
+
+            if (!hasActionMatch) {
+                console.warn(`Cannot play ${card.name}. Must match an existing action card.`);
+                return;
+            }
+        }
+
+        // If it's an action card (element or class), ensure it connects to a character
+        if (card.type === "action") {
+            const hasCharacterMatch = playerBattleZone.some(existingCard => {
+                if (existingCard.type === "character") {
+                    // Check for a matching class (for class action cards)
+                    const classMatch = card.subtype === "class" &&
+                        existingCard.classes.some(cls => card.classes.includes(cls));
+
+                    // Check for a matching element (for element action cards)
+                    const elementMatch = card.subtype === "element" &&
+                        existingCard.element.some(el => el === card.element);
+
+                    return classMatch || elementMatch;
+                }
+                return false;
+            });
+
+            if (!hasCharacterMatch) {
+                console.warn(`Cannot play ${card.name}. No connecting god shares a matching class or element.`);
+                return;
+            }
+        }
+    }
+
+    // Prevent more than 3 cards in the battle zone
     if (playerBattleZone.length >= 3) {
         console.warn("Battle zone is full! Cannot play more than 3 cards.");
         return;
     }
 
+    // Remove the card from hand and add it to the battle zone
     const cardIndex = playerHand.indexOf(card);
     if (cardIndex !== -1) {
         playerHand.splice(cardIndex, 1);
@@ -135,6 +192,8 @@ function playCard(card, playerHand, playerBattleZone, battleZoneId) {
         console.log("Card not found in hand!");
     }
 }
+
+
 
 function renderHand(hand, containerId, whichPlayer) {
     const container = document.getElementById(containerId);
