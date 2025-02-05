@@ -129,6 +129,7 @@ h1, h2 {
 .results-container h2 {
   margin-bottom: 10px;
   text-align: center;
+  color: #fff;
 }
 
 /* Card container for each player's hand */
