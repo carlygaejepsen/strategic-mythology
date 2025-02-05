@@ -265,21 +265,52 @@ function handleTurn() {
         currentPlayer = 'player1';
     }
 }
+
 function doAiMove() {
     if (player2Hand.length === 0) {
         console.log("AI (Player 2) has no cards left to play.");
         return;
     }
 
-    const randomIndex = Math.floor(Math.random() * player2Hand.length);
-    const chosenCard = player2Hand[randomIndex];
+    let playableCards = player2Hand.filter(card => {
+        if (player2BattleZone.length === 0) {
+            return true; // If battle zone is empty, AI can play anything
+        }
+
+        if (card.type === "character") {
+            // AI can only play a character if it matches an existing action card
+            return player2BattleZone.some(existingCard =>
+                existingCard.type === "action" &&
+                ((existingCard.subtype === "element" && card.element.includes(existingCard.element)) ||
+                 (existingCard.subtype === "class" && existingCard.classes.some(cls => card.classes.includes(cls))))
+            );
+        }
+
+        if (card.type === "action") {
+            // AI can only play an action card if it matches an existing character
+            return player2BattleZone.some(existingCard =>
+                existingCard.type === "character" &&
+                ((card.subtype === "element" && existingCard.element.includes(card.element)) ||
+                 (card.subtype === "class" && card.classes.some(cls => existingCard.classes.includes(cls))))
+            );
+        }
+
+        return false;
+    });
+
+    if (playableCards.length === 0) {
+        console.log("AI (Player 2) has no valid cards to play.");
+        return;
+    }
+
+    // AI chooses a random playable card
+    const chosenCard = playableCards[Math.floor(Math.random() * playableCards.length)];
 
     console.log(`AI (Player 2) chooses: ${chosenCard.name}`);
-
     playCard(chosenCard, player2Hand, player2BattleZone, 'player2-battlezone');
+
     renderHand(player2Hand, 'player2-hand', 'player2');
 }
-
 
 // ============= DATA LOADING =============
 
