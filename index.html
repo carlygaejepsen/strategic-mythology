@@ -3,49 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Greek Gods Card Game</title>
+    <title>Strategic Mythology</title>
     <link rel="stylesheet" href="https://carlygaejepsen.github.io/strategic-mythology/styles.css">
 </head>
 <body>
     <div class="container">
         <!-- Game Board -->
-        <div class="game-board">
+<div class="game-board">
+  <!-- Player 1 Area -->
+  <div class="player-area" id="player1-area">
+    <h2>Player 1</h2>
+    <div class="player-hand" id="player1-hand"></div>
+  </div>
 
-            <!-- Player 1 Area -->
-            <div id="player1-area" class="player-area">
-                <h2>Player 1</h2>
-                <div id="player1-hand" class="card-container">
-                    <!-- Player 1 cards will be dynamically inserted here -->
-                </div>
-                <!-- Player 1 Battle Zone -->
-                <div id="player1-battlezone" class="player-battlezone">
-                    <!-- Player 1's battle zone content will be dynamically inserted here -->
-                </div>
-            </div>
+  <!-- Center Area (Buttons, Logs, Battle Zones) -->
+  <div id="center-area">
+    <div id="controls">
+      <button id="start-game">Start Game</button>
+      <button id="play-turn" disabled>Play Turn</button>
+    </div>
+    <div id="results-log"></div>
+    <div class="battle-zone-container">
+      <div>
+        <div class="battle-zone-label">Player 1 Battle Zone</div>
+        <div class="player-battlezone" id="player1-battlezone"></div>
+      </div>
+      <div>
+        <div class="battle-zone-label">Player 2 Battle Zone</div>
+        <div class="player-battlezone" id="player2-battlezone"></div>
+      </div>
+    </div>
+  </div>
 
-            <!-- Center Area (Buttons, Results Log, etc.) -->
-            <div id="center-area">
-                <div id="controls">
-                    <button id="start-game" class="button">New Game</button>
-                    <button id="play-turn" class="button" disabled>Play Turn</button>
-                </div>
-                <div id="results-log" class="results-container">
-                    <h2>Results Log</h2>
-                    <!-- Results will be dynamically inserted here -->
-                </div>
-            </div>
-
-            <!-- Player 2 Area -->
-            <div id="player2-area" class="player-area">
-                <h2>Player 2</h2>
-                <div id="player2-hand" class="card-container">
-                    <!-- Player 2 cards will be dynamically inserted here -->
-                </div>
-                <!-- Player 2 Battle Zone -->
-                <div id="player2-battlezone" class="player-battlezone">
-                    <!-- Player 2's battle zone content will be dynamically inserted here -->
-                </div>
-            </div>
+  <!-- Player 2 Area -->
+  <div class="player-area" id="player2-area">
+    <h2>Player 2</h2>
+    <div class="player-hand" id="player2-hand"></div>
+  </div>
+</div>
 
         </div>
     </div>
