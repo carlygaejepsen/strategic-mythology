@@ -221,22 +221,26 @@ h1, h2 {
   margin-top: 5px;
 }
 
-/* Mini Card (For Battle Zone) */
 .mini-card {
   background-color: #EDE8E4;
   border: 2px solid #C2AFA8;
   border-radius: 6px;
   color: #284177;
-  width: 80px;  /* Smaller than regular cards */
+  width: 80px;
   height: auto;
   display: flex;
   flex-direction: column;
-  margin: 5px;
   align-items: center;
-  padding: 4px;
-  text-align: center;
-  font-size: 10px;
+  margin: 5px;
+  position: relative; /* Ensures hover effect positions correctly */
+  transition: transform 0.2s ease-in-out;
 }
+
+.mini-card:hover {
+  transform: scale(1.5); /* Enlarges the card */
+  z-index: 10; /* Ensures it appears above other cards */
+}
+
 
 /* Mini Card Name */
 .mini-card-name {
