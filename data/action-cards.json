@@ -31,7 +31,7 @@
       "element": "air",
       "hp": 50,
       "atk": 10,
-      "def": 0
+      "def": 0,
 	"image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/wind.png"
 
     },
