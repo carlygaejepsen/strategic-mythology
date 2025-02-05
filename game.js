@@ -296,6 +296,12 @@ function renderBattleZone(playerBattleZone, containerId) {
             statsElement.innerHTML = `❤️: ${card.hp || 0} ⚔️: ${card.atk || 0} 🛡️: ${card.def || 0}`;
             miniCardDiv.appendChild(statsElement);
         }
+        
+        // Add HP display
+        const hpElement = document.createElement('div');
+        hpElement.classList.add('mini-card-hp');
+        hpElement.textContent = `HP: ${card.hp}`;
+        miniCard.appendChild(hpElement);
 
         container.appendChild(miniCardDiv);
     });
@@ -514,36 +520,7 @@ function playCard(card, playerHand, playerBattleZone, battleZoneId) {
     }
 }
 
-// ============= UPDATED BATTLE ZONE RENDERING =============
-function renderBattleZone(playerBattleZone, containerId) {
-    const container = document.getElementById(containerId);
-    container.innerHTML = '';
-    
-    playerBattleZone.forEach(card => {
-        const miniCard = document.createElement('div');
-        miniCard.classList.add('mini-card');
-        
-        // Add HP display
-        const hpElement = document.createElement('div');
-        hpElement.classList.add('mini-card-hp');
-        hpElement.textContent = `HP: ${card.hp}`;
-        miniCard.appendChild(hpElement);
-        
-        const nameElement = document.createElement('div');
-        nameElement.classList.add('mini-card-name');
-        nameElement.textContent = card.name;
-        miniCard.appendChild(nameElement);
 
-        if (card.image) {
-            const imgElement = document.createElement('img');
-            imgElement.src = card.image;
-            imgElement.alt = card.name;
-            imgElement.classList.add('mini-card-image');
-            miniCard.appendChild(imgElement);
-        
-        container.appendChild(miniCard);
-    }
-});
 
 // ============= WIN CONDITION CHECKING =============
 function checkWinConditions() {
