@@ -31,7 +31,7 @@
       "element": "air",
       "hp": 50,
       "atk": 10,
-      "def": 0
+      "def": 0,
 	"image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/wind.png"
 
     },
@@ -92,7 +92,7 @@
       "element": "hubris",
       "hp": 50,
       "atk": 10,
-      "def": 0
+      "def": 0,
 	"image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/hubris.png"
 
     },
@@ -104,7 +104,7 @@
       "element": "wisdom",
       "hp": 50,
       "atk": 10,
-      "def": 0
+      "def": 0,
       "image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/wisdom.png"
 
     },
@@ -116,7 +116,7 @@
       "element": "light",
       "hp": 50,
       "atk": 10,
-      "def": 0
+      "def": 0,
 	"image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/light.png"
 
     },
@@ -128,7 +128,7 @@
       "element": "dark",
       "hp": 50,
       "atk": 10,
-      "def": 0
+      "def": 0,
 	"image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/shadow.png"
 
     },
@@ -140,7 +140,7 @@
       "element": "vitality",
       "hp": 50,
       "atk": 10,
-      "def": 0
+      "def": 0,
       "image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/growth.png"
 
     },
@@ -152,7 +152,7 @@
       "element": "death",
       "hp": 50,
       "atk": 10,
-      "def": 0
+      "def": 0,
         "image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/decay.png"
 
     },
@@ -215,7 +215,7 @@
       "classes": ["malevolents", "wildkeepers"],
       "hp": 50,
       "atk": 10,
-      "def": 0
+      "def": 0,
 	"image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/beast.png"
 
     },
