@@ -223,50 +223,55 @@ function renderBattleZone(playerBattleZone, containerId) {
     }
 
     container.innerHTML = '';
-playerBattleZone.forEach(card => {
-    const miniCardDiv = document.createElement('div');
-    miniCardDiv.classList.add('mini-card');
+    playerBattleZone.forEach(card => {
+        const miniCardDiv = document.createElement('div');
+        miniCardDiv.classList.add('mini-card');
 
-    // Card Name
-    const nameElement = document.createElement('div');
-    nameElement.classList.add('mini-card-name');
-    nameElement.textContent = card.name;
-    miniCardDiv.appendChild(nameElement);
+        // Card Name
+        const nameElement = document.createElement('div');
+        nameElement.classList.add('mini-card-name');
+        nameElement.textContent = card.name;
+        miniCardDiv.appendChild(nameElement);
 
-    // Card Image (if available)
-    if (card.image) {
-        const imgElement = document.createElement('img');
-        imgElement.src = card.image;
-        imgElement.alt = card.name;
-        imgElement.classList.add('mini-card-image');
-        miniCardDiv.appendChild(imgElement);
-    }
+        // Card Image (if available)
+        if (card.image) {
+            const imgElement = document.createElement('img');
+            imgElement.src = card.image;
+            imgElement.alt = card.name;
+            imgElement.classList.add('mini-card-image');
+            miniCardDiv.appendChild(imgElement);
+        }
 
-    // Display Elements (if available)
-    if (card.element) {
-        const elementIcons = card.element.map(el => elementEmojiMap[el] || el).join(' ');
-        const elementElement = document.createElement('div');
-        elementElement.classList.add('mini-card-elements');
-        elementElement.textContent = `🌟 ${elementIcons}`;
-        miniCardDiv.appendChild(elementElement);
-    }
+        // Display Elements (if available)
+        if (card.element) {
+            // Handle both single elements (strings) and arrays
+            const elements = Array.isArray(card.element) ? card.element : [card.element];
+            const elementIcons = elements.map(el => elementEmojis[el] || "").join(" ");
+            const elementElement = document.createElement('div');
+            elementElement.classList.add('mini-card-elements');
+            elementElement.textContent = `🌟 ${elementIcons}`;
+            miniCardDiv.appendChild(elementElement);
+        }
 
-    // Display Classes (if available)
-    if (card.classes?.length > 0) {
-        const classElement = document.createElement('div');
-        classElement.classList.add('mini-card-classes');
-        classElement.textContent = `🏛️ ${card.classes.join(', ')}`;
-        miniCardDiv.appendChild(classElement);
-    }
+        // Display Classes (if available)
+        if (card.classes?.length > 0) {
+            const classElement = document.createElement('div');
+            classElement.classList.add('mini-card-classes');
+            classElement.textContent = `🏛️ ${card.classes.join(', ')}`;
+            miniCardDiv.appendChild(classElement);
+        }
 
-    // Display Stats (HP, ATK, DEF)
-    const statsElement = document.createElement('div');
-    statsElement.classList.add('mini-card-stats');
-    statsElement.innerHTML = `❤️: ${card.hp || 0} ⚔️: ${card.atk || 0} 🛡️: ${card.def || 0}`;
-    miniCardDiv.appendChild(statsElement);
+        // Display Stats (HP, ATK, DEF)
+        if (card.hp || card.atk || card.def) {
+            const statsElement = document.createElement('div');
+            statsElement.classList.add('mini-card-stats');
+            statsElement.innerHTML = `❤️: ${card.hp || 0} ⚔️: ${card.atk || 0} 🛡️: ${card.def || 0}`;
+            miniCardDiv.appendChild(statsElement);
+        }
 
-    container.appendChild(miniCardDiv);
-});
+        container.appendChild(miniCardDiv);
+    });
+}
 
 function createMiniCardElement(card) {
     const cardDiv = document.createElement('div');
