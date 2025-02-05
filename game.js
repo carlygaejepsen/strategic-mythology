@@ -12,6 +12,8 @@ let actionCards;
 let battleSystem;
 let selectedAttacker = null;
 let currentBattlePhase = 'select-attacker';
+let currentPhase = 'deploy';
+let turnStep = 0
 
 const elementEmojis = {
     "fire": "🔥",
@@ -481,14 +483,109 @@ function checkWinConditions() {
 }
 
 // ============= UPDATED TURN HANDLING =============
-function handleTurn() {
-    if (currentPlayer === 'player1') {
-        initAttackSystem();
-        logBattleEvent("Player 1: Select a card to attack with");
-    } else {
-        doAiAttack();
+async function handleTurn() {
+    switch(currentPhase) {
+        case 'deploy':
+            await handleDeploymentPhase();
+            break;
+        case 'attack':
+            await handleAttackPhase();
+            break;
+        case 'draw':
+            handleDrawPhase();
+            break;
     }
 }
+
+async function handleDeploymentPhase() {
+    if (turnStep === 0) {
+        // Player's deploy
+        logBattleEvent("Your turn: Play a card to battle zone");
+        enableHandInteraction('player1');
+        turnStep = 1;
+    } else if (turnStep === 1) {
+        // AI's deploy
+        await doAiDeploy();
+        currentPhase = 'attack';
+        turnStep = 0;
+        handleTurn(); // Move to attack phase
+    }
+}
+
+async function handleAttackPhase() {
+    if (turnStep === 0) {
+        // Player's attack
+        if (player1BattleZone.length > 0 && player2BattleZone.length > 0) {
+            logBattleEvent("Select your attacker and target");
+            initPlayerAttackSystem();
+            turnStep = 1;
+        } else {
+            currentPhase = 'draw';
+            handleTurn();
+        }
+    } else if (turnStep === 1) {
+        // AI's attack
+        if (player2BattleZone.length > 0 && player1BattleZone.length > 0) {
+            await doAiAttack();
+        }
+        currentPhase = 'draw';
+        turnStep = 0;
+        handleTurn();
+    }
+}
+
+function handleDrawPhase() {
+    // Both players draw
+    drawCard(player1Hand, player1Deck);
+    drawCard(player2Hand, player2Deck);
+    
+    // Reset for next turn
+    currentPhase = 'deploy';
+    turnStep = 0;
+    logBattleEvent("New turn starting...");
+    handleTurn();
+}
+
+function initPlayerAttackSystem() {
+    // Enable attacker selection
+    document.getElementById('player1-battlezone').querySelectorAll('.mini-card').forEach(cardEl => {
+        if (getCardFromElement(cardEl).atk > 0) {
+            cardEl.classList.add('selectable');
+            cardEl.onclick = () => handlePlayerAttackSelection(cardEl);
+        }
+    });
+}
+
+function handlePlayerAttackSelection(cardEl) {
+    const attacker = getCardFromElement(cardEl);
+    if (!selectedAttacker) {
+        // Select attacker
+        selectedAttacker = attacker;
+        document.querySelectorAll('.selectable').forEach(el => el.classList.remove('selectable'));
+        
+        // Enable target selection
+        document.getElementById('player2-battlezone').querySelectorAll('.mini-card').forEach(targetEl => {
+            targetEl.classList.add('targetable');
+            targetEl.onclick = () => {
+                const defender = getCardFromElement(targetEl);
+                resolveCombat(selectedAttacker, defender);
+                selectedAttacker = null;
+                document.querySelectorAll('.targetable').forEach(el => el.classList.remove('targetable'));
+                handleTurn(); // Progress to AI attack
+            };
+        });
+    }
+}
+
+// ============= CARD DRAWING =============
+function drawCard(hand, deck) {
+    if (deck.length > 0) {
+        hand.push(deck.shift());
+        renderHand(player1Hand, 'player1-hand', 'player1');
+        renderHand(player2Hand, 'player2-hand', 'player2');
+    }
+}
+
 
 // ============= AI ATTACK LOGIC =============
 function doAiAttack() {
@@ -556,6 +653,7 @@ async function initGame() {
         player1BattleZone = [];
         player2BattleZone = [];
         currentPlayer = "player1";
+        currentPhase = 'deploy'
 
         await loadGameData(); // Ensure JSON data loads correctly
 
@@ -583,6 +681,7 @@ async function initGame() {
     } catch (error) {
         console.error("Error initializing game:", error);
     }
+    handleTurn();
 }
 
 // ============= EVENT LISTENERS =============
