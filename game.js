@@ -142,6 +142,38 @@ function logBattleEvent(message) {
     logContainer.scrollTop = logContainer.scrollHeight;
 }
 
+function enableHandInteraction(player) {
+    const handId = player === 'player1' ? 'player1-hand' : 'player2-hand';
+    const battleZoneId = player === 'player1' ? 'player1-battlezone' : 'player2-battlezone';
+    
+    document.getElementById(handId).querySelectorAll('.card').forEach(cardEl => {
+        cardEl.style.cursor = 'pointer';
+        cardEl.onclick = () => {
+            const card = getCardFromElement(cardEl);
+            playCard(card, 
+                player === 'player1' ? player1Hand : player2Hand,
+                player === 'player1' ? player1BattleZone : player2BattleZone,
+                battleZoneId
+            );
+            if (player === 'player1') handleTurn(); // Progress after player deploy
+        };
+    });
+}
+
+async function doAiDeploy() {
+    // AI plays a card automatically
+    if (player2Hand.length > 0 && player2BattleZone.length < 3) {
+        const playable = player2Hand.filter(card => 
+            validateCardPlay(card, player2BattleZone)
+        );
+        
+        if (playable.length > 0) {
+            const card = playable[Math.floor(Math.random() * playable.length)];
+            await new Promise(resolve => setTimeout(resolve, 1000)); // Pause for realism
+            playCard(card, player2Hand, player2BattleZone, 'player2-battlezone');
+        }
+    }
+}
 
 function playCard(card, playerHand, playerBattleZone, battleZoneId) {
     // If the battle zone is empty, allow any card to be played
