@@ -14,10 +14,10 @@ body {
 
 /* Container that wraps the entire game */
 .container {
-  width: 90%;
-  max-width: 1200px;
+  width: 95%;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 10px;
 }
 
 /* Basic heading styles */
@@ -28,17 +28,17 @@ h1, h2 {
 
 /* Game Board layout */
 .game-board {
-  display: flex;
-  flex-wrap: wrap;
+  width: 100%
+  max-width: 1300px
   gap: 20px;
-  justify-content: center;
-  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
 }
 
 /* Player area */
 .player-area {
   flex: 1;
-  min-width: 200px;
+  min-width: 450px;
   border: 2px solid #FFFFFF;
   border-radius: 8px;
   padding: 10px;
@@ -46,16 +46,15 @@ h1, h2 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 20px;
 }
 
 /* Hand section within the player area */
 .player-hand {
-  width: 90%;
+  width: 95%;
   min-height: 100px;
-  border: 2px solid #C2AFA8;
+  border: 2px solid #284177;
   border-radius: 8px;
-  background: #EDE8E4;
+  background: #83CEEC;
   padding: 10px;
   display: flex;
   gap: 10px;
@@ -64,9 +63,37 @@ h1, h2 {
   margin-top: 10px;
 }
 
-/* Battle zone inside the player's area */
-.player-battlezone {
+
+
+/* Center area - now contains results log and battle zones */
+#center-area {
+  flex-basis: 1 1 40%; 
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px; /* Space between results log and battle zones */
+}
+
+/* Battle zone container - center with labels */
+.battle-zone-container {
   width: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px; /* Space between Player 1 and Player 2 battle zones */
+}
+
+.battle-zone-label {
+  font-size: 18px;
+  font-weight: bold;
+  color: #FFFFFF;
+  margin-bottom: 10px;
+}
+
+/* Battle zone styling */
+.player-battlezone {
+  width: 100%;
   min-height: 120px;
   border: 3px solid #fff;
   border-radius: 8px;
@@ -76,18 +103,7 @@ h1, h2 {
   gap: 10px;
   flex-wrap: wrap;
   justify-content: center;
-  margin-top: 20px;
 }
-
-/* Center area: buttons and results */
-#center-area {
-  flex-basis: 350px;
-  min-width: 300px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 /* Controls (buttons) in the center area */
 #controls {
   display: flex;
@@ -105,7 +121,7 @@ h1, h2 {
   color: #284177;
   background: #fff;
   padding: 10px;
-  width: 100%;
+  width: 90%;
 }
 
 .results-container h2 {
@@ -115,11 +131,13 @@ h1, h2 {
 
 /* Card container for each player's hand */
 .card-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px; /* Reduce the spacing */
+  width: 100%;
+  justify-content: center;
 }
+
 
 /* Card styling */
 .card {
@@ -127,9 +145,10 @@ h1, h2 {
   border: 2px solid #C2AFA8;
   border-radius: 6px;
   color: #284177;
-  width: 120px;
+  width: 140px;
   height: auto;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 5px;
@@ -142,7 +161,7 @@ h1, h2 {
 
 /* Hover effect on cards */
 .card:hover {
-  transform: scale(1.05);
+  transform: scale(1.5);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
@@ -159,11 +178,18 @@ h1, h2 {
 }
 
 /* Card Elements */
-.card-name {
+
+
+.card-name-text {
+  font-size: 16px;  /* Make the name larger */
   font-weight: bold;
-  font-size: 16px;
-  margin-bottom: 5px;
 }
+
+.card-elements {
+  font-size: 10px;  /* Make the element emojis smaller */
+  margin-left: 4px; /* Add a little spacing */
+}
+
 
 .card-image {
   width: 100px;
