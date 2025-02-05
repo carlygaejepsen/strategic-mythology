@@ -99,7 +99,6 @@ cardDiv.appendChild(nameElement);
     }
 
    
-}
     
     const cardName = nameElement.textContent;
     
@@ -110,7 +109,7 @@ cardDiv.appendChild(nameElement);
     if (!foundCard) {
         console.warn('Card data not found for:', cardName);
     }
-
+}
 
 function buildDeck() {
     const deck = [...allCards];
