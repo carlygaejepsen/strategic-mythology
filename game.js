@@ -100,13 +100,6 @@ cardDiv.appendChild(nameElement);
 
     return cardDiv;
 }
-function getCardFromElement(cardElement) {
-    // Safely get card name with null checks
-    const nameElement = cardElement.querySelector('.mini-card-name');
-    if (!nameElement) {
-        console.error('Name element not found in card:', cardElement);
-        return null;
-    }
     
     const cardName = nameElement.textContent;
     
@@ -517,10 +510,12 @@ function cleanupBattleSelection() {
 }
 
 function getCardFromElement(cardElement) {
-    // Find card data by name from battle zones
-    const cardName = cardElement.querySelector('.mini-card-name').textContent;
-    return [...player1BattleZone, ...player2BattleZone]
-        .find(c => c.name === cardName);
+    // Safely get card name with null checks
+    const nameElement = cardElement.querySelector('.mini-card-name');
+    if (!nameElement) {
+        console.error('Name element not found in card:', cardElement);
+        return null;
+    }
 }
 
 
