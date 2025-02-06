@@ -1,4 +1,4 @@
-[
+{
    "elementActions": [ 
    {
       "id": "fire",
@@ -195,7 +195,8 @@
 	"image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/healing.png"
 
     }
-],
+	],
+
 "classActions": [
     {
       "id": "athletics",
@@ -332,4 +333,4 @@
 
     }
   ]
-
+}

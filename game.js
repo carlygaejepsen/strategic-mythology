@@ -276,7 +276,7 @@ function renderBattleZone(playerBattleZone, containerId) {
   });
 }
 
-function doAiMove() {
+async function doAiMove() {
 	
 	await new Promise(resolve => setTimeout(resolve, gameConfig.aiSettings.moveDelay));
 
