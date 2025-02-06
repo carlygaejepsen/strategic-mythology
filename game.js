@@ -109,10 +109,16 @@ async function doAiDeploy() {
     }
 }
 
+// ====== FIXED playCard FUNCTION ======
 function playCard(card, playerHand, playerBattleZone, battleZoneId) {
-    if (playerBattleZone.length === 0) {
-        console.log(`Battle zone is empty. ${card.name} can be played freely.`);
-    } else {
+    // Prevent more than 3 cards in the battle zone FIRST
+    if (playerBattleZone.length >= 3) {
+        console.warn("Battle zone is full! Cannot play more than 3 cards.");
+        return;
+    }
+
+    // Validate card play if battle zone isn't empty
+    if (playerBattleZone.length > 0) {
         const hasSameType = playerBattleZone.some(existingCard => existingCard.type === card.type);
         const hasSameSubtype = playerBattleZone.some(existingCard => existingCard.subtype === card.subtype);
 
@@ -121,10 +127,8 @@ function playCard(card, playerHand, playerBattleZone, battleZoneId) {
                 if (existingCard.type === "action") {
                     const classMatch = existingCard.subtype === "class" &&
                         (existingCard.classes || []).some(cls => (card.classes || []).includes(cls));
-
                     const elementMatch = existingCard.subtype === "element" &&
                         (card.element || []).some(el => el === existingCard.element);
-
                     return classMatch || elementMatch;
                 }
                 return false;
@@ -141,10 +145,8 @@ function playCard(card, playerHand, playerBattleZone, battleZoneId) {
                 if (existingCard.type === "character") {
                     const classMatch = card.subtype === "class" &&
                         (existingCard.classes || []).some(cls => (card.classes || []).includes(cls));
-
                     const elementMatch = card.subtype === "element" &&
                         (existingCard.element || []).some(el => card.element.includes(el));
-
                     return classMatch || elementMatch;
                 }
                 return false;
@@ -157,40 +159,29 @@ function playCard(card, playerHand, playerBattleZone, battleZoneId) {
         }
     }
 
+    // Remove card from hand
     const cardIndex = playerHand.indexOf(card);
-    if (cardIndex !== -1) {
-        playerHand.splice(cardIndex, 1);
-    }
-    
-    playerBattleZone.push(card);
-    renderBattleZone(playerBattleZone, battleZoneId);
-}
-
-
-    // Prevent more than 3 cards in the battle zone
-    if (playerBattleZone.length >= 3) {
-        console.warn("Battle zone is full! Cannot play more than 3 cards.");
+    if (cardIndex === -1) {
+        console.log("Card not found in hand!");
         return;
     }
+    playerHand.splice(cardIndex, 1);
 
+    // Add to battle zone
+    playerBattleZone.push(card);
+    
+    // Handle healing
     if (card.healAmount) {
         const target = playerBattleZone.find(c => c.type === 'character');
         if (target) {
             target.hp = Math.min(100, target.hp + card.healAmount);
             logBattleEvent(`${card.name} healed ${target.name} for ${card.healAmount} HP!`);
         }
-        }
-
-    // Remove the card from hand and add it to the battle zone
-    const cardIndex = playerHand.indexOf(card);
-    if (cardIndex !== -1) {
-        playerHand.splice(cardIndex, 1);
-        playerBattleZone.push(card);
-       logBattleEvent(`Player played ${card.name}!`);
-        renderBattleZone(playerBattleZone, battleZoneId);
-    } else {
-        console.log("Card not found in hand!");
     }
+
+    logBattleEvent(`Player played ${card.name}!`);
+    renderBattleZone(playerBattleZone, battleZoneId);
+    renderHand(playerHand, playerHand === player1Hand ? 'player1-hand' : 'player2-hand', playerHand === player1Hand ? 'player1' : 'player2');
 }
 
 function renderHand(hand, containerId, whichPlayer) {
@@ -630,7 +621,7 @@ async function loadGameData() {
         actionCards = await actionCardsResponse.json();
         battleSystem = await battleSystemResponse.json();
 
-        allCards = [...characters, ...actionCards.elementActions, ...actionCards.classActions];
+		allCards = [...(characters || []), ...(actionCards?.elementActions || []), ...(actionCards?.classActions || [])];
     } catch (error) {
         console.error("Critical loading error:", error);
     }
