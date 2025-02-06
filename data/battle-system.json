@@ -28,5 +28,34 @@
     "A character card can be combined with an action card if their elements match (for element actions) or classes match (for class actions).",
     "Healing cards can target other cards in your battle zone.",
     "If a card reaches 0 HP, it is discarded permanently."
-  ]
+  ],
+  "battleMechanics": {
+    "damageCalculation": "attack - defense (minimum 0)",
+    "attackRules": {
+      "targetSelection": "Player selects a target from opponent's battle zone",
+      "attackPriority": "Characters attack first, then action cards"
+    },
+    "bonuses": {
+      "elementBonus": "Damage boost if attacker has advantage over target",
+      "classBonus": "Bonus if class synergy is met"
+    },
+    "cardDestructionRules": {
+      "threshold": 0,
+      "effect": "If HP reaches threshold, card is removed from battle zone"
+    }
+  },
+  "combatRestrictions": {
+    "validTargetRules": [
+      "Cards can only attack cards in the opponent’s battle zone.",
+      "A character cannot attack another character of the same element."
+    ],
+    "actionCardInteractions": [
+      "Action cards can be played at any time but require a valid match to remain in play.",
+      "A character card cannot be played if there is an unmatched action card in the battle zone."
+    ],
+    "battleZoneInteractions": [
+      "If a card has a class, at least one god in the battle zone must share that class.",
+      "If a card has an element, at least one god in the battle zone must share that element."
+    ]
+  }
 }

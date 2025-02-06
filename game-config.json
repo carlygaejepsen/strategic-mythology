@@ -1,0 +1,73 @@
+{
+  "gameSettings": {
+    "maxHandSize": 5,
+    "maxBattleZoneSize": 3,
+    "startingHandSize": 5,
+    "enableAI": true,
+    "aiMoveDelay": 1000
+  },
+  "elementEmojis": {
+    "fire": "🔥",
+    "water": "🌊",
+    "air": "💨",
+    "earth": "🏔️",
+    "electricity": "⚡",
+    "love": "💞",
+    "malice": "🩸",
+    "hubris": "🦚",
+    "wisdom": "📖",
+    "light": "🕯️",
+    "shadow": "🌑",
+    "vitality": "🌿",
+    "decay": "🍂",
+    "luck": "🪙",
+    "justice": "⚖️"
+  },
+  "deckSettings": {
+    "shuffleAlgorithm": "fisher-yates",
+    "validCardTypes": ["character", "element", "class"],
+    "maxDeckSize": 40
+  },
+  "uiSettings": {
+    "logBattleEvents": true,
+    "showCardImages": true,
+    "enableHoverEffects": true,
+    "animationSpeed": 300
+  },
+  "playerDefaults": {
+    "startingHP": 100,
+    "deckSize": 40,
+    "handSize": 5
+  },
+  "aiSettings": {
+    "difficulty": "normal",
+    "moveDelay": 1000,
+    "logic": {
+      "preferMatchingCards": true,
+      "attackWeakestTarget": true,
+      "prioritizeSurvival": true
+    }
+  },
+  "actionRules": {
+    "playableWithoutCharacter": true,
+    "actionCardLimit": 1,
+    "discardAfterUse": false
+  },
+  "battleRules": {
+    "maxAttacksPerTurn": 1,
+    "allowMultipleAttackers": false,
+    "defenseReducesDamage": true,
+    "elementSynergyBonus": true,
+    "classSynergyBonus": true
+  },
+  "drawRules": {
+    "cardsPerTurn": 1,
+    "maxHandSize": 7,
+    "discardExcessCards": true
+  },
+  "specialRules": {
+    "wildcardsAllowed": false,
+    "instantWinCondition": "all opponent's cards eliminated",
+    "suddenDeathAfterTurns": 20
+  }
+}

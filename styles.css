@@ -1,241 +1,19 @@
-/* Basic reset to remove default browser padding/margin */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-/* Body styling */
-body {
-  font-family: sans-serif;
-  background: #83CEEC;
-  color: #FFFFFF;
-}
-
-/* Container that wraps the entire game */
-.container {
-  width: 95%;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 10px;
-}
-
-/* Basic heading styles */
-h1, h2 {
-  text-align: center;
-  margin-bottom: 10px;
-}
-
-/* Game Board layout */
-.game-board {
-  width: 100%;
-  max-width: 1300px;
-  gap: 20px;
-  display: flex;
-  justify-content: space-between;
-}
-
-/* Player area */
-.player-area {
-  flex: 1;
-  min-width: 450px;
-  border: 2px solid #FFFFFF;
-  border-radius: 8px;
-  padding: 10px;
-  background: #006BBD;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* Hand section within the player area */
-.player-hand {
-  width: 95%;
-  min-height: 100px;
-  border: 2px solid #fff;
-  border-radius: 8px;
-  background: #284177;
-  padding: 10px;
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 10px;
-}
-
-/* Center area - now contains results log and battle zones */
-#center-area {
-  flex-basis: 1 1 40%;
-  min-width: 300px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px; /* Space between results log and battle zones */
-}
-
-/* Battle zone container - center with labels */
-.battle-zone-container {
-  width: 90%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 20px; /* Space between Player 1 and Player 2 battle zones */
-}
-
-.battle-zone-label {
-  font-size: 18px;
-  font-weight: bold;
-  color: #FFFFFF;
-  margin-bottom: 10px;
-}
-
-/* Battle zone styling */
-.player-battlezone {
-  width: 100%;
-  min-height: 120px;
-  border: 3px solid #fff;
-  border-radius: 8px;
-  background: #006BBD;
-  padding: 10px;
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: center;
-  overflow: visible;
-}
-
-/* Controls (buttons) in the center area */
-#controls {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-/* Results log styling */
-#results-log {
-  margin-top: 20px;
-  border: 2px solid #C2AFA8;
-  border-radius: 8px;
-  background: #fff;
-  padding: 10px;
-  width: 100%;
-  height: 150px;
-  overflow-y: auto; /* Allows scrolling */
-  font-size: 12px;
-  color: #333;
-}
-
-.log-entry {
-  margin-bottom: 5px;
-  padding: 5px;
-  border-bottom: 1px solid #ccc;
-}
-
-.results-container h2 {
-  margin-bottom: 10px;
-  text-align: center;
-}
-
-/* Card container for each player's hand */
-.card-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 6px; /* Reduce the spacing */
-  width: 100%;
-  justify-content: center;
-}
-
-/* Card styling */
-.card {
-  background-color: #EDE8E4;
-  border: 2px solid #C2AFA8;
-  border-radius: 6px;
-  color: #284177;
-  width: 140px;
-  height: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 5px;
-  text-align: center;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  font-size: 12px;
-  word-wrap: break-word;
-}
-
-/* Hover effect on cards */
-.card:hover {
-  transform: scale(1.5);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
-
-/* Buttons */
-.button, button {
-  background-color: #ffffff;
-  border: none;
-  padding: 12px 16px;
-  border-radius: 6px;
-  color: #284177;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.25s;
-}
-
-/* Card Elements */
+/* Ensure card names don't overflow */
 .card-name {
   font-weight: bold;
   font-size: 14px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 100%; /* Ensures it doesn’t overflow */
+  max-width: 100%; 
 }
 
-.card-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px; /* Keeps a little space between name and emoji */
+.card:hover {
+  transform: scale(1.5);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-.card-header .element-emoji {
-  font-size: 12px;
-}
-
-.card-image {
-  width: 100px;
-  height: auto;
-  border-radius: 4px;
-  margin-bottom: 5px;
-}
-
-.card-attributes {
-  font-size: 12px;
-  color: #555;
-  margin-bottom: 3px;
-}
-
-.card-stats {
-  font-size: 12px;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  gap: 5px;
-  margin-bottom: 5px;
-}
-
-.card-description {
-  font-size: 10px;
-  color: #666;
-  text-align: center;
-  margin-top: 5px;
-}
-
+/* Ensure battlezone cards adjust spacing dynamically */
 .mini-card {
   width: 80px;
   height: auto;
@@ -250,70 +28,16 @@ h1, h2 {
   font-size: 10px;
   text-align: center;
   color: #284177;
+  flex-grow: 1; /* Ensures better responsiveness */
 }
 
-.mini-card-name {
-  font-weight: bold;
-  font-size: 12px;
-}
-
-.mini-card-image {
-  width: 50px;
-  height: auto;
-  border-radius: 4px;
-  margin-bottom: 2px;
-}
-
-.mini-card-elements, .mini-card-classes {
-  font-size: 10px;
-  color: #555;
-}
-
-.mini-card-stats {
-  font-size: 10px;
-  font-weight: bold;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  margin-top: 3px;
-  color: #284177;
-}
-
-.button:hover,
-button:hover {
-  background-color: #284177;
-  border: none;
-  border-radius: 2px;
-  color: #fff;
-}
-
-/* Disabled button state */
-button:disabled,
-.button:disabled {
-  background-color: #ccc;
-  cursor: default;
-}
-
-/* Phase indicators */
-.turn-phase {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 10px 20px;
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  border-radius: 5px;
-}
-
-/* Interactive states */
+/* Update selection highlights for better readability */
 .selectable {
-  box-shadow: 0 0 10px yellow;
+  box-shadow: 0 0 12px rgba(255, 255, 0, 0.8);
   cursor: pointer;
 }
 
 .targetable {
-  box-shadow: 0 0 10px red;
+  box-shadow: 0 0 12px rgba(255, 0, 0, 0.8);
   cursor: crosshair;
 }

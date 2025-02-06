@@ -1,5 +1,6 @@
 [
-    {
+   "elementActions": [ 
+   {
       "id": "fire",
       "name": "Burnt Offering",
 	"type": "action",
@@ -193,7 +194,9 @@
       "healAmount": 30,
 	"image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/healing.png"
 
-    },
+    }
+],
+"classActions": [
     {
       "id": "athletics",
       "name": "Athletics",
