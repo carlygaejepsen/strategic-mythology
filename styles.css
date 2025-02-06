@@ -28,8 +28,8 @@ h1, h2 {
 
 /* Game Board layout */
 .game-board {
-  width: 100%
-  max-width: 1300px
+  width: 100%;
+  max-width: 1300px;
   gap: 20px;
   display: flex;
   justify-content: space-between;
@@ -63,11 +63,9 @@ h1, h2 {
   margin-top: 10px;
 }
 
-
-
 /* Center area - now contains results log and battle zones */
 #center-area {
-  flex-basis: 1 1 40%; 
+  flex-basis: 1 1 40%;
   min-width: 300px;
   display: flex;
   flex-direction: column;
@@ -106,6 +104,7 @@ h1, h2 {
   justify-content: center;
   overflow: visible;
 }
+
 /* Controls (buttons) in the center area */
 #controls {
   display: flex;
@@ -135,7 +134,6 @@ h1, h2 {
   border-bottom: 1px solid #ccc;
 }
 
-
 .results-container h2 {
   margin-bottom: 10px;
   text-align: center;
@@ -149,7 +147,6 @@ h1, h2 {
   width: 100%;
   justify-content: center;
 }
-
 
 /* Card styling */
 .card {
@@ -286,7 +283,7 @@ h1, h2 {
 .button:hover,
 button:hover {
   background-color: #284177;
-  border: #fff
+  border: none;
   border-radius: 2px;
   color: #fff;
 }
@@ -300,23 +297,23 @@ button:disabled,
 
 /* Phase indicators */
 .turn-phase {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 10px 20px;
-    background: rgba(0,0,0,0.8);
-    color: white;
-    border-radius: 5px;
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  border-radius: 5px;
 }
 
 /* Interactive states */
 .selectable {
-    box-shadow: 0 0 10px yellow;
-    cursor: pointer;
+  box-shadow: 0 0 10px yellow;
+  cursor: pointer;
 }
 
 .targetable {
-    box-shadow: 0 0 10px red;
-    cursor: crosshair;
+  box-shadow: 0 0 10px red;
+  cursor: crosshair;
 }
