@@ -423,17 +423,20 @@ function getCardFromElement(cardElement) {
     console.error("Null cardElement passed.");
     return null;
   }
-  const nameElement = cardElement.querySelector(".mini-card-name");
+  // Try to get the card name from either a mini-card or a full card element.
+  const nameElement = cardElement.querySelector(".mini-card-name") || cardElement.querySelector(".card-name-text");
   if (!nameElement) {
     console.error("Name element not found in card:", cardElement);
     return null;
   }
   const cardName = nameElement.textContent.trim();
+  // Look through both battle zones for a card with this name.
   return (
     [...player1BattleZone, ...player2BattleZone].find((card) => card.name === cardName) ||
     null
   );
 }
+
 
 // ============= WIN CONDITION CHECKING =============
 function checkWinConditions() {
