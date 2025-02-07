@@ -49,12 +49,24 @@ function getCardFromElement(cardElement) {
     );
 }
 //
-function createCardElement(card) {
+function createCardElement(card, isMini = false) {
     if (!card || !card.name) {
         console.error("Invalid card object passed to createCardElement:", card);
         return null;
     }
-
+	
+    const cardDiv = document.createElement("div");
+    cardDiv.classList.add(isMini ? "mini-card" : "card");
+    
+    // Modify content for mini-cards
+    if(isMini) {
+        nameText.style.fontSize = "0.8rem";
+        if(card.img) {
+            imgElement.style.width = "50px";
+            imgElement.style.height = "50px";
+        }
+    }
+    
     const cardDiv = document.createElement("div");
     cardDiv.classList.add("card");
 
@@ -158,15 +170,10 @@ function buildDeck() {
 }
 //
 function renderBZ(playerBZ, battleZoneElement) {
-    if (!battleZoneElement || !(battleZoneElement instanceof HTMLElement)) {
-        console.error("Error: Invalid battleZoneElement in renderBZ.", battleZoneElement);
-        return;
-    }
-
-    battleZoneElement.innerHTML = ""; // ✅ Now safely modifies the element
-
+    battleZoneElement.innerHTML = "";
     playerBZ.forEach(card => {
-        const cardElement = createCardElement(card);
+        const cardElement = createCardElement(card, true); // Force mini-card format
+        cardElement.classList.add("mini-card"); // Ensure class is set
         battleZoneElement.appendChild(cardElement);
     });
 }
@@ -190,8 +197,6 @@ function renderHand(hand, container, whichPlayer) {
         container.appendChild(cardElement);
     });
 }
-
-
 //
 async function initGame() {
     try {
@@ -367,15 +372,29 @@ async function doAiDeploy() {
     }
 }
 //
-function playCard(card, playerHand, playerBZ, battleZoneElement) {
-    if (!card || !playerHand || !playerBZ || !battleZoneElement) {
+function playCard(card, playerHand, playerBZ, battleZoneId) {
+    if (!card || !playerHand || !playerBZ || !battleZoneId) {
         console.error("playCard function received undefined arguments.");
         return;
     }
 
+    cardElement.classList.remove("card");
+    cardElement.classList.add("mini-card");
+	
     const cardIndex = playerHand.indexOf(card);
     if (cardIndex === -1) {
         console.log("Card not found in hand!");
+        return;
+    }
+
+    // Convert battleZoneId from string to DOM element (if necessary)
+    let battleZoneElement = typeof battleZoneId === "string" 
+        ? document.querySelector(`.${battleZoneId}`) 
+        : battleZoneId;
+
+    // Validate battle zone element
+    if (!battleZoneElement || !(battleZoneElement instanceof HTMLElement)) {
+        console.error(`Error: Battle zone element '${battleZoneId}' not found or invalid.`, battleZoneElement);
         return;
     }
 
@@ -383,14 +402,8 @@ function playCard(card, playerHand, playerBZ, battleZoneElement) {
     playerHand.splice(cardIndex, 1);
     playerBZ.push(card);
 
-    // Ensure battleZoneElement is a valid DOM element (not a string)
-    if (!(battleZoneElement instanceof HTMLElement)) {
-        console.error("Error: battleZoneElement is not a valid HTML element.", battleZoneElement);
-        return;
-    }
-
     // Update the UI
-    renderBZ(playerBZ, battleZoneElement); // ✅ No querySelector needed
+    renderBZ(playerBZ, battleZoneElement); // ✅ No querySelector needed, now correctly passing a DOM element
 
     renderHand(
         playerHand,

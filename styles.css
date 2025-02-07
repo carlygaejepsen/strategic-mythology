@@ -38,7 +38,8 @@ body {
   background: #284177;
 }
 
-.playerHand {
+/* Change .playerHand to .player-hand */
+.player-hand { /* ✅ Match HTML class */
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
@@ -47,6 +48,12 @@ body {
   background: #284177;
 }
 
+/* Change .cardNameText to .card-name-text */
+.card-name-text { /* ✅ Match JS class */
+  font-weight: bold;
+  text-align: center;
+  margin-top: 5px;
+}
 /* Controls (buttons) in the center area */
 #controls {
   display: flex;
@@ -57,7 +64,7 @@ body {
 }
 
 /* Results log styling */
-#resultsLog {
+#results-log {
   margin-top: 20px;
   border: 2px solid #C2AFA8;
   border-radius: 8px;
@@ -99,6 +106,17 @@ body {
   text-align: center;
   padding: 10px;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+.card.mini-card {
+  transform: scale(0.7) translateY(-10px);
+  animation: cardShrink 0.3s ease-out;
+}
+
+@keyframes cardShrink {
+  from { transform: scale(1); }
+  to { transform: scale(0.7) translateY(-10px); }
 }
 
 .card img {
@@ -175,19 +193,32 @@ button:hover:not(:disabled) {
   cursor: pointer;
 }
 
-.miniCard {
-  width: 100px;
-  height: 140px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+/* Mini-Card specific styles */
+.mini-card {
+  width: 100px !important;
+  height: 140px !important;
+  padding: 5px !important;
+  transition: all 0.3s ease;
   border: 1px solid #C2AFA8;
   background-color: #EDE8E4;
 }
 
-.cardNameText {
-  font-weight: bold;
-  text-align: center;
-  margin-top: 5px;
+.mini-card .card-name-text {
+  font-size: 0.8rem !important;
+  margin-bottom: 2px !important;
 }
+
+.mini-card img {
+  width: 50px !important;
+  height: 50px !important;
+}
+
+.mini-card .card-attributes {
+  font-size: 0.7rem !important;
+}
+
+.mini-card .card-stats {
+  font-size: 0.75rem !important;
+
+}
+
