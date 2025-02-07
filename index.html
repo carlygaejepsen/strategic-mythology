@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Strategic Mythology</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
   <div class="container">
@@ -48,7 +48,9 @@
   <!-- Link the JavaScript -->
 <script src="game.js" type="module"></script>
 
-<script>
+<script type="module">
+  import { initGame, handleTurn, shuffleDeck, getElementSafe } from "./game.js";
+
   document.getElementById("start-game").addEventListener("click", () => {
     initGame();
   });
