@@ -13,14 +13,14 @@
       <!-- Player 1 Area -->
       <div class="player-area" id="p1-area">
         <h2>Player 1</h2>
-        <div class="player-hand" id="p1-hand"></div>
+        <div class="player-hand p1-hand"></div> <!-- ✅ Fixed Class Usage -->
       </div>
 
       <!-- Center Area (Buttons, Logs, Battle Zones) -->
       <div id="center-area">
         <div id="controls">
           <button id="start-game">Start Game</button>
-          <button id="play-turn" disabled>Play Turn</button>
+          <button id="play-turn-btn" disabled>Play Turn</button> <!-- ✅ Fixed ID -->
         </div>
         <div id="results-log" class="results-container">
           <h2>Results Log</h2>
@@ -28,11 +28,11 @@
         <div class="battle-zone-container">
           <div>
             <div class="battle-zone-label">Player 1 Battle Zone</div>
-            <div class="player-battlezone" id="p1-battlezone"></div>
+            <div class="player-battlezone p1BZ"></div> <!-- ✅ Fixed Class -->
           </div>
           <div>
             <div class="battle-zone-label">Player 2 Battle Zone</div>
-            <div class="player-battlezone" id="p2-battlezone"></div>
+            <div class="player-battlezone p2BZ"></div> <!-- ✅ Fixed Class -->
           </div>
         </div>
       </div>
@@ -40,24 +40,25 @@
       <!-- Player 2 Area -->
       <div class="player-area" id="p2-area">
         <h2>Player 2</h2>
-        <div class="player-hand" id="p2-hand"></div>
+        <div class="player-hand p2-hand"></div> <!-- ✅ Fixed Class Usage -->
       </div>
     </div>
   </div>
 
   <!-- Link the JavaScript -->
-<script src="game.js" type="module"></script>
+  <script src="game.js" type="module"></script>
 
-<script type="module">
-  import { initGame, handleTurn, shuffleDeck} from "./game.js";
+  <script type="module">
+    import { initGame, handleTurn } from "./game.js";
 
-  document.getElementById("start-game").addEventListener("click", () => {
-    initGame();
-  });
-  document.getElementById("play-turn").addEventListener("click", () => {
-    handleTurn();
-  });
-</script>
+    document.getElementById("start-game").addEventListener("click", () => {
+      initGame();
+    });
+
+    document.getElementById("play-turn-btn").addEventListener("click", () => { // ✅ Fixed ID
+      handleTurn();
+    });
+  </script>
 
 </body>
 </html>
