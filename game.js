@@ -383,7 +383,7 @@ function playCard(card, playerHand, playerBZ, battleZoneElement) {
     playerHand.splice(cardIndex, 1);
     playerBZ.push(card);
 
-    // Ensure battleZoneElement is valid (it is passed directly, no need for querySelector)
+    // Ensure battleZoneElement is a valid DOM element (not a string)
     if (!(battleZoneElement instanceof HTMLElement)) {
         console.error("Error: battleZoneElement is not a valid HTML element.", battleZoneElement);
         return;
@@ -400,25 +400,7 @@ function playCard(card, playerHand, playerBZ, battleZoneElement) {
         playerHand === p1Hand ? "p1" : "p2"
     );
 }
-    // Remove card from hand and add it to battle zone
-    playerHand.splice(cardIndex, 1);
-    playerBZ.push(card);
 
-    // Ensure the battle zone element is valid
-    const battleZoneContainer = document.querySelector(`.${battleZoneElement}`);
-    if (!battleZoneContainer) {
-        console.error(`Error: Battle zone element '${battleZoneElement}' not found.`);
-        return;
-    }
-
-    // Update the UI
-    renderBZ(playerBZ, battleZoneContainer);
-    renderHand(
-        playerHand,
-        playerHand === p1Hand ? document.querySelector(".player-hand.p1-hand") : document.querySelector(".player-hand.p2-hand"),
-        playerHand === p1Hand ? "p1" : "p2"
-    );
-}
 
 // ============= ATTACK SYSTEM =============
 //
