@@ -1,5 +1,4 @@
-{
-   "elementActions": [ 
+[ 
    {
       "id": "fire",
       "name": "Burnt Offering",
@@ -196,4 +195,4 @@
 
     }
 	]
-}
+

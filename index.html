@@ -11,9 +11,9 @@
     <!-- Game Board -->
     <div class="game-board">
       <!-- Player 1 Area -->
-      <div class="player-area" id="player1-area">
+      <div class="player-area" id="p1-area">
         <h2>Player 1</h2>
-        <div class="player-hand" id="player1-hand"></div>
+        <div class="player-hand" id="p1-hand"></div>
       </div>
 
       <!-- Center Area (Buttons, Logs, Battle Zones) -->
@@ -28,25 +28,34 @@
         <div class="battle-zone-container">
           <div>
             <div class="battle-zone-label">Player 1 Battle Zone</div>
-            <div class="player-battlezone" id="player1-battlezone"></div>
+            <div class="player-battlezone" id="p1-battlezone"></div>
           </div>
           <div>
             <div class="battle-zone-label">Player 2 Battle Zone</div>
-            <div class="player-battlezone" id="player2-battlezone"></div>
+            <div class="player-battlezone" id="p2-battlezone"></div>
           </div>
         </div>
       </div>
 
       <!-- Player 2 Area -->
-      <div class="player-area" id="player2-area">
+      <div class="player-area" id="p2-area">
         <h2>Player 2</h2>
-        <div class="player-hand" id="player2-hand"></div>
+        <div class="player-hand" id="p2-hand"></div>
       </div>
     </div>
   </div>
 
   <!-- Link the JavaScript -->
 <script src="game.js" type="module"></script>
+
+<script>
+  document.getElementById("start-game").addEventListener("click", () => {
+    initGame();
+  });
+  document.getElementById("play-turn").addEventListener("click", () => {
+    handleTurn();
+  });
+</script>
 
 </body>
 </html>
