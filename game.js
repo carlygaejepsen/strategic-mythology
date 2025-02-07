@@ -1,8 +1,20 @@
 let elementEmojis = {};
+let battleSystem = {}; // Store battle system data
+
+async function loadBattleSystem() {
+    try {
+        const response = await fetch("bat-sys.json"); // Load from the correct path
+        if (!response.ok) throw new Error("Failed to load bat-sys.json");
+        battleSystem = await response.json();
+    } catch (error) {
+        console.error("Error loading battle system:", error);
+    }
+}
+
 
 async function loadGameConfig() {
     try {
-        const response = await fetch("path/to/game-config.json");
+        const response = await fetch("./data/game-config.json");
         if (!response.ok) throw new Error("Failed to load game-config.json");
         const config = await response.json();
         elementEmojis = config.elementEmojis;
@@ -11,6 +23,84 @@ async function loadGameConfig() {
     }
 }
 
+// ============= DATA LOADING =============
+async function loadGameData() {
+    const jsonFiles = [
+        "water-chars.json",
+        "elem-cards.json",
+        "bat-sys.json",
+        "beast-chars.json",
+        "bully-chars.json",
+        "celestial-chars.json",
+		"char-desc.json"
+		"class-cards.json",
+        "game-config.json",
+        "hero-chars.json",
+        "life-chars.json",
+        "mystical-chars.json",
+        "olympian-chars.json",
+		"plant-chars.json",
+        "underworld-chars.json"
+    ];
+
+    const basePath = "https://carlygaejepsen.github.io/strategic-mythology/data/";
+
+    try {
+        // Fetch all JSON files in parallel
+        const responses = await Promise.all(jsonFiles.map(file => fetch(basePath + file)));
+
+        // Check if any fetch requests failed
+        responses.forEach((res, index) => {
+            if (!res.ok) {
+                throw new Error(`Failed to load ${jsonFiles[index]}`);
+            }
+        });
+
+        // Parse all JSON responses
+        const data = await Promise.all(responses.map(res => res.json()));
+
+        // Map data to corresponding variables
+        const [
+            waterChars, 
+            actionCards, 
+            batSys, 
+            beastChars, 
+            bullyChars, 
+            celestialChars, 
+            gameConfig, 
+            heroChars, 
+            lifeChars, 
+            mysticalChars, 
+            olympianChars, 
+            underworldChars
+        ] = data;
+
+        // Store them into a gameData object for easier access
+        gameData = {
+            waterChars,
+            elemCards,
+			classCards,
+            batSys,
+            beastChars,
+            bullyChars,
+            celestialChars,
+            gameConfig,
+            heroChars,
+            lifeChars,
+            mysticalChars,
+            olympianChars,
+			plantChars,
+            underworldChars
+        };
+
+        console.log("All game data loaded successfully!", gameData);
+    } catch (error) {
+        console.error("Error loading game data:", error);
+    }
+}
+
+// Call the function to load data
+loadGameData();
 
 // ============= HELPER FUNCTIONS =============
 // Returns a DOM element or logs an error if not found.
@@ -24,9 +114,9 @@ function buildDeck() {
   return shuffleDeck(
     allCards.filter(
       (card) =>
-        card.type === "character" ||
-        card.subtype === "element" ||
-        card.subtype === "class"
+        card.type === "char" ||
+        card.sub === "elemCards" ||
+        card.sub === "classCards"
     )
   );
 }
@@ -49,10 +139,10 @@ function logBattleEvent(message) {
   logContainer.scrollTop = logContainer.scrollHeight;
 }
 
-function enableHandInteraction(player) {
-  const handId = player === "player1" ? "player1-hand" : "player2-hand";
+function enableHandInteract(player) {
+  const handId = player === "p1" ? "p1-hand" : "p2-hand";
   const battleZoneId =
-    player === "player1" ? "player1-battlezone" : "player2-battlezone";
+    player === "p1" ? "p1-battlezone" : "p2-battlezone";
   const handContainer = getElementSafe(handId);
   if (!handContainer) return;
   handContainer.querySelectorAll(".card").forEach((cardEl) => {
@@ -62,55 +152,55 @@ function enableHandInteraction(player) {
       if (!card) return;
       playCard(
         card,
-        player === "player1" ? player1Hand : player2Hand,
-        player === "player1" ? player1BattleZone : player2BattleZone,
+        player === "p1" ? p1Hand : p2Hand,
+        player === "p1" ? p1BZ : p2BZ,
         battleZoneId
       );
-      if (player === "player1") handleTurn();
+      if (player === "p1") handleTurn();
     };
   });
 }
 
 async function doAiDeploy() {
-  if (player2Hand.length > 0 && player2BattleZone.length < 3) {
-    const playableCards = player2Hand.filter((card) =>
-      validateCardPlay(card, player2BattleZone)
+  if (p2Hand.length > 0 && p2BZ.length < 3) {
+    const playableCards = p2Hand.filter((card) =>
+      validateCardPlay(card, p2BZ)
     );
     if (playableCards.length > 0) {
       const chosenCard =
         playableCards[Math.floor(Math.random() * playableCards.length)];
 	await new Promise((resolve) => setTimeout(resolve, gameConfig.aiSettings.moveDelay));
-      playCard(chosenCard, player2Hand, player2BattleZone, "player2-battlezone");
+      playCard(chosenCard, p2Hand, p2BZ, "p2-battlezone");
     } else {
       console.warn("AI has no playable cards.");
     }
   }
 }
 
-function playCard(card, playerHand, playerBattleZone, battleZoneId) {
-	if (playerBattleZone.length >= gameConfig.gameSettings.maxBattleZoneSize) {
-		console.warn(`Battle zone is full! Cannot play more than ${gameConfig.gameSettings.maxBattleZoneSize} cards.`);
+function playCard(card, playerHand, playerBZ, battleZoneId) {
+	if (playerBZ.length >= gameConfig.gameSettings.maxBZSize) {
+		console.warn(`Battle zone is full! Cannot play more than ${gameConfig.gameSettings.maxBZSize} cards.`);
 		return;
 	}
 
-	if (playerBattleZone.length > 0) {
-    const hasValidMatch = playerBattleZone.some((existingCard) => {
-      if (card.type === "character") {
+	if (playerBZ.length > 0) {
+    const hasValidMatch = playerBZ.some((existingCard) => {
+      if (card.type === "char") {
         return (
-          existingCard.type === "action" &&
-          ((existingCard.subtype === "class" &&
+          existingCard.type === "act" &&
+          ((existingCard.sub === "classCards" &&
             existingCard.classes.some((cls) => card.classes.includes(cls))) ||
-            (existingCard.subtype === "element" &&
+            (existingCard.sub === "element" &&
               Array.isArray(card.element)
                 ? card.element.includes(existingCard.element)
                 : card.element === existingCard.element))
         );
-      } else if (card.type === "action") {
+      } else if (card.type === "act") {
         return (
-          existingCard.type === "character" &&
-          ((card.subtype === "class" &&
+          existingCard.type === "char" &&
+          ((card.sub === "classCards" &&
             existingCard.classes.some((cls) => card.classes.includes(cls))) ||
-            (card.subtype === "element" &&
+            (card.sub === "elemCards" &&
               Array.isArray(existingCard.element)
                 ? existingCard.element.includes(card.element)
                 : existingCard.element === card.element))
@@ -129,12 +219,12 @@ function playCard(card, playerHand, playerBattleZone, battleZoneId) {
     return;
   }
   playerHand.splice(cardIndex, 1);
-  playerBattleZone.push(card);
-  renderBattleZone(playerBattleZone, battleZoneId);
+  playerBZ.push(card);
+  renderBZ(playerBZ, battleZoneId);
   renderHand(
     playerHand,
-    playerHand === player1Hand ? "player1-hand" : "player2-hand",
-    playerHand === player1Hand ? "player1" : "player2"
+    playerHand === p1Hand ? "p1-hand" : "p2-hand",
+    playerHand === p1Hand ? "p1" : "p2"
   );
 }
 
@@ -144,10 +234,10 @@ function renderHand(hand, containerId, whichPlayer) {
   container.innerHTML = "";
   hand.forEach((card) => {
     const cardElement = createCardElement(card);
-    if (whichPlayer === "player1") {
+    if (whichPlayer === "p1") {
       cardElement.addEventListener("click", () => {
-        playCard(card, player1Hand, player1BattleZone, "player1-battlezone");
-        renderHand(player1Hand, containerId, whichPlayer);
+        playCard(card, p1Hand, p1BZ, "p1-battlezone");
+        renderHand(p1Hand, containerId, whichPlayer);
       });
     }
     container.appendChild(cardElement);
@@ -185,11 +275,11 @@ function createCardElement(card) {
   cardDiv.appendChild(nameElement);
 
   // Image
-  if (card.image) {
+  if (card.img) {
     const imgElement = document.createElement("img");
-    imgElement.src = card.image;
+    imgElement.src = card.img;
     imgElement.alt = card.name;
-    imgElement.classList.add("card-image");
+    imgElement.classList.add("card-img");
     cardDiv.appendChild(imgElement);
   }
 
@@ -210,20 +300,20 @@ function createCardElement(card) {
   }
 
   // Description
-  if (card.description) {
-    const descriptionElement = document.createElement("div");
-    descriptionElement.classList.add("card-description");
-    descriptionElement.textContent = card.description;
-    cardDiv.appendChild(descriptionElement);
+  if (card.desc) {
+    const descElement = document.createElement("div");
+    descElement.classList.add("card-desc");
+    descElement.textContent = card.desc;
+    cardDiv.appendChild(descElement);
   }
   return cardDiv;
 }
 
-function renderBattleZone(playerBattleZone, containerId) {
+function renderBZ(playerBZ, containerId) {
   const container = getElementSafe(containerId);
   if (!container) return;
   container.innerHTML = "";
-  playerBattleZone.forEach((card) => {
+  playerBZ.forEach((card) => {
     const miniCard = document.createElement("div");
     miniCard.classList.add("mini-card");
 
@@ -234,11 +324,11 @@ function renderBattleZone(playerBattleZone, containerId) {
     miniCard.appendChild(nameElement);
 
     // Card Image (if available)
-    if (card.image) {
+    if (card.img) {
       const imgElement = document.createElement("img");
-      imgElement.src = card.image;
+      imgElement.src = card.img;
       imgElement.alt = card.name;
-      imgElement.classList.add("mini-card-image");
+      imgElement.classList.add("mini-card-img");
       miniCard.appendChild(imgElement);
     }
 
@@ -265,7 +355,7 @@ function renderBattleZone(playerBattleZone, containerId) {
       miniCard.appendChild(classElement);
     }
 
-    // Display Stats (HP, ATK, DEF)
+    // Display Stats (hp, atk, def)
     if (card.hp || card.atk || card.def) {
       const statsElement = document.createElement("div");
       statsElement.classList.add("mini-card-stats");
@@ -280,26 +370,26 @@ async function doAiMove() {
 	
 	await new Promise(resolve => setTimeout(resolve, gameConfig.aiSettings.moveDelay));
 
-  if (player2Hand.length === 0) {
+  if (p2Hand.length === 0) {
     console.log("AI (Player 2) has no cards left to play.");
     return;
   }
-  let playableCards = player2Hand.filter((card) => {
-    if (player2BattleZone.length === 0) {
+  let playableCards = p2Hand.filter((card) => {
+    if (p2BZ.length === 0) {
       return true; // If battle zone is empty, AI can play anything
     }
-    if (card.type === "character") {
-      return player2BattleZone.some((existingCard) =>
-        existingCard.type === "action" &&
-        ((existingCard.subtype === "element" && card.element?.includes(existingCard.element)) ||
-          (existingCard.subtype === "class" && existingCard.classes?.some((cls) => card.classes?.includes(cls))))
+    if (card.type === "char") {
+      return p2BZ.some((existingCard) =>
+        existingCard.type === "act" &&
+        ((existingCard.sub === "element" && card.element?.includes(existingCard.element)) ||
+          (existingCard.sub === "class" && existingCard.classes?.some((cls) => card.classes?.includes(cls))))
       );
     }
-    if (card.type === "action") {
-      return player2BattleZone.some((existingCard) =>
-        existingCard.type === "character" &&
-        ((card.subtype === "element" && existingCard.element?.includes(card.element)) ||
-          (card.subtype === "class" && card.classes?.some((cls) => existingCard.classes?.includes(cls))))
+    if (card.type === "act") {
+      return p2BZ.some((existingCard) =>
+        existingCard.type === "char" &&
+        ((card.sub === "element" && existingCard.element?.includes(card.element)) ||
+          (card.sub === "class" && card.classes?.some((cls) => existingCard.classes?.includes(cls))))
       );
     }
     return false;
@@ -311,21 +401,21 @@ async function doAiMove() {
   const chosenCard =
     playableCards[Math.floor(Math.random() * playableCards.length)];
   logBattleEvent(`AI played ${chosenCard.name}!`);
-  playCard(chosenCard, player2Hand, player2BattleZone, "player2-battlezone");
-  renderHand(player2Hand, "player2-hand", "player2");
+  playCard(chosenCard, p2Hand, p2BZ, "p2-battlezone");
+  renderHand(p2Hand, "p2-hand", "p2");
 }
 
 // ============= BATTLE SYSTEM =============
 function initAttackSystem() {
   selectedAttacker = null;
   currentBattlePhase = "select-attacker";
-  addBattleZoneListeners();
+  addBZListeners();
 }
 
-function addBattleZoneListeners() {
+function addBZListeners() {
   const battleZones = {
-    "player1-battlezone": "player1",
-    "player2-battlezone": "player2"
+    "p1-battlezone": "p1",
+    "p2-battlezone": "p2"
   };
   Object.entries(battleZones).forEach(([zoneId, player]) => {
     const zone = getElementSafe(zoneId);
@@ -366,7 +456,7 @@ function resolveCombat(attacker, defender) {
   defender.hp -= totalDamage;
   
   logBattleEvent(
-    `${attacker.name} attacks ${defender.name} for ${totalDamage} damage!`
+    `${attacker.name} atks ${defender.name} for ${totalDamage} damage!`
   );
 
   if (defender.hp <= 0) {
@@ -374,31 +464,31 @@ function resolveCombat(attacker, defender) {
     logBattleEvent(`${defender.name} was destroyed!`);
   }
 
-  updateBattleZones();
+  updateBZs();
 }
 
 function removeDestroyedCard(card) {
-  [player1BattleZone, player2BattleZone].forEach((battleZone, index) => {
+  [p1BZ, p2BZ].forEach((battleZone, index) => {
     const cardIndex = battleZone.findIndex((c) => c.name === card.name);
     if (cardIndex !== -1) {
       battleZone.splice(cardIndex, 1);
-      renderBattleZone(battleZone, index === 0 ? "player1-battlezone" : "player2-battlezone");
+      renderBZ(battleZone, index === 0 ? "p1-battlezone" : "p2-battlezone");
     }
   });
 }
 
-function updateBattleZones() {
-  renderBattleZone(player1BattleZone, "player1-battlezone");
-  renderBattleZone(player2BattleZone, "player2-battlezone");
+function updateBZs() {
+  renderBZ(p1BZ, "p1-battlezone");
+  renderBZ(p2BZ, "p2-battlezone");
 }
 
 
 function highlightValidTargets() {
-  const enemyBattleZone = currentPlayer === "player1" ? player2BattleZone : player1BattleZone;
-  const enemyZoneId = currentPlayer === "player1" ? "player2-battlezone" : "player1-battlezone";
+  const enemyBZ = currentPlayer === "p1" ? p2BZ : p1BZ;
+  const enemyZoneId = currentPlayer === "p1" ? "p2-battlezone" : "p1-battlezone";
   const enemyZone = getElementSafe(enemyZoneId);
 
-  if (!enemyZone || enemyBattleZone.length === 0) return;
+  if (!enemyZone || enemyBZ.length === 0) return;
 
   enemyZone.querySelectorAll(".mini-card").forEach((cardEl) => {
     cardEl.classList.add("targetable");
@@ -413,7 +503,7 @@ function cleanupBattleSelection() {
     el.classList.remove("selectable", "targetable");
   });
 
-  addBattleZoneListeners();
+  addBZListeners();
 }
 
 function getCardFromElement(cardElement) {
@@ -431,18 +521,18 @@ function getCardFromElement(cardElement) {
   const cardName = nameElement.textContent.trim();
 
   return (
-    player1BattleZone.find((card) => card.name === cardName) ||
-    player2BattleZone.find((card) => card.name === cardName) ||
+    p1BZ.find((card) => card.name === cardName) ||
+    p2BZ.find((card) => card.name === cardName) ||
     null
   );
 }
 // ============= WIN CONDITION CHECKING =============
 function checkWinConditions() {
-  const player1Lost = player1BattleZone.length === 0 && player1Hand.length === 0 && player1Deck.length === 0;
-  const player2Lost = player2BattleZone.length === 0 && player2Hand.length === 0 && player2Deck.length === 0;
+  const p1Lost = p1BZ.length === 0 && p1Hand.length === 0 && p1Deck.length === 0;
+  const p2Lost = p2BZ.length === 0 && p2Hand.length === 0 && p2Deck.length === 0;
 
-  if (player1Lost) endGame("player2");
-  if (player2Lost) endGame("player1");
+  if (p1Lost) endGame("p2");
+  if (p2Lost) endGame("p1");
 }
 
 // ============= TURN HANDLING =============
@@ -464,7 +554,7 @@ async function handleTurn() {
 async function handleDeploymentPhase() {
   if (turnStep === 0) {
     logBattleEvent("Your turn: Play a card");
-    enableHandInteraction("player1");
+    enableHandInteract("p1");
     turnStep = 1;
   } else {
     await doAiDeploy();
@@ -474,7 +564,7 @@ async function handleDeploymentPhase() {
 
 async function handleAttackPhase() {
   if (turnStep === 0) {
-    if (player1BattleZone.length > 0 && player2BattleZone.length > 0) {
+    if (p1BZ.length > 0 && p2BZ.length > 0) {
       logBattleEvent("Select your attacker");
       initPlayerAttackSystem();
       turnStep = 1;
@@ -482,7 +572,7 @@ async function handleAttackPhase() {
       advancePhase("draw");
     }
   } else {
-    if (player2BattleZone.length > 0 && player1BattleZone.length > 0) {
+    if (p2BZ.length > 0 && p1BZ.length > 0) {
       await doAiAttack();
     }
     advancePhase("draw");
@@ -490,8 +580,8 @@ async function handleAttackPhase() {
 }
 
 function handleDrawPhase() {
-  [player1Hand, player1Deck].forEach(drawCard);
-  [player2Hand, player2Deck].forEach(drawCard);
+  [p1Hand, p1Deck].forEach(drawCard);
+  [p2Hand, p2Deck].forEach(drawCard);
   advancePhase("deploy");
 }
 
@@ -503,9 +593,9 @@ function advancePhase(nextPhase) {
 
 // ============= ATTACK SYSTEM =============
 function initPlayerAttackSystem() {
-  getElementSafe("player1-battlezone")?.querySelectorAll(".mini-card").forEach((cardEl) => {
+  getElementSafe("p1-battlezone")?.querySelectorAll(".mini-card").forEach((cardEl) => {
     const card = getCardFromElement(cardEl);
-    if (card?.atk > 0) {
+    if (card?.attack > 0) {
       cardEl.classList.add("selectable");
       cardEl.onclick = () => handlePlayerAttackSelection(cardEl);
     }
@@ -519,7 +609,7 @@ function handlePlayerAttackSelection(cardEl) {
   selectedAttacker = attacker;
   clearSelections(".selectable");
 
-  getElementSafe("player2-battlezone")?.querySelectorAll(".mini-card").forEach((targetEl) => {
+  getElementSafe("p2-battlezone")?.querySelectorAll(".mini-card").forEach((targetEl) => {
     const defender = getCardFromElement(targetEl);
     if (defender) {
       targetEl.classList.add("targetable");
@@ -540,16 +630,16 @@ function clearSelections(selector) {
 // ============= CARD DRAWING =============
 function drawCard(hand, deck) {
   if (deck.length > 0) hand.push(deck.shift());
-  renderHand(hand, hand === player1Hand ? "player1-hand" : "player2-hand", hand === player1Hand ? "player1" : "player2");
+  renderHand(hand, hand === p1Hand ? "p1-hand" : "p2-hand", hand === p1Hand ? "p1" : "p2");
 }
 
 // ============= AI ATTACK LOGIC =============
 function doAiAttack() {
-  const attackers = player2BattleZone.filter(c => c.atk > 0);
+  const attackers = p2BZ.filter(c => c.attack > 0);
   if (!attackers.length) return;
 
   const attacker = attackers[Math.floor(Math.random() * attackers.length)];
-  const targets = player1BattleZone.filter(c => c.hp > 0);
+  const targets = p1BZ.filter(c => c.hp > 0);
   if (!targets.length) return;
 
   const target = targets[Math.floor(Math.random() * targets.length)];
@@ -558,79 +648,56 @@ function doAiAttack() {
   checkWinConditions();
 }
 
-// ============= DATA LOADING =============
-async function loadGameData() {
-  try {
-    const gameDataResponses = await Promise.all([
-      fetch("https://carlygaejepsen.github.io/strategic-mythology/data/character-cards.json"),
-      fetch("https://carlygaejepsen.github.io/strategic-mythology/data/action-cards.json"),
-      fetch("https://carlygaejepsen.github.io/strategic-mythology/data/battle-system.json")
-    ]);
-
-    if (gameDataResponses.some(res => !res.ok)) {
-      throw new Error("Failed to load one or more game data files.");
-    }
-
-    const [charactersData, actionCardsData, battleSystemData] = await Promise.all(
-      gameDataResponses.map(res => res.json())
-    );
-
-    characters = charactersData || [];
-    actionCards = actionCardsData || {};
-    battleSystem = battleSystemData || {};
-
-    allCards = [...characters, ...(actionCards.elementActions || []), ...(actionCards.classActions || [])];
-
-    console.log("Game data loaded successfully!");
-  } catch (error) {
-    console.error("Critical error loading game data:", error);
-  }
-}
 
 // ============= INITIALIZE THE GAME =============
 async function initGame() {
   try {
     console.log("Initializing game...");
 
-    // Reset game state
-    player1Deck = [];
-    player2Deck = [];
-    player1Hand = [];
-    player2Hand = [];
-    player1BattleZone = [];
-    player2BattleZone = [];
-    currentPlayer = "player1";
-    currentPhase = "deploy";
+    // Load configuration and battle system data first
+    await Promise.all([loadGameConfig(), loadGameData(), loadBattleSystem()]);
 
-    // Load configuration and game data
-    await Promise.all([loadGameConfig(), loadGameData()]);
+    // Ensure battle system data is loaded before using it
+    if (!battleSystem || !battleSystem.turnStructure) {
+      throw new Error("Battle system data is missing or failed to load.");
+    }
 
-    // Build decks and hands
-    player1Deck = buildDeck();
-    player2Deck = buildDeck();
+    // Initialize game state
+    p1Deck = buildDeck();
+    p2Deck = buildDeck();
+    p1Hand = p1Deck.splice(0, gameConfig.gameSettings.maxHandSize);
+    p2Hand = p2Deck.splice(0, gameConfig.gameSettings.maxHandSize);
+    p1BZ = [];
+    p2BZ = [];
+    currentPlayer = "p1";
+    currentPhase = battleSystem.turnStructure[0].turn; // Use first turn phase from bat-sys.json
 
-    player1Hand = player1Deck.splice(0, gameConfig.gameSettings.maxHandSize);
-    player2Hand = player2Deck.splice(0, gameConfig.gameSettings.maxHandSize);
-
-    console.log(`Deck sizes: P1 - ${player1Deck.length}, P2 - ${player2Deck.length}`);
-    console.log("Player 1 Hand:", player1Hand);
-    console.log("Player 2 Hand:", player2Hand);
+    console.log(`Deck sizes: P1 - ${p1Deck.length}, P2 - ${p2Deck.length}`);
+    console.log("Player 1 Hand:", p1Hand);
+    console.log("Player 2 Hand:", p2Hand);
 
     // Render initial game state
-    renderHand(player1Hand, "player1-hand", "player1");
-    renderHand(player2Hand, "player2-hand", "player2");
+    renderHand(p1Hand, "p1-hand", "p1");
+    renderHand(p2Hand, "p2-hand", "p2");
 
-    ["player1-battlezone", "player2-battlezone"].forEach(zone => {
+    // Clear battle zones
+    ["p1-battlezone", "p2-battlezone"].forEach(zone => {
       const zoneElement = getElementSafe(zone);
       if (zoneElement) zoneElement.innerHTML = "";
     });
 
+    // Ensure the play button exists before modifying it
+    const playTurnBtn = getElementSafe("play-turn-btn");
     if (playTurnBtn) playTurnBtn.disabled = false;
+
+    // Start the first turn
+    handleTurn();
+
   } catch (error) {
     console.error("Error initializing game:", error);
   }
-  handleTurn();
 }
+
 
 // ============= EVENT LISTENERS =============
 getElementSafe("start-game")?.addEventListener("click", initGame);

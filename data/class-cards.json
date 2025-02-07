@@ -1,0 +1,136 @@
+[
+    {
+      "id": "athletics",
+      "name": "Athletics",
+	"type": "act",
+      "sub": "class",
+      "classes": ["wars", "heroes", "wilds"],
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+	"img": "./data/imgs/athletics.png"
+
+      
+    },
+    {
+      "id": "beast",
+      "name": "Beast",
+	"type": "act",
+      "sub": "class",
+      "classes": ["mals", "wilds"],
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+	"img": "./data/imgs/beast.png"
+
+    },
+    {
+      "id": "blessing",
+      "name": "Blessing",
+	"type": "act",
+      "sub": "class",
+      "classes": ["oracles", "ecs", "cares"],
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+      "img": "./data/imgs/blessing.png"
+
+    },
+    {
+      "id": "cannon",
+      "name": "Cannon",
+	"type": "act",
+      "sub": "class",
+      "classes": ["wars", "auth"],
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+      "img": "./data/imgs/cannon.png"
+      
+    },
+    {
+      "id": "curse",
+      "name": "Curse",
+	"type": "act",
+      "sub": "class",
+      "classes": ["mals", "oracles", "mys"],
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+      "img": "./data/imgs/curse.png"
+
+    },
+    {
+      "id": "decree",
+      "name": "Decree",
+	"type": "act",
+      "sub": "class",
+      "classes": ["wars", "auth"],
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+	"img": "./data/imgs/decree.png"
+
+    },
+    {
+      "id": "dream",
+      "name": "Dream",
+	"type": "act",
+      "sub": "class",
+      "classes": ["sages", "ecs", "mys"],
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+        "img": "./data/imgs/dream.png"
+
+    },
+    {
+      "id": "influence",
+      "name": "Influence",
+	"type": "act",
+      "sub": "class",
+      "classes": ["mals", "sages", "auth", "heroes"],
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+      "img": "./data/imgs/influence.png"
+
+    },
+    {
+      "id": "medicine",
+      "name": "Medicine",
+	"type": "act",
+      "sub": "class",
+      "classes": ["sages", "cares", "heroes"],
+      "hp": 50,
+      "atk": 0,
+      "def": 0,
+	"healAmount": 30,
+	"img": "./data/imgs/medicine.png"
+
+    },
+    {
+      "id": "prophecy",
+      "name": "Prophecy",
+	"type": "act",
+      "sub": "class",
+      "classes": ["oracles", "mys"],
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+      "img": "./data/imgs/prophecy.png"
+
+    },
+    {
+      "id": "vine",
+      "name": "Vine",
+	"type": "act",
+      "sub": "class",
+      "classes": ["ecs", "cares", "wilds"],
+      "hp": 50,
+      "atk": 10,
+      "def": 0,
+        "img": "./data/imgs/vine.png"
+
+    }
+  ]

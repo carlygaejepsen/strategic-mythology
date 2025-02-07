@@ -1,0 +1,10 @@
+[
+{"name": "Callisto", "id": "clst", "type": "char", "classes": ["wilds", "cares"], "element": ["earth", "air"], "hp": 100, "atk": 18, "def": 8, "SPD": 11, "img": "./data/imgs/callisto.png"},
+{"name": "Chimera", "id": "chim", "type": "char", "classes": ["mals", "wilds"], "element": ["fire", "earth"], "hp": 115, "atk": 25, "def": 7, "SPD": 10, "img": "./data/imgs/chimera.png"},
+{"name": "Gryphus", "id": "grph", "type": "char", "classes": ["wilds", "warriors"], "element": ["air", "earth"], "hp": 110, "atk": 24, "def": 9, "SPD": 12, "img": "./data/imgs/gryphus.png"},
+{"name": "Harpies", "id": "hrpe", "type": "char", "classes": ["wilds", "mals"], "element": ["air"], "hp": 90, "atk": 18, "def": 5, "SPD": 13, "img": "./data/imgs/harpies.png"},
+{"name": "Ladon", "id": "ladn", "type": "char", "classes": ["mals", "wilds"], "element": ["earth", "dark"], "hp": 120, "atk": 22, "def": 9, "SPD": 8, "img": "./data/imgs/ladon.png"},
+{"name": "Laelaps", "id": "lael", "type": "char", "classes": ["wilds", "heroes"], "element": ["air", "dark"], "hp": 95, "atk": 20, "def": 6, "SPD": 15, "img": "./data/imgs/laelaps.png"},
+{"name": "Pan", "id": "pan", "type": "char", "classes": ["ecs", "wilds"], "element": ["vit", "earth"], "hp": 95, "atk": 16, "def": 7, "SPD": 8, "img": "./data/imgs/pan.png"},
+{"name": "Priapus", "id": "prps", "type": "char", "classes": ["ecs", "wilds"], "element": ["love", "vit"], "hp": 100, "atk": 19, "def": 6, "SPD": 10, "img": "./data/imgs/priapus.png"}
+]

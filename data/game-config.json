@@ -1,7 +1,7 @@
 {
   "gameSettings": {
     "maxHandSize": 5,
-    "maxBattleZoneSize": 3,
+    "maxBZSize": 3,
     "startingHandSize": 5,
     "enableAI": true,
     "aiMoveDelay": 1000
@@ -11,21 +11,21 @@
     "water": "🌊",
     "air": "💨",
     "earth": "🏔️",
-    "electricity": "⚡",
+    "zap": "⚡",
     "love": "💞",
     "malice": "🩸",
     "hubris": "🦚",
     "wisdom": "📖",
     "light": "🕯️",
-    "shadow": "🌑",
-    "vitality": "🌿",
+    "dark": "🌑",
+    "vit": "🌿",
     "decay": "🍂",
     "luck": "🪙",
-    "justice": "⚖️"
+    "just": "⚖️"
   },
   "deckSettings": {
     "shuffleAlgorithm": "fisher-yates",
-    "validCardTypes": ["character", "element", "class"],
+    "validCardTypes": ["char", "element", "class"],
     "maxDeckSize": 40
   },
   "uiSettings": {
@@ -35,7 +35,7 @@
     "animationSpeed": 300
   },
   "playerDefaults": {
-    "startingHP": 100,
+    "startinghp": 100,
     "deckSize": 40,
     "handSize": 5
   },
@@ -44,19 +44,19 @@
     "moveDelay": 1000,
     "logic": {
       "preferMatchingCards": true,
-      "attackWeakestTarget": true,
+      "atkWeakestTarget": true,
       "prioritizeSurvival": true
     }
   },
-  "actionRules": {
-    "playableWithoutCharacter": true,
-    "actionCardLimit": 1,
+  "actRules": {
+    "playableWithoutchar": true,
+    "actCardLimit": 1,
     "discardAfterUse": false
   },
   "battleRules": {
     "maxAttacksPerTurn": 1,
     "allowMultipleAttackers": false,
-    "defenseReducesDamage": true,
+    "defReducesDamage": true,
     "elementSynergyBonus": true,
     "classSynergyBonus": true
   },

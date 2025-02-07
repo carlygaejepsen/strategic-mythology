@@ -1,0 +1,68 @@
+{
+  "combos": {
+    "char_alone": 20,
+    "elementAction_alone": 10,
+    "classAction_alone": 10,
+    "char_plus_act": 40,
+    "full_combo": 60
+  },
+  "basehp": {
+    "char": 100,
+    "act": 50
+  },
+  "turnStructure": [
+    { "phase": "deploy", "desc": "Players select char cards to deploy." },
+    { "phase": "act", "desc": "Players choose act cards or atk." },
+    { "phase": "resolution", "desc": "Combat resolves, and turns repeat." }
+  ],
+  "rules": [
+    "If a player's battle zone is empty, they may play any card from their hand.",
+    "If a player's battle zone is not empty, a new card can only be played if it shares an element or class with at least one card in the battle zone.",
+    "Only one god, one element, and one class card can be in the battle zone at a time.",
+    "If a player cannot play a card, they must discard one instead.",
+    "Healing cards can target other cards in your battle zone.",
+    "Each turn ends with an atk phase where all cards in the battle zone atk their chosen targets.",
+    "If a card reaches 0 hp, it is discarded permanently and added to the player's discard pile.",
+    "The game continues until one player has no cards left in their deck or hand."
+  ],
+  "battleMechanics": {
+    "damageCalculation": {
+      "formula": "atk - def",
+      "minDamage": 1,
+      "criticalMultiplier": 1.5,
+      "elementBonusMultiplier": 1.2,
+      "classBonusMultiplier": 1.2
+    },
+    "atkRules": {
+      "targetSelection": "Players select targets for their atking cards.",
+      "atkPriority": "chars atk first, then act cards.",
+      "atkOrder": "Highest SPD atks first. If tied, attacker goes first."
+    },
+    "bonusMultipliers": {
+      "element": 1.2,
+      "class": 1.2
+    },
+    "cardDestructionRules": {
+      "threshold": 0,
+      "effect": "If hp reaches threshold, card is removed from the battle zone and added to the player's discard pile.",
+      "revivalAllowed": true,
+      "revivalConditions": [
+        "Only cards with a valid revival effect can be revived.",
+        "Revived cards return with 50% hp unless specified otherwise by the revival effect.",
+        "A revived card cannot act until the next turn after revival."
+      ]
+    }
+  },
+  "combatRestrictions": {
+    "validTargetRules": [
+      "Cards can only atk cards in the opponent’s battle zone.",
+      "If atking the same element, damage is reduced by 50% instead of being blocked."
+    ],
+    "playRules": [
+      "If a player's battle zone is empty, they may play any card.",
+      "If the battle zone is not empty, a new card must match at least one card by element or class.",
+      "A player may discard instead of playing a card.",
+      "A player may only have one god, one element, and one class card in the battle zone at a time."
+    ]
+  }
+}

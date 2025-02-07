@@ -3,196 +3,196 @@
    {
       "id": "fire",
       "name": "Burnt Offering",
-	"type": "action",
-	"subtype": "element",
+	"type": "act",
+	"sub": "element",
 	"element": "fire",
 	"hp": 50,
 	"atk": 10,
 	"def": 0,
-	"image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/fire.png"
+	"img": "./data/imgs/fire.png"
       
     },
     {
       "id": "water",
       "name": "Tidal Wave",
-	"type": "action",    
-      "subtype": "element",
+	"type": "act",    
+      "sub": "element",
       "element": "water",
       "hp": 50,
       "atk": 10,
       "def": 0,
-	"image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/wave.png"
+	"img": "./data/imgs/wave.png"
 
     },
     {
       "id": "wind",
       "name": "Whirlwind",
-	"type": "action",
-      "subtype": "element",
+	"type": "act",
+      "sub": "element",
       "element": "air",
       "hp": 50,
       "atk": 10,
       "def": 0,
-	"image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/wind.png"
+	"img": "./data/imgs/wind.png"
 
     },
     {
       "id": "earth",
       "name": "Rockslide",
-	"type": "action",
-      "subtype": "element",
+	"type": "act",
+      "sub": "element",
       "element": "earth",
       "hp": 50,
       "atk": 10,
       "def": 0,
-	"image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/rockslide.png"
+	"img": "./data/imgs/rockslide.png"
 
     },
     {
       "id": "lightning",
       "name": "Lightning Strike",
-      "subtype": "element",
-	"type": "action",
-      "element": "electricity",
+      "sub": "element",
+	"type": "act",
+      "element": "zap",
       "hp": 50,
       "atk": 10,
       "def": 0,
-	"image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/lightning.png"
+	"img": "./data/imgs/lightning.png"
 
       
     },
     {
       "id": "love",
       "name": "Infatuation",
-	"type": "action",
-      "subtype": "element",
+	"type": "act",
+      "sub": "element",
       "element": "love",
       "hp": 50,
       "atk": 10,
       "def": 0,
-      	"image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/love.png"
+      	"img": "./data/imgs/love.png"
 
     },
     {
       "id": "malice",
       "name": "Betrayal",
-	"type": "action",
-      "subtype": "element",
+	"type": "act",
+      "sub": "element",
       "element": "malice",
       "hp": 50,
       "atk": 10,
       "def": 0,
-	"image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/malice.png"
+	"img": "./data/imgs/malice.png"
 
     },
     {
       "id": "hubris",
       "name": "Charge",
-	"type": "action",
-      "subtype": "element",
+	"type": "act",
+      "sub": "element",
       "element": "hubris",
       "hp": 50,
       "atk": 10,
       "def": 0,
-	"image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/hubris.png"
+	"img": "./data/imgs/hubris.png"
 
     },
     {
       "id": "wisdom",
       "name": "Counsel",
-	"type": "action",
-      "subtype": "element",
+	"type": "act",
+      "sub": "element",
       "element": "wisdom",
       "hp": 50,
       "atk": 10,
       "def": 0,
-      "image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/wisdom.png"
+      "img": "./data/imgs/wisdom.png"
 
     },
     {
       "id": "light",
       "name": "Revelation",
-	"type": "action",
-      "subtype": "element",
+	"type": "act",
+      "sub": "element",
       "element": "light",
       "hp": 50,
       "atk": 10,
       "def": 0,
-	"image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/light.png"
+	"img": "./data/imgs/light.png"
 
     },
     {
       "id": "dark",
       "name": "Shadow",
-	"type": "action",
-      "subtype": "element",
+	"type": "act",
+      "sub": "element",
       "element": "dark",
       "hp": 50,
       "atk": 10,
       "def": 0,
-	"image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/shadow.png"
+	"img": "./data/imgs/shadow.png"
 
     },
     {
-      "id": "vitality",
+      "id": "vit",
       "name": "Growth",
-	"type": "action",
-      "subtype": "element",
-      "element": "vitality",
+	"type": "act",
+      "sub": "element",
+      "element": "vit",
       "hp": 50,
       "atk": 10,
       "def": 0,
-      "image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/growth.png"
+      "img": "./data/imgs/growth.png"
 
     },
     {
       "id": "death",
       "name": "Decay",
-	"type": "action",
-      "subtype": "element",
+	"type": "act",
+      "sub": "element",
       "element": "death",
       "hp": 50,
       "atk": 10,
       "def": 0,
-        "image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/decay.png"
+        "img": "./data/imgs/decay.png"
 
     },
     {
       "id": "justice",
       "name": "Judgment",
-	"type": "action",
-      "subtype": "element",
+	"type": "act",
+      "sub": "element",
       "element": "justice",
       "hp": 50,
       "atk": 10,
       "def": 0,
-	"image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/justice.png"
+	"img": "./data/imgs/justice.png"
 
       
     },
     {
       "id": "luck",
       "name": "Favor of the Gods",
-	"type": "action",
-      "subtype": "element",
+	"type": "act",
+      "sub": "element",
       "element": "luck",
       "hp": 50,
       "atk": 10,
       "def": 0,
-      "image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/luck.png"
+      "img": "./data/imgs/luck.png"
 
     },
     {
       "id": "heal",
       "name": "Healing",
-	"type": "action",
-      "subtype": "element",
-      "element": "vitality",
+	"type": "act",
+      "sub": "element",
+      "element": "vit",
       "hp": 50,
       "atk": 0,
       "def": 0,
       "healAmount": 30,
-	"image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/healing.png"
+	"img": "./data/imgs/healing.png"
 
     }
 	],
@@ -201,135 +201,135 @@
     {
       "id": "athletics",
       "name": "Athletics",
-	"type": "action",
-      "subtype": "class",
-      "classes": ["warriors", "heroes", "wildkeepers"],
+	"type": "act",
+      "sub": "class",
+      "classes": ["wars", "heroes", "wilds"],
       "hp": 50,
       "atk": 10,
       "def": 0,
-	"image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/athletics.png"
+	"img": "./data/imgs/athletics.png"
 
       
     },
     {
       "id": "beast",
       "name": "Beast",
-	"type": "action",
-      "subtype": "class",
-      "classes": ["malevolents", "wildkeepers"],
+	"type": "act",
+      "sub": "class",
+      "classes": ["mals", "wilds"],
       "hp": 50,
       "atk": 10,
       "def": 0,
-	"image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/beast.png"
+	"img": "./data/imgs/beast.png"
 
     },
     {
       "id": "blessing",
       "name": "Blessing",
-	"type": "action",
-      "subtype": "class",
-      "classes": ["oracles", "ecstatics", "caretakers"],
+	"type": "act",
+      "sub": "class",
+      "classes": ["oracles", "ecs", "cares"],
       "hp": 50,
       "atk": 10,
       "def": 0,
-      "image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/blessing.png"
+      "img": "./data/imgs/blessing.png"
 
     },
     {
       "id": "cannon",
       "name": "Cannon",
-	"type": "action",
-      "subtype": "class",
-      "classes": ["warriors", "authorities"],
+	"type": "act",
+      "sub": "class",
+      "classes": ["wars", "auth"],
       "hp": 50,
       "atk": 10,
       "def": 0,
-      "image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/cannon.png"
+      "img": "./data/imgs/cannon.png"
       
     },
     {
       "id": "curse",
       "name": "Curse",
-	"type": "action",
-      "subtype": "class",
-      "classes": ["malevolents", "oracles", "mystics"],
+	"type": "act",
+      "sub": "class",
+      "classes": ["mals", "oracles", "mys"],
       "hp": 50,
       "atk": 10,
       "def": 0,
-      "image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/curse.png"
+      "img": "./data/imgs/curse.png"
 
     },
     {
       "id": "decree",
       "name": "Decree",
-	"type": "action",
-      "subtype": "class",
-      "classes": ["warriors", "authorities"],
+	"type": "act",
+      "sub": "class",
+      "classes": ["wars", "auth"],
       "hp": 50,
       "atk": 10,
       "def": 0,
-	"image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/decree.png"
+	"img": "./data/imgs/decree.png"
 
     },
     {
       "id": "dream",
       "name": "Dream",
-	"type": "action",
-      "subtype": "class",
-      "classes": ["sages", "ecstatics", "mystics"],
+	"type": "act",
+      "sub": "class",
+      "classes": ["sages", "ecs", "mys"],
       "hp": 50,
       "atk": 10,
       "def": 0,
-        "image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/dream.png"
+        "img": "./data/imgs/dream.png"
 
     },
     {
       "id": "influence",
       "name": "Influence",
-	"type": "action",
-      "subtype": "class",
-      "classes": ["malevolents", "sages", "authorities", "heroes"],
+	"type": "act",
+      "sub": "class",
+      "classes": ["mals", "sages", "auth", "heroes"],
       "hp": 50,
       "atk": 10,
       "def": 0,
-      "image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/influence.png"
+      "img": "./data/imgs/influence.png"
 
     },
     {
       "id": "medicine",
       "name": "Medicine",
-	"type": "action",
-      "subtype": "class",
-      "classes": ["sages", "caretakers", "heroes"],
+	"type": "act",
+      "sub": "class",
+      "classes": ["sages", "cares", "heroes"],
       "hp": 50,
       "atk": 0,
       "def": 0,
 	"healAmount": 30,
-	"image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/medicine.png"
+	"img": "./data/imgs/medicine.png"
 
     },
     {
       "id": "prophecy",
       "name": "Prophecy",
-	"type": "action",
-      "subtype": "class",
-      "classes": ["oracles", "mystics"],
+	"type": "act",
+      "sub": "class",
+      "classes": ["oracles", "mys"],
       "hp": 50,
       "atk": 10,
       "def": 0,
-      "image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/prophecy.png"
+      "img": "./data/imgs/prophecy.png"
 
     },
     {
       "id": "vine",
       "name": "Vine",
-	"type": "action",
-      "subtype": "class",
-      "classes": ["ecstatics", "caretakers", "wildkeepers"],
+	"type": "act",
+      "sub": "class",
+      "classes": ["ecs", "cares", "wilds"],
       "hp": 50,
       "atk": 10,
       "def": 0,
-        "image": "https://carlygaejepsen.github.io/strategic-mythology/data/images/vine.png"
+        "img": "./data/imgs/vine.png"
 
     }
   ]
