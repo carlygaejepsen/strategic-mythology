@@ -66,9 +66,6 @@ function createCardElement(card, isMini = false) {
             imgElement.style.height = "50px";
         }
     }
-    
-    const cardDiv = document.createElement("div");
-    cardDiv.classList.add("card");
 
     const nameElement = document.createElement("div");
     nameElement.classList.add("card-name");
