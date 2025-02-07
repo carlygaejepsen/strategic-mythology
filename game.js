@@ -157,36 +157,36 @@ function buildDeck() {
     ));
 }
 //
-function renderBZ(playerBZ, battleZoneId) {
-    const container = document.querySelector(`.${battleZoneId}`); // Match CSS class
-    if (!container) return;
-    container.innerHTML = "";
-
-    playerBZ.forEach(card => {
-        const cardElement = createCardElement(card);
-        container.appendChild(cardElement);
-    });
-}
-
-//10
-function renderHand(hand, container, whichPlayer) {
-    if (!container) {
-        console.error(`Error: No container found for ${whichPlayer}'s hand`);
+function renderBZ(playerBZ, battleZoneElement) {
+    if (!battleZoneElement || !(battleZoneElement instanceof HTMLElement)) {
+        console.error("Error: Invalid battleZoneElement in renderBZ.", battleZoneElement);
         return;
     }
 
-    container.innerHTML = "";  
+    battleZoneElement.innerHTML = ""; // ✅ Now safely modifies the element
+
+    playerBZ.forEach(card => {
+        const cardElement = createCardElement(card);
+        battleZoneElement.appendChild(cardElement);
+    });
+}
+//10
+function renderHand(hand, container, whichPlayer) {
+    if (!container || !(container instanceof HTMLElement)) {
+        console.error(`Error: Invalid container for ${whichPlayer}'s hand`, container);
+        return;
+    }
+
+    container.innerHTML = "";
 
     hand.forEach(card => {
         const cardElement = createCardElement(card);
-        
         if (whichPlayer === "p1") {
             cardElement.addEventListener("click", () => {
                 playCard(card, p1Hand, p1BZ, document.querySelector(".p1BZ")); // ✅ Passes actual DOM element
                 renderHand(p1Hand, container, whichPlayer);
             });
         }
-
         container.appendChild(cardElement);
     });
 }
@@ -379,6 +379,27 @@ function playCard(card, playerHand, playerBZ, battleZoneElement) {
         return;
     }
 
+    // Remove card from hand and add it to battle zone
+    playerHand.splice(cardIndex, 1);
+    playerBZ.push(card);
+
+    // Ensure battleZoneElement is valid (it is passed directly, no need for querySelector)
+    if (!(battleZoneElement instanceof HTMLElement)) {
+        console.error("Error: battleZoneElement is not a valid HTML element.", battleZoneElement);
+        return;
+    }
+
+    // Update the UI
+    renderBZ(playerBZ, battleZoneElement); // ✅ No querySelector needed
+
+    renderHand(
+        playerHand,
+        playerHand === p1Hand 
+            ? document.querySelector(".player-hand.p1-hand") 
+            : document.querySelector(".player-hand.p2-hand"),
+        playerHand === p1Hand ? "p1" : "p2"
+    );
+}
     // Remove card from hand and add it to battle zone
     playerHand.splice(cardIndex, 1);
     playerBZ.push(card);
