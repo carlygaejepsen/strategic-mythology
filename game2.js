@@ -10,10 +10,10 @@ async function loadAllCards() {
     try {
         // Load Character Cards from multiple files
         const characterFiles = [
-            "beast-chars.json", "bully-chars.json", "celestial-chars.json",
-            "hero-chars.json", "life-chars.json", "mystical-chars.json",
-            "olympian-chars.json", "plant-chars.json", "underworld-chars.json",
-            "water-chars.json"
+            "./data/beast-chars.json", "./data/bully-chars.json", "./data/celestial-chars.json",
+            "./data/hero-chars.json", "./data/life-chars.json", "./data/mystical-chars.json",
+            "./data/olympian-chars.json", "./data/plant-chars.json", "./data/underworld-chars.json",
+            "./data/water-chars.json"
         ];
 
         for (const file of characterFiles) {
