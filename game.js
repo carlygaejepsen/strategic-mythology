@@ -13,59 +13,19 @@ let selectedAttacker = null;
 let elementEmojis = {};
 let batSys = {};
 
-//1. Function
-async function loadGameData() {
-    const jsonFiles = [
-        "water-chars.json", "elem-cards.json", "bat-sys.json", "beast-chars.json",
-        "bully-chars.json", "celestial-chars.json", "char-desc-a.json", "class-cards.json",
-        "game-config.json", "hero-chars.json", "life-chars.json", "mystical-chars.json",
-        "olympian-chars.json", "plant-chars.json", "underworld-chars.json"
-    ];
-    const basePath = "https://carlygaejepsen.github.io/strategic-mythology/data/";
-    try {
-        const responses = await Promise.all(jsonFiles.map(file => fetch(basePath + file)));
-        const data = await Promise.all(responses.map(async (res, index) => {
-            if (!res.ok) throw new Error(`Failed to load ${jsonFiles[index]}`);
-            return res.json();
-        }));
-        window.gameData = Object.fromEntries(jsonFiles.map((file, index) => [
-            file.replace(".json", "").replace(/-/g, ""), data[index]
-        ]));
-        window.allCards = [
-            ...(window.gameData.elemcards || []),
-            ...(window.gameData.classcards || []),
-            ...Object.values(window.gameData).flat().filter(item => item.type === "char")
-        ];
-    } catch (error) {
-        console.error("Error loading game data:", error);
+//GAME LOADING AND INITIALIZATION
+function shuffleDeck(deck) {
+    for (let i = deck.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [deck[i], deck[j]] = [deck[j], deck[i]];
     }
-}
-//2. Function
-async function loadGameConfig() {
-    try {
-        const response = await fetch("./data/game-config.json");
-        if (!response.ok) throw new Error("Failed to load game-config.json");
-        window.gameConfig = await response.json();
-        elementEmojis = window.gameConfig.elementEmojis || {};
-    } catch (error) {
-        console.error("Error loading game config:", error);
-    }
-}
-//3. Function
-async function loadBatSys() {
-    try {
-        const response = await fetch("./data/bat-sys.json");
-        if (!response.ok) throw new Error("Failed to load bat-sys.json");
-        batSys = await response.json();
-    } catch (error) {
-        console.error("Error loading battle system:", error);
-    }
-}
-//4. Function
+    return deck;
+}//2
+//
 function getElementSafe(id) {
     return document.getElementById(id) || null;
 }
-//5. Function
+//
 function getCardFromElement(cardElement) {
     if (!cardElement) {
         console.error("Null cardElement passed.");
@@ -87,7 +47,7 @@ function getCardFromElement(cardElement) {
         null
     );
 }
-//6. Function
+//
 function createCardElement(card) {
     if (!card || !card.name) {
         console.error("Invalid card object passed to createCardElement:", card);
@@ -140,33 +100,89 @@ function createCardElement(card) {
 
     return cardDiv;
 }
-//7
-function shuffleDeck(deck) {
-    for (let i = deck.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [deck[i], deck[j]] = [deck[j], deck[i]];
+//
+async function loadGameData() {
+    const jsonFiles = [
+        "water-chars.json", "elem-cards.json", "bat-sys.json", "beast-chars.json",
+        "bully-chars.json", "celestial-chars.json", "char-desc-a.json", "class-cards.json",
+        "game-config.json", "hero-chars.json", "life-chars.json", "mystical-chars.json",
+        "olympian-chars.json", "plant-chars.json", "underworld-chars.json"
+    ];
+    const basePath = "https://carlygaejepsen.github.io/strategic-mythology/data/";
+    try {
+        const responses = await Promise.all(jsonFiles.map(file => fetch(basePath + file)));
+        const data = await Promise.all(responses.map(async (res, index) => {
+            if (!res.ok) throw new Error(`Failed to load ${jsonFiles[index]}`);
+            return res.json();
+        }));
+        window.gameData = Object.fromEntries(jsonFiles.map((file, index) => [
+            file.replace(".json", "").replace(/-/g, ""), data[index]
+        ]));
+        window.allCards = [
+            ...(window.gameData.elemcards || []),
+            ...(window.gameData.classcards || []),
+            ...Object.values(window.gameData).flat().filter(item => item.type === "char")
+        ];
+    } catch (error) {
+        console.error("Error loading game data:", error);
     }
-    return deck;
 }
-//8
+//
+async function loadGameConfig() {
+    try {
+        const response = await fetch("./data/game-config.json");
+        if (!response.ok) throw new Error("Failed to load game-config.json");
+        window.gameConfig = await response.json();
+        elementEmojis = window.gameConfig.elementEmojis || {};
+    } catch (error) {
+        console.error("Error loading game config:", error);
+    }
+}
+// 
+async function loadBatSys() {
+    try {
+        const response = await fetch("./data/bat-sys.json");
+        if (!response.ok) throw new Error("Failed to load bat-sys.json");
+        batSys = await response.json();
+    } catch (error) {
+        console.error("Error loading battle system:", error);
+    }
+}
+//
 function buildDeck() {
     if (!window.allCards) return [];
     return shuffleDeck(window.allCards.filter(
         card => card.type === "char" || card.sub === "element" || card.sub === "class"
     ));
 }
-//9
-function checkWinConditions() {
-    const p1Lost = p1BZ.length === 0 && p1Hand.length === 0 && p1Deck.length === 0;
-    const p2Lost = p2BZ.length === 0 && p2Hand.length === 0 && p2Deck.length === 0;
+//
+function renderBZ(playerBZ, battleZoneId) {
+    const container = getElementSafe(battleZoneId);
+    if (!container) return;
+    container.innerHTML = "";
 
-    if (p1Lost) {
-        endGame("Player 2");
-    } else if (p2Lost) {
-        endGame("Player 1");
-    }
+    playerBZ.forEach(card => {
+        const cardElement = createCardElement(card);
+        container.appendChild(cardElement);
+    });
 }
-//10
+//
+function renderHand(hand, containerId, whichPlayer) {
+    const container = getElementSafe(containerId);
+    if (!container) return;
+    container.innerHTML = "";
+    hand.forEach(card => {
+        const cardElement = createCardElement(card);
+        if (whichPlayer === "p1") {
+            cardElement.addEventListener("click", () => {
+                playCard(card, p1Hand, p1BZ, "p1-battlezone");
+                renderHand(p1Hand, containerId, whichPlayer);
+            });
+        }
+        container.appendChild(cardElement);
+    });
+}
+//
 async function initGame() {
     try {
         console.log("Initializing game...");
@@ -208,7 +224,8 @@ async function initGame() {
         console.error("Error initializing game:", error);
     }
 }
-//11
+//TURN HANDLING
+//
 async function handleDeploymentPhase() {
     if (turnStep === 0) {
         logBattleEvent("Your turn: Play a card");
@@ -273,7 +290,7 @@ function logBattleEvent(message) {
     logContainer.appendChild(logEntry);
     logContainer.scrollTop = logContainer.scrollHeight;
 }
-//17
+//
 function enableHandInteract(player) {
     const handId = player === "p1" ? "p1-hand" : "p2-hand";
     const battleZoneId = player === "p1" ? "p1-battlezone" : "p2-battlezone";
@@ -294,7 +311,7 @@ function enableHandInteract(player) {
         };
     });
 }
-//18
+//
 function validateCardPlay(card, battleZone) {
     if (!card || !battleZone) return false;
 
@@ -313,29 +330,7 @@ function validateCardPlay(card, battleZone) {
         return false;
     });
 }
-//19
-function resolveCombat(attacker, defender) {
-    if (!attacker || !defender) {
-        console.error("resolveCombat called with invalid attacker or defender:", attacker, defender);
-        return;
-    }
-
-    let baseDamage = Math.max(attacker.atk - defender.def, 0);
-    let elementBonus = getElementBonus(attacker, defender);
-    let classBonus = getClassBonus(attacker, defender);
-    let totalDamage = Math.floor(baseDamage * elementBonus * classBonus);
-
-    defender.hp = Math.max(defender.hp - totalDamage, 0);
-    logBattleEvent(`${attacker.name} attacks ${defender.name} for ${totalDamage} damage!`);
-
-    if (defender.hp === 0) {
-        removeDestroyedCard(defender);
-        logBattleEvent(`${defender.name} was destroyed!`);
-    }
-
-    updateBZs();
-}
-//20
+//
 async function doAiDeploy() {
     if (!window.gameConfig?.gameSettings?.maxBZSize) {
         console.error("Game configuration is missing battle zone size settings.");
@@ -358,7 +353,7 @@ async function doAiDeploy() {
         }
     }
 }
-//21
+//
 function playCard(card, playerHand, playerBZ, battleZoneId) {
     if (!card || !playerHand || !playerBZ || !battleZoneId) {
         console.error("playCard function received undefined arguments.");
@@ -381,45 +376,32 @@ function playCard(card, playerHand, playerBZ, battleZoneId) {
         playerHand === p1Hand ? "p1" : "p2"
     );
 }
-//22
-function renderBZ(playerBZ, battleZoneId) {
-    const container = getElementSafe(battleZoneId);
-    if (!container) return;
-    container.innerHTML = "";
-
-    playerBZ.forEach(card => {
-        const cardElement = createCardElement(card);
-        container.appendChild(cardElement);
-    });
-}
-//23
-function renderHand(hand, containerId, whichPlayer) {
-    const container = getElementSafe(containerId);
-    if (!container) return;
-    container.innerHTML = "";
-    hand.forEach(card => {
-        const cardElement = createCardElement(card);
-        if (whichPlayer === "p1") {
-            cardElement.addEventListener("click", () => {
-                playCard(card, p1Hand, p1BZ, "p1-battlezone");
-                renderHand(p1Hand, containerId, whichPlayer);
-            });
-        }
-        container.appendChild(cardElement);
-    });
-}
 // ============= ATTACK SYSTEM =============
-//23
+//
 function initPlayerAttackSystem() {
-    getElementSafe("p1-battlezone")?.querySelectorAll(".mini-card").forEach(cardEl => {
+    console.log("🔵 initPlayerAttackSystem() is running!");
+    const battleZone = getElementSafe("p1-battlezone");
+    
+    if (!battleZone) {
+        console.error("❌ ERROR: p1-battlezone not found!");
+        return;
+    }
+
+    const cards = battleZone.querySelectorAll(".mini-card");
+    console.log(`🟡 Found ${cards.length} cards in p1-battlezone`);
+
+    cards.forEach(cardEl => {
         const card = getCardFromElement(cardEl);
+        console.log(`🟢 Checking card: ${card?.name}, ATK: ${card?.atk}`);
+
         if (card?.atk > 0) {
             cardEl.classList.add("selectable");
+            console.log(`✅ ${card.name} marked as selectable!`);
             cardEl.onclick = () => handlePlayerAttackSelection(cardEl);
         }
     });
 }
-//24
+//
 function handlePlayerAttackSelection(cardEl) {
     const attacker = getCardFromElement(cardEl);
     if (!attacker || selectedAttacker) return;
@@ -440,19 +422,19 @@ function handlePlayerAttackSelection(cardEl) {
         }
     });
 }
-//25
+//
 function clearSelections(selector) {
     document.querySelectorAll(selector).forEach(el => el.classList.remove(selector.substring(1)));
 }
 // ============= CARD DRAWING =============
-//26
+//
 function drawCard(hand, deck) {
     if (deck.length > 0) {
         hand.push(deck.shift());
     }
     renderHand(hand, hand === p1Hand ? "p1-hand" : "p2-hand", hand === p1Hand ? "p1" : "p2");
 }
-//27
+//
 // ============= AI ATTACK LOGIC =============
 async function doAiAttack() {
     if (!p2BZ.length || !p1BZ.length) return;
@@ -469,13 +451,89 @@ async function doAiAttack() {
     resolveCombat(attacker, target);
     checkWinConditions();
 }
-//28
+//
+function getElementBonus(attacker, defender) {
+    if (!window.batSys || !window.batSys.elementBonuses) return 1; // Default: No bonus
+    
+    let bonuses = window.batSys.elementBonuses;
+    
+    if (bonuses[attacker.element]?.strongAgainst === defender.element) return 1.2; // Strong element
+    if (bonuses[attacker.element]?.weakAgainst === defender.element) return 0.8;  // Weak element
+    
+    return 1; // Neutral element
+}
+//
+function getClassBonus(attacker, defender) {
+    if (!window.batSys || !window.batSys.classBonuses) return 1; // Default: No bonus
+    
+    let bonuses = window.batSys.classBonuses;
+    
+    if (bonuses[attacker.class]?.strongAgainst.includes(defender.class)) return 1.2; // Strong class
+    if (bonuses[attacker.class]?.weakAgainst.includes(defender.class)) return 0.8;  // Weak class
+    
+    return 1; // Neutral class
+}
+//
+function resolveCombat(attacker, defender) {
+    if (!attacker || !defender) {
+        console.error("resolveCombat called with invalid attacker or defender:", attacker, defender);
+        return;
+    }
+
+    let baseDamage = Math.max(attacker.atk - defender.def, 0);
+    let elementBonus = getElementBonus(attacker, defender);
+    let classBonus = getClassBonus(attacker, defender);
+    let totalDamage = Math.floor(baseDamage * elementBonus * classBonus);
+
+    defender.hp = Math.max(defender.hp - totalDamage, 0);
+    logBattleEvent(`${attacker.name} attacks ${defender.name} for ${totalDamage} damage!`);
+
+    if (defender.hp === 0) {
+        removeDestroyedCard(defender);
+        logBattleEvent(`${defender.name} was destroyed!`);
+    }
+
+    updateBZs();
+}
+//
+function checkWinConditions() {
+    const p1Lost = p1BZ.length === 0 && p1Hand.length === 0 && p1Deck.length === 0;
+    const p2Lost = p2BZ.length === 0 && p2Hand.length === 0 && p2Deck.length === 0;
+
+    if (p1Lost) {
+        endGame("Player 2");
+    } else if (p2Lost) {
+        endGame("Player 1");
+    }
+}
+//
+function removeDestroyedCard(card) {
+    // Check if the card exists in Player 1's Battle Zone
+    let index = p1BZ.indexOf(card);
+    if (index !== -1) {
+        p1BZ.splice(index, 1); // Remove from Player 1's BZ
+    }
+
+    // Check if the card exists in Player 2's Battle Zone
+    index = p2BZ.indexOf(card);
+    if (index !== -1) {
+        p2BZ.splice(index, 1); // Remove from Player 2's BZ
+    }
+
+    // Update the battle zones to reflect changes
+    updateBZs();
+}
+//
+function updateBZs() {
+    renderBZ(p1BZ, "p1-battlezone"); // Update Player 1's battle zone
+    renderBZ(p2BZ, "p2-battlezone"); // Update Player 2's battle zone
+}
 // ============= GAME END LOGIC =============
 function endGame(winner) {
     logBattleEvent(`Game Over! ${winner} wins!`);
     console.log(`Game Over! ${winner} wins!`);
 }
-//29
+//
 // ============= EVENT LISTENERS =============
 const startGameButton = getElementSafe("start-game");
 if (startGameButton) startGameButton.addEventListener("click", initGame);
@@ -483,4 +541,6 @@ if (startGameButton) startGameButton.addEventListener("click", initGame);
 const playTurnButton = getElementSafe("play-turn");
 if (playTurnButton) playTurnButton.addEventListener("click", handleTurn);
 
-export { initGame, handleTurn, shuffleDeck};
+//
+
+export { initGame, handleTurn, shuffleDeck };

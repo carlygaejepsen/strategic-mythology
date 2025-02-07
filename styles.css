@@ -133,7 +133,7 @@ body {
   margin-bottom: 5px;
 }
 
-.player-battlezone {
+.playerBZ {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
