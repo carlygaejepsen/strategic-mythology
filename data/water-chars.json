@@ -1,7 +1,7 @@
 [
-{"name": "Amphitrite", "id": "amph", "type": "char", "classes": ["cares", "wilds"], "element": ["water", "vit"], "hp": 100, "atk": 20, "def": 5, "spd": 10, "img": "./data/imgs/amphitrite.png"},
-{"name": "Arethusa", "id": "arth", "type": "char", "classes": ["wilds", "cares"], "element": ["water", "air"], "hp": 95, "atk": 17, "def": 7, "spd": 12, "img": "./data/imgs/arethusa.png"},
-{"name": "Oceanus", "id": "ocns", "type": "char", "classes": ["cares", "wilds"], "element": ["water", "vit"], "hp": 95, "atk": 16, "def": 10, "spd": 6, "img": "./data/imgs/oceanus.png"},
-{"name": "Tethys", "id": "teth", "type": "char", "classes": ["cares", "auth"], "element": ["water"], "hp": 105, "atk": 20, "def": 7, "spd": 9, "img": "./data/imgs/tethys.png"},
-{"name": "Triton", "id": "trtn", "type": "char", "classes": ["wilds", "auth"], "element": ["water"], "hp": 110, "atk": 22, "def": 8, "spd": 9, "img": "./data/imgs/triton.png"}
+{"name": "Amphitrite", "id": "amph", "type": "char", "classes": ["cares", "wilds"], "essences": ["water", "vit"], "hp": 100, "atk": 20, "def": 5, "spd": 10, "img": "./data/imgs/amphitrite.png"},
+{"name": "Arethusa", "id": "arth", "type": "char", "classes": ["wilds", "cares"], "essences": ["water", "air"], "hp": 95, "atk": 17, "def": 7, "spd": 12, "img": "./data/imgs/arethusa.png"},
+{"name": "Oceanus", "id": "ocns", "type": "char", "classes": ["cares", "wilds"], "essences": ["water", "vit"], "hp": 95, "atk": 16, "def": 10, "spd": 6, "img": "./data/imgs/oceanus.png"},
+{"name": "Tethys", "id": "teth", "type": "char", "classes": ["cares", "auth"], "essences": ["water"], "hp": 105, "atk": 20, "def": 7, "spd": 9, "img": "./data/imgs/tethys.png"},
+{"name": "Triton", "id": "trtn", "type": "char", "classes": ["wilds", "auth"], "essences": ["water"], "hp": 110, "atk": 22, "def": 8, "spd": 9, "img": "./data/imgs/triton.png"}
 ]

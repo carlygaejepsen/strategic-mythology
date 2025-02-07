@@ -27,3 +27,159 @@ button {
     padding: 10px;
     font-size: 16px;
 }
+.character-card {
+    width: 250px;
+    background: linear-gradient(135deg, #d4eaf7, #b3cde0);
+    border-radius: 12px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+.char-img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.char-name {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.char-stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.char-classes {
+    margin-bottom: 5px;
+}
+
+.class-tag {
+    display: inline-block;
+    background: #444;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    margin: 2px;
+}
+
+.char-essences {
+    margin-top: 5px;
+}
+
+.essence {
+    display: inline-block;
+    padding: 5px 8px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: bold;
+    margin: 2px;
+}
+
+.essence-card {
+    width: 200px;
+    background: linear-gradient(135deg, #fff3e0, #ffcc80);
+    border-radius: 12px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+.essence-img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.essence-name {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.essence-type {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.essence-stats {
+    font-size: 14px;
+}
+
+.essence-type.fire { background: #e74c3c; color: white; }
+.essence-type.water { background: #3498db; color: white; }
+.essence-type.air { background: #9b59b6; color: white; }
+.essence-type.earth { background: #27ae60; color: white; }
+.essence-type.electricity { background: #f39c12; color: white; }
+.essence-type.love { background: #ff69b4; color: white; }
+.essence-type.malice { background: #8b0000; color: white; }
+.essence-type.hubris { background: #e67e22; color: white; }
+.essence-type.wisdom { background: #f1c40f; color: black; }
+.essence-type.light { background: #f7dc6f; color: black; }
+.essence-type.dark { background: #2c3e50; color: white; }
+.essence-type.vit { background: #2ecc71; color: white; }
+.essence-type.death { background: #4a4a4a; color: white; }
+.essence-type.justice { background: #d35400; color: white; }
+.essence-type.luck { background: #16a085; color: white; }
+
+.ability-card {
+    width: 220px;
+    background: linear-gradient(135deg, #e3e3e3, #c0c0c0);
+    border-radius: 12px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+.ability-img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.ability-name {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.ability-type {
+    background: #666;
+    color: white;
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.ability-classes {
+    margin-top: 5px;
+}
+
+.class-tag {
+    display: inline-block;
+    background: #444;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    margin: 2px;
+}
+
+.ability-stats {
+    font-size: 14px;
+    margin-top: 10px;
+}
+

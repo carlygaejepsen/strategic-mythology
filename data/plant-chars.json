@@ -1,7 +1,7 @@
 [
-{"name": "Chloris", "id": "chlo", "type": "char", "classes": ["cares", "wilds"], "element": ["earth", "vit"], "hp": 100, "atk": 17, "def": 7, "spd": 11, "img": "./data/imgs/chloris.png"},
-{"name": "Daphne", "id": "daph", "type": "char", "classes": ["wilds", "cares"], "element": ["earth", "air"], "hp": 100, "atk": 16, "def": 7, "spd": 13, "img": "./data/imgs/daphne.png"},
-{"name": "Gaia", "id": "gaia", "type": "char", "classes": ["cares", "auth"], "element": ["earth", "vit"], "hp": 120, "atk": 19, "def": 10, "spd": 7, "img": "./data/imgs/gaia.png"},
-{"name": "Pitys", "id": "pity", "type": "char", "classes": ["wilds", "cares"], "element": ["earth", "air"], "hp": 95, "atk": 15, "def": 6, "spd": 12, "img": "./data/imgs/pitys.png"},
-{"name": "Syrinx", "id": "syrx", "type": "char", "classes": ["wilds", "cares"], "element": ["air", "earth"], "hp": 90, "atk": 15, "def": 6, "spd": 13, "img": "./data/imgs/syrinx.png"}
+{"name": "Chloris", "id": "chlo", "type": "char", "classes": ["cares", "wilds"], "essences": ["earth", "vit"], "hp": 100, "atk": 17, "def": 7, "spd": 11, "img": "./data/imgs/chloris.png"},
+{"name": "Daphne", "id": "daph", "type": "char", "classes": ["wilds", "cares"], "essences": ["earth", "air"], "hp": 100, "atk": 16, "def": 7, "spd": 13, "img": "./data/imgs/daphne.png"},
+{"name": "Gaia", "id": "gaia", "type": "char", "classes": ["cares", "auth"], "essences": ["earth", "vit"], "hp": 120, "atk": 19, "def": 10, "spd": 7, "img": "./data/imgs/gaia.png"},
+{"name": "Pitys", "id": "pity", "type": "char", "classes": ["wilds", "cares"], "essences": ["earth", "air"], "hp": 95, "atk": 15, "def": 6, "spd": 12, "img": "./data/imgs/pitys.png"},
+{"name": "Syrinx", "id": "syrx", "type": "char", "classes": ["wilds", "cares"], "essences": ["air", "earth"], "hp": 90, "atk": 15, "def": 6, "spd": 13, "img": "./data/imgs/syrinx.png"}
 ]

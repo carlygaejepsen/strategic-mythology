@@ -1,11 +1,11 @@
 [
-{"name": "Aether", "id": "aeth", "type": "char", "classes": ["mys", "auth"], "element": ["air", "light"], "hp": 100, "atk": 20, "def": 5, "spd": 10, "img": "./data/imgs/aether.png"},
-{"name": "Asterion", "id": "astn", "type": "char", "classes": ["warriors", "wilds"], "element": ["earth"], "hp": 110, "atk": 23, "def": 7, "spd": 8, "img": "./data/imgs/asterion.png"},
-{"name": "Astraea", "id": "asta", "type": "char", "classes": ["sages", "auth"], "element": ["light", "wisdom"], "hp": 100, "atk": 19, "def": 8, "spd": 11, "img": "./data/imgs/astraea.png"},
-{"name": "Astraeus", "id": "asts", "type": "char", "classes": ["mys", "oracles"], "element": ["air", "insight"], "hp": 100, "atk": 21, "def": 6, "spd": 12, "img": "./data/imgs/astraeus.png"},
-{"name": "Eos", "id": "eos", "type": "char", "classes": ["mys", "auth"], "element": ["fire", "air"], "hp": 100, "atk": 22, "def": 7, "spd": 12, "img": "./data/imgs/eos.png"},
-{"name": "Helios", "id": "hels", "type": "char", "classes": ["auth", "mys"], "element": ["fire", "light"], "hp": 115, "atk": 22, "def": 7, "spd": 10, "img": "./data/imgs/helios.png"},   
-{"name": "Hyperion", "id": "hypn", "type": "char", "classes": ["warriors", "sages"], "element": ["fire", "light"], "hp": 90, "atk": 21, "def": 7, "spd": 12, "img": "./data/imgs/hyperion.png"},
-{"name": "Iris", "id": "iris", "type": "char", "classes": ["oracles", "heroes"], "element": ["air", "light"], "hp": 80, "atk": 16, "def": 8, "spd": 12, "img": "./data/imgs/iris.png"},
-{"name": "Selene", "id": "seln", "type": "char", "classes": ["mys", "oracles"], "element": ["light", "dark"], "hp": 100, "atk": 21, "def": 6, "spd": 11, "img": "./data/imgs/selene.png"}
+{"name": "Aether", "id": "aeth", "type": "char", "classes": ["mys", "auth"], "essences": ["air", "light"], "hp": 100, "atk": 20, "def": 5, "spd": 10, "img": "./data/imgs/aether.png"},
+{"name": "Asterion", "id": "astn", "type": "char", "classes": ["warriors", "wilds"], "essences": ["earth"], "hp": 110, "atk": 23, "def": 7, "spd": 8, "img": "./data/imgs/asterion.png"},
+{"name": "Astraea", "id": "asta", "type": "char", "classes": ["sages", "auth"], "essences": ["light", "wisdom"], "hp": 100, "atk": 19, "def": 8, "spd": 11, "img": "./data/imgs/astraea.png"},
+{"name": "Astraeus", "id": "asts", "type": "char", "classes": ["mys", "oracles"], "essences": ["air", "insight"], "hp": 100, "atk": 21, "def": 6, "spd": 12, "img": "./data/imgs/astraeus.png"},
+{"name": "Eos", "id": "eos", "type": "char", "classes": ["mys", "auth"], "essences": ["fire", "air"], "hp": 100, "atk": 22, "def": 7, "spd": 12, "img": "./data/imgs/eos.png"},
+{"name": "Helios", "id": "hels", "type": "char", "classes": ["auth", "mys"], "essences": ["fire", "light"], "hp": 115, "atk": 22, "def": 7, "spd": 10, "img": "./data/imgs/helios.png"},   
+{"name": "Hyperion", "id": "hypn", "type": "char", "classes": ["warriors", "sages"], "essences": ["fire", "light"], "hp": 90, "atk": 21, "def": 7, "spd": 12, "img": "./data/imgs/hyperion.png"},
+{"name": "Iris", "id": "iris", "type": "char", "classes": ["oracles", "heroes"], "essences": ["air", "light"], "hp": 80, "atk": 16, "def": 8, "spd": 12, "img": "./data/imgs/iris.png"},
+{"name": "Selene", "id": "seln", "type": "char", "classes": ["mys", "oracles"], "essences": ["light", "dark"], "hp": 100, "atk": 21, "def": 6, "spd": 11, "img": "./data/imgs/selene.png"}
 ]

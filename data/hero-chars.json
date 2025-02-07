@@ -1,12 +1,12 @@
 [
-{"name": "Daedalus", "id": "daed", "type": "char", "classes": ["sages", "oracles"], "element": ["wisdom", "air"], "hp": 95, "atk": 18, "def": 6, "spd": 12, "img": "./data/imgs/daedalus.png"},
-{"name": "Ganymede", "id": "gany", "type": "char", "classes": ["ecs", "mys"], "element": ["vit"], "hp": 100, "atk": 16, "def": 6, "spd": 11, "img": "./data/imgs/ganymede.png"},
-{"name": "Heracles", "id": "herc", "type": "char", "classes": ["heroes", "warriors"], "element": ["earth", "vit"], "hp": 120, "atk": 25, "def": 9, "spd": 8, "img": "./data/imgs/heracles.png"},
-{"name": "Hippolyta", "id": "hipp", "type": "char", "classes": ["warriors", "heroes"], "element": ["just", "vit"], "hp": 110, "atk": 24, "def": 8, "spd": 10, "img": "./data/imgs/hippolyta.png"},
-{"name": "Icarus", "id": "icar", "type": "char", "classes": ["heroes", "wilds"], "element": ["air", "hubris"], "hp": 90, "atk": 17, "def": 5, "spd": 13, "img": "./data/imgs/icarus.png"},
-{"name": "Jason", "id": "jsn", "type": "char", "classes": ["heroes", "warriors"], "element": ["water", "hubris"], "hp": 105, "atk": 22, "def": 7, "spd": 11, "img": "./data/imgs/jason.png"},
-{"name": "Melampus", "id": "mlmp", "type": "char", "classes": ["sages", "oracles"], "element": ["wisdom", "luck"], "hp": 95, "atk": 18, "def": 6, "spd": 12, "img": "./data/imgs/melampus.png"},
-{"name": "Perseus", "id": "prss", "type": "char", "classes": ["heroes", "warriors"], "element": ["air", "justice"], "hp": 110, "atk": 24, "def": 8, "spd": 12, "img": "./data/imgs/perseus.png"},
-{"name": "Prometheus", "id": "prmt", "type": "char", "classes": ["sages", "oracles"], "element": ["fire", "wisdom"], "hp": 110, "atk": 20, "def": 7, "spd": 10, "img": "./data/imgs/prometheus.png"},
-{"name": "Theseus", "id": "thes", "type": "char", "classes": ["heroes", "warriors"], "element": ["earth", "justice"], "hp": 110, "atk": 23, "def": 8, "spd": 11, "img": "./data/imgs/theseus.png"}
+{"name": "Daedalus", "id": "daed", "type": "char", "classes": ["sages", "oracles"], "essences": ["wisdom", "air"], "hp": 95, "atk": 18, "def": 6, "spd": 12, "img": "./data/imgs/daedalus.png"},
+{"name": "Ganymede", "id": "gany", "type": "char", "classes": ["ecs", "mys"], "essences": ["vit"], "hp": 100, "atk": 16, "def": 6, "spd": 11, "img": "./data/imgs/ganymede.png"},
+{"name": "Heracles", "id": "herc", "type": "char", "classes": ["heroes", "warriors"], "essences": ["earth", "vit"], "hp": 120, "atk": 25, "def": 9, "spd": 8, "img": "./data/imgs/heracles.png"},
+{"name": "Hippolyta", "id": "hipp", "type": "char", "classes": ["warriors", "heroes"], "essences": ["just", "vit"], "hp": 110, "atk": 24, "def": 8, "spd": 10, "img": "./data/imgs/hippolyta.png"},
+{"name": "Icarus", "id": "icar", "type": "char", "classes": ["heroes", "wilds"], "essences": ["air", "hubris"], "hp": 90, "atk": 17, "def": 5, "spd": 13, "img": "./data/imgs/icarus.png"},
+{"name": "Jason", "id": "jsn", "type": "char", "classes": ["heroes", "warriors"], "essences": ["water", "hubris"], "hp": 105, "atk": 22, "def": 7, "spd": 11, "img": "./data/imgs/jason.png"},
+{"name": "Melampus", "id": "mlmp", "type": "char", "classes": ["sages", "oracles"], "essences": ["wisdom", "luck"], "hp": 95, "atk": 18, "def": 6, "spd": 12, "img": "./data/imgs/melampus.png"},
+{"name": "Perseus", "id": "prss", "type": "char", "classes": ["heroes", "warriors"], "essences": ["air", "justice"], "hp": 110, "atk": 24, "def": 8, "spd": 12, "img": "./data/imgs/perseus.png"},
+{"name": "Prometheus", "id": "prmt", "type": "char", "classes": ["sages", "oracles"], "essences": ["fire", "wisdom"], "hp": 110, "atk": 20, "def": 7, "spd": 10, "img": "./data/imgs/prometheus.png"},
+{"name": "Theseus", "id": "thes", "type": "char", "classes": ["heroes", "warriors"], "essences": ["earth", "justice"], "hp": 110, "atk": 23, "def": 8, "spd": 11, "img": "./data/imgs/theseus.png"}
 ]
