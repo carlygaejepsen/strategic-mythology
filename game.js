@@ -114,7 +114,11 @@ async function initGame() {
         renderHand(p2Hand, "p2-hand", "p2");
 
         ["p1-battlezone", "p2-battlezone"].forEach(zone => {
-            getElementSafe(zone)?.innerHTML = "";
+            const element = getElementSafe(zone);
+				if (element) {
+				element.innerHTML = "";
+}
+
         });
 
         getElementSafe("play-turn-btn")?.removeAttribute("disabled");
