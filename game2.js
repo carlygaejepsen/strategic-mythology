@@ -22,8 +22,8 @@ async function loadAllCards() {
         }
 
         // Load Essence and Ability Cards
-        essenceCards = await loadJSON("essence-cards.json");
-        abilityCards = await loadJSON("ability-cards.json");
+        essenceCards = await loadJSON("./data/essence-cards.json");
+        abilityCards = await loadJSON("./data/ability-cards.json");
 
         console.log("All cards loaded successfully!");
         console.log("Character Cards:", characterCards);
