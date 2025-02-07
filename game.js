@@ -2,6 +2,13 @@ let p1Deck = [];
 let p2Deck = [];
 let p1BZ = [];
 let p2BZ = [];
+let p1Hand = [];
+let p2Hand = [];
+let currentPlayer = "p1";
+let currentPhase = "deploy";
+let turnStep = 0;
+let selectedAttacker = null;
+
 let elementEmojis = {};
 let batSys = {};
 
@@ -52,7 +59,16 @@ async function loadBatSys() {
         console.error("Error loading battle system:", error);
     }
 }
-
+function getElementSafe(id) {
+    return document.getElementById(id) || null;
+}
+function shuffleDeck(deck) {
+    for (let i = deck.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [deck[i], deck[j]] = [deck[j], deck[i]];
+    }
+    return deck;
+}
 function buildDeck() {
     if (!window.allCards) return [];
     return shuffleDeck(window.allCards.filter(
@@ -284,7 +300,24 @@ function createCardElement(card) {
     }
     return cardDiv;
 }
+function validateCardPlay(card, battleZone) {
+    if (!battleZone || battleZone.length === 0) {
+        return true; // If the battle zone is empty, any card can be played
+    }
 
+    return battleZone.some(existingCard => {
+        if (card.type === "char") {
+            return existingCard.type === "act" &&
+                ((existingCard.sub === "classCards" && existingCard.classes?.some(cls => card.classes?.includes(cls))) ||
+                 (existingCard.sub === "element" && (Array.isArray(card.element) ? card.element.includes(existingCard.element) : card.element === existingCard.element)));
+        } else if (card.type === "act") {
+            return existingCard.type === "char" &&
+                ((card.sub === "classCards" && existingCard.classes?.some(cls => card.classes?.includes(cls))) ||
+                 (card.sub === "elemCards" && (Array.isArray(existingCard.element) ? existingCard.element.includes(card.element) : existingCard.element === card.element)));
+        }
+        return false;
+    });
+}
 async function doAiMove() {
     await new Promise(resolve => setTimeout(resolve, window.gameConfig?.aiSettings?.moveDelay || 1000));
 
