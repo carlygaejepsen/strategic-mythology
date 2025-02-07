@@ -215,6 +215,12 @@ async function initGame() {
     }
 }
 //11
+function advancePhase(nextPhase) {
+    currentPhase = nextPhase;
+    turnStep = 0;
+    handleTurn();
+}
+//11
 async function handleDeploymentPhase() {
     if (turnStep === 0) {
         logBattleEvent("Your turn: Play a card");
