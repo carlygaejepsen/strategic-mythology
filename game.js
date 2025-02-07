@@ -137,12 +137,6 @@ function createCardElement(card) {
         cardDiv.appendChild(statsElement);
     }
 
-    if (card.desc) {
-        const descElement = document.createElement("div");
-        descElement.classList.add("card-desc");
-        descElement.textContent = card.desc;
-        cardDiv.appendChild(descElement);
-    }
 
     return cardDiv;
 }
