@@ -133,7 +133,7 @@ body {
   margin-bottom: 5px;
 }
 
-.playerBZ {
+.p1BZ {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
@@ -144,6 +144,19 @@ body {
   background-color: #fff;
   border-radius: 8px;
 }
+
+.p2BZ {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  min-height: 100px;
+  padding: 10px;
+  border: 2px solid #C2AFA8;
+  background-color: #fff;
+  border-radius: 8px;
+}
+
 
 /* Buttons */
 button {
