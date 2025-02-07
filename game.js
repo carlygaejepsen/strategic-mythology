@@ -449,4 +449,4 @@ if (startGameButton) startGameButton.addEventListener("click", initGame);
 const playTurnButton = getElementSafe("play-turn");
 if (playTurnButton) playTurnButton.addEventListener("click", handleTurn);
 
-export { initGame, handleTurn, shuffleDeck, getElementSafe };
+export { initGame, handleTurn, shuffleDeck};
