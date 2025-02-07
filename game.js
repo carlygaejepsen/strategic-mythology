@@ -1,16 +1,6 @@
 let elementEmojis = {};
 let battleSystem = {}; // Store battle system data
 
-async function loadBattleSystem() {
-    try {
-        const response = await fetch("bat-sys.json"); // Load from the correct path
-        if (!response.ok) throw new Error("Failed to load bat-sys.json");
-        battleSystem = await response.json();
-    } catch (error) {
-        console.error("Error loading battle system:", error);
-    }
-}
-
 
 async function loadGameConfig() {
     try {
@@ -99,6 +89,15 @@ async function loadGameData() {
     }
 }
 
+async function loadBatSys() {
+    try {
+        const response = await fetch("./data/bat-sys.json"); // Load from the correct path
+        if (!response.ok) throw new Error("Failed to load bat-sys.json");
+        battleSystem = await response.json();
+    } catch (error) {
+        console.error("Error loading battle system:", error);
+    }
+}
 // Call the function to load data
 loadGameData();
 
@@ -655,7 +654,7 @@ async function initGame() {
     console.log("Initializing game...");
 
     // Load configuration and battle system data first
-    await Promise.all([loadGameConfig(), loadGameData(), loadBattleSystem()]);
+    await Promise.all([loadGameConfig(), loadGameData(), loadBatSys()]);
 
     // Ensure battle system data is loaded before using it
     if (!battleSystem || !battleSystem.turnStructure) {
