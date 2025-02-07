@@ -1,6 +1,8 @@
 // Variables
 let p1Deck = [];
 let p2Deck = [];
+let p1Hand = [];
+let p2Hand = [];
 let p1BZ = [];
 let p2BZ = [];
 let currentPlayer = "p1";
@@ -195,17 +197,17 @@ async function initGame() {
         if (!batSys?.turnStructure) throw new Error("Battle system data is missing or failed to load.");
         if (!window.gameConfig?.gameSettings?.maxHandSize) throw new Error("Game configuration is missing hand size settings.");
 
-        // Assign DOM containers (DO NOT overwrite p1Hand and p2Hand)
+        // Assign DOM containers
         const p1HandContainer = document.querySelector(".player-hand");
         const p2HandContainer = document.querySelector(".player-hand");
 
         if (!p1HandContainer || !p2HandContainer) throw new Error("Player hand containers not found in the DOM.");
 
-        // Initialize decks and hands
+        // Initialize decks and assign globally declared p1Hand and p2Hand
         p1Deck = buildDeck();
         p2Deck = buildDeck();
-        p1Hand = p1Deck.splice(0, window.gameConfig.gameSettings.maxHandSize);
-        p2Hand = p2Deck.splice(0, window.gameConfig.gameSettings.maxHandSize);
+        p1Hand = p1Deck.splice(0, window.gameConfig.gameSettings.maxHandSize); // ✅ FIX
+        p2Hand = p2Deck.splice(0, window.gameConfig.gameSettings.maxHandSize); // ✅ FIX
         p1BZ = [];
         p2BZ = [];
         currentPlayer = "p1";
@@ -215,7 +217,7 @@ async function initGame() {
         console.log("Player 1 Hand:", p1Hand);
         console.log("Player 2 Hand:", p2Hand);
 
-        // Render hands using new container variables
+        // Render hands using the correct container elements
         renderHand(p1Hand, p1HandContainer, "p1");
         renderHand(p2Hand, p2HandContainer, "p2");
 
@@ -234,7 +236,6 @@ async function initGame() {
         console.error("Error initializing game:", error);
     }
 }
-
 
 //TURN HANDLING
 //
