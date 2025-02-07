@@ -3,8 +3,6 @@ let p1Deck = [];
 let p2Deck = [];
 let p1BZ = [];
 let p2BZ = [];
-let p1Hand = [];
-let p2Hand = [];
 let currentPlayer = "p1";
 let currentPhase = "deploy";
 let turnStep = 0;
@@ -158,7 +156,7 @@ function buildDeck() {
 }
 //
 function renderBZ(playerBZ, battleZoneId) {
-    const container = getElementSafe(battleZoneId);
+    const container = document.querySelector(`.${battleZoneId}`); // Match CSS class
     if (!container) return;
     container.innerHTML = "";
 
@@ -167,6 +165,7 @@ function renderBZ(playerBZ, battleZoneId) {
         container.appendChild(cardElement);
     });
 }
+
 //10
 function renderHand(hand, containerId, whichPlayer) {
     const container = getElementSafe(containerId);
@@ -187,16 +186,21 @@ function renderHand(hand, containerId, whichPlayer) {
 async function initGame() {
     try {
         console.log("Initializing game...");
+
+        // Load all game data asynchronously
         await Promise.all([loadGameConfig(), loadGameData(), loadBatSys()]);
 
-        if (!batSys?.turnStructure) {
-            throw new Error("Battle system data is missing or failed to load.");
-        }
+        // Validate that required game data is loaded
+        if (!batSys?.turnStructure) throw new Error("Battle system data is missing or failed to load.");
+        if (!window.gameConfig?.gameSettings?.maxHandSize) throw new Error("Game configuration is missing hand size settings.");
 
-        if (!window.gameConfig?.gameSettings?.maxHandSize) {
-            throw new Error("Game configuration is missing hand size settings.");
-        }
+        // Assign player hand elements from the DOM
+        const p1HandContainer = document.querySelector(".player-hand");
+        const p2HandContainer = document.querySelector(".player-hand");
 
+        if (!p1HandContainer || !p2HandContainer) throw new Error("Player hand containers not found in the DOM.");
+
+        // Initialize decks and hands
         p1Deck = buildDeck();
         p2Deck = buildDeck();
         p1Hand = p1Deck.splice(0, window.gameConfig.gameSettings.maxHandSize);
@@ -210,21 +214,26 @@ async function initGame() {
         console.log("Player 1 Hand:", p1Hand);
         console.log("Player 2 Hand:", p2Hand);
 
-        renderHand(p1Hand, "p1-hand", "p1");
-        renderHand(p2Hand, "p2-hand", "p2");
+        // Render hands to the UI
+        renderHand(p1Hand, p1HandContainer, "p1");
+        renderHand(p2Hand, p2HandContainer, "p2");
 
+        // Clear battle zones
         ["p1BZ", "p2BZ"].forEach(zone => {
-            const element = getElementSafe(zone);
+            const element = document.querySelector(`.${zone}`);
             if (element) element.innerHTML = "";
         });
 
-        getElementSafe("play-turn-btn")?.removeAttribute("disabled");
+        // Enable play button
+        document.getElementById("play-turn-btn")?.removeAttribute("disabled");
 
+        // Start the turn system
         handleTurn();
     } catch (error) {
         console.error("Error initializing game:", error);
     }
 }
+
 //TURN HANDLING
 //
 async function handleDeploymentPhase() {
