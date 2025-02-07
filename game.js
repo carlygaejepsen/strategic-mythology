@@ -167,21 +167,22 @@ function renderBZ(playerBZ, battleZoneId) {
 }
 
 //10
-function renderHand(hand, containerId, whichPlayer) {
-    const container = getElementSafe(containerId);
+function renderHand(hand, container, whichPlayer) {
     if (!container) return;
     container.innerHTML = "";
+
     hand.forEach(card => {
         const cardElement = createCardElement(card);
         if (whichPlayer === "p1") {
             cardElement.addEventListener("click", () => {
                 playCard(card, p1Hand, p1BZ, "p1BZ");
-                renderHand(p1Hand, containerId, whichPlayer);
+                renderHand(p1Hand, container, whichPlayer);
             });
         }
         container.appendChild(cardElement);
     });
 }
+
 //
 async function initGame() {
     try {
@@ -194,7 +195,7 @@ async function initGame() {
         if (!batSys?.turnStructure) throw new Error("Battle system data is missing or failed to load.");
         if (!window.gameConfig?.gameSettings?.maxHandSize) throw new Error("Game configuration is missing hand size settings.");
 
-        // Assign player hand elements from the DOM
+        // Assign DOM containers (DO NOT overwrite p1Hand and p2Hand)
         const p1HandContainer = document.querySelector(".player-hand");
         const p2HandContainer = document.querySelector(".player-hand");
 
@@ -214,7 +215,7 @@ async function initGame() {
         console.log("Player 1 Hand:", p1Hand);
         console.log("Player 2 Hand:", p2Hand);
 
-        // Render hands to the UI
+        // Render hands using new container variables
         renderHand(p1Hand, p1HandContainer, "p1");
         renderHand(p2Hand, p2HandContainer, "p2");
 
@@ -233,6 +234,7 @@ async function initGame() {
         console.error("Error initializing game:", error);
     }
 }
+
 
 //TURN HANDLING
 //
