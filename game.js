@@ -183,93 +183,7 @@ async function doAiDeploy() {
   }
 }
 
-function playCard(card, playerHand, playerBZ, battleZoneId) {
-  if (!gameConfig?.gameSettings?.maxBZSize) {
-    console.error("Game configuration is missing battle zone size settings.");
-    return;
-  }
-  
-  if (!playerHand || !playerBZ) {
-    console.error("playerHand or playerBZ is not defined.");
-    return;
-  }
 
-  if (playerBZ.length >= gameConfig.gameSettings.maxBZSize) {
-    console.warn(`Battle zone is full! Cannot play more than ${gameConfig.gameSettings.maxBZSize} cards.`);
-    return;
-  }
-
-  if (playerBZ.length > 0) {
-    const hasValidMatch = playerBZ.some((existingCard) => {
-      if (card.type === "char") {
-        return (
-          existingCard.type === "act" &&
-          ((existingCard.sub === "classCards" && existingCard.classes?.some((cls) => card.classes?.includes(cls))) ||
-            (existingCard.sub === "element" && (Array.isArray(card.element) ? card.element.includes(existingCard.element) : card.element === existingCard.element)))
-        );
-      } else if (card.type === "act") {
-        return (
-          existingCard.type === "char" &&
-          ((card.sub === "classCards" && existingCard.classes?.some((cls) => card.classes?.includes(cls))) ||
-            (card.sub === "elemCards" && (Array.isArray(existingCard.element) ? existingCard.element.includes(card.element) : existingCard.element === card.element)))
-        );
-      }
-      return false;
-    });
-    if (!hasValidMatch) {
-      console.warn(`Cannot play ${card.name}. No matching character or action.`);
-      return;
-    }
-  }
-  const cardIndex = playerHand.indexOf(card);
-  if (cardIndex === -1) {
-    console.log("Card not found in hand!");
-    return;
-  }
-  playerHand.splice(cardIndex, 1);
-  playerBZ.push(card);
-  renderBZ(playerBZ, battleZoneId);
-  renderHand(
-    playerHand,
-    playerHand === p1Hand ? "p1-hand" : "p2-hand",
-    playerHand === p1Hand ? "p1" : "p2"
-  );
-}
-
-
-
-  if (!gameConfig?.gameSettings?.maxBZSize) {
-    console.error("Game configuration is missing battle zone size settings.");
-    return;
-  }
-  
-  if (playerBZ.length >= gameConfig.gameSettings.maxBZSize) {
-    console.warn(`Battle zone is full! Cannot play more than ${gameConfig.gameSettings.maxBZSize} cards.`);
-    return;
-  }
-
-  if (playerBZ.length > 0) {
-    const hasValidMatch = playerBZ.some((existingCard) => {
-      if (card.type === "char") {
-        return (
-          existingCard.type === "act" &&
-          ((existingCard.sub === "classCards" && existingCard.classes.some((cls) => card.classes.includes(cls))) ||
-            (existingCard.sub === "element" && (Array.isArray(card.element) ? card.element.includes(existingCard.element) : card.element === existingCard.element)))
-        );
-      } else if (card.type === "act") {
-        return (
-          existingCard.type === "char" &&
-          ((card.sub === "classCards" && existingCard.classes.some((cls) => card.classes.includes(cls))) ||
-            (card.sub === "elemCards" && (Array.isArray(existingCard.element) ? existingCard.element.includes(card.element) : existingCard.element === card.element)))
-        );
-      }
-      return false;
-    });
-    if (!hasValidMatch) {
-      console.warn(`Cannot play ${card.name}. No matching character or action.`);
-      return;
-    }
-  }
   const cardIndex = playerHand.indexOf(card);
   if (cardIndex === -1) {
     console.log("Card not found in hand!");
@@ -460,7 +374,93 @@ async function doAiMove() {
     playCard(chosenCard, p2Hand, p2BZ, "p2-battlezone");
     renderHand(p2Hand, "p2-hand", "p2");
 }
+function playCard(card, playerHand, playerBZ, battleZoneId) {
+  if (!gameConfig?.gameSettings?.maxBZSize) {
+    console.error("Game configuration is missing battle zone size settings.");
+    return;
+  }
+  
+  if (!playerHand || !playerBZ) {
+    console.error("playerHand or playerBZ is not defined.");
+    return;
+  }
 
+  if (playerBZ.length >= gameConfig.gameSettings.maxBZSize) {
+    console.warn(`Battle zone is full! Cannot play more than ${gameConfig.gameSettings.maxBZSize} cards.`);
+    return;
+  }
+
+  if (playerBZ.length > 0) {
+    const hasValidMatch = playerBZ.some((existingCard) => {
+      if (card.type === "char") {
+        return (
+          existingCard.type === "act" &&
+          ((existingCard.sub === "classCards" && existingCard.classes?.some((cls) => card.classes?.includes(cls))) ||
+            (existingCard.sub === "element" && (Array.isArray(card.element) ? card.element.includes(existingCard.element) : card.element === existingCard.element)))
+        );
+      } else if (card.type === "act") {
+        return (
+          existingCard.type === "char" &&
+          ((card.sub === "classCards" && existingCard.classes?.some((cls) => card.classes?.includes(cls))) ||
+            (card.sub === "elemCards" && (Array.isArray(existingCard.element) ? existingCard.element.includes(card.element) : existingCard.element === card.element)))
+        );
+      }
+      return false;
+    });
+    if (!hasValidMatch) {
+      console.warn(`Cannot play ${card.name}. No matching character or action.`);
+      return;
+    }
+  }
+  const cardIndex = playerHand.indexOf(card);
+  if (cardIndex === -1) {
+    console.log("Card not found in hand!");
+    return;
+  }
+  playerHand.splice(cardIndex, 1);
+  playerBZ.push(card);
+  renderBZ(playerBZ, battleZoneId);
+  renderHand(
+    playerHand,
+    playerHand === p1Hand ? "p1-hand" : "p2-hand",
+    playerHand === p1Hand ? "p1" : "p2"
+  );
+}
+
+
+
+  if (!gameConfig?.gameSettings?.maxBZSize) {
+    console.error("Game configuration is missing battle zone size settings.");
+    return;
+  }
+  
+  if (playerBZ.length >= gameConfig.gameSettings.maxBZSize) {
+    console.warn(`Battle zone is full! Cannot play more than ${gameConfig.gameSettings.maxBZSize} cards.`);
+    return;
+  }
+
+  if (playerBZ.length > 0) {
+    const hasValidMatch = playerBZ.some((existingCard) => {
+      if (card.type === "char") {
+        return (
+          existingCard.type === "act" &&
+          ((existingCard.sub === "classCards" && existingCard.classes.some((cls) => card.classes.includes(cls))) ||
+            (existingCard.sub === "element" && (Array.isArray(card.element) ? card.element.includes(existingCard.element) : card.element === existingCard.element)))
+        );
+      } else if (card.type === "act") {
+        return (
+          existingCard.type === "char" &&
+          ((card.sub === "classCards" && existingCard.classes.some((cls) => card.classes.includes(cls))) ||
+            (card.sub === "elemCards" && (Array.isArray(existingCard.element) ? existingCard.element.includes(card.element) : existingCard.element === card.element)))
+        );
+      }
+      return false;
+    });
+    if (!hasValidMatch) {
+      console.warn(`Cannot play ${card.name}. No matching character or action.`);
+      return;
+    }
+  }
 function resolveCombat(attacker, defender) {
     if (!attacker || !defender) return;
 
