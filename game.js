@@ -179,12 +179,14 @@ function renderHand(hand, container, whichPlayer) {
 
     hand.forEach(card => {
         const cardElement = createCardElement(card);
+        
         if (whichPlayer === "p1") {
             cardElement.addEventListener("click", () => {
-                playCard(card, p1Hand, p1BZ, "p1BZ");
+                playCard(card, p1Hand, p1BZ, document.querySelector(".p1BZ")); // ✅ Passes actual DOM element
                 renderHand(p1Hand, container, whichPlayer);
             });
         }
+
         container.appendChild(cardElement);
     });
 }
@@ -365,8 +367,8 @@ async function doAiDeploy() {
     }
 }
 //
-function playCard(card, playerHand, playerBZ, battleZoneId) {
-    if (!card || !playerHand || !playerBZ || !battleZoneId) {
+function playCard(card, playerHand, playerBZ, battleZoneElement) {
+    if (!card || !playerHand || !playerBZ || !battleZoneElement) {
         console.error("playCard function received undefined arguments.");
         return;
     }
@@ -377,16 +379,26 @@ function playCard(card, playerHand, playerBZ, battleZoneId) {
         return;
     }
 
+    // Remove card from hand and add it to battle zone
     playerHand.splice(cardIndex, 1);
     playerBZ.push(card);
-    
-    renderBZ(playerBZ, battleZoneId);
+
+    // Ensure the battle zone element is valid
+    const battleZoneContainer = document.querySelector(`.${battleZoneElement}`);
+    if (!battleZoneContainer) {
+        console.error(`Error: Battle zone element '${battleZoneElement}' not found.`);
+        return;
+    }
+
+    // Update the UI
+    renderBZ(playerBZ, battleZoneContainer);
     renderHand(
         playerHand,
-        playerHand === p1Hand ? "p1-hand" : "p2-hand",
+        playerHand === p1Hand ? document.querySelector(".player-hand.p1-hand") : document.querySelector(".player-hand.p2-hand"),
         playerHand === p1Hand ? "p1" : "p2"
     );
 }
+
 // ============= ATTACK SYSTEM =============
 //
 function initPlayerAttackSystem() {
