@@ -1,11 +1,11 @@
 [
-{"name": "Empusa", "id": "emp", "type": "char", "classes": ["mals", "wilds"], "element": ["dark", "fire"], "hp": 100, "atk": 23, "def": 6, "SPD": 12, "img": "./data/imgs/empusa.png"},
-{"name": "Erebus", "id": "erbs", "type": "char", "classes": ["mals", "mys"], "element": ["dark", "decay"], "hp": 110, "atk": 23, "def": 7, "SPD": 8, "img": "./data/imgs/erebus.png"},
-{"name": "Hades", "id": "hdes", "type": "char", "classes": ["mals", "auth"], "element": ["dark", "decay"], "hp": 110, "atk": 24, "def": 8, "SPD": 9, "img": "./data/imgs/hades.png"},
-{"name": "Hecate", "id": "hcte", "type": "char", "classes": ["oracles", "mys"], "element": ["dark", "wisdom"], "hp": 105, "atk": 20, "def": 7, "SPD": 11, "img": "./data/imgs/hecate.png"},
-{"name": "Hypnos", "id": "hypns", "type": "char", "classes": ["mys", "cares"], "element": ["dark", "vit"], "hp": 75, "atk": 15, "def": 8, "SPD": 5, "img": "./data/imgs/hypnos.png"},
-{"name": "Iapetus", "id": "iaps", "type": "char", "classes": ["warriors", "wilds"], "element": ["earth", "decay"], "hp": 95, "atk": 20, "def": 9, "SPD": 6, "img": "./data/imgs/iapetus.png"},
-{"name": "Nyx", "id": "nyx", "type": "char", "classes": ["mys", "sages"], "element": ["dark", "wisdom"], "hp": 100, "atk": 17, "def": 8, "SPD": 7, "img": "./data/imgs/nyx.png"},
-{"name": "Persephone", "id": "phne", "type": "char", "classes": ["cares", "mys"], "element": ["decay", "vit"], "hp": 100, "atk": 19, "def": 8, "SPD": 8, "img": "./data/imgs/persephone.png"},
-{"name": "Thanatos", "id": "thnts", "type": "char", "classes": ["mals", "oracles"], "element": ["dark", "decay"], "hp": 100, "atk": 25, "def": 6, "SPD": 12, "img": "./data/imgs/thanatos.png"}
+{"name": "Empusa", "id": "emp", "type": "char", "classes": ["mals", "wilds"], "element": ["dark", "fire"], "hp": 100, "atk": 23, "def": 6, "spd": 12, "img": "./data/imgs/empusa.png"},
+{"name": "Erebus", "id": "erbs", "type": "char", "classes": ["mals", "mys"], "element": ["dark", "decay"], "hp": 110, "atk": 23, "def": 7, "spd": 8, "img": "./data/imgs/erebus.png"},
+{"name": "Hades", "id": "hdes", "type": "char", "classes": ["mals", "auth"], "element": ["dark", "decay"], "hp": 110, "atk": 24, "def": 8, "spd": 9, "img": "./data/imgs/hades.png"},
+{"name": "Hecate", "id": "hcte", "type": "char", "classes": ["oracles", "mys"], "element": ["dark", "wisdom"], "hp": 105, "atk": 20, "def": 7, "spd": 11, "img": "./data/imgs/hecate.png"},
+{"name": "Hypnos", "id": "hypns", "type": "char", "classes": ["mys", "cares"], "element": ["dark", "vit"], "hp": 75, "atk": 15, "def": 8, "spd": 5, "img": "./data/imgs/hypnos.png"},
+{"name": "Iapetus", "id": "iaps", "type": "char", "classes": ["warriors", "wilds"], "element": ["earth", "decay"], "hp": 95, "atk": 20, "def": 9, "spd": 6, "img": "./data/imgs/iapetus.png"},
+{"name": "Nyx", "id": "nyx", "type": "char", "classes": ["mys", "sages"], "element": ["dark", "wisdom"], "hp": 100, "atk": 17, "def": 8, "spd": 7, "img": "./data/imgs/nyx.png"},
+{"name": "Persephone", "id": "phne", "type": "char", "classes": ["cares", "mys"], "element": ["decay", "vit"], "hp": 100, "atk": 19, "def": 8, "spd": 8, "img": "./data/imgs/persephone.png"},
+{"name": "Thanatos", "id": "thnts", "type": "char", "classes": ["mals", "oracles"], "element": ["dark", "decay"], "hp": 100, "atk": 25, "def": 6, "spd": 12, "img": "./data/imgs/thanatos.png"}
 ]

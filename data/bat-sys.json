@@ -36,7 +36,7 @@
     "attackRules": {
       "targetSelection": "Players select targets for their attacking cards.",
       "attackPriority": "Characters attack first, then action cards.",
-      "attackOrder": "Highest SPD attacks first. If tied, attacker goes first."
+      "attackOrder": "Highest spd attacks first. If tied, attacker goes first."
     },
     "bonusMultipliers": {
       "element": 1.2,
