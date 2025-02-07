@@ -215,12 +215,6 @@ async function initGame() {
     }
 }
 //11
-function advancePhase(nextPhase) {
-    currentPhase = nextPhase;
-    turnStep = 0;
-    handleTurn();
-}
-//11
 async function handleDeploymentPhase() {
     if (turnStep === 0) {
         logBattleEvent("Your turn: Play a card");
@@ -249,6 +243,18 @@ async function handleAttackPhase() {
     }
 }
 //13
+function handleDrawPhase() {
+    drawCard(p1Hand, p1Deck);
+    drawCard(p2Hand, p2Deck);
+    advancePhase("deploy");
+}
+//14
+function advancePhase(nextPhase) {
+    currentPhase = nextPhase;
+    turnStep = 0;
+    handleTurn();
+}
+//15
 async function handleTurn() {
     switch (currentPhase) {
         case "deploy":
@@ -263,7 +269,7 @@ async function handleTurn() {
     }
     checkWinConditions();
 }
-//12
+//16
 function logBattleEvent(message) {
     const logContainer = getElementSafe("results-log");
     if (!logContainer) return;
@@ -273,7 +279,7 @@ function logBattleEvent(message) {
     logContainer.appendChild(logEntry);
     logContainer.scrollTop = logContainer.scrollHeight;
 }
-//13
+//17
 function enableHandInteract(player) {
     const handId = player === "p1" ? "p1-hand" : "p2-hand";
     const battleZoneId = player === "p1" ? "p1-battlezone" : "p2-battlezone";
@@ -294,7 +300,7 @@ function enableHandInteract(player) {
         };
     });
 }
-//14
+//18
 function validateCardPlay(card, battleZone) {
     if (!card || !battleZone) return false;
 
@@ -313,7 +319,7 @@ function validateCardPlay(card, battleZone) {
         return false;
     });
 }
-//15
+//19
 function resolveCombat(attacker, defender) {
     if (!attacker || !defender) {
         console.error("resolveCombat called with invalid attacker or defender:", attacker, defender);
@@ -335,7 +341,7 @@ function resolveCombat(attacker, defender) {
 
     updateBZs();
 }
-//16
+//20
 async function doAiDeploy() {
     if (!window.gameConfig?.gameSettings?.maxBZSize) {
         console.error("Game configuration is missing battle zone size settings.");
@@ -358,7 +364,7 @@ async function doAiDeploy() {
         }
     }
 }
-//17
+//21
 function playCard(card, playerHand, playerBZ, battleZoneId) {
     if (!card || !playerHand || !playerBZ || !battleZoneId) {
         console.error("playCard function received undefined arguments.");
@@ -381,7 +387,7 @@ function playCard(card, playerHand, playerBZ, battleZoneId) {
         playerHand === p1Hand ? "p1" : "p2"
     );
 }
-//18
+//22
 function renderHand(hand, containerId, whichPlayer) {
     const container = getElementSafe(containerId);
     if (!container) return;
@@ -398,7 +404,7 @@ function renderHand(hand, containerId, whichPlayer) {
     });
 }
 // ============= ATTACK SYSTEM =============
-//19
+//23
 function initPlayerAttackSystem() {
     getElementSafe("p1-battlezone")?.querySelectorAll(".mini-card").forEach(cardEl => {
         const card = getCardFromElement(cardEl);
@@ -408,7 +414,7 @@ function initPlayerAttackSystem() {
         }
     });
 }
-//20
+//24
 function handlePlayerAttackSelection(cardEl) {
     const attacker = getCardFromElement(cardEl);
     if (!attacker || selectedAttacker) return;
@@ -429,19 +435,19 @@ function handlePlayerAttackSelection(cardEl) {
         }
     });
 }
-//21
+//25
 function clearSelections(selector) {
     document.querySelectorAll(selector).forEach(el => el.classList.remove(selector.substring(1)));
 }
 // ============= CARD DRAWING =============
-//22
+//26
 function drawCard(hand, deck) {
     if (deck.length > 0) {
         hand.push(deck.shift());
     }
     renderHand(hand, hand === p1Hand ? "p1-hand" : "p2-hand", hand === p1Hand ? "p1" : "p2");
 }
-//23
+//27
 // ============= AI ATTACK LOGIC =============
 async function doAiAttack() {
     if (!p2BZ.length || !p1BZ.length) return;
@@ -458,13 +464,13 @@ async function doAiAttack() {
     resolveCombat(attacker, target);
     checkWinConditions();
 }
-//24
+//28
 // ============= GAME END LOGIC =============
 function endGame(winner) {
     logBattleEvent(`Game Over! ${winner} wins!`);
     console.log(`Game Over! ${winner} wins!`);
 }
-//25
+//29
 // ============= EVENT LISTENERS =============
 const startGameButton = getElementSafe("start-game");
 if (startGameButton) startGameButton.addEventListener("click", initGame);
