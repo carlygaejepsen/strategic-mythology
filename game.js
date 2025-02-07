@@ -215,6 +215,17 @@ async function initGame() {
     }
 }
 //11
+async function handleDeploymentPhase() {
+    if (turnStep === 0) {
+        logBattleEvent("Your turn: Play a card");
+        enableHandInteract("p1");
+        turnStep = 1;
+    } else {
+        await doAiDeploy();
+        advancePhase("attack");
+    }
+}
+//12
 async function handleTurn() {
     switch (currentPhase) {
         case "deploy":
@@ -438,4 +449,4 @@ if (startGameButton) startGameButton.addEventListener("click", initGame);
 const playTurnButton = getElementSafe("play-turn");
 if (playTurnButton) playTurnButton.addEventListener("click", handleTurn);
 
-
+export { initGame, handleTurn, shuffleDeck, getElementSafe };
