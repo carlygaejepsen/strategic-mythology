@@ -13,26 +13,28 @@
       <!-- Player 1 Area -->
       <div class="player-area" id="p1-area">
         <h2>Player 1</h2>
-        <div class="player-hand p1-hand"></div> <!-- ✅ Fixed Class Usage -->
+        <div class="player-hand p1-hand"></div> <!-- ✅ Added class .p1-hand -->
       </div>
 
       <!-- Center Area (Buttons, Logs, Battle Zones) -->
       <div id="center-area">
         <div id="controls">
           <button id="start-game">Start Game</button>
-          <button id="play-turn-btn" disabled>Play Turn</button> <!-- ✅ Fixed ID -->
+          <button id="play-turn-btn" disabled>Play Turn</button> 
         </div>
         <div id="results-log" class="results-container">
           <h2>Results Log</h2>
         </div>
+
+        <!-- ✅ Added missing Battle Zones -->
         <div class="battle-zone-container">
           <div>
             <div class="battle-zone-label">Player 1 Battle Zone</div>
-            <div class="player-battlezone p1BZ"></div> <!-- ✅ Fixed Class -->
+            <div class="player-battlezone p1BZ"></div> <!-- ✅ Added .p1BZ -->
           </div>
           <div>
             <div class="battle-zone-label">Player 2 Battle Zone</div>
-            <div class="player-battlezone p2BZ"></div> <!-- ✅ Fixed Class -->
+            <div class="player-battlezone p2BZ"></div> <!-- ✅ Added .p2BZ -->
           </div>
         </div>
       </div>
@@ -40,7 +42,7 @@
       <!-- Player 2 Area -->
       <div class="player-area" id="p2-area">
         <h2>Player 2</h2>
-        <div class="player-hand p2-hand"></div> <!-- ✅ Fixed Class Usage -->
+        <div class="player-hand p2-hand"></div> <!-- ✅ Added class .p2-hand -->
       </div>
     </div>
   </div>
@@ -55,7 +57,7 @@
       initGame();
     });
 
-    document.getElementById("play-turn-btn").addEventListener("click", () => { // ✅ Fixed ID
+    document.getElementById("play-turn-btn").addEventListener("click", () => {
       handleTurn();
     });
   </script>
