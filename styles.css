@@ -7,6 +7,7 @@
 
 body {
   font-family: Arial, sans-serif;
+  background-color: #EDE8E4;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -34,15 +35,16 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  background: #284177;
 }
 
-.player-hand {
+.playerHand {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
   justify-content: center;
   min-height: 100px;
+  background: #284177;
 }
 
 /* Controls (buttons) in the center area */
@@ -55,22 +57,26 @@ body {
 }
 
 /* Results log styling */
-#results-log {
+#resultsLog {
   margin-top: 20px;
+  border: 2px solid #C2AFA8;
   border-radius: 8px;
+  color: #284177;
+  background: #fff;
   padding: 10px;
   width: 90%;
   max-height: 200px;
   overflow-y: auto;
 }
 
-.results-container h2 {
+.resultsContainer h2 {
   margin-bottom: 10px;
   text-align: center;
+  color: #fff;
 }
 
 /* Card container for each player's hand */
-.card-container {
+.cardContainer {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
@@ -80,7 +86,10 @@ body {
 
 /* Card styling */
 .card {
+  background-color: #EDE8E4;
+  border: 2px solid #C2AFA8;
   border-radius: 6px;
+  color: #284177;
   width: 140px;
   height: auto;
   display: flex;
@@ -98,12 +107,12 @@ body {
   object-fit: cover;
 }
 
-.card-name {
+.cardName {
   font-weight: bold;
   margin-bottom: 5px;
 }
 
-.card-attributes {
+.cardAttributes {
   font-size: 12px;
   margin-top: 5px;
 }
@@ -116,37 +125,30 @@ body {
   gap: 10px;
 }
 
-.battle-zone-label {
+.battleZoneLabel {
   font-weight: bold;
   text-align: center;
+  color: #284177;
   margin-bottom: 5px;
 }
 
-.p1BZ {
+.battleZone1, .battleZone2 {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   justify-content: center;
   min-height: 100px;
   padding: 10px;
+  border: 2px solid #C2AFA8;
+  background-color: #fff;
   border-radius: 8px;
 }
-
-.p2BZ {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-  min-height: 100px;
-  padding: 10px;
-  border-radius: 8px;
-}
-
 
 /* Buttons */
 button {
   padding: 10px 15px;
   border: none;
+  background-color: #C2AFA8;
   color: white;
   font-size: 16px;
   cursor: pointer;
@@ -154,13 +156,15 @@ button {
 }
 
 button:disabled {
+  background-color: #999;
   cursor: not-allowed;
 }
 
 button:hover:not(:disabled) {
+  background-color: #A28E7F;
 }
 
-/* Missing Classes - Added for Functionality */
+/* Fixing Errors in Previous CSS */
 .targetable {
   border: 2px solid red;
   cursor: pointer;
@@ -171,7 +175,7 @@ button:hover:not(:disabled) {
   cursor: pointer;
 }
 
-.mini-card {
+.miniCard {
   width: 100px;
   height: 140px;
   display: flex;
@@ -182,7 +186,7 @@ button:hover:not(:disabled) {
   background-color: #EDE8E4;
 }
 
-.card-name-text {
+.cardNameText {
   font-weight: bold;
   text-align: center;
   margin-top: 5px;
