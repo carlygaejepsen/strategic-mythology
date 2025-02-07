@@ -17,7 +17,7 @@ let batSys = {};
 async function loadGameData() {
     const jsonFiles = [
         "water-chars.json", "elem-cards.json", "bat-sys.json", "beast-chars.json",
-        "bully-chars.json", "celestial-chars.json", "char-desc.json", "class-cards.json",
+        "bully-chars.json", "celestial-chars.json", "char-desc-a.json", "class-cards.json",
         "game-config.json", "hero-chars.json", "life-chars.json", "mystical-chars.json",
         "olympian-chars.json", "plant-chars.json", "underworld-chars.json"
     ];
