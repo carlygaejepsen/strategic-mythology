@@ -388,6 +388,17 @@ function playCard(card, playerHand, playerBZ, battleZoneId) {
     );
 }
 //22
+function renderBZ(playerBZ, battleZoneId) {
+    const container = getElementSafe(battleZoneId);
+    if (!container) return;
+    container.innerHTML = "";
+
+    playerBZ.forEach(card => {
+        const cardElement = createCardElement(card);
+        container.appendChild(cardElement);
+    });
+}
+//23
 function renderHand(hand, containerId, whichPlayer) {
     const container = getElementSafe(containerId);
     if (!container) return;
