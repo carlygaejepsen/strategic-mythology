@@ -1,41 +1,163 @@
-/* Ensure card names don't overflow */
-.card-name {
-  font-weight: bold;
-  font-size: 14px;
-  white-space: nowrap;
-  max-width: 100%; 
+/* General Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-.card:hover {
-  transform: scale(1.5);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+body {
+  font-family: Arial, sans-serif;
+  background-color: #EDE8E4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 20px;
 }
 
-/* Ensure battlezone cards adjust spacing dynamically */
-.mini-card {
-  width: 80px;
-  height: auto;
+.container {
+  width: 95%;
+  max-width: 1400px;
+}
+
+/* Game Board Layout */
+.game-board {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Player Areas */
+.player-area {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 5px;
-  padding: 5px;
-  background: #EDE8E4;
+}
+
+.player-hand {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  min-height: 100px;
+}
+
+/* Controls (buttons) in the center area */
+#controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+/* Results log styling */
+#results-log {
+  margin-top: 20px;
+  border: 2px solid #C2AFA8;
+  border-radius: 8px;
+  color: #284177;
+  background: #fff;
+  padding: 10px;
+  width: 90%;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.results-container h2 {
+  margin-bottom: 10px;
+  text-align: center;
+  color: #fff;
+}
+
+/* Card container for each player's hand */
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  width: 100%;
+  justify-content: center;
+}
+
+/* Card styling */
+.card {
+  background-color: #EDE8E4;
   border: 2px solid #C2AFA8;
   border-radius: 6px;
-  font-size: 10px;
+  color: #284177;
+  width: 140px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 10px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.card img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+}
+
+.card-name {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.card-attributes {
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+/* Battle Zones */
+.battle-zone-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.battle-zone-label {
+  font-weight: bold;
   text-align: center;
   color: #284177;
-  flex-grow: 1; /* Ensures better responsiveness */
+  margin-bottom: 5px;
 }
 
-/* Update selection highlights for better readability */
-.selectable {
-  box-shadow: 0 0 12px rgba(255, 255, 0, 0.8);
+.player-battlezone {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  min-height: 100px;
+  padding: 10px;
+  border: 2px solid #C2AFA8;
+  background-color: #fff;
+  border-radius: 8px;
+}
+
+/* Buttons */
+button {
+  padding: 10px 15px;
+  border: none;
+  background-color: #C2AFA8;
+  color: white;
+  font-size: 16px;
   cursor: pointer;
+  border-radius: 4px;
 }
 
-.targetable {
-  box-shadow: 0 0 12px rgba(255, 0, 0, 0.8);
-  cursor: crosshair;
+button:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+  background-color: #A28E7F;
 }
