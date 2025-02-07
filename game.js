@@ -169,11 +169,9 @@ function renderBZ(playerBZ, battleZoneId) {
 }
 
 //10
-function renderHand(hand, containerId, whichPlayer) {
-    const container = document.querySelector(`.${containerId}`); // ✅ Ensure it's a DOM element
-
+function renderHand(hand, container, whichPlayer) {
     if (!container) {
-        console.error(`Error: No container found for ${containerId}`);
+        console.error(`Error: No container found for ${whichPlayer}'s hand`);
         return;
     }
 
@@ -184,26 +182,24 @@ function renderHand(hand, containerId, whichPlayer) {
         if (whichPlayer === "p1") {
             cardElement.addEventListener("click", () => {
                 playCard(card, p1Hand, p1BZ, "p1BZ");
-                renderHand(p1Hand, containerId, whichPlayer);
+                renderHand(p1Hand, container, whichPlayer);
             });
         }
         container.appendChild(cardElement);
     });
 }
 
+
 //
 async function initGame() {
     try {
         console.log("Initializing game...");
 
-        // Load game data asynchronously
         await Promise.all([loadGameConfig(), loadGameData(), loadBatSys()]);
 
-        // Validate essential game data
         if (!batSys?.turnStructure) throw new Error("Battle system data is missing or failed to load.");
         if (!window.gameConfig?.gameSettings?.maxHandSize) throw new Error("Game configuration is missing hand size settings.");
 
-        // Assign player hand containers from the DOM
         const p1HandContainer = document.querySelector(".player-hand.p1-hand");
         const p2HandContainer = document.querySelector(".player-hand.p2-hand");
 
@@ -211,7 +207,6 @@ async function initGame() {
             throw new Error("Player hand containers not found in the DOM.");
         }
 
-        // Initialize player decks and hands
         p1Deck = buildDeck();
         p2Deck = buildDeck();
         p1Hand = p1Deck.splice(0, window.gameConfig.gameSettings.maxHandSize);
@@ -225,25 +220,20 @@ async function initGame() {
         console.log("Player 1 Hand:", p1Hand);
         console.log("Player 2 Hand:", p2Hand);
 
-        // Render player hands
-        renderHand(p1Hand, p1HandContainer, "p1");
-        renderHand(p2Hand, p2HandContainer, "p2");
+        renderHand(p1Hand, p1HandContainer, "p1"); // ✅ Now passing DOM element
+        renderHand(p2Hand, p2HandContainer, "p2"); // ✅ Now passing DOM element
 
-        // Clear battle zones
         document.querySelectorAll(".p1BZ, .p2BZ").forEach(zone => {
             zone.innerHTML = "";
         });
 
-        // Enable play button
         document.getElementById("play-turn-btn")?.removeAttribute("disabled");
 
-        // Start game turn cycle
         handleTurn();
     } catch (error) {
         console.error("Error initializing game:", error);
     }
 }
-
 
 //TURN HANDLING
 //
