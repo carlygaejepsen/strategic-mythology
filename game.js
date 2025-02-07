@@ -32,7 +32,7 @@ async function loadGameData() {
         "beast-chars.json",
         "bully-chars.json",
         "celestial-chars.json",
-		"char-desc.json"
+		"char-desc.json",
 		"class-cards.json",
         "game-config.json",
         "hero-chars.json",
