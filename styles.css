@@ -35,6 +35,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: #284177;
+
 }
 
 .player-hand {
@@ -43,6 +45,7 @@ body {
   flex-wrap: wrap;
   justify-content: center;
   min-height: 100px;
+  background: #284177;
 }
 
 /* Controls (buttons) in the center area */
