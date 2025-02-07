@@ -175,7 +175,7 @@ function renderHand(hand, containerId, whichPlayer) {
         const cardElement = createCardElement(card);
         if (whichPlayer === "p1") {
             cardElement.addEventListener("click", () => {
-                playCard(card, p1Hand, p1BZ, "p1-battlezone");
+                playCard(card, p1Hand, p1BZ, "p1BZ");
                 renderHand(p1Hand, containerId, whichPlayer);
             });
         }
@@ -212,7 +212,7 @@ async function initGame() {
         renderHand(p1Hand, "p1-hand", "p1");
         renderHand(p2Hand, "p2-hand", "p2");
 
-        ["p1-battlezone", "p2-battlezone"].forEach(zone => {
+        ["p1BZ", "p2BZ"].forEach(zone => {
             const element = getElementSafe(zone);
             if (element) element.innerHTML = "";
         });
@@ -293,7 +293,7 @@ function logBattleEvent(message) {
 //
 function enableHandInteract(player) {
     const handId = player === "p1" ? "p1-hand" : "p2-hand";
-    const battleZoneId = player === "p1" ? "p1-battlezone" : "p2-battlezone";
+    const battleZoneId = player === "p1" ? "p1BZ" : "p2BZ";
     const handContainer = getElementSafe(handId);
     if (!handContainer) return;
     handContainer.querySelectorAll(".card").forEach(cardEl => {
@@ -347,7 +347,7 @@ async function doAiDeploy() {
         if (playableCards.length > 0) {
             const chosenCard = playableCards[Math.floor(Math.random() * playableCards.length)];
             await new Promise(resolve => setTimeout(resolve, window.gameConfig?.aiSettings?.moveDelay || 1000));
-            playCard(chosenCard, p2Hand, p2BZ, "p2-battlezone");
+            playCard(chosenCard, p2Hand, p2BZ, "p2BZ");
         } else {
             console.warn("AI has no playable cards.");
         }
@@ -380,15 +380,15 @@ function playCard(card, playerHand, playerBZ, battleZoneId) {
 //
 function initPlayerAttackSystem() {
     console.log("🔵 initPlayerAttackSystem() is running!");
-    const battleZone = getElementSafe("p1-battlezone");
+    const battleZone = getElementSafe("p1BZ");
     
     if (!battleZone) {
-        console.error("❌ ERROR: p1-battlezone not found!");
+        console.error("❌ ERROR: p1BZ not found!");
         return;
     }
 
     const cards = battleZone.querySelectorAll(".mini-card");
-    console.log(`🟡 Found ${cards.length} cards in p1-battlezone`);
+    console.log(`🟡 Found ${cards.length} cards in your battlezone.`);
 
     cards.forEach(cardEl => {
         const card = getCardFromElement(cardEl);
@@ -409,7 +409,7 @@ function handlePlayerAttackSelection(cardEl) {
     selectedAttacker = attacker;
     clearSelections(".selectable");
 
-    getElementSafe("p2-battlezone")?.querySelectorAll(".mini-card").forEach(targetEl => {
+    getElementSafe("p2BZ")?.querySelectorAll(".mini-card").forEach(targetEl => {
         const defender = getCardFromElement(targetEl);
         if (defender) {
             targetEl.classList.add("targetable");
@@ -525,8 +525,8 @@ function removeDestroyedCard(card) {
 }
 //
 function updateBZs() {
-    renderBZ(p1BZ, "p1-battlezone"); // Update Player 1's battle zone
-    renderBZ(p2BZ, "p2-battlezone"); // Update Player 2's battle zone
+    renderBZ(p1BZ, "p1BZ"); // Update Player 1's battle zone
+    renderBZ(p2BZ, "p2BZ"); // Update Player 2's battle zone
 }
 // ============= GAME END LOGIC =============
 function endGame(winner) {
