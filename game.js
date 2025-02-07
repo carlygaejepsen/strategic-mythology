@@ -5,17 +5,6 @@ let p2BZ = [];
 let elementEmojis = {};
 let batSys = {}; // Store battle system data
 
-async function loadGameConfig() {
-    try {
-        const response = await fetch("./data/game-config.json");
-        if (!response.ok) throw new Error("Failed to load game-config.json");
-        const config = await response.json();
-        elementEmojis = config.elementEmojis || {};
-        window.gameConfig = config;
-    } catch (error) {
-        console.error("Error loading game config:", error);
-    }
-}
 
 async function loadGameData() {
     const jsonFiles = [
@@ -62,6 +51,17 @@ async function loadGameData() {
     }
 }
 
+async function loadGameConfig() {
+    try {
+        const response = await fetch("./data/game-config.json");
+        if (!response.ok) throw new Error("Failed to load game-config.json");
+        const config = await response.json();
+        elementEmojis = config.elementEmojis || {};
+        window.gameConfig = config;
+    } catch (error) {
+        console.error("Error loading game config:", error);
+    }
+}
 async function loadBatSys() {
     try {
         const response = await fetch("./data/bat-sys.json");
