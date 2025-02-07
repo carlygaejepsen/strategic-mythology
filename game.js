@@ -232,6 +232,23 @@ async function handleDeploymentPhase() {
     }
 }
 //12
+async function handleAttackPhase() {
+    if (turnStep === 0) {
+        if (p1BZ.length && p2BZ.length) {
+            logBattleEvent("Select your attacker");
+            initPlayerAttackSystem();
+            turnStep = 1;
+        } else {
+            advancePhase("draw");
+        }
+    } else {
+        if (p2BZ.length && p1BZ.length) {
+            await doAiAttack();
+        }
+        advancePhase("draw");
+    }
+}
+//13
 async function handleTurn() {
     switch (currentPhase) {
         case "deploy":
