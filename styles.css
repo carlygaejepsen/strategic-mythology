@@ -7,7 +7,6 @@
 
 body {
   font-family: Arial, sans-serif;
-  background-color: #EDE8E4;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -35,7 +34,6 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #284177;
 
 }
 
@@ -45,7 +43,6 @@ body {
   flex-wrap: wrap;
   justify-content: center;
   min-height: 100px;
-  background: #284177;
 }
 
 /* Controls (buttons) in the center area */
@@ -60,10 +57,7 @@ body {
 /* Results log styling */
 #results-log {
   margin-top: 20px;
-  border: 2px solid #C2AFA8;
   border-radius: 8px;
-  color: #284177;
-  background: #fff;
   padding: 10px;
   width: 90%;
   max-height: 200px;
@@ -73,7 +67,6 @@ body {
 .results-container h2 {
   margin-bottom: 10px;
   text-align: center;
-  color: #fff;
 }
 
 /* Card container for each player's hand */
@@ -87,10 +80,7 @@ body {
 
 /* Card styling */
 .card {
-  background-color: #EDE8E4;
-  border: 2px solid #C2AFA8;
   border-radius: 6px;
-  color: #284177;
   width: 140px;
   height: auto;
   display: flex;
@@ -129,7 +119,6 @@ body {
 .battle-zone-label {
   font-weight: bold;
   text-align: center;
-  color: #284177;
   margin-bottom: 5px;
 }
 
@@ -140,8 +129,6 @@ body {
   justify-content: center;
   min-height: 100px;
   padding: 10px;
-  border: 2px solid #C2AFA8;
-  background-color: #fff;
   border-radius: 8px;
 }
 
@@ -152,8 +139,6 @@ body {
   justify-content: center;
   min-height: 100px;
   padding: 10px;
-  border: 2px solid #C2AFA8;
-  background-color: #fff;
   border-radius: 8px;
 }
 
@@ -162,7 +147,6 @@ body {
 button {
   padding: 10px 15px;
   border: none;
-  background-color: #C2AFA8;
   color: white;
   font-size: 16px;
   cursor: pointer;
@@ -170,10 +154,36 @@ button {
 }
 
 button:disabled {
-  background-color: #999;
   cursor: not-allowed;
 }
 
 button:hover:not(:disabled) {
-  background-color: #A28E7F;
+}
+
+/* Missing Classes - Added for Functionality */
+.targetable {
+  border: 2px solid red;
+  cursor: pointer;
+}
+
+.selectable {
+  border: 2px solid blue;
+  cursor: pointer;
+}
+
+.mini-card {
+  width: 100px;
+  height: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #C2AFA8;
+  background-color: #EDE8E4;
+}
+
+.card-name-text {
+  font-weight: bold;
+  text-align: center;
+  margin-top: 5px;
 }

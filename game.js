@@ -1,4 +1,4 @@
-//0. Variables
+// Variables
 let p1Deck = [];
 let p2Deck = [];
 let p1BZ = [];
@@ -14,6 +14,7 @@ let elementEmojis = {};
 let batSys = {};
 
 //GAME LOADING AND INITIALIZATION
+//
 function shuffleDeck(deck) {
     for (let i = deck.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -100,7 +101,7 @@ function createCardElement(card) {
 
     return cardDiv;
 }
-//
+//5
 async function loadGameData() {
     const jsonFiles = [
         "water-chars.json", "elem-cards.json", "bat-sys.json", "beast-chars.json",
@@ -166,7 +167,7 @@ function renderBZ(playerBZ, battleZoneId) {
         container.appendChild(cardElement);
     });
 }
-//
+//10
 function renderHand(hand, containerId, whichPlayer) {
     const container = getElementSafe(containerId);
     if (!container) return;
@@ -236,7 +237,7 @@ async function handleDeploymentPhase() {
         advancePhase("attack");
     }
 }
-//12
+//
 async function handleAttackPhase() {
     if (turnStep === 0) {
         if (p1BZ.length && p2BZ.length) {
@@ -253,19 +254,19 @@ async function handleAttackPhase() {
         advancePhase("draw");
     }
 }
-//13
+//
 function handleDrawPhase() {
     drawCard(p1Hand, p1Deck);
     drawCard(p2Hand, p2Deck);
     advancePhase("deploy");
 }
-//14
+//
 function advancePhase(nextPhase) {
     currentPhase = nextPhase;
     turnStep = 0;
     handleTurn();
 }
-//15
+//
 async function handleTurn() {
     switch (currentPhase) {
         case "deploy":
@@ -280,7 +281,7 @@ async function handleTurn() {
     }
     checkWinConditions();
 }
-//16
+//
 function logBattleEvent(message) {
     const logContainer = getElementSafe("results-log");
     if (!logContainer) return;
