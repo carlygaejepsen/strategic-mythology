@@ -29,6 +29,8 @@ async function loadConfigFiles() {
         console.error("Error loading card templates:", error);
     }
 }
+console.log("DEBUG: Loaded gameConfig:", gameConfig);
+
 //
 function populateTemplate(template, data) {
     return template.replace(/{(\w+)}/g, (match, key) => data[key] || '');
