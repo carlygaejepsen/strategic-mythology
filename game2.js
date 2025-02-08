@@ -151,8 +151,46 @@ function generateAbilityCards() {
         container.appendChild(card);
     });
 }
-
+function shuffleDeck(deck) {
+    for (let i = deck.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [deck[i], deck[j]] = [deck[j], deck[i]];
+    }
+    return deck;
 
 // Run functions on game start
 document.getElementById("start-game").addEventListener("click", generateAbilityCards);
 document.getElementById("start-game").addEventListener("click", generateEssenceCards);
+document.addEventListener("DOMContentLoaded", () => {
+    const playerHand = document.getElementById("player-hand");
+    const battleZone = document.getElementById("battle-zone");
+
+    function addClickEventsToCards() {
+        document.querySelectorAll(".character-card, .essence-card, .ability-card").forEach(card => {
+            card.addEventListener("click", () => {
+                const cardType = card.classList.contains("character-card")
+                    ? "character"
+                    : card.classList.contains("essence-card")
+                    ? "essence"
+                    : "ability";
+
+                // Check if a card of this type is already in the battle zone
+                if (battleZone.querySelector(`.${cardType}-card`)) {
+                    alert(`Only one ${cardType} card can be placed at a time.`);
+                    return;
+                }
+
+                // Move card to battle zone
+                battleZone.appendChild(card);
+            });
+        });
+    }
+
+    // Call the function after cards are generated
+    document.getElementById("start-game").addEventListener("click", () => {
+        generateCharacterCards();
+        generateEssenceCards();
+        generateAbilityCards();
+        setTimeout(addClickEventsToCards, 100); // Ensure event listeners are attached after rendering
+    });
+});
