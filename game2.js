@@ -81,31 +81,32 @@ function shuffleDeck(deck) {
 
 function createCardElement(card, type) {
     const cardDiv = document.createElement("div");
-    cardDiv.classList.add("char-card");
+    cardDiv.classList.add(`${type}-card`);
 
     cardDiv.innerHTML = `
         <h2 class="char-name">${card.name}</h2>
-		<img src="${card.img}" alt="${card.name}" class="char-img" style="border: 2px solid black; border-radius: 5px;">
+        <img src="${card.img}" alt="${card.name}" class="${type}-img" style="border: 2px solid black; border-radius: 5px;">
 
         ${type === "char" ? `
             <div class="char-stats">
                 <p>❤️: ${card.hp} ⚔️: ${card.atk}</p> 
-				<p>🛡️: ${card.def} 🏇: ${card.spd}</p>
+                <p>🛡️: ${card.def} 🏇: ${card.spd}</p>
             </div>
             <div class="char-classes">
-                ${card.classes.map(cls => `<span class="class-tag">${classNames[cls] || cls}</span>`).join("")}
+                ${card.classes ? card.classes.map(cls => `<span class="class-tag">${classNames[cls] || cls}</span>`).join("") : ""}
             </div>
             <div class="char-essences">
-                ${card.essences.map(ess => `<span class="essence ${ess}">${essenceEmojis[ess] || ess}</span>`).join("")}
+                ${card.essences ? card.essences.map(ess => `<span class="essence ${ess}">${essenceEmojis[ess] || ess}</span>`).join("") : ""}
             </div>
-			            <div class="essence-type ${card.essence}">${essenceEmojis[card.essence] || card.essence}</div>
+        ` : type === "essence" ? `
+            <div class="essence-type ${card.essence}">${essenceEmojis[card.essence] || card.essence}</div>
             <div class="essence-stats">
                 <p>❤️ HP: ${card.hp}</p>
                 <p>⚔️ ATK: ${card.atk}</p>
             </div>
         ` : type === "ability" ? `
             <div class="ability-classes">
-                ${card.classes.map(cls => `<span class="class-tag">${classNames[cls] || cls}</span>`).join("")}
+                ${card.classes ? card.classes.map(cls => `<span class="class-tag">${classNames[cls] || cls}</span>`).join("") : ""}
             </div>
             <div class="ability-stats">
                 <p>❤️ HP: ${card.hp}</p>
@@ -116,6 +117,7 @@ function createCardElement(card, type) {
 
     return cardDiv;
 }
+
 
 function dealStartingHands() {
     playerHand = [];
