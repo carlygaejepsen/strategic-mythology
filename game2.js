@@ -66,6 +66,9 @@ function shuffleDeck(deck) {
 }
 //
 function createCardElement(card, type) {
+    console.log("Creating card with type:", type, "Card:", card);
+    console.log("Available templates:", Object.keys(cardTemplates));
+
     if (!cardTemplates[type]) {
         console.error(`Missing template for card type: ${type}`);
         return document.createElement("div");
@@ -91,6 +94,7 @@ function createCardElement(card, type) {
     cardDiv.innerHTML = populatedHTML;
     return cardDiv;
 }
+
 //
 function dealStartingHands() {
     playerHand = [];
