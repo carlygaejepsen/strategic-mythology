@@ -1,30 +1,11 @@
 {
   "char": {
-    "html": "<h2 class=\"char-name\">{name}</h2>\n"
-      "<img src=\"{img}\" alt=\"{name}\" class=\"char-img\" style=\"border: 2px solid black; border-radius: 5px;\">\n"
-      "<div class=\"char-stats\">\n"
-      "  <p>❤️: {hp} ⚔️: {atk}</p>\n"
-      "  <p>🛡️: {def} 🏇: {spd}</p>\n"
-      "</div>\n"
-      "<div class=\"char-classes\">{classes}</div>\n"
-      "<div class=\"char-essences\">{essences}</div>"
+    "html": "<h2 class=\"char-name\">{name}</h2>\n<img src=\"{img}\" alt=\"{name}\" class=\"char-img\" style=\"border: 2px solid black; border-radius: 5px;\">\n<div class=\"char-stats\">\n  <p>❤️: {hp} ⚔️: {atk}</p>\n  <p>🛡️: {def} 🏇: {spd}</p>\n</div>\n<div class=\"char-classes\">{classes}</div>\n<div class=\"char-essences\">{essences}</div>"
   },
   "essence": {
-    "html": "<h2 class=\"essence-name\">{name}</h2>\n"
-      "<img src=\"{img}\" alt=\"{name}\" class=\"essence-img\" style=\"border: 2px solid black; border-radius: 5px;\">\n"
-      "<div class=\"essence-type {essence}\">{essence_emoji}</div>\n"
-      "<div class=\"essence-stats\">\n"
-      "  <p>❤️ HP: {hp}</p>\n"
-      "  <p>⚔️ ATK: {atk}</p>\n"
-      "</div>"
+    "html": "<h2 class=\"essence-name\">{name}</h2>\n<img src=\"{img}\" alt=\"{name}\" class=\"essence-img\" style=\"border: 2px solid black; border-radius: 5px;\">\n<div class=\"essence-type {essence}\">{essence_emoji}</div>\n<div class=\"essence-stats\">\n  <p>❤️ HP: {hp}</p>\n  <p>⚔️ ATK: {atk}</p>\n</div>"
   },
   "ability": {
-    "html": "<h2 class=\"ability-name\">{name}</h2>\n"
-      "<img src=\"{img}\" alt=\"{name}\" class=\"ability-img\" style=\"border: 2px solid black; border-radius: 5px;\">\n"
-      "<div class=\"ability-classes\">{classes}</div>\n"
-      "<div class=\"ability-stats\">\n"
-      "  <p>❤️ HP: {hp}</p>\n"
-      "  <p>⚔️ ATK: {atk}</p>\n"
-      "</div>"
+    "html": "<h2 class=\"ability-name\">{name}</h2>\n<img src=\"{img}\" alt=\"{name}\" class=\"ability-img\" style=\"border: 2px solid black; border-radius: 5px;\">\n<div class=\"ability-classes\">{classes}</div>\n<div class=\"ability-stats\">\n  <p>❤️ HP: {hp}</p>\n  <p>⚔️ ATK: {atk}</p>\n</div>"
   }
 }
