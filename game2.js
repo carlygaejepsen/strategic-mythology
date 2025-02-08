@@ -35,15 +35,15 @@ const essenceEmojis = {
 
 const classNames = {
     "mals": "Malevolent",
-    "wilds": "Wildkeepers",
-    "cares": "Caretakers",
-    "heroes": "Heroes",
-    "ecs": "Ecstatics",
-    "warriors": "Warriors",
-    "auth": "Authorities",
-    "sages": "Sages",
-    "mys": "Mystics",
-    "oracles": "Oracles"
+    "wilds": "Wildkeeper",
+    "cares": "Caretaker",
+    "heroes": "Hero",
+    "ecs": "Ecstatic",
+    "warriors": "Warrior",
+    "auth": "Authority",
+    "sages": "Sage",
+    "mys": "Mystic",
+    "oracles": "Oracle"
 };
 
 async function loadAllCards() {
@@ -85,17 +85,31 @@ function createCardElement(card, type) {
 
     cardDiv.innerHTML = `
         <h2 class="char-name">${card.name}</h2>
-		<img src="${card.img}" alt="${card.name}" class="char-img">
+		<img src="${card.img}" alt="${card.name}" class="char-img" style="border: 2px solid black; border-radius: 5px;">
 
         ${type === "char" ? `
             <div class="char-stats">
-                <p>❤️: ${card.hp} ⚔️: ${card.atk}🛡️: ${card.def} 🏇: ${card.spd}</p>
+                <p>❤️: ${card.hp} ⚔️: ${card.atk}</p> 
+				<p>🛡️: ${card.def} 🏇: ${card.spd}</p>
             </div>
             <div class="char-classes">
                 ${card.classes.map(cls => `<span class="class-tag">${classNames[cls] || cls}</span>`).join("")}
             </div>
             <div class="char-essences">
                 ${card.essences.map(ess => `<span class="essence ${ess}">${essenceEmojis[ess] || ess}</span>`).join("")}
+            </div>
+			            <div class="essence-type ${card.essence}">${essenceEmojis[card.essence] || card.essence}</div>
+            <div class="essence-stats">
+                <p>❤️ HP: ${card.hp}</p>
+                <p>⚔️ ATK: ${card.atk}</p>
+            </div>
+        ` : type === "ability" ? `
+            <div class="ability-classes">
+                ${card.classes.map(cls => `<span class="class-tag">${classNames[cls] || cls}</span>`).join("")}
+            </div>
+            <div class="ability-stats">
+                <p>❤️ HP: ${card.hp}</p>
+                <p>⚔️ ATK: ${card.atk}</p>
             </div>
         ` : ""}
     `;
