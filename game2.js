@@ -1,19 +1,11 @@
-async function loadJSON(file) {
-    try {
-        const response = await fetch(file);
-        if (!response.ok) throw new Error(`Failed to load ${file}`);
-        return await response.json();
-    } catch (error) {
-        console.error("Error fetching JSON:", error);
-        return [];
-    }
-}
+
 let battleSystem = {};
 let playerDeck = [];
 let enemyDeck = [];
 let playerHand = [];
 let enemyHand = [];
 
+//
 const essenceEmojis = {
     "fire": "🔥",
     "water": "🌊",
@@ -32,7 +24,7 @@ const essenceEmojis = {
     "just": "⚖️",
 	"insight": "🔮"
 };
-
+//
 const classNames = {
     "mals": "Malevolent",
     "wilds": "Wildkeeper",
@@ -46,7 +38,18 @@ const classNames = {
     "mys": "Mystic",
     "oracles": "Oracle"
 };
-
+//
+async function loadJSON(file) {
+    try {
+        const response = await fetch(file);
+        if (!response.ok) throw new Error(`Failed to load ${file}`);
+        return await response.json();
+    } catch (error) {
+        console.error("Error fetching JSON:", error);
+        return [];
+    }
+}
+//
 async function loadAllCards() {
     try {
         const characterFiles = [
@@ -72,7 +75,7 @@ async function loadAllCards() {
         console.error("Error loading cards:", error);
     }
 }
-
+//
 function shuffleDeck(deck) {
     for (let i = deck.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -80,7 +83,7 @@ function shuffleDeck(deck) {
     }
     return deck;
 }
-
+//
 function createCardElement(card, type) {
     const cardDiv = document.createElement("div");
     cardDiv.classList.add(`${type}-card`);
@@ -124,18 +127,6 @@ function createCardElement(card, type) {
     return cardDiv;
 }
 //
-async function loadBattleSystem() {
-    try {
-        const response = await fetch("./data/bat-sys.json");
-        if (!response.ok) throw new Error(`Failed to load bat-sys.json`);
-        return await response.json();
-    } catch (error) {
-        console.error("Error fetching battle system JSON:", error);
-        return {};
-    }
-}
-
-//
 function dealStartingHands() {
     playerHand = [];
     enemyHand = [];
@@ -162,46 +153,6 @@ function dealStartingHands() {
     setTimeout(addClickEventsToCards, 100);
 }
 //
-function calculateDamage(attacker, defender) {
-    let baseDamage = Math.max(attacker.atk - defender.def, battleSystem.battleMechanics.damageCalculation.minDamage);
-    if (battleSystem.elementBonuses[attacker.essences] && battleSystem.elementBonuses[attacker.essences].strongAgainst === defender.essences) {
-        baseDamage *= battleSystem.battleMechanics.damageCalculation.essenceBonusMultiplier;
-    }
-    if (battleSystem.classBonuses[attacker.classes] && battleSystem.classBonuses[attacker.classes].strongAgainst.includes(defender.classes)) {
-        baseDamage *= battleSystem.battleMechanics.damageCalculation.classBonusMultiplier;
-    }
-    return Math.round(baseDamage);
-}
-
-function battleRound() {
-    const playerCard = playerHand[0];
-    const enemyCard = enemyHand[0];
-
-    const [first, second] = determineTurnOrder(playerCard, enemyCard);
-    let damageToSecond = calculateDamage(first, second);
-    second.hp -= damageToSecond;
-    if (second.hp > 0) {
-        let damageToFirst = calculateDamage(second, first);
-        first.hp -= damageToFirst;
-    }
-
-    if (playerCard.hp <= 0) {
-        console.log("Player's card is defeated!");
-        playerHand.shift();
-    }
-    if (enemyCard.hp <= 0) {
-        console.log("Enemy's card is defeated!");
-        enemyHand.shift();
-    }
-}
-
-document.getElementById("play-turn").addEventListener("click", battleRound);
-
-document.addEventListener("DOMContentLoaded", async () => {
-    await loadAllCards();
-    dealStartingHands();
-});
-//
 function addClickEventsToCards() {
     document.querySelectorAll(".char-card").forEach(card => {
         card.addEventListener("click", () => {
@@ -215,40 +166,126 @@ function addClickEventsToCards() {
     });
 }
 //
-function executeTurn() {
-    console.log("Executing turn...");
-    let playerCard = playerHand[0];
-    let enemyCard = enemyHand[0];
-    
-    if (playerCard && enemyCard) {
-        let playerDamage = calculateDamage(playerCard, enemyCard);
-        let enemyDamage = calculateDamage(enemyCard, playerCard);
-        
-        playerCard.hp -= enemyDamage;
-        enemyCard.hp -= playerDamage;
-        
-        console.log(`Player deals ${playerDamage} damage, Enemy deals ${enemyDamage} damage.`);
-
-        if (playerCard.hp <= 0) {
-            console.log("Player's card was defeated!");
-            playerHand.shift();
-        }
-        if (enemyCard.hp <= 0) {
-            console.log("Enemy's card was defeated!");
-            enemyHand.shift();
-        }
+async function loadBattleSystem() {
+    try {
+        const response = await fetch("./data/bat-sys.json");
+        if (!response.ok) throw new Error(`Failed to load bat-sys.json`);
+        return await response.json();
+    } catch (error) {
+        console.error("Error fetching battle system JSON:", error);
+        return {};
     }
 }
+//
+function battleRound() {
+    if (playerHand.length === 0 || enemyHand.length === 0) {
+        console.log("One player has no cards left! Game over.");
+        return;
+    }
 
+    const playerCard = playerHand[0];
+    const enemyCard = enemyHand[0];
+
+    console.log(`Battle begins: ${playerCard.name} vs ${enemyCard.name}`);
+
+    const attackOrderRule = battleSystem.battleMechanics.attackRules.attackOrder;
+
+    let firstAttacker, secondAttacker;
+
+    if (playerCard.spd > enemyCard.spd) {
+        firstAttacker = playerCard;
+        secondAttacker = enemyCard;
+    } else if (enemyCard.spd > playerCard.spd) {
+        firstAttacker = enemyCard;
+        secondAttacker = playerCard;
+    } else {
+        firstAttacker = playerCard;  // If tied, player attacks first (matches JSON rule)
+        secondAttacker = enemyCard;
+    }
+
+    function calculateDamage(attacker, defender) {
+        let baseDamage = Math.max(
+            attacker.atk - defender.def,
+            battleSystem.battleMechanics.damageCalculation.minDamage
+        );
+
+        // Apply Element Bonus
+        if (battleSystem.elementBonuses[attacker.essence] &&
+            battleSystem.elementBonuses[attacker.essence].strongAgainst === defender.essence) {
+            baseDamage *= battleSystem.battleMechanics.damageCalculation.essenceBonusMultiplier;
+            console.log(`Elemental Advantage! ${attacker.name} deals extra damage!`);
+        }
+
+        // Apply Class Bonus
+        if (battleSystem.classBonuses[attacker.class] &&
+            battleSystem.classBonuses[attacker.class].strongAgainst.includes(defender.class)) {
+            baseDamage *= battleSystem.battleMechanics.damageCalculation.classBonusMultiplier;
+            console.log(`Class Advantage! ${attacker.name} deals extra damage!`);
+        }
+
+        baseDamage = Math.floor(baseDamage);
+        defender.hp -= baseDamage;
+
+        console.log(`${attacker.name} attacks ${defender.name} for ${baseDamage} damage!`);
+    }
+
+    calculateDamage(firstAttacker, secondAttacker);
+
+    // Check if second attacker is still alive before allowing a counterattack
+    if (secondAttacker.hp > 0) {
+        calculateDamage(secondAttacker, firstAttacker);
+    }
+
+    // Remove defeated cards
+    if (playerCard.hp <= 0) {
+        console.log(`${playerCard.name} is defeated!`);
+        playerHand.shift();
+    }
+    if (enemyCard.hp <= 0) {
+        console.log(`${enemyCard.name} is defeated!`);
+        enemyHand.shift();
+    }
+}
+//
+function calculateDamage(attacker, defender) {
+    let baseDamage = Math.max(attacker.atk - defender.def, battleSystem.battleMechanics.damageCalculation.minDamage);
+    if (battleSystem.elementBonuses[attacker.essences] && battleSystem.elementBonuses[attacker.essences].strongAgainst === defender.essences) {
+        baseDamage *= battleSystem.battleMechanics.damageCalculation.essenceBonusMultiplier;
+    }
+    if (battleSystem.classBonuses[attacker.classes] && battleSystem.classBonuses[attacker.classes].strongAgainst.includes(defender.classes)) {
+        baseDamage *= battleSystem.battleMechanics.damageCalculation.classBonusMultiplier;
+    }
+    return Math.round(baseDamage);
+}
+//
+function applyDamage(attacker, defender) {
+    let baseDamage = Math.max(
+        attacker.element.getAttribute("data-atk") - defender.getAttribute("data-def"),
+        battleSystem.battleMechanics.damageCalculation.minDamage
+    );
+
+    defender.setAttribute("data-hp", Math.max(0, defender.getAttribute("data-hp") - baseDamage));
+
+    if (parseInt(defender.getAttribute("data-hp"), 10) <= 0) {
+        defender.remove();
+    }
+}
+//
 async function startGame() {
     await loadAllCards();
     dealStartingHands();
     addClickEventsToCards();
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
-    await loadAllCards();
-    dealStartingHands();
-});
+document.addEventListener("DOMContentLoaded", startGame);
 
-document.getElementById("play-turn").addEventListener("click", executeTurn);
+const playTurnButton = document.getElementById("play-turn");
+
+if (playTurnButton) {
+    playTurnButton.addEventListener("click", () => {
+        executeTurn();
+        battleRound();
+    });
+} else {
+    console.error("Error: 'play-turn' button not found!");
+}
