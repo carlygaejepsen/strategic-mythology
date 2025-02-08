@@ -19,9 +19,14 @@ async function loadJSON(file) {
 }
 //
 async function loadConfigFiles() {
-    cardTemplates = await loadJSON("./data/card-templates.json");
-    gameConfig = await loadJSON("./data/game-config.json");
+    try {
+        cardTemplates = await loadJSON("./data/card-templates.json");
+        gameConfig = await loadJSON("./data/game-config.json");
+    } catch (error) {
+        console.error("Error loading configuration files:", error);
+    }
 }
+
 //
 async function loadAllCards() {
     try {
