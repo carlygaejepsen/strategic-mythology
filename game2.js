@@ -1,14 +1,5 @@
-async function loadJSON(file) {
-    try {
-        const response = await fetch(file);
-        if (!response.ok) throw new Error(`Failed to load ${file}`);
-        return await response.json();
-    } catch (error) {
-        console.error("Error fetching JSON:", error);
-        return [];
-    }
-}
 
+let battleSystem = {};
 let playerDeck = [];
 let enemyDeck = [];
 let playerHand = [];
@@ -40,6 +31,7 @@ const classNames = {
     "heroes": "Hero",
     "ecs": "Ecstatic",
     "warriors": "Warrior",
+	"wars": "Warrior",
     "auth": "Authority",
     "sages": "Sage",
     "mys": "Mystic",
@@ -123,11 +115,17 @@ function createCardElement(card, type) {
     return cardDiv;
 }
 //
-function determineTurnOrder(playerCard, enemyCard) {
-    if (playerCard.spd > enemyCard.spd) return [playerCard, enemyCard];
-    if (playerCard.spd < enemyCard.spd) return [enemyCard, playerCard];
-    return Math.random() > 0.5 ? [playerCard, enemyCard] : [enemyCard, playerCard];
+async function loadBattleSystem() {
+    try {
+        const response = await fetch("./data/bat-sys.json");
+        if (!response.ok) throw new Error(`Failed to load bat-sys.json`);
+        return await response.json();
+    } catch (error) {
+        console.error("Error fetching battle system JSON:", error);
+        return {};
+    }
 }
+
 //
 function dealStartingHands() {
     playerHand = [];

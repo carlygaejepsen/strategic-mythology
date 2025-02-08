@@ -5,8 +5,8 @@
     "ability-card-alone": 10,
     "char-plus-essence-card": 40,
     "full-combo": 60,
-	"char-plus-ability-card": 40,
-
+    "char-plus-ability-card": 40
+  },
   "turnStructure": [
     { "phase": "deploy", "desc": "Players select char cards to deploy." },
     { "phase": "act", "desc": "Players choose act cards or attack." },
@@ -33,7 +33,7 @@
     "attackRules": {
       "targetSelection": "Players select targets for their attacking cards.",
       "attackPriority": "Characters attack first, then action cards.",
-      "attackOrder": "Highest spd attacks first. If tied, attacker goes first."
+      "attackOrder": "Highest speed attacks first. If tied, attacker goes first."
     },
     "bonusMultipliers": {
       "element": 1.2,
@@ -70,13 +70,13 @@
   "classBonuses": {
     "wars": { "strongAgainst": ["oracles", "sages"], "weakAgainst": ["ecs", "cares"] },
     "heroes": { "strongAgainst": ["auth", "mys"], "weakAgainst": ["wilds", "oracles"] },
-    "wilds": { "strongAgainst": ["sages", "auth"], "weakAgainst": ["warriors", "ecs"] },
+    "wilds": { "strongAgainst": ["sages", "auth"], "weakAgainst": ["wars", "ecs"] },
     "mals": { "strongAgainst": ["cares", "ecs"], "weakAgainst": ["sages", "heroes"] },
-    "oracles": { "strongAgainst": ["auth", "heroes"], "weakAgainst": ["warriors", "wilds"] },
-    "ecs": { "strongAgainst": ["wilds", "warriors"], "weakAgainst": ["cares", "sages"] },
+    "oracles": { "strongAgainst": ["auth", "heroes"], "weakAgainst": ["wars", "wilds"] },
+    "ecs": { "strongAgainst": ["wilds", "wars"], "weakAgainst": ["cares", "sages"] },
     "cares": { "strongAgainst": ["wars", "heroes"], "weakAgainst": ["mals", "auth"] },
     "auth": { "strongAgainst": ["sages", "wilds"], "weakAgainst": ["heroes", "oracles"] },
-    "sages": { "strongAgainst": ["cares", "ecs"], "weakAgainst": ["wilds", "warriors"] },
+    "sages": { "strongAgainst": ["cares", "ecs"], "weakAgainst": ["wilds", "wars"] },
     "mys": { "strongAgainst": ["auth", "sages"], "weakAgainst": ["heroes", "oracles"] }
   },
   "combatRestrictions": {
