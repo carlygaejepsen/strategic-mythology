@@ -13,7 +13,7 @@ let playerDeck = [];
 let enemyDeck = [];
 let playerHand = [];
 let enemyHand = [];
-//
+
 async function loadAllCards() {
     try {
         const characterFiles = [
@@ -38,7 +38,7 @@ async function loadAllCards() {
         console.error("Error loading cards:", error);
     }
 }
-//
+
 function shuffleDeck(deck) {
     for (let i = deck.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -46,13 +46,14 @@ function shuffleDeck(deck) {
     }
     return deck;
 }
+
 function createCardElement(card, type) {
     const cardDiv = document.createElement("div");
-    cardDiv.classList.add(`${type}-card`);
+    cardDiv.classList.add("char-card");
 
     cardDiv.innerHTML = `
-        <img src="${card.img}" alt="${card.name}" class="${type}-img">
-        <h2 class="${type}-name">${card.name}</h2>
+        <img src="${card.img}" alt="${card.name}" class="char-img">
+        <h2 class="char-name">${card.name}</h2>
         ${type === "char" ? `
             <div class="char-stats">
                 <p>❤️ HP: ${card.hp}</p>
@@ -67,27 +68,11 @@ function createCardElement(card, type) {
                 ${card.essences.map(ess => `<span class="essence ${ess}">${ess}</span>`).join("")}
             </div>
         ` : ""}
-        ${type === "essence" ? `
-            <div class="essence-type ${card.essence}">${card.essence.charAt(0).toUpperCase() + card.essence.slice(1)}</div>
-            <div class="essence-stats">
-                <p>❤️ HP: ${card.hp}</p>
-                <p>⚔️ ATK: ${card.atk}</p>
-            </div>
-        ` : ""}
-        ${type === "ability" ? `
-            <div class="ability-classes">
-                ${card.classes.map(cls => `<span class="class-tag">${cls}</span>`).join("")}
-            </div>
-            <div class="ability-stats">
-                <p>❤️ HP: ${card.hp}</p>
-                <p>⚔️ ATK: ${card.atk}</p>
-            </div>
-        ` : ""}
     `;
 
     return cardDiv;
 }
-//
+
 function dealStartingHands() {
     playerHand = [];
     enemyHand = [];
@@ -113,9 +98,9 @@ function dealStartingHands() {
 
     setTimeout(addClickEventsToCards, 100);
 }
-//
+
 function addClickEventsToCards() {
-    document.querySelectorAll(".char-card, .essence-card, .ability-card").forEach(card => {
+    document.querySelectorAll(".char-card").forEach(card => {
         card.addEventListener("click", () => {
             const battleZone = card.parentElement.id === "player-hand" 
                 ? document.getElementById("player-battle-zone") 
@@ -126,18 +111,14 @@ function addClickEventsToCards() {
         });
     });
 }
-//
+
 async function startGame() {
     await loadAllCards();
-    dealStartingHand();
+    dealStartingHands();
     addClickEventsToCards();
 }
 
 document.addEventListener("DOMContentLoaded", startGame);
-document.addEventListener("DOMContentLoaded", async () => {
-    await loadAllCards();
-    dealStartingHands();
-});
 document.getElementById("play-turn").addEventListener("click", () => {
     console.log("Turn played!");
 });
