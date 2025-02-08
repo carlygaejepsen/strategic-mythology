@@ -32,6 +32,19 @@ const essenceEmojis = {
     "just": "⚖️"
 };
 
+const classNames = {
+    "mals": "Malevolent",
+    "wilds": "Wildkeepers",
+    "cares": "Caretakers",
+    "heroes": "Heroes",
+    "ecs": "Ecstatics",
+    "wars": "Warriors",
+    "auth": "Authorities",
+    "sages": "Sages",
+    "mys": "Mystics",
+    "oracles": "Oracles"
+};
+
 async function loadAllCards() {
     try {
         const characterFiles = [
@@ -74,10 +87,13 @@ function createCardElement(card, type) {
         <h2 class="char-name">${card.name}</h2>
         ${type === "char" ? `
             <div class="char-stats">
-                <p>❤️: ${card.hp},⚔️: ${card.atk},🛡️: ${card.def},💨 SPD: ${card.spd}</p>
+                <p>❤️ HP: ${card.hp}</p>
+                <p>⚔️ ATK: ${card.atk}</p>
+                <p>🛡️ DEF: ${card.def}</p>
+                <p>💨 SPD: ${card.spd}</p>
             </div>
             <div class="char-classes">
-                ${card.classes.map(cls => `<span class="class-tag">${cls}</span>`).join("")}
+                ${card.classes.map(cls => `<span class="class-tag">${classNames[cls] || cls}</span>`).join("")}
             </div>
             <div class="char-essences">
                 ${card.essences.map(ess => `<span class="essence ${ess}">${essenceEmojis[ess] || ess}</span>`).join("")}
