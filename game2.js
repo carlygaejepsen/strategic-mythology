@@ -200,7 +200,8 @@ async function battleRound() {
 }
 //
 async function startGame() {
-    await loadAllCards();
+    await loadConfigFiles();
+	await loadAllCards();
     dealStartingHands();
 }
 
