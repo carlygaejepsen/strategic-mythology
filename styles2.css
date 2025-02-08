@@ -1,5 +1,5 @@
 body {
-    font-family: 'Garamond', serif;
+    font-family: sans-serif;
     text-align: center;
     background-color: #F4F1DE;
     color: #4A2C2A;
@@ -52,8 +52,8 @@ button {
 }
 
 .char-img, .essence-img, .ability-img {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     border-radius: 3px;
 	object-fit: cover;
 }

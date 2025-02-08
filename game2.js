@@ -17,7 +17,7 @@ let enemyHand = [];
 const essenceEmojis = {
     "fire": "🔥",
     "water": "🌊",
-    "wind": "💨",
+    "air": "💨",
     "earth": "🏔️",
     "zap": "⚡",
     "love": "💞",
@@ -29,7 +29,8 @@ const essenceEmojis = {
     "vit": "🌿",
     "decay": "🍂",
     "luck": "🪙",
-    "just": "⚖️"
+    "just": "⚖️",
+	"insight": "🔮"
 };
 
 const classNames = {
@@ -38,7 +39,7 @@ const classNames = {
     "cares": "Caretakers",
     "heroes": "Heroes",
     "ecs": "Ecstatics",
-    "wars": "Warriors",
+    "warriors": "Warriors",
     "auth": "Authorities",
     "sages": "Sages",
     "mys": "Mystics",
@@ -87,10 +88,7 @@ function createCardElement(card, type) {
         <h2 class="char-name">${card.name}</h2>
         ${type === "char" ? `
             <div class="char-stats">
-                <p>❤️ HP: ${card.hp}</p>
-                <p>⚔️ ATK: ${card.atk}</p>
-                <p>🛡️ DEF: ${card.def}</p>
-                <p>💨 SPD: ${card.spd}</p>
+                <p>❤️: ${card.hp}, ⚔️: ${card.atk},🛡️: ${card.def}, 💨: ${card.spd}</p>
             </div>
             <div class="char-classes">
                 ${card.classes.map(cls => `<span class="class-tag">${classNames[cls] || cls}</span>`).join("")}
