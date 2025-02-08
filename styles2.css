@@ -36,7 +36,7 @@ button {
     cursor: pointer;
 }
 
-.character-card, .essence-card, .ability-card {
+.char-card, .essence-card, .ability-card {
     width: 140px;
     background: linear-gradient(135deg, #E3DAC9, #C89F5D);
     border-radius: 6px;
