@@ -9,11 +9,11 @@ async function loadJSON(file) {
     }
 }
 
-let characterDeck = [];
-let essenceDeck = [];
-let abilityDeck = [];
+let playerDeck = [];
+let enemyDeck = [];
 let playerHand = [];
-
+let enemyHand = [];
+//
 async function loadAllCards() {
     try {
         const characterFiles = [
@@ -23,20 +23,22 @@ async function loadAllCards() {
             "./data/water-chars.json"
         ];
 
-        characterDeck = (await Promise.all(characterFiles.map(loadJSON))).flat();
-        essenceDeck = await loadJSON("./data/essence-cards.json");
-        abilityDeck = await loadJSON("./data/ability-cards.json");
+        let characterDeck = (await Promise.all(characterFiles.map(loadJSON))).flat();
+        let essenceDeck = await loadJSON("./data/essence-cards.json");
+        let abilityDeck = await loadJSON("./data/ability-cards.json");
 
-        characterDeck = shuffleDeck(characterDeck);
-        essenceDeck = shuffleDeck(essenceDeck);
-        abilityDeck = shuffleDeck(abilityDeck);
+        let fullDeck = [...characterDeck, ...essenceDeck, ...abilityDeck];
 
-        console.log("All cards loaded successfully!");
+        playerDeck = shuffleDeck([...fullDeck]);
+        enemyDeck = shuffleDeck([...fullDeck]);
+
+        console.log("Player Deck:", playerDeck);
+        console.log("Enemy Deck:", enemyDeck);
     } catch (error) {
         console.error("Error loading cards:", error);
     }
 }
-
+//
 function shuffleDeck(deck) {
     for (let i = deck.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -85,33 +87,46 @@ function createCardElement(card, type) {
 
     return cardDiv;
 }
-
-
-function dealStartingHand() {
+//
+function dealStartingHands() {
     playerHand = [];
-    const container = document.getElementById("player-hand");
-    container.innerHTML = "";
-    
-    if (characterDeck.length > 0) playerHand.push(characterDeck.pop());
-    if (essenceDeck.length > 1) playerHand.push(essenceDeck.pop(), essenceDeck.pop());
-    if (abilityDeck.length > 1) playerHand.push(abilityDeck.pop(), abilityDeck.pop());
-    
-    playerHand.forEach(card => {
-        const type = card.type === "char" ? "character" : card.type;
-        container.appendChild(createCardElement(card, type));
-    });
-}
+    enemyHand = [];
 
+    const playerContainer = document.getElementById("player-hand");
+    const enemyContainer = document.getElementById("enemy-hand");
+
+    playerContainer.innerHTML = "";
+    enemyContainer.innerHTML = "";
+
+    for (let i = 0; i < 5; i++) {
+        if (playerDeck.length > 0) playerHand.push(playerDeck.pop());
+        if (enemyDeck.length > 0) enemyHand.push(enemyDeck.pop());
+    }
+
+    playerHand.forEach(card => {
+        playerContainer.appendChild(createCardElement(card, card.type));
+    });
+
+    enemyHand.forEach(card => {
+        enemyContainer.appendChild(createCardElement(card, card.type));
+    });
+
+    setTimeout(addClickEventsToCards, 100);
+}
+//
 function addClickEventsToCards() {
-    document.querySelectorAll(".character-card, .essence-card, .ability-card").forEach(card => {
+    document.querySelectorAll(".char-card, .essence-card, .ability-card").forEach(card => {
         card.addEventListener("click", () => {
-            const battleZone = document.getElementById("battle-zone");
+            const battleZone = card.parentElement.id === "player-hand" 
+                ? document.getElementById("player-battle-zone") 
+                : document.getElementById("enemy-battle-zone");
+
             if (battleZone.contains(card)) return;
             battleZone.appendChild(card);
         });
     });
 }
-
+//
 async function startGame() {
     await loadAllCards();
     dealStartingHand();
@@ -119,7 +134,10 @@ async function startGame() {
 }
 
 document.addEventListener("DOMContentLoaded", startGame);
-
+document.addEventListener("DOMContentLoaded", async () => {
+    await loadAllCards();
+    dealStartingHands();
+});
 document.getElementById("play-turn").addEventListener("click", () => {
     console.log("Turn played!");
 });

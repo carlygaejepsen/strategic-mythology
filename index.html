@@ -8,57 +8,23 @@
 </head>
 <body>
     
+    <h1>Strategic Mythology</h1>
+
     <div id="game-board">
-        <div id="player-hand"></div>   <!-- Player's Hand -->
-        <div id="battle-zone"></div>   <!-- Cards in Play -->
-        <div id="enemy-hand"></div>    <!-- Enemy's Hand -->
-    </div>
-	
-<button id="play-turn">Play Turn</button>
+        <div id="player-section">
+            <h2>Player</h2>
+            <div id="player-hand"></div>   <!-- Player's Hand -->
+            <div id="player-battle-zone"></div>   <!-- Player's Cards in Play -->
+        </div>
 
-<div class="essence-card">
-    <img src="./data/imgs/fire.png" alt="Burnt Offering" class="essence-img">
-    <h2 class="essence-name">Burnt Offering</h2>
-    <div class="essence-type fire">Fire</div>
-    <div class="essence-stats">
-        <p>❤️ HP: 50</p>
-        <p>⚔️ ATK: 10</p>
+        <div id="enemy-section">
+            <h2>Enemy</h2>
+            <div id="enemy-hand"></div>    <!-- Enemy's Hand -->
+            <div id="enemy-battle-zone"></div>   <!-- Enemy's Cards in Play -->
+        </div>
     </div>
-</div>
-<div class="ability-card">
-    <img src="./data/imgs/athletics.png" alt="Athletics" class="ability-img">
-    <h2 class="ability-name">Athletics</h2>
-    <div class="ability-type">Ability</div>
-    <div class="ability-classes">
-        <span class="class-tag">Warriors</span>
-        <span class="class-tag">Heroes</span>
-        <span class="class-tag">Wildkeepers</span>
-    </div>
-    <div class="ability-stats">
-        <p>❤️ HP: 50</p>
-        <p>⚔️ ATK: 10</p>
-    </div>
-</div>
-<div class="char-card">
-    <img src="./data/imgs/amphitrite.png" alt="Amphitrite" class="char-img">
-    <h2 class="char-name">Amphitrite</h2>
-    <div class="char-stats">
-        <p>❤️ HP: 100</p>
-        <p>⚔️ ATK: 20</p>
-        <p>🛡️ DEF: 5</p>
-        <p>💨 SPD: 10</p>
-    </div>
-    <div class="char-classes">
-        <span class="class-tag">Cares</span>
-        <span class="class-tag">Wilds</span>
-    </div>
-    <div class="char-essences">
-        <span class="essence water">Water</span>
-        <span class="essence vit">Vitality</span>
-    </div>
-</div>
-
-    <button id="start-game">Start Game</button>
+    
+    <button id="play-turn">Play Turn</button>
 
     <script src="./game2.js"></script>
 </body>
