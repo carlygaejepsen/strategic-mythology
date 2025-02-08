@@ -30,6 +30,8 @@ async function loadConfigFiles() {
     }
 }
 console.log("DEBUG: Loaded gameConfig:", gameConfig);
+console.log("DEBUG: Essence Emojis:", gameConfig.essenceEmojis);
+console.log("DEBUG: Class Names:", gameConfig.classNames);
 
 //
 function populateTemplate(template, data) {
@@ -91,8 +93,12 @@ function createCardElement(card, type) {
         spd: card.spd ?? "N/A",
         essence: card.essence || "None",
         essence_emoji: gameConfig.essenceEmojis?.[card.essence] || card.essence || "❓",
-        classes: card.classes ? card.classes.map(cls => `<span class="class-tag">${gameConfig.classNames?.[cls] || cls}</span>`).join("") : "None",
-        essences: card.essences ? card.essences.map(ess => `<span class="essence ${ess}">${gameConfig.essenceEmojis?.[ess] || ess}</span>`).join("") : "None"
+classes: card.classes 
+    ? card.classes.map(cls => `<span class="class-tag">${gameConfig.classNames?.[cls] || cls}</span>`).join(", ") 
+    : "None",
+essences: card.essences 
+    ? card.essences.map(ess => `<span class="essence ${ess}">${gameConfig.essenceEmojis?.[ess] || ess}</span>`).join(" ") 
+    : "None",
     });
 
     const cardDiv = document.createElement("div");
