@@ -26,7 +26,10 @@ async function loadConfigFiles() {
         console.error("Error loading configuration files:", error);
     }
 }
-
+//
+function populateTemplate(template, data) {
+    return template.replace(/{(\w+)}/g, (match, key) => data[key] || '');
+}
 //
 async function loadAllCards() {
     try {
@@ -68,23 +71,24 @@ function createCardElement(card, type) {
         return document.createElement("div");
     }
 
-    let cardHTML = cardTemplates[type].html;
+    const template = cardTemplates[type].html;
 
-    cardHTML = cardHTML
-        .replace("{name}", card.name)
-        .replace("{img}", card.img)
-        .replace("{hp}", card.hp || "")
-        .replace("{atk}", card.atk || "")
-        .replace("{def}", card.def || "")
-        .replace("{spd}", card.spd || "")
-        .replace("{essence}", card.essence || "")
-        .replace("{essence_emoji}", gameConfig.essenceEmojis[card.essence] || card.essence || "")
-        .replace("{classes}", card.classes ? card.classes.map(cls => `<span class="class-tag">${gameConfig.classNames[cls] || cls}</span>`).join("") : "")
-        .replace("{essences}", card.essences ? card.essences.map(ess => `<span class="essence ${ess}">${gameConfig.essenceEmojis[ess] || ess}</span>`).join("") : "");
+    const populatedHTML = populateTemplate(template, {
+        name: card.name || "Unknown",
+        img: card.img || "",
+        hp: card.hp || "",
+        atk: card.atk || "",
+        def: card.def || "",
+        spd: card.spd || "",
+        essence: card.essence || "",
+        essence_emoji: gameConfig.essenceEmojis[card.essence] || card.essence || "",
+        classes: card.classes ? card.classes.map(cls => `<span class="class-tag">${gameConfig.classNames[cls] || cls}</span>`).join("") : "",
+        essences: card.essences ? card.essences.map(ess => `<span class="essence ${ess}">${gameConfig.essenceEmojis[ess] || ess}</span>`).join("") : ""
+    });
 
     const cardDiv = document.createElement("div");
     cardDiv.classList.add(`${type}-card`);
-    cardDiv.innerHTML = cardHTML;
+    cardDiv.innerHTML = populatedHTML;
     return cardDiv;
 }
 //
