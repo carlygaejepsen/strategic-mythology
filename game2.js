@@ -44,19 +44,25 @@ function shuffleDeck(deck) {
     }
     return deck;
 }
-
 function createCardElement(card, type) {
     const cardDiv = document.createElement("div");
     cardDiv.classList.add(`${type}-card`);
+
     cardDiv.innerHTML = `
         <img src="${card.img}" alt="${card.name}" class="${type}-img">
         <h2 class="${type}-name">${card.name}</h2>
-        ${type === "character-card" ? `
+        ${type === "char" ? `
             <div class="char-stats">
                 <p>❤️ HP: ${card.hp}</p>
                 <p>⚔️ ATK: ${card.atk}</p>
                 <p>🛡️ DEF: ${card.def}</p>
                 <p>💨 SPD: ${card.spd}</p>
+            </div>
+            <div class="char-classes">
+                ${card.classes.map(cls => `<span class="class-tag">${cls}</span>`).join("")}
+            </div>
+            <div class="char-essences">
+                ${card.essences.map(ess => `<span class="essence ${ess}">${ess}</span>`).join("")}
             </div>
         ` : ""}
         ${type === "essence" ? `
@@ -76,8 +82,10 @@ function createCardElement(card, type) {
             </div>
         ` : ""}
     `;
+
     return cardDiv;
 }
+
 
 function dealStartingHand() {
     playerHand = [];
