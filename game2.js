@@ -84,8 +84,9 @@ function createCardElement(card, type) {
     cardDiv.classList.add("char-card");
 
     cardDiv.innerHTML = `
-        <img src="${card.img}" alt="${card.name}" class="char-img">
         <h2 class="char-name">${card.name}</h2>
+		<img src="${card.img}" alt="${card.name}" class="char-img">
+
         ${type === "char" ? `
             <div class="char-stats">
                 <p>❤️: ${card.hp} ⚔️: ${card.atk}🛡️: ${card.def} 🏇: ${card.spd}</p>
