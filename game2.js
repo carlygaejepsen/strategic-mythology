@@ -73,8 +73,9 @@ function createCardElement(card, type) {
     console.log("Available templates:", Object.keys(cardTemplates));
 
     if (!cardTemplates[type]) {
-        console.error(`Missing template for card type: ${type}`);
-        return document.createElement("div");
+        console.error(`ERROR: Missing template for card type: ${type}`);
+        console.error(`Valid types are:`, Object.keys(cardTemplates));
+        return document.createElement("div"); 
     }
 
     const template = cardTemplates[type].html;
@@ -82,14 +83,14 @@ function createCardElement(card, type) {
     const populatedHTML = populateTemplate(template, {
         name: card.name || "Unknown",
         img: card.img || "",
-        hp: card.hp || "",
-        atk: card.atk || "",
-        def: card.def || "",
-        spd: card.spd || "",
-        essence: card.essence || "",
-        essence_emoji: gameConfig.essenceEmojis[card.essence] || card.essence || "",
-        classes: card.classes ? card.classes.map(cls => `<span class="class-tag">${gameConfig.classNames[cls] || cls}</span>`).join("") : "",
-        essences: card.essences ? card.essences.map(ess => `<span class="essence ${ess}">${gameConfig.essenceEmojis[ess] || ess}</span>`).join("") : ""
+        hp: card.hp ?? "N/A", // Prevents undefined errors
+        atk: card.atk ?? "N/A",
+        def: card.def ?? "N/A",
+        spd: card.spd ?? "N/A",
+        essence: card.essence || "None",
+        essence_emoji: gameConfig.essenceEmojis?.[card.essence] || card.essence || "❓",
+        classes: card.classes ? card.classes.map(cls => `<span class="class-tag">${gameConfig.classNames?.[cls] || cls}</span>`).join("") : "None",
+        essences: card.essences ? card.essences.map(ess => `<span class="essence ${ess}">${gameConfig.essenceEmojis?.[ess] || ess}</span>`).join("") : "None"
     });
 
     const cardDiv = document.createElement("div");
@@ -97,7 +98,6 @@ function createCardElement(card, type) {
     cardDiv.innerHTML = populatedHTML;
     return cardDiv;
 }
-
 //
 function dealStartingHands() {
     playerHand = [];
