@@ -18,6 +18,11 @@ async function loadJSON(file) {
     }
 }
 //
+async function loadConfigFiles() {
+    cardTemplates = await loadJSON("./data/card-templates.json");
+    gameConfig = await loadJSON("./data/game-config.json");
+}
+//
 async function loadAllCards() {
     try {
         const characterFiles = [
@@ -42,11 +47,6 @@ async function loadAllCards() {
     } catch (error) {
         console.error("Error loading cards:", error);
     }
-}
-//
-async function loadConfigFiles() {
-    cardTemplates = await loadJSON("./data/card-templates.json");
-    gameConfig = await loadJSON("./data/game-config.json");
 }
 //
 function shuffleDeck(deck) {
