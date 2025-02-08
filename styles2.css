@@ -70,30 +70,8 @@ button {
     margin-top: 5px;
 }
 
-.class-tag, .essence-type, .ability-type {
-    display: inline-block;
-    padding: 4px 8px;
-    border-radius: 5px;
-    font-size: 12px;
-    font-weight: bold;
-    margin: 2px;
-}
 
-.essence-type.fire { background: #D7263D; color: white; }
-.essence-type.water { background: #1A2C56; color: white; }
-.essence-type.air { background: #9B59B6; color: white; }
-.essence-type.earth { background: #785A28; color: white; }
-.essence-type.electricity { background: #E4A11B; color: white; }
-.essence-type.love { background: #C45BAA; color: white; }
-.essence-type.malice { background: #5E0B0B; color: white; }
-.essence-type.hubris { background: #E67E22; color: white; }
-.essence-type.wisdom { background: #D4AF37; color: black; }
-.essence-type.light { background: #F4D03F; color: black; }
-.essence-type.dark { background: #2C3E50; color: white; }
-.essence-type.vit { background: #28B463; color: white; }
-.essence-type.death { background: #4A4A4A; color: white; }
-.essence-type.justice { background: #8B3A3A; color: white; }
-.essence-type.luck { background: #16A085; color: white; }
+
 
 .ability-type {
     background: #8B3A3A;
