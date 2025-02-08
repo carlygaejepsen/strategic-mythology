@@ -48,9 +48,8 @@ button {
 }
 
 .char-img, .essence-img, .ability-img {
-    width: 100%;
-    height: auto;
-    max-height: 100px;
+    width: 100px;
+    height: 100px;
     border-radius: 10px;
 }
 
