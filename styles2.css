@@ -45,12 +45,17 @@ button {
     text-align: center;
     font-family: 'Garamond', serif;
     border: 2px solid #8B3A3A;
+	background-color: #EDE8E4;
+	height: auto;
+	transition: all 0.3s ease;
+	transform-origin: center;
 }
 
 .char-img, .essence-img, .ability-img {
     width: 100px;
     height: 100px;
     border-radius: 10px;
+	object-fit: cover;
 }
 
 .char-name, .essence-name, .ability-name {
