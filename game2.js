@@ -88,7 +88,7 @@ function createCardElement(card, type) {
         <h2 class="char-name">${card.name}</h2>
         ${type === "char" ? `
             <div class="char-stats">
-                <p>❤️: ${card.hp}, ⚔️: ${card.atk},🛡️: ${card.def}, 🏇: ${card.spd}</p>
+                <p>❤️: ${card.hp} ⚔️: ${card.atk}🛡️: ${card.def} 🏇: ${card.spd}</p>
             </div>
             <div class="char-classes">
                 ${card.classes.map(cls => `<span class="class-tag">${classNames[cls] || cls}</span>`).join("")}
