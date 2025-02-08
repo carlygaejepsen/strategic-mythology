@@ -1,4 +1,13 @@
-
+async function loadJSON(file) {
+    try {
+        const response = await fetch(file);
+        if (!response.ok) throw new Error(`Failed to load ${file}`);
+        return await response.json();
+    } catch (error) {
+        console.error("Error fetching JSON:", error);
+        return [];
+    }
+}
 let battleSystem = {};
 let playerDeck = [];
 let enemyDeck = [];
