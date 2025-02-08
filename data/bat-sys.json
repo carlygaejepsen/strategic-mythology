@@ -7,6 +7,14 @@
     "full-combo": 60,
     "char-plus-ability-card": 40
   },
+  "damageCalculation": {
+	"formula": "atk - def",
+	"minDamage": 1,
+	"criticalMultiplier": 1.5,
+	"essenceBonusMultiplier": 1.2,
+	"classBonusMultiplier": 1.2
+	}
+
   "turnStructure": [
     { "phase": "deploy", "desc": "Players select char cards to deploy." },
     { "phase": "act", "desc": "Players choose act cards or attack." },

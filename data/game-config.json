@@ -1,10 +1,10 @@
-[
-  "essenceEmojis": {
+{
+"essence-emojis": {
     "fire": "🔥",
     "water": "🌊",
-    "wind": "💨",
+    "air": "💨",
     "earth": "🏔️",
-    "zap": "⚡",
+    "electricity": "⚡",
     "love": "💞",
     "malice": "🩸",
     "hubris": "🦚",
@@ -14,6 +14,25 @@
     "vit": "🌿",
     "decay": "🍂",
     "luck": "🪙",
-    "just": "⚖️"
-  },
-]
+    "just": "⚖️",
+	"insight": "🔮"
+},
+"class-names": {
+    "mals": "Malevolent",
+    "wilds": "Wildkeeper",
+    "cares": "Caretaker",
+    "heroes": "Hero",
+    "ecs": "Ecstatic",
+    "warriors": "Warrior",
+	"wars": "Warrior",
+    "auth": "Authority",
+    "sages": "Sage",
+    "mys": "Mystic",
+    "oracles": "Oracle"
+},
+"battle-messages": {
+  "battleStart": "{player} vs {enemy} begins!",
+  "attackMessage": "{attacker} attacks {defender} for {damage} damage!",
+  "defeatMessage": "{card} is defeated!"
+}
+}

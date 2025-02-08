@@ -1,43 +1,11 @@
-
+let cardTemplates = {}; 
+let gameConfig = {};  
 let battleSystem = {};
 let playerDeck = [];
 let enemyDeck = [];
 let playerHand = [];
 let enemyHand = [];
 
-//
-const essenceEmojis = {
-    "fire": "🔥",
-    "water": "🌊",
-    "air": "💨",
-    "earth": "🏔️",
-    "electricity": "⚡",
-    "love": "💞",
-    "malice": "🩸",
-    "hubris": "🦚",
-    "wisdom": "📖",
-    "light": "🕯️",
-    "dark": "🌑",
-    "vit": "🌿",
-    "decay": "🍂",
-    "luck": "🪙",
-    "just": "⚖️",
-	"insight": "🔮"
-};
-//
-const classNames = {
-    "mals": "Malevolent",
-    "wilds": "Wildkeeper",
-    "cares": "Caretaker",
-    "heroes": "Hero",
-    "ecs": "Ecstatic",
-    "warriors": "Warrior",
-	"wars": "Warrior",
-    "auth": "Authority",
-    "sages": "Sage",
-    "mys": "Mystic",
-    "oracles": "Oracle"
-};
 //
 async function loadJSON(file) {
     try {
@@ -76,6 +44,11 @@ async function loadAllCards() {
     }
 }
 //
+async function loadConfigFiles() {
+    cardTemplates = await loadJSON("./data/card-templates.json");
+    gameConfig = await loadJSON("./data/game-config.json");
+}
+//
 function shuffleDeck(deck) {
     for (let i = deck.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -85,45 +58,28 @@ function shuffleDeck(deck) {
 }
 //
 function createCardElement(card, type) {
+    if (!cardTemplates[type]) {
+        console.error(`Missing template for card type: ${type}`);
+        return document.createElement("div");
+    }
+
+    let cardHTML = cardTemplates[type].html;
+
+    cardHTML = cardHTML
+        .replace("{name}", card.name)
+        .replace("{img}", card.img)
+        .replace("{hp}", card.hp || "")
+        .replace("{atk}", card.atk || "")
+        .replace("{def}", card.def || "")
+        .replace("{spd}", card.spd || "")
+        .replace("{essence}", card.essence || "")
+        .replace("{essence_emoji}", gameConfig.essenceEmojis[card.essence] || card.essence || "")
+        .replace("{classes}", card.classes ? card.classes.map(cls => `<span class="class-tag">${gameConfig.classNames[cls] || cls}</span>`).join("") : "")
+        .replace("{essences}", card.essences ? card.essences.map(ess => `<span class="essence ${ess}">${gameConfig.essenceEmojis[ess] || ess}</span>`).join("") : "");
+
     const cardDiv = document.createElement("div");
     cardDiv.classList.add(`${type}-card`);
-
-    cardDiv.innerHTML = `
-        <h2 class="${type}-name">${card.name}</h2>
-        <img src="${card.img}" alt="${card.name}" class="${type}-img" style="border: 2px solid black; border-radius: 5px;">
-
-        ${type === "char" ? `
-            <div class="char-stats">
-                <p>❤️: ${card.hp} ⚔️: ${card.atk}</p> 
-                <p>🛡️: ${card.def} 🏇: ${card.spd}</p>
-            </div>
-            <div class="char-classes">
-                ${card.classes ? card.classes.map(cls => `<span class="class-tag">${classNames[cls] || cls}</span>`).join("") : ""}
-            </div>
-            <div class="char-essences">
-                ${card.essences ? card.essences.map(ess => `<span class="essence ${ess}">${essenceEmojis[ess] || ess}</span>`).join("") : ""}
-            </div>
-        ` : ""}
-
-        ${type === "essence" ? `
-            <div class="essence-type ${card.essence}">${essenceEmojis[card.essence] || card.essence}</div>
-            <div class="essence-stats">
-                <p>❤️ HP: ${card.hp}</p>
-                <p>⚔️ ATK: ${card.atk}</p>
-            </div>
-        ` : ""}
-
-        ${type === "ability" ? `
-            <div class="ability-classes">
-                ${card.classes ? card.classes.map(cls => `<span class="class-tag">${classNames[cls] || cls}</span>`).join("") : ""}
-            </div>
-            <div class="ability-stats">
-                <p>❤️ HP: ${card.hp}</p>
-                <p>⚔️ ATK: ${card.atk}</p>
-            </div>
-        ` : ""}
-    `;
-
+    cardDiv.innerHTML = cardHTML;
     return cardDiv;
 }
 //
@@ -149,35 +105,9 @@ function dealStartingHands() {
     enemyHand.forEach(card => {
         enemyContainer.appendChild(createCardElement(card, card.type));
     });
-
-    setTimeout(addClickEventsToCards, 100);
 }
 //
-function addClickEventsToCards() {
-    document.querySelectorAll(".char-card").forEach(card => {
-        card.addEventListener("click", () => {
-            const battleZone = card.parentElement.id === "player-hand" 
-                ? document.getElementById("player-battle-zone") 
-                : document.getElementById("enemy-battle-zone");
-
-            if (battleZone.contains(card)) return;
-            battleZone.appendChild(card);
-        });
-    });
-}
-//
-async function loadBattleSystem() {
-    try {
-        const response = await fetch("./data/bat-sys.json");
-        if (!response.ok) throw new Error(`Failed to load bat-sys.json`);
-        return await response.json();
-    } catch (error) {
-        console.error("Error fetching battle system JSON:", error);
-        return {};
-    }
-}
-//
-function battleRound() {
+async function battleRound() {
     if (playerHand.length === 0 || enemyHand.length === 0) {
         console.log("One player has no cards left! Game over.");
         return;
@@ -186,95 +116,79 @@ function battleRound() {
     const playerCard = playerHand[0];
     const enemyCard = enemyHand[0];
 
-    console.log(`Battle begins: ${playerCard.name} vs ${enemyCard.name}`);
+    const playerBattleZone = document.getElementById("player-battle-zone");
+    const enemyBattleZone = document.getElementById("enemy-battle-zone");
 
-    const attackOrderRule = battleSystem.battleMechanics.attackRules.attackOrder;
+    playerBattleZone.innerHTML = "";
+    playerBattleZone.appendChild(createCardElement(playerCard, "char"));
 
+    enemyBattleZone.innerHTML = "";
+    enemyBattleZone.appendChild(createCardElement(enemyCard, "char"));
+
+    console.log(
+        gameConfig.battleMessages.battleStart
+            .replace("{player}", playerCard.name)
+            .replace("{enemy}", enemyCard.name)
+    );
+
+    // Determine attack order from JSON
     let firstAttacker, secondAttacker;
-
-    if (playerCard.spd > enemyCard.spd) {
-        firstAttacker = playerCard;
-        secondAttacker = enemyCard;
-    } else if (enemyCard.spd > playerCard.spd) {
-        firstAttacker = enemyCard;
-        secondAttacker = playerCard;
-    } else {
-        firstAttacker = playerCard;  // If tied, player attacks first (matches JSON rule)
-        secondAttacker = enemyCard;
+    if (battleSystem.battleMechanics.attackRules.attackOrder === "Highest speed attacks first. If tied, attacker goes first.") {
+        if (playerCard.spd > enemyCard.spd) {
+            firstAttacker = playerCard;
+            secondAttacker = enemyCard;
+        } else if (enemyCard.spd > playerCard.spd) {
+            firstAttacker = enemyCard;
+            secondAttacker = playerCard;
+        } else {
+            firstAttacker = "player";
+            secondAttacker = "enemy";
+        }
     }
 
     function calculateDamage(attacker, defender) {
-        let baseDamage = Math.max(
-            attacker.atk - defender.def,
-            battleSystem.battleMechanics.damageCalculation.minDamage
-        );
+        let damageCalc = battleSystem.battleMechanics.damageCalculation;
+        let baseDamage = Math.max(attacker.atk - defender.def, damageCalc.minDamage);
 
-        // Apply Element Bonus
-        if (battleSystem.elementBonuses[attacker.essence] &&
-            battleSystem.elementBonuses[attacker.essence].strongAgainst === defender.essence) {
-            baseDamage *= battleSystem.battleMechanics.damageCalculation.essenceBonusMultiplier;
-            console.log(`Elemental Advantage! ${attacker.name} deals extra damage!`);
+        if (battleSystem.elementBonuses[attacker.essence]?.strongAgainst === defender.essence) {
+            baseDamage *= damageCalc.essenceBonusMultiplier;
         }
-
-        // Apply Class Bonus
-        if (battleSystem.classBonuses[attacker.class] &&
-            battleSystem.classBonuses[attacker.class].strongAgainst.includes(defender.class)) {
-            baseDamage *= battleSystem.battleMechanics.damageCalculation.classBonusMultiplier;
-            console.log(`Class Advantage! ${attacker.name} deals extra damage!`);
+        if (battleSystem.classBonuses[attacker.classes]?.strongAgainst?.includes(defender.classes)) {
+            baseDamage *= damageCalc.classBonusMultiplier;
         }
 
         baseDamage = Math.floor(baseDamage);
         defender.hp -= baseDamage;
 
-        console.log(`${attacker.name} attacks ${defender.name} for ${baseDamage} damage!`);
+        console.log(
+            gameConfig.battleMessages.attackMessage
+                .replace("{attacker}", attacker.name)
+                .replace("{defender}", defender.name)
+                .replace("{damage}", baseDamage)
+        );
     }
-
-    calculateDamage(firstAttacker, secondAttacker);
-
-    // Check if second attacker is still alive before allowing a counterattack
-    if (secondAttacker.hp > 0) {
-        calculateDamage(secondAttacker, firstAttacker);
+    if (firstAttacker === "player") {
+        calculateDamage(playerCard, enemyCard);
+        if (enemyCard.hp > 0) calculateDamage(enemyCard, playerCard);
+    } else {
+        calculateDamage(enemyCard, playerCard);
+        if (playerCard.hp > 0) calculateDamage(playerCard, enemyCard);
     }
-
-    // Remove defeated cards
     if (playerCard.hp <= 0) {
-        console.log(`${playerCard.name} is defeated!`);
+        console.log(gameConfig.battleMessages.defeatMessage.replace("{card}", playerCard.name));
         playerHand.shift();
+        playerBattleZone.innerHTML = "";
     }
     if (enemyCard.hp <= 0) {
-        console.log(`${enemyCard.name} is defeated!`);
+        console.log(gameConfig.battleMessages.defeatMessage.replace("{card}", enemyCard.name));
         enemyHand.shift();
-    }
-}
-//
-function calculateDamage(attacker, defender) {
-    let baseDamage = Math.max(attacker.atk - defender.def, battleSystem.battleMechanics.damageCalculation.minDamage);
-    if (battleSystem.elementBonuses[attacker.essences] && battleSystem.elementBonuses[attacker.essences].strongAgainst === defender.essences) {
-        baseDamage *= battleSystem.battleMechanics.damageCalculation.essenceBonusMultiplier;
-    }
-    if (battleSystem.classBonuses[attacker.classes] && battleSystem.classBonuses[attacker.classes].strongAgainst.includes(defender.classes)) {
-        baseDamage *= battleSystem.battleMechanics.damageCalculation.classBonusMultiplier;
-    }
-    return Math.round(baseDamage);
-}
-//
-function applyDamage(attacker, defender) {
-    let baseDamage = Math.max(
-        attacker.element.getAttribute("data-atk") - defender.getAttribute("data-def"),
-        battleSystem.battleMechanics.damageCalculation.minDamage
-    );
-
-    defender.setAttribute("data-hp", Math.max(0, defender.getAttribute("data-hp") - baseDamage));
-
-    if (parseInt(defender.getAttribute("data-hp"), 10) <= 0) {
-        defender.remove();
+        enemyBattleZone.innerHTML = "";
     }
 }
 //
 async function startGame() {
     await loadAllCards();
     dealStartingHands();
-    addClickEventsToCards();
 }
 
 document.addEventListener("DOMContentLoaded", startGame);

@@ -1,0 +1,36 @@
+{
+  "char": {
+    "html": `
+      <h2 class="char-name">{name}</h2>
+      <img src="{img}" alt="{name}" class="char-img" style="border: 2px solid black; border-radius: 5px;">
+      <div class="char-stats">
+        <p>❤️: {hp} ⚔️: {atk}</p> 
+        <p>🛡️: {def} 🏇: {spd}</p>
+      </div>
+      <div class="char-classes">{classes}</div>
+      <div class="char-essences">{essences}</div>
+    `
+  },
+  "essence": {
+    "html": `
+      <h2 class="essence-name">{name}</h2>
+      <img src="{img}" alt="{name}" class="essence-img" style="border: 2px solid black; border-radius: 5px;">
+      <div class="essence-type {essence}">{essence_emoji}</div>
+      <div class="essence-stats">
+        <p>❤️ HP: {hp}</p>
+        <p>⚔️ ATK: {atk}</p>
+      </div>
+    `
+  },
+  "ability": {
+    "html": `
+      <h2 class="ability-name">{name}</h2>
+      <img src="{img}" alt="{name}" class="ability-img" style="border: 2px solid black; border-radius: 5px;">
+      <div class="ability-classes">{classes}</div>
+      <div class="ability-stats">
+        <p>❤️ HP: {hp}</p>
+        <p>⚔️ ATK: {atk}</p>
+      </div>
+    `
+  }
+}
