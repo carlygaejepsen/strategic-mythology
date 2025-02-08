@@ -20,10 +20,13 @@ async function loadJSON(file) {
 //
 async function loadConfigFiles() {
     try {
-        cardTemplates = await loadJSON("./data/card-templates.json");
-        gameConfig = await loadJSON("./data/game-config.json");
+        const response = await fetch("./data/card-templates.json");
+        if (!response.ok) throw new Error(`Failed to fetch card-templates.json: ${response.status}`);
+
+        cardTemplates = await response.json();
+        console.log("Loaded card templates:", cardTemplates);
     } catch (error) {
-        console.error("Error loading configuration files:", error);
+        console.error("Error loading card templates:", error);
     }
 }
 //
