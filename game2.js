@@ -19,7 +19,7 @@ const essenceEmojis = {
     "water": "🌊",
     "air": "💨",
     "earth": "🏔️",
-    "zap": "⚡",
+    "electricity": "⚡",
     "love": "💞",
     "malice": "🩸",
     "hubris": "🦚",
