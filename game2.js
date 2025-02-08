@@ -14,6 +14,24 @@ let enemyDeck = [];
 let playerHand = [];
 let enemyHand = [];
 
+const essenceEmojis = {
+    "fire": "🔥",
+    "water": "🌊",
+    "wind": "💨",
+    "earth": "🏔️",
+    "zap": "⚡",
+    "love": "💞",
+    "malice": "🩸",
+    "hubris": "🦚",
+    "wisdom": "📖",
+    "light": "🕯️",
+    "dark": "🌑",
+    "vit": "🌿",
+    "decay": "🍂",
+    "luck": "🪙",
+    "just": "⚖️"
+};
+
 async function loadAllCards() {
     try {
         const characterFiles = [
@@ -65,7 +83,7 @@ function createCardElement(card, type) {
                 ${card.classes.map(cls => `<span class="class-tag">${cls}</span>`).join("")}
             </div>
             <div class="char-essences">
-                ${card.essences.map(ess => `<span class="essence ${ess}">${ess}</span>`).join("")}
+                ${card.essences.map(ess => `<span class="essence ${ess}">${essenceEmojis[ess] || ess}</span>`).join("")}
             </div>
         ` : ""}
     `;
