@@ -283,7 +283,6 @@ const playTurnButton = document.getElementById("play-turn");
 
 if (playTurnButton) {
     playTurnButton.addEventListener("click", () => {
-        executeTurn();
         battleRound();
     });
 } else {
