@@ -20,7 +20,7 @@ async function loadJSON(file) {
 //
 async function loadConfigFiles() {
     try {
-        const response = await fetch("./data/card-templates.json");
+        const response = await fetch("./card-templates.json");
         if (!response.ok) throw new Error(`Failed to fetch card-templates.json: ${response.status}`);
 
         cardTemplates = await response.json();
