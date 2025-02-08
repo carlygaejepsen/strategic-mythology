@@ -84,7 +84,7 @@ function createCardElement(card, type) {
     cardDiv.classList.add(`${type}-card`);
 
     cardDiv.innerHTML = `
-        <h2 class="char-name">${card.name}</h2>
+        <h2 class="${type}-name">${card.name}</h2>
         <img src="${card.img}" alt="${card.name}" class="${type}-img" style="border: 2px solid black; border-radius: 5px;">
 
         ${type === "char" ? `
@@ -98,13 +98,17 @@ function createCardElement(card, type) {
             <div class="char-essences">
                 ${card.essences ? card.essences.map(ess => `<span class="essence ${ess}">${essenceEmojis[ess] || ess}</span>`).join("") : ""}
             </div>
-        ` : type === "essence" ? `
+        ` : ""}
+
+        ${type === "essence" ? `
             <div class="essence-type ${card.essence}">${essenceEmojis[card.essence] || card.essence}</div>
             <div class="essence-stats">
                 <p>❤️ HP: ${card.hp}</p>
                 <p>⚔️ ATK: ${card.atk}</p>
             </div>
-        ` : type === "ability" ? `
+        ` : ""}
+
+        ${type === "ability" ? `
             <div class="ability-classes">
                 ${card.classes ? card.classes.map(cls => `<span class="class-tag">${classNames[cls] || cls}</span>`).join("") : ""}
             </div>
@@ -117,6 +121,7 @@ function createCardElement(card, type) {
 
     return cardDiv;
 }
+
 
 
 function dealStartingHands() {
