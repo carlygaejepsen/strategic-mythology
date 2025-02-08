@@ -58,7 +58,8 @@ async function loadAllCards() {
         let characterDeck = (await Promise.all(characterFiles.map(loadJSON))).flat();
         let essenceDeck = await loadJSON("./data/essence-cards.json");
         let abilityDeck = await loadJSON("./data/ability-cards.json");
-
+		battleSystem = await loadJSON("./data/bat-sys.json");
+ 
         let fullDeck = [...characterDeck, ...essenceDeck, ...abilityDeck];
 
         playerDeck = shuffleDeck([...fullDeck]);
@@ -121,9 +122,13 @@ function createCardElement(card, type) {
 
     return cardDiv;
 }
-
-
-
+//
+function determineTurnOrder(playerCard, enemyCard) {
+    if (playerCard.spd > enemyCard.spd) return [playerCard, enemyCard];
+    if (playerCard.spd < enemyCard.spd) return [enemyCard, playerCard];
+    return Math.random() > 0.5 ? [playerCard, enemyCard] : [enemyCard, playerCard];
+}
+//
 function dealStartingHands() {
     playerHand = [];
     enemyHand = [];
@@ -149,7 +154,47 @@ function dealStartingHands() {
 
     setTimeout(addClickEventsToCards, 100);
 }
+//
+function calculateDamage(attacker, defender) {
+    let baseDamage = Math.max(attacker.atk - defender.def, battleSystem.battleMechanics.damageCalculation.minDamage);
+    if (battleSystem.elementBonuses[attacker.essences] && battleSystem.elementBonuses[attacker.essences].strongAgainst === defender.essences) {
+        baseDamage *= battleSystem.battleMechanics.damageCalculation.essenceBonusMultiplier;
+    }
+    if (battleSystem.classBonuses[attacker.classes] && battleSystem.classBonuses[attacker.classes].strongAgainst.includes(defender.classes)) {
+        baseDamage *= battleSystem.battleMechanics.damageCalculation.classBonusMultiplier;
+    }
+    return Math.round(baseDamage);
+}
 
+function battleRound() {
+    const playerCard = playerHand[0];
+    const enemyCard = enemyHand[0];
+
+    const [first, second] = determineTurnOrder(playerCard, enemyCard);
+    let damageToSecond = calculateDamage(first, second);
+    second.hp -= damageToSecond;
+    if (second.hp > 0) {
+        let damageToFirst = calculateDamage(second, first);
+        first.hp -= damageToFirst;
+    }
+
+    if (playerCard.hp <= 0) {
+        console.log("Player's card is defeated!");
+        playerHand.shift();
+    }
+    if (enemyCard.hp <= 0) {
+        console.log("Enemy's card is defeated!");
+        enemyHand.shift();
+    }
+}
+
+document.getElementById("play-turn").addEventListener("click", battleRound);
+
+document.addEventListener("DOMContentLoaded", async () => {
+    await loadAllCards();
+    dealStartingHands();
+});
+//
 function addClickEventsToCards() {
     document.querySelectorAll(".char-card").forEach(card => {
         card.addEventListener("click", () => {
@@ -162,6 +207,31 @@ function addClickEventsToCards() {
         });
     });
 }
+//
+function executeTurn() {
+    console.log("Executing turn...");
+    let playerCard = playerHand[0];
+    let enemyCard = enemyHand[0];
+    
+    if (playerCard && enemyCard) {
+        let playerDamage = calculateDamage(playerCard, enemyCard);
+        let enemyDamage = calculateDamage(enemyCard, playerCard);
+        
+        playerCard.hp -= enemyDamage;
+        enemyCard.hp -= playerDamage;
+        
+        console.log(`Player deals ${playerDamage} damage, Enemy deals ${enemyDamage} damage.`);
+
+        if (playerCard.hp <= 0) {
+            console.log("Player's card was defeated!");
+            playerHand.shift();
+        }
+        if (enemyCard.hp <= 0) {
+            console.log("Enemy's card was defeated!");
+            enemyHand.shift();
+        }
+    }
+}
 
 async function startGame() {
     await loadAllCards();
@@ -169,7 +239,9 @@ async function startGame() {
     addClickEventsToCards();
 }
 
-document.addEventListener("DOMContentLoaded", startGame);
-document.getElementById("play-turn").addEventListener("click", () => {
-    console.log("Turn played!");
+document.addEventListener("DOMContentLoaded", async () => {
+    await loadAllCards();
+    dealStartingHands();
 });
+
+document.getElementById("play-turn").addEventListener("click", executeTurn);

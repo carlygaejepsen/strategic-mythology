@@ -1,15 +1,12 @@
 {
   "combos": {
     "char_alone": 20,
-    "elementAction_alone": 10,
-    "classAction_alone": 10,
-    "char_plus_act": 40,
-    "full_combo": 60
-  },
-  "basehp": {
-    "char": 100,
-    "act": 50
-  },
+    "essence-card-alone": 10,
+    "ability-card-alone": 10,
+    "char-plus-essence-card": 40,
+    "full-combo": 60,
+	"char-plus-ability-card": 40,
+
   "turnStructure": [
     { "phase": "deploy", "desc": "Players select char cards to deploy." },
     { "phase": "act", "desc": "Players choose act cards or attack." },
@@ -30,7 +27,7 @@
       "formula": "atk - def",
       "minDamage": 1,
       "criticalMultiplier": 1.5,
-      "elementBonusMultiplier": 1.2,
+      "essenceBonusMultiplier": 1.2,
       "classBonusMultiplier": 1.2
     },
     "attackRules": {
@@ -73,25 +70,25 @@
   "classBonuses": {
     "wars": { "strongAgainst": ["oracles", "sages"], "weakAgainst": ["ecs", "cares"] },
     "heroes": { "strongAgainst": ["auth", "mys"], "weakAgainst": ["wilds", "oracles"] },
-    "wilds": { "strongAgainst": ["sages", "auth"], "weakAgainst": ["wars", "ecs"] },
+    "wilds": { "strongAgainst": ["sages", "auth"], "weakAgainst": ["warriors", "ecs"] },
     "mals": { "strongAgainst": ["cares", "ecs"], "weakAgainst": ["sages", "heroes"] },
-    "oracles": { "strongAgainst": ["auth", "heroes"], "weakAgainst": ["wars", "wilds"] },
-    "ecs": { "strongAgainst": ["wilds", "wars"], "weakAgainst": ["cares", "sages"] },
+    "oracles": { "strongAgainst": ["auth", "heroes"], "weakAgainst": ["warriors", "wilds"] },
+    "ecs": { "strongAgainst": ["wilds", "warriors"], "weakAgainst": ["cares", "sages"] },
     "cares": { "strongAgainst": ["wars", "heroes"], "weakAgainst": ["mals", "auth"] },
     "auth": { "strongAgainst": ["sages", "wilds"], "weakAgainst": ["heroes", "oracles"] },
-    "sages": { "strongAgainst": ["cares", "ecs"], "weakAgainst": ["wilds", "wars"] },
+    "sages": { "strongAgainst": ["cares", "ecs"], "weakAgainst": ["wilds", "warriors"] },
     "mys": { "strongAgainst": ["auth", "sages"], "weakAgainst": ["heroes", "oracles"] }
   },
   "combatRestrictions": {
     "validTargetRules": [
       "Cards can only attack cards in the opponent’s battle zone.",
-      "If attacking the same element, damage is reduced by 50% instead of being blocked."
+      "If attacking the same essence, damage is reduced by 50% instead of being blocked."
     ],
     "playRules": [
       "If a player's battle zone is empty, they may play any card.",
       "If the battle zone is not empty, a new card must match at least one card by element or class.",
       "A player may discard instead of playing a card.",
-      "A player may only have one god, one element, and one class card in the battle zone at a time."
+      "A player may only have one god, one essence, and one ability card in the battle zone at a time."
     ]
   }
 }
