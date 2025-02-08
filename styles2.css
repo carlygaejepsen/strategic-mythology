@@ -36,7 +36,7 @@ button {
     cursor: pointer;
 }
 
-.character-card {
+.character-card, .essence-card, .ability-card {
     width: 140px;
     background: linear-gradient(135deg, #E3DAC9, #C89F5D);
     border-radius: 6px;
@@ -47,58 +47,32 @@ button {
     border: 2px solid #8B3A3A;
 }
 
-.char-img {
+.char-img, .essence-img, .ability-img {
     width: 100%;
+    height: auto;
+    max-height: 100px;
     border-radius: 10px;
 }
 
-.char-name {
-    font-size: 20px;
+.char-name, .essence-name, .ability-name {
+    font-size: 16px;
     font-weight: bold;
-    margin: 10px 0;
+    margin: 5px 0;
     color: #4A2C2A;
 }
 
-.char-stats {
-    display: flex;
-    justify-content: space-between;
-    font-size: 14px;
-    margin-bottom: 10px;
+.char-stats, .essence-stats, .ability-stats {
+    font-size: 12px;
+    margin-top: 5px;
 }
 
-.char-classes {
-    margin-bottom: 5px;
-}
-
-.class-tag {
+.class-tag, .essence-type, .ability-type {
     display: inline-block;
-    background: #8B3A3A;
-    color: white;
-    padding: 5px 10px;
+    padding: 4px 8px;
     border-radius: 5px;
     font-size: 12px;
-    margin: 2px;
-}
-
-.essence-card {
-    max-width: 140px;
-    width: 100%;
-    background: linear-gradient(135deg, #E3DAC9, #A45A52);
-    border-radius: 12px;
-    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
-    padding: 15px;
-    text-align: center;
-    font-family: 'Garamond', serif;
-    border: 2px solid #C89F5D;
-}
-
-.essence-type {
-    display: inline-block;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 14px;
     font-weight: bold;
-    margin-bottom: 8px;
+    margin: 2px;
 }
 
 .essence-type.fire { background: #D7263D; color: white; }
@@ -117,34 +91,17 @@ button {
 .essence-type.justice { background: #8B3A3A; color: white; }
 .essence-type.luck { background: #16A085; color: white; }
 
-.ability-card {
-    max-width: 140px;
-    width: 100%;
-    background: linear-gradient(135deg, #E3DAC9, #C4A484);
-    border-radius: 12px;
-    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
-    padding: 15px;
-    text-align: center;
-    font-family: 'Garamond', serif;
-    border: 2px solid #C89F5D;
-}
-
 .ability-type {
     background: #8B3A3A;
     color: white;
     display: inline-block;
-    padding: 5px 10px;
+    padding: 4px 8px;
     border-radius: 5px;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: bold;
-    margin-bottom: 8px;
+    margin-bottom: 5px;
 }
 
 .ability-classes {
     margin-top: 5px;
-}
-
-.ability-stats {
-    font-size: 14px;
-    margin-top: 10px;
 }
