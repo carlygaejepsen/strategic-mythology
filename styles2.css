@@ -48,6 +48,7 @@ button {
 	height: auto;
 	transition: all 0.3s ease;
 	transform-origin: center;
+	font-family: arial, sans-serif;
 }
 
 .char-img, .essence-img, .ability-img {
@@ -65,7 +66,7 @@ button {
 }
 
 .char-stats, .essence-stats, .ability-stats {
-    font-size: 12px;
+    font-size: 10px;
     margin-top: 5px;
 }
 
