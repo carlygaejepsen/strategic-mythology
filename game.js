@@ -1,6 +1,6 @@
-import { loadConfigFiles } from "./config.js";
-import { shuffleDeck, dealStartingHands, playerDeck, enemyDeck } from "./cards.js";
-import { battleRound } from "./battle.js";
+import { loadConfigFiles } from "./config.js"; // ✅ Load configs at game start
+import { loadAllCards, playerDeck, enemyDeck, shuffleDeck } from "./cards.js"; // ✅ Manage decks
+import { battleRound } from "./battle.js"; // ✅ Handle battle rounds
 
 async function startGame() {
     await loadConfigFiles();

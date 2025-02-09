@@ -1,4 +1,5 @@
-import { battleSystem, gameConfig } from "./config.js";
+import { playerHand, enemyHand } from "./cards.js"; // ✅ Import player and enemy hands
+import { battleSystem } from "./config.js"; // ✅ Import battle rules
 
 function battleRound() {
     if (!playerHand.length || !enemyHand.length) {
