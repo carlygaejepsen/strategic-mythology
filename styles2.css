@@ -192,3 +192,15 @@ body {
   font-size: 10px;
   line-height: 10px;
 }
+
+#results-log {
+  width: 100%;
+  padding: 10px;
+  background-color: #fff3cd; /* Light, warm background */
+  border: 2px solid #ffeeba;
+  border-radius: 4px;
+  margin-bottom: 10px;  /* Space between the log and the battle zones */
+  font-size: 14px;
+  color: #856404;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
