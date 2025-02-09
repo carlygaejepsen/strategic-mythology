@@ -67,11 +67,6 @@ body {
     margin: 5px;
 }
 
-.battle-zone .char-img, .battle-zone .essence-img, .battle-zone .ability-img {
-    width: 50px; /* Smaller size for battle zone cards */
-    height: 50px;
-    margin: 5px;
-}
 
 #battle-divider {
     font-size: 40px;
