@@ -20,7 +20,7 @@ body {
     min-height: 100px;
     border: 3px solid #C89F5D;
     padding: 15px;
-    width: 80%;
+    width: 98%;
     background-color: #EAD7A5;
     align-items: center;
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
@@ -59,8 +59,15 @@ body {
 	object-fit: cover;
 }
 
-.char-name, .essence-name, .ability-name {
+.char-name {
     font-size: 16px;
+    font-weight: bold;
+    margin: 5px 0;
+    color: #4A2C2A;
+}
+
+.ability-name {
+    font-size: 12px;
     font-weight: bold;
     margin: 5px 0;
     color: #4A2C2A;
@@ -96,6 +103,7 @@ body {
 .ability-classes {
     margin-top: 5px;
 }
+
 .battle-zone {
     width: 200px;
     height: 300px;
