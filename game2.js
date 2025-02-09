@@ -45,7 +45,6 @@ async function loadConfigFiles() {
         console.error("❌ ERROR loading configuration files:", error);
     }
 }
-
 //
 function populateTemplate(template, data) {
     return template.replace(/{(\w+)}/g, (match, key) => data[key] || '');
@@ -129,7 +128,9 @@ function handleCardClick(card) {
     console.log(`🔹 Player selected: ${card.name}`);
 
     const playerBattleZone = document.getElementById("player-battle-zone");
-    playerBattleZone.replaceChildren(createCardElement(card, "char"));
+
+    // ✅ Append instead of replacing
+    playerBattleZone.appendChild(createCardElement(card, "char"));
 
     // Find the selected card in playerHand and remove it
     const cardIndex = playerHand.indexOf(card);
@@ -142,29 +143,28 @@ function handleCardClick(card) {
     const cardElements = [...playerHandContainer.children];
 
     for (let el of cardElements) {
-        // Compare card name to find the correct element
         if (el.dataset.cardId === card.id || el.innerText.includes(card.name)) {
             playerHandContainer.removeChild(el);
             console.log(`✅ Removed ${card.name} from player hand.`);
-            break; // Stop after removing the correct card
+            break;
         }
     }
 
-    // Select an enemy card and display it
+    // ✅ Select an enemy card and display it
     if (enemyHand.length > 0) {
         const enemyCard = enemyHand.shift();
         console.log(`🔹 Enemy selected: ${enemyCard.name}`);
 
         const enemyBattleZone = document.getElementById("enemy-battle-zone");
-        enemyBattleZone.replaceChildren(createCardElement(enemyCard, "char"));
+
+        // ✅ Append instead of replacing
+        enemyBattleZone.appendChild(createCardElement(enemyCard, "char"));
 
         console.log(`✅ Enemy's card should now be in battle zone: ${enemyCard.name}`);
     } else {
         console.log("⚠️ No enemy cards left.");
     }
 }
-
-
 
 //
 function dealStartingHands() {
