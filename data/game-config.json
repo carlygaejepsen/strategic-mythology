@@ -5,6 +5,7 @@
     "air": "💨",
     "earth": "🏔️",
     "electricity": "⚡",
+	"zap": "⚡",
     "love": "💞",
     "malice": "🩸",
     "hubris": "🦚",
@@ -15,6 +16,7 @@
     "decay": "🍂",
     "luck": "🪙",
     "just": "⚖️",
+	"justice": "⚖️",
 	"insight": "🔮"
 },
 "class-names": {
