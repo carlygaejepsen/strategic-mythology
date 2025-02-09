@@ -92,7 +92,7 @@ function createCardElement(card, type) {
         return document.createElement("div"); 
     }
 
-    const template = cardTemplates[type].html;
+const template = cardTemplates[type].html;
 	
 const isAbilityOrEssenceCard = card.essence || Array.isArray(card.classes) || Array.isArray(card.essences);
 
