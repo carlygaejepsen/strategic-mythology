@@ -1,4 +1,3 @@
-
 let cardTemplates = {}; // Stores card templates loaded from JSON
 let battleSystem = {}; // Stores battle system configurations
 
@@ -21,6 +20,7 @@ async function loadJSON(file) {
     }
 }
 
+// ✅ gameConfig is now stored directly in config.js (no need to fetch it)
 let gameConfig = {
     "essence-emojis": {
         "fire": "🔥",
@@ -62,28 +62,22 @@ let gameConfig = {
     }
 };
 
+// ✅ Updated: No need to fetch game-config.json anymore
 async function loadConfigFiles() {
     try {
         console.log("Fetching configuration files...");
 
-        const [cardTemplatesResponse, gameConfigResponse] = await Promise.all([
-            fetch("./card-templates.json"), // Loads card templates
-            fetch("./data/game-config.json") // Loads game settings
-        ]);
+        const cardTemplatesResponse = await fetch("./card-templates.json"); // Only fetch card templates now
 
         if (!cardTemplatesResponse.ok) throw new Error(`Failed to fetch card-templates.json: ${cardTemplatesResponse.status}`);
-        if (!gameConfigResponse.ok) throw new Error(`Failed to fetch game-config.json: ${gameConfigResponse.status}`);
 
         cardTemplates = await cardTemplatesResponse.json();
-        gameConfig = await gameConfigResponse.json();  
 
-        if (!gameConfig || Object.keys(gameConfig).length === 0) {
-            console.error("❌ ERROR: gameConfig is STILL EMPTY after loading!");
-        }
+        console.log("✅ Configurations loaded.");
     } catch (error) {
         console.error("❌ ERROR loading configuration files:", error);
     }
 }
 
 // ✅ Export everything needed by other files
-export { cardTemplates, gameConfig, battleSystem, loadConfigFiles };
+export { cardTemplates, gameConfig, battleSystem, loadConfigFiles, loadJSON };

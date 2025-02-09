@@ -1,4 +1,4 @@
-import { cardTemplates } from "./config.js"; // ✅ Import JSON loader and card templates
+import { loadJSON, cardTemplates, battleSystem } from "./config.js"; // ✅ Import JSON loader and battle system config
 
 let playerDeck = [];
 let enemyDeck = [];
@@ -7,7 +7,6 @@ let enemyHand = [];
 
 let currentPlayerBattleCard = null;
 let currentEnemyBattleCard = null;
-
 
 function populateTemplate(template, data) {
     return template.replace(/{(\w+)}/g, (match, key) => data[key] || '');
@@ -62,5 +61,5 @@ function dealStartingHands() {
     console.log("Enemy Hand:", enemyHand);
 }
 
-// ✅ Add dealStartingHands to exports so game.js can use it
+// ✅ Export functions and variables so game.js can use them
 export { playerDeck, enemyDeck, playerHand, enemyHand, loadAllCards, shuffleDeck, dealStartingHands };
