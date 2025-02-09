@@ -119,12 +119,35 @@ function createCardElement(card, type) {
     // ✅ Add click event listener
     cardDiv.addEventListener("click", () => {
         console.log(`🖱️ Clicked on card: ${card.name}`);
+		handleCardClick(card);
     });
 
     return cardDiv;
 }
+//
+function handleCardClick(card) {
+    console.log(`🔹 Player selected: ${card.name}`);
 
+    const playerBattleZone = document.getElementById("player-battle-zone");
+    playerBattleZone.replaceChildren(createCardElement(card, "char"));
 
+    // Remove the selected card from the player's hand
+    const cardIndex = playerHand.indexOf(card);
+    if (cardIndex !== -1) {
+        playerHand.splice(cardIndex, 1);
+    }
+
+    // Enemy selects a card automatically
+    if (enemyHand.length > 0) {
+        const enemyCard = enemyHand.shift();
+        console.log(`🔹 Enemy selected: ${enemyCard.name}`);
+
+        const enemyBattleZone = document.getElementById("enemy-battle-zone");
+        enemyBattleZone.replaceChildren(createCardElement(enemyCard, "char"));
+    } else {
+        console.log("⚠️ No enemy cards left.");
+    }
+}
 //
 function dealStartingHands() {
     playerHand = [];
