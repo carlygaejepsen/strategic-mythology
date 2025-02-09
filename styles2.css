@@ -37,6 +37,7 @@ body {
 #battle-area {
     width: 30%;
     display: flex;
+	flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 20px;
@@ -44,7 +45,7 @@ body {
 
 .battle-zone {
     width: 400px; /* Wide enough for 3 mini cards */
-    height: 220px;
+    height: 160px;
     border: 4px solid #222;
     background-color: rgba(255, 255, 255, 0.2);
     display: flex;
@@ -98,7 +99,7 @@ body {
     margin-top: 5px;
 }
 .battle-zone .char-card, .battle-zone .essence-card, .battle-zone .ability-card {
-    width: 120px; /* Smaller size for battle zone cards */
+    width: 100px; /* Smaller size for battle zone cards */
     height: auto;
     transform: scale(0.5); /* Shrinks the cards */
 }
