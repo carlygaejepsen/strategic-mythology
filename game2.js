@@ -144,7 +144,7 @@ function handleCardClick(card) {
     const playerBattleZone = document.getElementById("player-battle-zone");
 
     // ✅ Append instead of replacing
-    playerBattleZone.appendChild(createCardElement(card, "char"));
+	playerBattleZone.appendChild(createCardElement(card, card.type));
 
     // Find the selected card in playerHand and remove it
     const cardIndex = playerHand.indexOf(card);
@@ -172,8 +172,8 @@ function handleCardClick(card) {
         const enemyBattleZone = document.getElementById("enemy-battle-zone");
 
         // ✅ Append instead of replacing
-        enemyBattleZone.appendChild(createCardElement(enemyCard, "char"));
-
+		enemyBattleZone.appendChild(createCardElement(enemyCard, enemyCard.type));
+ 
         console.log(`✅ Enemy's card should now be in battle zone: ${enemyCard.name}`);
     } else {
         console.log("⚠️ No enemy cards left.");
