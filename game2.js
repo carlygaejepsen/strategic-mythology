@@ -131,20 +131,22 @@ function handleCardClick(card) {
     const playerBattleZone = document.getElementById("player-battle-zone");
     playerBattleZone.replaceChildren(createCardElement(card, "char"));
 
-    // Remove the selected card from the player's hand
+    // Find the selected card in playerHand and remove it
     const cardIndex = playerHand.indexOf(card);
     if (cardIndex !== -1) {
         playerHand.splice(cardIndex, 1);
+    }
 
-        // 🔥 Find and remove the card from the UI
-        const playerHandContainer = document.getElementById("player-hand");
-        const cardElements = [...playerHandContainer.children];
+    // 🔥 Remove the card from the UI (player-hand)
+    const playerHandContainer = document.getElementById("player-hand");
+    const cardElements = [...playerHandContainer.children];
 
-        for (let el of cardElements) {
-            if (el.dataset.cardId === card.id) {
-                playerHandContainer.removeChild(el);
-                break; // Stop looping once removed
-            }
+    for (let el of cardElements) {
+        // Compare card name to find the correct element
+        if (el.dataset.cardId === card.id || el.innerText.includes(card.name)) {
+            playerHandContainer.removeChild(el);
+            console.log(`✅ Removed ${card.name} from player hand.`);
+            break; // Stop after removing the correct card
         }
     }
 
@@ -161,6 +163,7 @@ function handleCardClick(card) {
         console.log("⚠️ No enemy cards left.");
     }
 }
+
 
 
 //
