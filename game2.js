@@ -190,13 +190,10 @@ function dealStartingHands() {
         enemyContainer.appendChild(createCardElement(card, card.type));
     });
 }
-// Function to remove "None" text from elements with class 'element-emoji'
-function removeNoneText() {
-    document.querySelectorAll('.element-emoji').forEach(el => {
-        if (el.innerText.trim().toLowerCase() === 'none') {
-            el.innerText = ''; // Clear the text if it's "None"
-        }
-    });
+function cleanElementEmoji(el) {
+    if (el.innerText.trim().toLowerCase() === 'none') {
+        el.innerText = '';
+    }
 }
 //
 async function battleRound() {
@@ -282,20 +279,29 @@ async function startGame() {
 //
 document.addEventListener("DOMContentLoaded", () => {
     startGame();
-    
-    // Get the battle zone container
-    const battleArea = document.getElementById("battle-area");
+    // Set up the MutationObserver after the game has started
+    const battleArea = document.getElementById('battle-area');
     if (battleArea) {
-        // Set up a MutationObserver to watch for changes in the battle area
         const observer = new MutationObserver(mutations => {
             mutations.forEach(mutation => {
-                if (mutation.addedNodes.length > 0) {
-                    removeNoneText();
+                if (mutation.type === 'childList') {
+                    mutation.addedNodes.forEach(node => {
+                        // Check if the added node is an element
+                        if (node.nodeType === 1) {
+                            // If the node itself has the element-emoji class
+                            if (node.classList.contains('element-emoji')) {
+                                cleanElementEmoji(node);
+                            }
+                            // Or if it contains any element-emoji elements within it
+                            node.querySelectorAll && node.querySelectorAll('.element-emoji').forEach(el => {
+                                cleanElementEmoji(el);
+                            });
+                        }
+                    });
                 }
             });
         });
-
-        // Start observing the battle area for added child nodes
+        // Observe the battleArea for changes in its children and subtree
         observer.observe(battleArea, { childList: true, subtree: true });
     } else {
         console.error("Error: 'battle-area' element not found!");
@@ -307,6 +313,7 @@ const playTurnButton = document.getElementById("play-turn");
 if (playTurnButton) {
     playTurnButton.addEventListener("click", () => {
         battleRound();
+        // No need to call removeNoneText() here—the observer will handle it
     });
 } else {
     console.error("Error: 'play-turn' button not found!");
