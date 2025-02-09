@@ -11,10 +11,10 @@ body {
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 5px;
+    gap: 20px;
     width: 100vw;
     height: 100vh;
-    padding: 20px;
+    padding: 5px;
 }
 
 #player-section, #enemy-section {
