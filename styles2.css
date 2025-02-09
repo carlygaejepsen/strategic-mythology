@@ -162,6 +162,8 @@ body {
 }
 
 /* Additional ability classes styling */
+.char-classes,
+.essence-classes,
 .ability-classes {
   font-size: 12px;
   margin-top: 2px;
