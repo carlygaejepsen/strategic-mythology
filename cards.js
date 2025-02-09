@@ -1,4 +1,4 @@
-import { loadJSON, cardTemplates } from "./config.js"; // ✅ Import JSON loader and card templates
+import { cardTemplates } from "./config.js"; // ✅ Import JSON loader and card templates
 
 let playerDeck = [];
 let enemyDeck = [];
