@@ -63,7 +63,7 @@ body {
 .battle-zone {
     width: 100%;
     height: 140px;
-    border: 4px solid #222;
+	border: 3px solid #C89F5D;
     background-color: rgba(255, 255, 255, 0.2);
     display: flex;
     align-items: center;
@@ -196,8 +196,8 @@ body {
 #results-log {
   width: 100%;
   padding: 10px;
-  background-color: #fff3cd; /* Light, warm background */
-  border: 2px solid #ffeeba;
+  background-color: #fff;
+  border: 3px solid #C89F5D;
   border-radius: 4px;
   margin-bottom: 10px;  /* Space between the log and the battle zones */
   font-size: 14px;
