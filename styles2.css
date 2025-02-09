@@ -188,3 +188,8 @@ body {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+.essence,
+.essence-emoji {
+  font-size: 10px;
+  line-height: 10px;
+}
