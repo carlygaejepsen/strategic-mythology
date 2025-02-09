@@ -112,7 +112,9 @@ body {
     height: 60px;
 }
 
-.battle-zone .ability-classes {
+.battle-zone .ability-classes,
+.battle-zone .char-classes,
+.battle-zone .essence-classes {
     font-size: 6px;  /* Adjust this value as needed */
     margin-top: 2px; /* Optional: reduce margin to tighten up the space */
 }
