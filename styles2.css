@@ -7,106 +7,40 @@ body {
 
 #game-board {
     display: flex;
-    flex-direction: row;
+    flex-direction: row; /* Adjusted to place player, battle, and enemy areas in a row */
+    justify-content: space-between;
     align-items: center;
-    gap: 10px;
+    gap: 20px;
+    width: 100%;
+    padding: 20px;
 }
 
-#player-hand, #battle-zone, #enemy-hand {
-    display: flex;
-	flex-direction: row;
-    flex-wrap: wrap;
-    gap: 10px;
-    min-height: 100px;
+#player-hand, #enemy-hand {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    min-height: 150px;
     border: 3px solid #C89F5D;
-    padding: 15px;
-    width: 98%;
+    padding: 20px;
+    width: 30%; /* Adjusted to make space for battle area */
     background-color: #EAD7A5;
     align-items: center;
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
 }
 
-#button {
-    margin-top: 20px;
-    padding: 10px;
-    font-size: 16px;
-    background-color: #C89F5D;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-.char-card, .essence-card, .ability-card {
-    width: 140px;
-    background: linear-gradient(135deg, #E3DAC9, #C89F5D);
-    border-radius: 6px;
-    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
-    padding: 5px;
-    text-align: center;
-    border: 2px solid #8B3A3A;
-	background-color: #EDE8E4;
-	height: auto;
-	transition: all 0.3s ease;
-	transform-origin: center;
-	font-family: arial, sans-serif;
-}
-
-.char-img, .essence-img, .ability-img {
-    width: 120px;
-    height: 120px;
-    border-radius: 3px;
-	object-fit: cover;
-}
-
-.char-name {
-    font-size: 16px;
-    font-weight: bold;
-    margin: 5px 0;
-    color: #4A2C2A;
-}
-
-.ability-name {
-    font-size: 12px;
-    font-weight: bold;
-    margin: 5px 0;
-    color: #4A2C2A;
-}
-
-.char-stats, .essence-stats, .ability-stats {
-    font-size: 10px;
-    margin-top: 5px;
-}
-
-
 #battle-area {
     display: flex;
-	flex-direction: column;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 30px;
-    width: 100%;
+    gap: 20px;
+    width: 30%;
     margin: 20px 0;
 }
 
-.ability-type {
-    background: #8B3A3A;
-    color: white;
-    display: inline-block;
-    padding: 4px 8px;
-    border-radius: 5px;
-    font-size: 12px;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.ability-classes {
-    margin-top: 5px;
-}
-
 .battle-zone {
-    width: 200px;
-    height: 300px;
+    width: 220px;
+    height: 320px;
     border: 4px solid #222;
     background-color: rgba(255, 255, 255, 0.2);
     display: flex;
@@ -121,4 +55,42 @@ body {
     font-size: 40px;
     font-weight: bold;
     color: red;
+}
+
+.char-card, .essence-card, .ability-card {
+    width: 140px;
+    background: linear-gradient(135deg, #E3DAC9, #C89F5D);
+    border-radius: 6px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+    padding: 8px;
+    text-align: center;
+    border: 2px solid #8B3A3A;
+    background-color: #EDE8E4;
+    height: auto;
+    transition: all 0.3s ease;
+    transform-origin: center;
+    font-family: arial, sans-serif;
+}
+
+.char-img, .essence-img, .ability-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 3px;
+    object-fit: cover;
+}
+
+.char-name, .essence-name, .ability-name {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 5px 0;
+    color: #4A2C2A;
+}
+
+.char-stats, .essence-stats, .ability-stats {
+    font-size: 10px;
+    margin-top: 5px;
+}
+
+.ability-classes {
+    margin-top: 5px;
 }
