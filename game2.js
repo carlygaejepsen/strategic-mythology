@@ -161,34 +161,27 @@ function handleCardClick(card) {
         }
     }
 
-    // ✅ Select an enemy card and display it
+    // Select an enemy card and display it.
     if (enemyHand.length > 0) {
         const enemyCard = enemyHand.shift();
         console.log(`🔹 Enemy selected: ${enemyCard.name}`);
 
         const enemyBattleZone = document.getElementById("enemy-battle-zone");
 
-        // ✅ Append instead of replacing
-		enemyBattleZone.appendChild(createCardElement(enemyCard, enemyCard.type));
-		
-	// Find the selected card in enemyHand and remove it
-    const cardIndex = enemyHand.indexOf(card);
-    if (cardIndex !== -1) {
-        enemyHand.splice(cardIndex, 1);
-    }
+        // Append enemy card to the battle zone using its proper type.
+        enemyBattleZone.appendChild(createCardElement(enemyCard, enemyCard.type));
 
-    // 🔥 Remove the card from the UI (player-hand)
-    const enemyHandContainer = document.getElementById("enemy-hand");
-    const cardElements = [...enemyHandContainer.children];
-
-    for (let el of cardElements) {
-        if (el.dataset.cardId === card.id || el.innerText.includes(card.name)) {
-            enemyHandContainer.removeChild(el);
-            console.log(`✅ Removed ${card.name} from enemy hand.`);
-            break;
+        // Remove the enemy card from the UI (enemy-hand) using the correct variable.
+        const enemyHandContainer = document.getElementById("enemy-hand");
+        const enemyCardElements = [...enemyHandContainer.children];
+        for (let el of enemyCardElements) {
+            if (el.dataset.cardId === enemyCard.id || el.innerText.includes(enemyCard.name)) {
+                enemyHandContainer.removeChild(el);
+                console.log(`✅ Removed ${enemyCard.name} from enemy hand.`);
+                break;
+            }
         }
-    }
- 
+
         console.log(`✅ Enemy's card should now be in battle zone: ${enemyCard.name}`);
     } else {
         console.log("⚠️ No enemy cards left.");
