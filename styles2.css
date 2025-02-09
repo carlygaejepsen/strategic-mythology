@@ -35,7 +35,7 @@ body {
 }
 
 #battle-area {
-    width: 30%;
+    width: 200%;
     display: flex;
 	flex-direction: column;
     align-items: center;
@@ -99,7 +99,7 @@ body {
     margin-top: 5px;
 }
 .battle-zone .char-card, .battle-zone .essence-card, .battle-zone .ability-card {
-    width: 100px; /* Smaller size for battle zone cards */
+    width: auto;
     height: auto;
     transform: scale(0.5); /* Shrinks the cards */
 }
