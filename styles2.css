@@ -114,7 +114,7 @@ body {
 
 .battle-zone .ability-classes,
 .battle-zone .char-classes,
-.battle-zone .essence-classes {
+ {
     font-size: 6px;  /* Adjust this value as needed */
     margin-top: 2px; /* Optional: reduce margin to tighten up the space */
 }
@@ -165,7 +165,6 @@ body {
 
 /* Additional ability classes styling */
 .char-classes,
-.essence-classes,
 .ability-classes {
   font-size: 12px;
   margin-top: 2px;
