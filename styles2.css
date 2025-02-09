@@ -22,7 +22,7 @@ body {
     min-height: auto;
     border: 3px solid #C89F5D;
     padding: 20px;
-    width: 30%; /* Adjusted to make space for battle area */
+    width: 40%; /* Adjusted to make space for battle area */
     background-color: #EAD7A5;
     align-items: center;
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
@@ -34,7 +34,7 @@ body {
     align-items: center;
     justify-content: center;
     gap: 20px;
-    width: 30%;
+    width: 20%;
     margin: 20px 0;
 }
 
