@@ -31,12 +31,7 @@ async function loadConfigFiles() {
         if (!gameConfigResponse.ok) throw new Error(`Failed to fetch game-config.json: ${gameConfigResponse.status}`);
 
         cardTemplates = await cardTemplatesResponse.json();
-        gameConfig = await gameConfigResponse.json();  // ✅ Now gameConfig is actually loaded
-
-        console.log("✅ Loaded card templates:", cardTemplates);
-        console.log("✅ Loaded gameConfig:", gameConfig);
-        console.log("✅ Essence Emojis:", gameConfig["essence-emojis"]);
-        console.log("✅ Class Names:", gameConfig["class-names"]);
+        gameConfig = await gameConfigResponse.json();  // 
 
         if (!gameConfig || Object.keys(gameConfig).length === 0) {
             console.error("❌ ERROR: gameConfig is STILL EMPTY after loading!");
@@ -94,6 +89,7 @@ function createCardElement(card, type) {
 
 const template = cardTemplates[type].html;
 	
+// Determine if the card is an ability/essence card based on available properties
 const isAbilityOrEssenceCard = card.essence || Array.isArray(card.classes) || Array.isArray(card.essences);
 
 const populatedHTML = populateTemplate(template, {
@@ -101,7 +97,7 @@ const populatedHTML = populateTemplate(template, {
     img: card.img || "",
     hp: card.hp ?? "N/A",
     atk: card.atk ?? "N/A",
-	// Only show defense and speed if it's a character card; otherwise, leave them blank
+    // Only show defense and speed if it's a character card; otherwise, leave them blank
     def: isAbilityOrEssenceCard ? "" : (card.def ?? "N/A"),
     spd: isAbilityOrEssenceCard ? "" : (card.spd ?? "N/A"),
     essence: card.essence || "",
