@@ -73,39 +73,51 @@ function shuffleDeck(deck) {
 }
 //
 function createCardElement(card, type) {
-    console.log("Creating card with type:", type, "Card:", card);
+    console.log(`Creating card with type: ${type}`, "Card:", card);
     console.log("Available templates:", Object.keys(cardTemplates));
 
+    // Validate template existence
     if (!cardTemplates[type]) {
-        console.error(`ERROR: Missing template for card type: ${type}`);
+        console.error(`❌ ERROR: Missing template for card type: ${type}`);
         console.error(`Valid types are:`, Object.keys(cardTemplates));
         return document.createElement("div"); 
     }
 
+    // Validate gameConfig before use
+    if (!gameConfig || Object.keys(gameConfig).length === 0) {
+        console.error("❌ ERROR: gameConfig is empty or not loaded!");
+        return document.createElement("div");
+    }
+
+    // Retrieve the template for the card type
     const template = cardTemplates[type].html;
 
+    // Safely populate the template with card data
     const populatedHTML = populateTemplate(template, {
         name: card.name || "Unknown",
         img: card.img || "",
-        hp: card.hp ?? "N/A", // Prevents undefined errors
+        hp: card.hp ?? "N/A",
         atk: card.atk ?? "N/A",
         def: card.def ?? "N/A",
         spd: card.spd ?? "N/A",
         essence: card.essence || "None",
-        essence_emoji: gameConfig.essenceEmojis?.[card.essence] || card.essence || "❓",
-classes: card.classes 
-    ? card.classes.map(cls => `<span class="class-tag">${gameConfig.classNames?.[cls] || cls}</span>`).join(", ") 
-    : "None",
-essences: card.essences 
-    ? card.essences.map(ess => `<span class="essence ${ess}">${gameConfig.essenceEmojis?.[ess] || ess}</span>`).join(" ") 
-    : "None",
+        essence_emoji: gameConfig.essenceEmojis?.[card.essence] || "❓",
+        classes: Array.isArray(card.classes) 
+            ? card.classes.map(cls => `<span class="class-tag">${gameConfig.classNames?.[cls] || cls}</span>`).join(", ") 
+            : "None",
+        essences: Array.isArray(card.essences) 
+            ? card.essences.map(ess => `<span class="essence ${ess}">${gameConfig.essenceEmojis?.[ess] || ess}</span>`).join(" ") 
+            : "None"
     });
 
+    // Create the card element and apply populated content
     const cardDiv = document.createElement("div");
     cardDiv.classList.add(`${type}-card`);
     cardDiv.innerHTML = populatedHTML;
+
     return cardDiv;
 }
+
 //
 function dealStartingHands() {
     playerHand = [];
