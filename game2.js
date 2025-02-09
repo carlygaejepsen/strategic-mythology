@@ -271,15 +271,29 @@ async function startGame() {
     }
     dealStartingHands();
 }
-
-document.addEventListener("DOMContentLoaded", startGame);
+//
+document.addEventListener("DOMContentLoaded", () => {
+    startGame();
+    removeNoneText(); // Run once on page load to clean up existing elements
+});
 
 const playTurnButton = document.getElementById("play-turn");
 
 if (playTurnButton) {
     playTurnButton.addEventListener("click", () => {
         battleRound();
+        removeNoneText(); // Run after every turn to clean up newly added elements
     });
 } else {
     console.error("Error: 'play-turn' button not found!");
 }
+
+// Function to remove "None" from element-emoji fields
+function removeNoneText() {
+    document.querySelectorAll('.element-emoji').forEach(el => {
+        if (el.innerText.trim().toLowerCase() === 'none') {
+            el.innerText = ''; // Set it to an empty string
+        }
+    });
+}
+
