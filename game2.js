@@ -220,8 +220,6 @@ async function battleRound() {
         enemyBattleZone.innerHTML = "";
     }
 }
-
-
 //
 async function startGame() {
     await loadConfigFiles();
