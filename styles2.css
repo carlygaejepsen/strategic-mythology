@@ -61,9 +61,16 @@ body {
 }
 
 .battle-zone .char-card, .battle-zone .essence-card, .battle-zone .ability-card {
-    width: 80px; /* Smaller size for battle zone cards */
+    width: auto; /* Smaller size for battle zone cards */
     height: auto;
-    transform: scale(0.7); /* Shrinks the cards further */
+    transform: scale(0.5); /* Shrinks the cards further */
+    margin: 5px;
+}
+
+.battle-zone .char-img, .battle-zone .essence-img, .battle-zone .ability-img {
+    width: auto; /* Smaller size for battle zone cards */
+    height: auto;
+    transform: scale(0.5); /* Shrinks the cards further */
     margin: 5px;
 }
 
@@ -107,16 +114,6 @@ body {
     margin-top: 5px;
 }
 
-.ability-type {
-    background: #8B3A3A;
-    color: white;
-    display: inline-block;
-    padding: 4px 8px;
-    border-radius: 5px;
-    font-size: 12px;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
 
 .ability-classes {
     margin-top: 5px;
