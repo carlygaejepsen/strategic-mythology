@@ -3,8 +3,6 @@ body {
     text-align: center;
     background-color: #F4F1DE;
     color: #4A2C2A;
-    margin: 0;
-    padding: 0;
     overflow: hidden; /* Prevent scrolling */
 }
 
@@ -12,11 +10,11 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
+    gap: 20px;
     width: 100vw;
     height: 100vh;
-    padding: 10px;
-    box-sizing: border-box;
+    padding: 20px;
 }
 
 #player-section, #enemy-section {
@@ -24,7 +22,19 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100%;
+}
+
+#player-hand, #enemy-hand {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    min-height: auto;
+    border: 3px solid #C89F5D;
+    padding: 20px;
+    width: 100%;
+    background-color: #EAD7A5;
+    align-items: center;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 #battle-area {
@@ -33,45 +43,34 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100%;
+    gap: 10px;
 }
 
 .battle-zone {
-    width: 90%; /* Takes most of the battle area width */
-    height: 120px; /* Wide but short */
+    width: 100%; /* Full width to fit three cards side by side */
+    height: 120px; /* Smaller height to emphasize horizontal layout */
     border: 4px solid #222;
     background-color: rgba(255, 255, 255, 0.2);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
+    font-size: 14px;
     font-weight: bold;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    padding: 5px;
 }
 
 .battle-zone .char-card, .battle-zone .essence-card, .battle-zone .ability-card {
-    width: 80px; /* Mini size for battle zone */
+    width: 80px; /* Smaller size for battle zone cards */
     height: auto;
-    transform: scale(0.5);
+    transform: scale(0.7); /* Shrinks the cards further */
+    margin: 5px;
 }
 
 #battle-divider {
     font-size: 40px;
     font-weight: bold;
     color: red;
-    margin: 10px 0;
-}
-
-#player-hand, #enemy-hand {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-    border: 3px solid #C89F5D;
-    padding: 15px;
-    width: 90%;
-    background-color: #EAD7A5;
-    align-items: center;
-    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .char-card, .essence-card, .ability-card {
@@ -105,5 +104,20 @@ body {
 
 .char-stats, .essence-stats, .ability-stats {
     font-size: 10px;
+    margin-top: 5px;
+}
+
+.ability-type {
+    background: #8B3A3A;
+    color: white;
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.ability-classes {
     margin-top: 5px;
 }
