@@ -84,16 +84,16 @@ function shuffleDeck(deck) {
 function createCardElement(card, type) {
     console.log(`Creating card: ${card.name} (Type: ${type})`);
 
-    // Determine the proper card type based on its properties:
-    // Only character cards have both classes and essences.
+    // Determine the proper card type based on its properties OR the passed type.
     let computedType;
-    if (Array.isArray(card.classes) && Array.isArray(card.essences)) {
+    if (type) {
+        // If a type was passed, use it
+        computedType = type;
+    } else if (Array.isArray(card.classes) && Array.isArray(card.essences)) {
         computedType = "char";
     } else if (card.essence) {
-        // If there's an essence property (and it's not a character card), use the essence template.
         computedType = "essence";
     } else {
-        // Otherwise, use the ability template.
         computedType = "ability";
     }
 
@@ -104,22 +104,20 @@ function createCardElement(card, type) {
 
     const template = cardTemplates[computedType].html;
 
-    // Use computedType to determine if this is a character card.
-    const isCharacterCard = computedType === "char";
-
+    // No gating by isCharacterCard; just fill out all possible fields.
     const populatedHTML = populateTemplate(template, {
         name: card.name || "Unknown",
         img: card.img || "",
-        hp: isCharacterCard ? (card.hp ?? "N/A") : (card.hp ?? ""),
-        atk: isCharacterCard ? (card.atk ?? "N/A") : (card.atk ?? ""),
-        def: isCharacterCard ? (card.def ?? "N/A") : "",
-        spd: isCharacterCard ? (card.spd ?? "N/A") : "",
+        hp: card.hp ?? "",
+        atk: card.atk ?? "",
+        def: card.def ?? "",
+        spd: card.spd ?? "",
         essence: card.essence || "",
         essence_emoji: card.essence ? (gameConfig["essence-emojis"]?.[card.essence] || "❓") : "",
-        classes: isCharacterCard
+        classes: Array.isArray(card.classes)
             ? card.classes.map(cls => `<span class="class-tag">${gameConfig["class-names"]?.[cls] || cls}</span>`).join(", ")
             : "",
-        essences: isCharacterCard
+        essences: Array.isArray(card.essences)
             ? card.essences.map(ess => `<span class="essence ${ess}">${gameConfig["essence-emojis"]?.[ess] || ess}</span>`).join(" ")
             : ""
     });
@@ -136,6 +134,7 @@ function createCardElement(card, type) {
 
     return cardDiv;
 }
+
 
 //
 function handleCardClick(card) {
