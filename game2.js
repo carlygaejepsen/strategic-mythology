@@ -99,8 +99,8 @@ const populatedHTML = populateTemplate(template, {
     img: card.img || "",
     hp: card.hp ?? "N/A",
     atk: card.atk ?? "N/A",
-    def: card.def ?? "N/A",
-    spd: card.spd ?? "N/A",
+    def: card.def ?? "",
+    spd: card.spd ?? "",
     essence: card.essence || "",
     essence_emoji: card.essence ? (gameConfig["essence-emojis"]?.[card.essence] || "❓") : "",
     classes: Array.isArray(card.classes) 
