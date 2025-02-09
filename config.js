@@ -1,6 +1,5 @@
 
 let cardTemplates = {}; // Stores card templates loaded from JSON
-let gameConfig = {};  // Stores general game settings
 let battleSystem = {}; // Stores battle system configurations
 
 let playerDeck = []; // Stores player's deck
@@ -21,6 +20,47 @@ async function loadJSON(file) {
         return [];
     }
 }
+
+let gameConfig = {
+    "essence-emojis": {
+        "fire": "🔥",
+        "water": "🌊",
+        "air": "💨",
+        "earth": "🏔️",
+        "electricity": "⚡",
+        "zap": "⚡",
+        "love": "💞",
+        "malice": "🩸",
+        "hubris": "🦚",
+        "wisdom": "📖",
+        "light": "🕯️",
+        "dark": "🌑",
+        "vit": "🌿",
+        "decay": "🍂",
+        "luck": "🪙",
+        "just": "⚖️",
+        "justice": "⚖️",
+        "insight": "🔮"
+    },
+    "class-names": {
+        "mals": "Malevolent",
+        "wilds": "Wildkeeper",
+        "cares": "Caretaker",
+        "heroes": "Hero",
+        "ecs": "Ecstatic",
+        "warriors": "Warrior",
+        "wars": "Warrior",
+        "auth": "Authority",
+        "sages": "Sage",
+        "mys": "Mystic",
+        "oracles": "Oracle"
+    },
+    "battle-messages": {
+        "battleStart": "{player} vs {enemy} begins!",
+        "attackMessage": "{attacker} attacks {defender} for {damage} damage!",
+        "defeatMessage": "{card} is defeated!"
+    }
+};
 
 async function loadConfigFiles() {
     try {
@@ -46,4 +86,4 @@ async function loadConfigFiles() {
 }
 
 // ✅ Export everything needed by other files
-export { cardTemplates, gameConfig, battleSystem, loadConfigFiles, loadJSON };
+export { cardTemplates, gameConfig, battleSystem, loadConfigFiles };

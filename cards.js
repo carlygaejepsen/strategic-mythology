@@ -49,4 +49,18 @@ function shuffleDeck(deck) {
     }
     return deck;
 }
-export { playerDeck, enemyDeck, playerHand, enemyHand, loadAllCards, shuffleDeck };
+
+function dealStartingHands() {
+    const HAND_SIZE = 5; // Adjust as needed
+
+    // Draw cards for player
+    playerHand = playerDeck.splice(0, HAND_SIZE);
+    console.log("Player Hand:", playerHand);
+
+    // Draw cards for enemy
+    enemyHand = enemyDeck.splice(0, HAND_SIZE);
+    console.log("Enemy Hand:", enemyHand);
+}
+
+// ✅ Add dealStartingHands to exports so game.js can use it
+export { playerDeck, enemyDeck, playerHand, enemyHand, loadAllCards, shuffleDeck, dealStartingHands };
