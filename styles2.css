@@ -14,6 +14,7 @@ body {
 
 #player-hand, #battle-zone, #enemy-hand {
     display: flex;
+	flex-direction: column;
     flex-wrap: wrap;
     gap: 10px;
     min-height: 100px;
@@ -73,6 +74,7 @@ body {
 
 #battle-area {
     display: flex;
+	flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 30px;
