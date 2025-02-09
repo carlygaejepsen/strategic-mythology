@@ -1,5 +1,14 @@
 import { loadJSON, cardTemplates } from "./config.js"; // ✅ Import JSON loader and card templates
 
+let playerDeck = [];
+let enemyDeck = [];
+let playerHand = [];
+let enemyHand = [];
+
+let currentPlayerBattleCard = null;
+let currentEnemyBattleCard = null;
+
+
 function populateTemplate(template, data) {
     return template.replace(/{(\w+)}/g, (match, key) => data[key] || '');
 }
