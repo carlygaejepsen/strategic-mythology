@@ -101,8 +101,6 @@ const populatedHTML = populateTemplate(template, {
     img: card.img || "",
     hp: card.hp ?? "N/A",
     atk: card.atk ?? "N/A",
-    def: card.def ?? "N/A",
-    spd: card.spd ?? "N/A",
 	// Only show defense and speed if it's a character card; otherwise, leave them blank
     def: isAbilityOrEssenceCard ? "" : (card.def ?? "N/A"),
     spd: isAbilityOrEssenceCard ? "" : (card.spd ?? "N/A"),
