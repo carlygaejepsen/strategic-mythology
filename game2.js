@@ -92,24 +92,24 @@ const template = cardTemplates[type].html;
 // Determine if the card is an ability/essence card based on available properties
 const isAbilityOrEssenceCard = card.essence || Array.isArray(card.classes) || Array.isArray(card.essences);
 
+const isCharacterCard = Array.isArray(card.classes) && Array.isArray(card.essences);
+
 const populatedHTML = populateTemplate(template, {
     name: card.name || "Unknown",
     img: card.img || "",
-    hp: card.hp ?? "N/A",
-    atk: card.atk ?? "N/A",
-    // Only show defense and speed if it's a character card; otherwise, leave them blank
-    def: isAbilityOrEssenceCard ? "" : (card.def ?? "N/A"),
-    spd: isAbilityOrEssenceCard ? "" : (card.spd ?? "N/A"),
+    hp: isCharacterCard ? (card.hp ?? "N/A") : (card.hp ?? ""),
+    atk: isCharacterCard ? (card.atk ?? "N/A") : (card.atk ?? ""),
+    def: isCharacterCard ? (card.def ?? "N/A") : "",
+    spd: isCharacterCard ? (card.spd ?? "N/A") : "",
     essence: card.essence || "",
     essence_emoji: card.essence ? (gameConfig["essence-emojis"]?.[card.essence] || "❓") : "",
-    classes: Array.isArray(card.classes) 
-        ? card.classes.map(cls => `<span class="class-tag">${gameConfig["class-names"]?.[cls] || cls}</span>`).join(", ") 
+    classes: isCharacterCard
+        ? card.classes.map(cls => `<span class="class-tag">${gameConfig["class-names"]?.[cls] || cls}</span>`).join(", ")
         : "",
-    essences: Array.isArray(card.essences) 
-        ? card.essences.map(ess => `<span class="essence ${ess}">${gameConfig["essence-emojis"]?.[ess] || ess}</span>`).join(" ") 
+    essences: isCharacterCard
+        ? card.essences.map(ess => `<span class="essence ${ess}">${gameConfig["essence-emojis"]?.[ess] || ess}</span>`).join(" ")
         : ""
 });
-
 
     const cardDiv = document.createElement("div");
     cardDiv.classList.add(`${type}-card`);
