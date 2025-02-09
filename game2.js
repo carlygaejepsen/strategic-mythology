@@ -137,17 +137,20 @@ function handleCardClick(card) {
         playerHand.splice(cardIndex, 1);
     }
 
-    // Enemy selects a card automatically
+    // Select an enemy card and display it
     if (enemyHand.length > 0) {
         const enemyCard = enemyHand.shift();
         console.log(`🔹 Enemy selected: ${enemyCard.name}`);
 
         const enemyBattleZone = document.getElementById("enemy-battle-zone");
         enemyBattleZone.replaceChildren(createCardElement(enemyCard, "char"));
+
+        console.log(`✅ Enemy's card should now be in battle zone: ${enemyCard.name}`);
     } else {
         console.log("⚠️ No enemy cards left.");
     }
 }
+
 //
 function dealStartingHands() {
     playerHand = [];

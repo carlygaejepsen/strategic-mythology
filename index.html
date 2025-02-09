@@ -11,20 +11,25 @@
     <h1>Strategic Mythology</h1>
 
     <div id="game-board">
-        <div id="player-section">
+        <div id="player-hand-section">
             <h2>Player</h2>
-            <div id="player-hand"></div>   <!-- Player's Hand -->
-            <div id="player-battle-zone"></div>   <!-- Player's Cards in Play -->
+            <div id="player-hand"></div> <!-- Player's Hand -->
         </div>
 
-        <div id="enemy-section">
+        <div id="battle-area">
+		    <button id="play-turn">Play Turn</button>
+            <div id="player-battle-zone" class="battle-zone"></div>
+            <div id="battle-divider">⚔️</div>
+            <div id="enemy-battle-zone" class="battle-zone"></div>
+        </div>
+
+        <div id="enemy-hand-section">
             <h2>Enemy</h2>
-            <div id="enemy-hand"></div>    <!-- Enemy's Hand -->
-            <div id="enemy-battle-zone"></div>   <!-- Enemy's Cards in Play -->
+            <div id="enemy-hand"></div> <!-- Enemy's Hand -->
         </div>
     </div>
-    
-    <button id="play-turn">Play Turn</button>
+
+
 
     <script src="./game2.js"></script>
 </body>
