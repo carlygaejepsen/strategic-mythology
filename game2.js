@@ -76,14 +76,12 @@ function createCardElement(card, type) {
     console.log(`Creating card with type: ${type}`, "Card:", card);
     console.log("Available templates:", Object.keys(cardTemplates));
 
-    // Validate template existence
     if (!cardTemplates[type]) {
         console.error(`❌ ERROR: Missing template for card type: ${type}`);
         console.error(`Valid types are:`, Object.keys(cardTemplates));
         return document.createElement("div"); 
     }
 
-    // Validate gameConfig before use
     if (!gameConfig || Object.keys(gameConfig).length === 0) {
         console.error("❌ ERROR: gameConfig is empty or not loaded!");
         return document.createElement("div");
@@ -101,12 +99,12 @@ function createCardElement(card, type) {
         def: card.def ?? "N/A",
         spd: card.spd ?? "N/A",
         essence: card.essence || "None",
-        essence_emoji: gameConfig.essenceEmojis?.[card.essence] || "❓",
+        essence_emoji: gameConfig["essence-emojis"]?.[card.essence] || "❓",
         classes: Array.isArray(card.classes) 
-            ? card.classes.map(cls => `<span class="class-tag">${gameConfig.classNames?.[cls] || cls}</span>`).join(", ") 
+            ? card.classes.map(cls => `<span class="class-tag">${gameConfig["class-names"]?.[cls] || cls}</span>`).join(", ") 
             : "None",
         essences: Array.isArray(card.essences) 
-            ? card.essences.map(ess => `<span class="essence ${ess}">${gameConfig.essenceEmojis?.[ess] || ess}</span>`).join(" ") 
+            ? card.essences.map(ess => `<span class="essence ${ess}">${gameConfig["essence-emojis"]?.[ess] || ess}</span>`).join(" ") 
             : "None"
     });
 
@@ -162,12 +160,11 @@ async function battleRound() {
     enemyBattleZone.appendChild(createCardElement(enemyCard, "char"));
 
     console.log(
-        gameConfig.battleMessages.battleStart
+        gameConfig["battle-messages"].battleStart
             .replace("{player}", playerCard.name)
             .replace("{enemy}", enemyCard.name)
     );
 
-    // Determine attack order from JSON
     let firstAttacker, secondAttacker;
     if (battleSystem.battleMechanics.attackRules.attackOrder === "Highest speed attacks first. If tied, attacker goes first.") {
         if (playerCard.spd > enemyCard.spd) {
@@ -189,20 +186,26 @@ async function battleRound() {
         if (battleSystem.elementBonuses[attacker.essence]?.strongAgainst === defender.essence) {
             baseDamage *= damageCalc.essenceBonusMultiplier;
         }
-        if (battleSystem.classBonuses[attacker.classes]?.strongAgainst?.includes(defender.classes)) {
-            baseDamage *= damageCalc.classBonusMultiplier;
+        if (Array.isArray(attacker.classes) && Array.isArray(defender.classes)) {
+            for (let cls of attacker.classes) {
+                if (battleSystem.classBonuses[cls]?.strongAgainst?.some(defCls => defender.classes.includes(defCls))) {
+                    baseDamage *= damageCalc.classBonusMultiplier;
+                    break;
+                }
+            }
         }
 
         baseDamage = Math.floor(baseDamage);
         defender.hp -= baseDamage;
 
         console.log(
-            gameConfig.battleMessages.attackMessage
+            gameConfig["battle-messages"].attackMessage
                 .replace("{attacker}", attacker.name)
                 .replace("{defender}", defender.name)
                 .replace("{damage}", baseDamage)
         );
     }
+    
     if (firstAttacker === "player") {
         calculateDamage(playerCard, enemyCard);
         if (enemyCard.hp > 0) calculateDamage(enemyCard, playerCard);
@@ -210,21 +213,27 @@ async function battleRound() {
         calculateDamage(enemyCard, playerCard);
         if (playerCard.hp > 0) calculateDamage(playerCard, enemyCard);
     }
+    
     if (playerCard.hp <= 0) {
-        console.log(gameConfig.battleMessages.defeatMessage.replace("{card}", playerCard.name));
+        console.log(gameConfig["battle-messages"].defeatMessage.replace("{card}", playerCard.name));
         playerHand.shift();
         playerBattleZone.innerHTML = "";
     }
     if (enemyCard.hp <= 0) {
-        console.log(gameConfig.battleMessages.defeatMessage.replace("{card}", enemyCard.name));
+        console.log(gameConfig["battle-messages"].defeatMessage.replace("{card}", enemyCard.name));
         enemyHand.shift();
         enemyBattleZone.innerHTML = "";
     }
 }
+
 //
 async function startGame() {
     await loadConfigFiles();
 	await loadAllCards();
+	    if (!gameConfig || Object.keys(gameConfig).length === 0) {
+        console.error("❌ ERROR: gameConfig is still empty after loading!");
+        return;
+    }
     dealStartingHands();
 }
 
