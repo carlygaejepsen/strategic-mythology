@@ -93,6 +93,8 @@ function createCardElement(card, type) {
     }
 
     const template = cardTemplates[type].html;
+	
+const isAbilityOrEssenceCard = card.essence || Array.isArray(card.classes) || Array.isArray(card.essences);
 
 const populatedHTML = populateTemplate(template, {
     name: card.name || "Unknown",
