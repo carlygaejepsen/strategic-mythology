@@ -1,114 +1,151 @@
+/* CSS Reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
-    font-family: arial, sans-serif;
-    text-align: center;
-    background-color: #F4F1DE;
-    color: #4A2C2A;
-    overflow: hidden; /* Prevent scrolling */
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-color: #F4F1DE;
+  color: #4A2C2A;
+  margin: 0;
+  padding: 0;
+  /* Removed overflow: hidden so nothing gets cut off */
 }
 
+/* Game Board Container */
 #game-board {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 20px;
-    width: 100vw;
-    height: 100vh;
-    padding: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  width: 100%; /* Use full width minus padding now that box-sizing is border-box */
+  height: 100vh;
+  padding: 20px;
 }
 
-#player-section, #enemy-section {
-    width: 40%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+/* Player and Enemy Sections */
+#player-section,
+#enemy-section {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-#player-hand, #enemy-hand {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-    min-height: auto;
-    border: 3px solid #C89F5D;
-    padding: 20px;
-    width: 100%;
-    background-color: #EAD7A5;
-    align-items: center;
-    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+/* Hands for Player and Enemy */
+#player-hand,
+#enemy-hand {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  border: 3px solid #C89F5D;
+  padding: 20px;
+  width: 100%;
+  background-color: #EAD7A5;
+  align-items: center;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
 }
 
+/* Battle Area */
 #battle-area {
-    width: 20%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
+/* Battle Zones */
 .battle-zone {
-    width: 100%; /* Full width to fit three cards side by side */
-    height: 140px; /* Smaller height to emphasize horizontal layout */
-    border: 4px solid #222;
-    background-color: rgba(255, 255, 255, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    font-weight: bold;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-    padding: 5px;
+  width: 100%; /* Ensure full width so cards line up nicely */
+  height: 140px;
+  border: 4px solid #222;
+  background-color: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: bold;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  padding: 5px;
 }
 
-.battle-zone .char-card, .battle-zone .essence-card, .battle-zone .ability-card {
-    width: auto; /* Smaller size for battle zone cards */
-    height: auto;
-    transform: scale(0.5); /* Shrinks the cards further */
-    margin: 2px;
+/* Scale down cards in battle zone */
+.battle-zone .char-card,
+.battle-zone .essence-card,
+.battle-zone .ability-card {
+  transform: scale(0.5);
+  margin: 2px;
 }
 
-
-#battle-divider {
-    font-size: 40px;
-    font-weight: bold;
-    color: red;
+/* Card Styles */
+.char-card,
+.essence-card,
+.ability-card {
+  width: 140px;
+  background: linear-gradient(135deg, #E3DAC9, #C89F5D);
+  border-radius: 6px;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+  padding: 8px;
+  text-align: center;
+  border: 2px solid #8B3A3A;
+  background-color: #EDE8E4;
+  transition: all 0.3s ease;
+  transform-origin: center;
 }
 
-.char-card, .essence-card, .ability-card {
-    width: 140px;
-    background: linear-gradient(135deg, #E3DAC9, #C89F5D);
-    border-radius: 6px;
-    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
-    padding: 8px;
-    text-align: center;
-    border: 2px solid #8B3A3A;
-    background-color: #EDE8E4;
-    height: auto;
-    transition: all 0.3s ease;
-    transform-origin: center;
-    font-family: arial, sans-serif;
+/* Card Images */
+.char-img,
+.essence-img,
+.ability-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 3px;
+  object-fit: cover;
 }
 
-.char-img, .essence-img, .ability-img {
-    width: 120px;
-    height: 120px;
-    border-radius: 3px;
-    object-fit: cover;
+/* Card Names */
+.char-name,
+.essence-name,
+.ability-name {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 5px 0;
+  color: #4A2C2A;
 }
 
-.char-name, .essence-name, .ability-name {
-    font-size: 16px;
-    font-weight: bold;
-    margin: 5px 0;
-    color: #4A2C2A;
+/* Card Stats */
+.char-stats,
+.essence-stats,
+.ability-stats {
+  font-size: 10px;
+  margin-top: 5px;
 }
 
-.char-stats, .essence-stats, .ability-stats {
-    font-size: 10px;
-    margin-top: 5px;
-}
-
-
+/* Additional ability classes styling */
 .ability-classes {
-    margin-top: 5px;
+  margin-top: 5px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+  #game-board {
+    flex-direction: column;
+    height: auto; /* Let the content decide the height */
+  }
+  #player-section,
+  #enemy-section,
+  #battle-area {
+    width: 100%;
+  }
+  /* Adjust grid columns for smaller screens */
+  #player-hand,
+  #enemy-hand {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
