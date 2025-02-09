@@ -20,18 +20,31 @@ async function loadJSON(file) {
 //
 async function loadConfigFiles() {
     try {
-        const response = await fetch("./card-templates.json");
-        if (!response.ok) throw new Error(`Failed to fetch card-templates.json: ${response.status}`);
+        console.log("Fetching configuration files...");
 
-        cardTemplates = await response.json();
-        console.log("Loaded card templates:", cardTemplates);
+        const [cardTemplatesResponse, gameConfigResponse] = await Promise.all([
+            fetch("./card-templates.json"),
+            fetch("./data/game-config.json")
+        ]);
+
+        if (!cardTemplatesResponse.ok) throw new Error(`Failed to fetch card-templates.json: ${cardTemplatesResponse.status}`);
+        if (!gameConfigResponse.ok) throw new Error(`Failed to fetch game-config.json: ${gameConfigResponse.status}`);
+
+        cardTemplates = await cardTemplatesResponse.json();
+        gameConfig = await gameConfigResponse.json();  // ✅ Now gameConfig is actually loaded
+
+        console.log("✅ Loaded card templates:", cardTemplates);
+        console.log("✅ Loaded gameConfig:", gameConfig);
+        console.log("✅ Essence Emojis:", gameConfig["essence-emojis"]);
+        console.log("✅ Class Names:", gameConfig["class-names"]);
+
+        if (!gameConfig || Object.keys(gameConfig).length === 0) {
+            console.error("❌ ERROR: gameConfig is STILL EMPTY after loading!");
+        }
     } catch (error) {
-        console.error("Error loading card templates:", error);
+        console.error("❌ ERROR loading configuration files:", error);
     }
 }
-console.log("DEBUG: Loaded gameConfig:", gameConfig);
-console.log("DEBUG: Essence Emojis:", gameConfig.essenceEmojis);
-console.log("DEBUG: Class Names:", gameConfig.classNames);
 
 //
 function populateTemplate(template, data) {
