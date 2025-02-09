@@ -37,7 +37,6 @@ body {
 #battle-area {
     width: 30%;
     display: flex;
-    flex-direction: row; /* Ensures horizontal alignment */
     align-items: center;
     justify-content: center;
     gap: 20px;
