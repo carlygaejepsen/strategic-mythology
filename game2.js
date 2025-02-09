@@ -190,6 +190,14 @@ function dealStartingHands() {
         enemyContainer.appendChild(createCardElement(card, card.type));
     });
 }
+// Function to remove "None" text from elements with class 'element-emoji'
+function removeNoneText() {
+    document.querySelectorAll('.element-emoji').forEach(el => {
+        if (el.innerText.trim().toLowerCase() === 'none') {
+            el.innerText = ''; // Clear the text if it's "None"
+        }
+    });
+}
 //
 async function battleRound() {
     if (!playerHand.length || !enemyHand.length) {
@@ -304,12 +312,4 @@ if (playTurnButton) {
     console.error("Error: 'play-turn' button not found!");
 }
 
-// Function to remove "None" text from elements with class 'element-emoji'
-function removeNoneText() {
-    document.querySelectorAll('.element-emoji').forEach(el => {
-        if (el.innerText.trim().toLowerCase() === 'none') {
-            el.innerText = ''; // Clear the text if it's "None"
-        }
-    });
-}
 
