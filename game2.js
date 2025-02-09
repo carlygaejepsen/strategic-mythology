@@ -5,6 +5,8 @@ let playerDeck = [];
 let enemyDeck = [];
 let playerHand = [];
 let enemyHand = [];
+let currentPlayerBattleCard = null;
+let currentEnemyBattleCard = null;
 
 //
 async function loadJSON(file) {
@@ -220,8 +222,9 @@ async function battleRound() {
     const playerBattleZone = document.getElementById("player-battle-zone");
     const enemyBattleZone = document.getElementById("enemy-battle-zone");
 
-    playerBattleZone.replaceChildren(createCardElement(playerCard, "char"));
-    enemyBattleZone.replaceChildren(createCardElement(enemyCard, "char"));
+playerBattleZone.replaceChildren(createCardElement(playerCard, playerCard.type));
+enemyBattleZone.replaceChildren(createCardElement(enemyCard, enemyCard.type));
+
 
     console.log(
         gameConfig["battle-messages"].battleStart

@@ -21,8 +21,8 @@
   ],
   "rules": [
     "If a player's battle zone is empty, they may play any card from their hand.",
-    "If a player's battle zone is not empty, a new card can only be played if it shares an element or class with at least one card in the battle zone.",
-    "Only one god, one element, and one class card can be in the battle zone at a time.",
+    "If a player's battle zone is not empty, a new card can only be played if it shares an essence or class with at least one card in the battle zone.",
+    "Only one god, one essence, and one ability card can be in the battle zone at a time.",
     "If a player cannot play a card, they must discard one instead.",
     "Healing cards can target other cards in your battle zone.",
     "Each turn ends with an attack phase where all cards in the battle zone attack their chosen targets.",
@@ -43,7 +43,7 @@
       "attackOrder": "Highest speed attacks first. If tied, attacker goes first."
     },
     "bonusMultipliers": {
-      "element": 1.2,
+      "essence": 1.2,
       "class": 1.2
     },
     "cardDestructionRules": {
@@ -57,7 +57,7 @@
       ]
     }
   },
-  "elementBonuses": {
+  "essenceBonuses": {
     "fire": { "strongAgainst": "plant", "weakAgainst": "water" },
     "water": { "strongAgainst": "fire", "weakAgainst": "earth" },
     "air": { "strongAgainst": "earth", "weakAgainst": "fire" },
@@ -93,7 +93,7 @@
     ],
     "playRules": [
       "If a player's battle zone is empty, they may play any card.",
-      "If the battle zone is not empty, a new card must match at least one card by element or class.",
+      "If the battle zone is not empty, a new card must match at least one card by essence or class.",
       "A player may discard instead of playing a card.",
       "A player may only have one god, one essence, and one ability card in the battle zone at a time."
     ]
