@@ -1,9 +1,9 @@
 {
   "char": {
-    "html": "<h2 class=\"char-name\">{name}</h2>\n<img src=\"{img}\" alt=\"{name}\" class=\"char-img\" style=\"border: 2px solid black; border-radius: 5px;\">\n<div class=\"char-stats\">\n  <p>❤️ {hp} ⚔️ {atk} 🛡️ {def} 🏇 {spd}</p>\n</div>\n<div class=\"char-essences\">{essences}</div>"
+    "html": "<h2 class=\"char-name\">{name}</h2>\n<img src=\"{img}\" alt=\"{name}\" class=\"char-img\" style=\"border: 2px solid black; border-radius: 5px;\">\n<div class=\"char-stats\">\n  <p>❤️ {hp} ⚔️ {atk} 🛡️ {def} 🏇 {spd}</p>\n</div>\n<div class=\"char-classes\">{classes}</div>\n<div class=\"char-essences\">{essences}</div>"
   },
   "essence": {
-    "html": "<h2 class=\"essence-name\">{name}</h2><div class=\"essence-type {essence}\">{essence_emoji}</div>\n<img src=\"{img}\" alt=\"{name}\" class=\"essence-img\" style=\"border: 2px solid black; border-radius: 5px;\">\n\n<div class=\"essence-stats\">\n  <p>❤️ {hp} ⚔️ {atk}</p>\n</div>"
+    "html": "<h2 class=\"essence-name\">{name}</h2>\n<img src=\"{img}\" alt=\"{name}\" class=\"essence-img\" style=\"border: 2px solid black; border-radius: 5px;\">\n\n<div class=\"essence-stats\">\n  <p>❤️ {hp} ⚔️ {atk}</p>\n<div class=\"essence-type {essence}\">{essence_emoji}</div></div>"
   },
   "ability": {
     "html": "<h2 class=\"ability-name\">{name}</h2>\n<img src=\"{img}\" alt=\"{name}\" class=\"ability-img\" style=\"border: 2px solid black; border-radius: 5px;\">\n<div class=\"ability-classes\">{classes}</div>\n<div class=\"ability-stats\">\n  <p>❤️ {hp} ⚔️ {atk}</p>\n</div>"
