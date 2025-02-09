@@ -101,6 +101,9 @@ const populatedHTML = populateTemplate(template, {
     atk: card.atk ?? "N/A",
     def: card.def ?? "",
     spd: card.spd ?? "",
+	// Only show defense and speed if it's a character card; otherwise, leave them blank
+    def: isAbilityOrEssenceCard ? "" : (card.def ?? "N/A"),
+    spd: isAbilityOrEssenceCard ? "" : (card.spd ?? "N/A"),
     essence: card.essence || "",
     essence_emoji: card.essence ? (gameConfig["essence-emojis"]?.[card.essence] || "❓") : "",
     classes: Array.isArray(card.classes) 
