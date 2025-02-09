@@ -113,7 +113,7 @@ body {
 .battle-zone .ability-classes,
 .battle-zone .char-classes
  {
-    font-size: 6px;  /* Adjust this value as needed */
+    font-size: 8px;  /* Adjust this value as needed */
     margin-top: 2px; /* Optional: reduce margin to tighten up the space */
 }
 
