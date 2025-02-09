@@ -112,7 +112,10 @@ body {
     height: 60px;
 }
 
-
+.battle-zone .ability-classes {
+    font-size: 6px;  /* Adjust this value as needed */
+    margin-top: 2px; /* Optional: reduce margin to tighten up the space */
+}
 
 /* Card Styles */
 .char-card,
@@ -160,7 +163,8 @@ body {
 
 /* Additional ability classes styling */
 .ability-classes {
-  margin-top: 5px;
+  font-size: 12px;
+  margin-top: 2px;
 }
 
 /* Responsive Adjustments */
