@@ -94,22 +94,23 @@ function createCardElement(card, type) {
 
     const template = cardTemplates[type].html;
 
-    const populatedHTML = populateTemplate(template, {
-        name: card.name || "Unknown",
-        img: card.img || "",
-        hp: card.hp ?? "N/A",
-        atk: card.atk ?? "N/A",
-        def: card.def ?? "N/A",
-        spd: card.spd ?? "N/A",
-        essence: card.essence || "None",
-        essence_emoji: gameConfig["essence-emojis"]?.[card.essence] || "❓",
-        classes: Array.isArray(card.classes) 
-            ? card.classes.map(cls => `<span class="class-tag">${gameConfig["class-names"]?.[cls] || cls}</span>`).join(", ") 
-            : "None",
-        essences: Array.isArray(card.essences) 
-            ? card.essences.map(ess => `<span class="essence ${ess}">${gameConfig["essence-emojis"]?.[ess] || ess}</span>`).join(" ") 
-            : "None"
-    });
+const populatedHTML = populateTemplate(template, {
+    name: card.name || "Unknown",
+    img: card.img || "",
+    hp: card.hp ?? "N/A",
+    atk: card.atk ?? "N/A",
+    def: card.def ?? "N/A",
+    spd: card.spd ?? "N/A",
+    essence: card.essence || "",
+    essence_emoji: card.essence ? (gameConfig["essence-emojis"]?.[card.essence] || "❓") : "",
+    classes: Array.isArray(card.classes) 
+        ? card.classes.map(cls => `<span class="class-tag">${gameConfig["class-names"]?.[cls] || cls}</span>`).join(", ") 
+        : "",
+    essences: Array.isArray(card.essences) 
+        ? card.essences.map(ess => `<span class="essence ${ess}">${gameConfig["essence-emojis"]?.[ess] || ess}</span>`).join(" ") 
+        : ""
+});
+
 
     const cardDiv = document.createElement("div");
     cardDiv.classList.add(`${type}-card`);
@@ -190,7 +191,7 @@ function dealStartingHands() {
         enemyContainer.appendChild(createCardElement(card, card.type));
     });
 }
-function cleanElementEmoji(el) {
+function cleanNoneText(el) {
     if (el.innerText.trim().toLowerCase() === 'none') {
         el.innerText = '';
     }
@@ -279,29 +280,29 @@ async function startGame() {
 //
 document.addEventListener("DOMContentLoaded", () => {
     startGame();
-    // Set up the MutationObserver after the game has started
+
     const battleArea = document.getElementById('battle-area');
     if (battleArea) {
         const observer = new MutationObserver(mutations => {
             mutations.forEach(mutation => {
                 if (mutation.type === 'childList') {
                     mutation.addedNodes.forEach(node => {
-                        // Check if the added node is an element
+                        // Only work with element nodes
                         if (node.nodeType === 1) {
-                            // If the node itself has the element-emoji class
-                            if (node.classList.contains('element-emoji')) {
-                                cleanElementEmoji(node);
+                            // If the added node itself matches either selector, clean it up
+                            if (node.matches('.element-emoji, .ability-classes')) {
+                                cleanNoneText(node);
                             }
-                            // Or if it contains any element-emoji elements within it
-                            node.querySelectorAll && node.querySelectorAll('.element-emoji').forEach(el => {
-                                cleanElementEmoji(el);
+                            // Also check any descendants matching those selectors
+                            node.querySelectorAll('.element-emoji, .ability-classes').forEach(el => {
+                                cleanNoneText(el);
                             });
                         }
                     });
                 }
             });
         });
-        // Observe the battleArea for changes in its children and subtree
+        // Observe changes in battleArea (including its subtree)
         observer.observe(battleArea, { childList: true, subtree: true });
     } else {
         console.error("Error: 'battle-area' element not found!");
@@ -309,14 +310,15 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 const playTurnButton = document.getElementById("play-turn");
-
 if (playTurnButton) {
     playTurnButton.addEventListener("click", () => {
         battleRound();
-        // No need to call removeNoneText() here—the observer will handle it
+        // No need to clean here—the observer handles it as soon as cards move into the battle zone.
     });
 } else {
     console.error("Error: 'play-turn' button not found!");
 }
+
+
 
 
