@@ -274,7 +274,24 @@ async function startGame() {
 //
 document.addEventListener("DOMContentLoaded", () => {
     startGame();
-    removeNoneText(); // Run once on page load to clean up existing elements
+    
+    // Get the battle zone container
+    const battleArea = document.getElementById("battle-area");
+    if (battleArea) {
+        // Set up a MutationObserver to watch for changes in the battle area
+        const observer = new MutationObserver(mutations => {
+            mutations.forEach(mutation => {
+                if (mutation.addedNodes.length > 0) {
+                    removeNoneText();
+                }
+            });
+        });
+
+        // Start observing the battle area for added child nodes
+        observer.observe(battleArea, { childList: true, subtree: true });
+    } else {
+        console.error("Error: 'battle-area' element not found!");
+    }
 });
 
 const playTurnButton = document.getElementById("play-turn");
@@ -282,17 +299,16 @@ const playTurnButton = document.getElementById("play-turn");
 if (playTurnButton) {
     playTurnButton.addEventListener("click", () => {
         battleRound();
-        removeNoneText(); // Run after every turn to clean up newly added elements
     });
 } else {
     console.error("Error: 'play-turn' button not found!");
 }
 
-// Function to remove "None" from element-emoji fields
+// Function to remove "None" text from elements with class 'element-emoji'
 function removeNoneText() {
     document.querySelectorAll('.element-emoji').forEach(el => {
         if (el.innerText.trim().toLowerCase() === 'none') {
-            el.innerText = ''; // Set it to an empty string
+            el.innerText = ''; // Clear the text if it's "None"
         }
     });
 }
