@@ -135,6 +135,17 @@ function handleCardClick(card) {
     const cardIndex = playerHand.indexOf(card);
     if (cardIndex !== -1) {
         playerHand.splice(cardIndex, 1);
+
+        // 🔥 Find and remove the card from the UI
+        const playerHandContainer = document.getElementById("player-hand");
+        const cardElements = [...playerHandContainer.children];
+
+        for (let el of cardElements) {
+            if (el.dataset.cardId === card.id) {
+                playerHandContainer.removeChild(el);
+                break; // Stop looping once removed
+            }
+        }
     }
 
     // Select an enemy card and display it
@@ -150,6 +161,7 @@ function handleCardClick(card) {
         console.log("⚠️ No enemy cards left.");
     }
 }
+
 
 //
 function dealStartingHands() {
