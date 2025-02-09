@@ -48,7 +48,7 @@ body {
 
 .battle-zone {
     width: 100%; /* Full width to fit three cards side by side */
-    height: 120px; /* Smaller height to emphasize horizontal layout */
+    height: 140px; /* Smaller height to emphasize horizontal layout */
     border: 4px solid #222;
     background-color: rgba(255, 255, 255, 0.2);
     display: flex;
