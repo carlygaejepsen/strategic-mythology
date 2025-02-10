@@ -1,6 +1,6 @@
 import { 
-    currentPlayerBattleCard, 
-    currentEnemyBattleCard, 
+    currentPlayerBattleCards, 
+    currentEnemyBattleCards, 
     updatePlayerBattleCard, 
     updateEnemyBattleCard, 
     playerHand, 
