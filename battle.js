@@ -1,16 +1,8 @@
-import { 
-    currentPlayerBattleCards, 
-    currentEnemyBattleCards, 
-    updatePlayerBattleCard, 
-    updateEnemyBattleCard, 
-    playerHand, 
-    enemyHand 
-} from "./cards.js";
+import { currentPlayerBattleCards, currentEnemyBattleCards, playerHand, enemyHand } from "./cards.js";
 import { battleSystem, gameConfig } from "./config.js";
 
-
 function battleRound() {
-    if (!currentPlayerBattleCards.length || !currentEnemyBattleCards.length) {
+    if (!currentPlayerBattleCards.char || !currentEnemyBattleCards.char) {
         console.log("❌ No active cards in the battle zone! Waiting for selections...");
         console.log("Debug: currentPlayerBattleCards ->", currentPlayerBattleCards);
         console.log("Debug: currentEnemyBattleCards ->", currentEnemyBattleCards);
@@ -18,24 +10,28 @@ function battleRound() {
     }
 
     console.log(gameConfig["battle-messages"].battleStart
-        .replace("{player}", currentPlayerBattleCards.map(card => card?.name || "???").join(", "))
-        .replace("{enemy}", currentEnemyBattleCards.map(card => card?.name || "???").join(", "))
+        .replace("{player}", currentPlayerBattleCards.char.name)
+        .replace("{enemy}", currentEnemyBattleCards.char.name)
     );
 
-    currentPlayerBattleCards.forEach(playerCard => {
-        currentEnemyBattleCards.forEach(enemyCard => {
-            if (playerCard && enemyCard) {
-                calculateDamage(playerCard, enemyCard);
-            } else {
-                console.error("❌ ERROR: One of the battle cards is undefined!", { playerCard, enemyCard });
-            }
-        });
-    });
+    processCombat(currentPlayerBattleCards.char, currentEnemyBattleCards.char);
+    
+    if (currentPlayerBattleCards.essence && currentEnemyBattleCards.essence) {
+        processCombat(currentPlayerBattleCards.essence, currentEnemyBattleCards.essence);
+    }
+
+    if (currentPlayerBattleCards.ability) {
+        processCombat(currentPlayerBattleCards.ability, currentEnemyBattleCards.char);
+    }
+
+    if (currentEnemyBattleCards.ability) {
+        processCombat(currentEnemyBattleCards.ability, currentPlayerBattleCards.char);
+    }
 
     removeDefeatedCards();
 }
 
-function calculateDamage(attacker, defender) {
+function processCombat(attacker, defender) {
     if (!attacker || !defender || !attacker.name || !defender.name) {
         console.error("❌ ERROR: Invalid attacker or defender!", { attacker, defender });
         return;
@@ -69,38 +65,29 @@ function calculateDamage(attacker, defender) {
 }
 
 function removeDefeatedCards() {
-    let removedPlayerCards = [];
-    let removedEnemyCards = [];
+    let removedPlayerCard = false;
+    let removedEnemyCard = false;
 
-    currentPlayerBattleCards.forEach(card => {
-        if (card.hp <= 0) {
-            console.log(gameConfig["battle-messages"].defeatMessage.replace("{card}", card.name));
-            removedPlayerCards.push(card);
-        }
-    });
-
-    currentEnemyBattleCards.forEach(card => {
-        if (card.hp <= 0) {
-            console.log(gameConfig["battle-messages"].defeatMessage.replace("{card}", card.name));
-            removedEnemyCards.push(card);
-        }
-    });
-
-    // Remove defeated cards from battle zones
-    currentPlayerBattleCards = currentPlayerBattleCards.filter(card => !removedPlayerCards.includes(card));
-    currentEnemyBattleCards = currentEnemyBattleCards.filter(card => !removedEnemyCards.includes(card));
-
-    // Add new cards if available in hand
-    if (removedPlayerCards.length && playerHand.length) {
-        let newPlayerCards = playerHand.splice(0, removedPlayerCards.length);
-        currentPlayerBattleCards.push(...newPlayerCards);
-        console.log(`🔹 New player card(s) selected: ${newPlayerCards.map(c => c.name).join(", ")}`);
+    if (currentPlayerBattleCards.char && currentPlayerBattleCards.char.hp <= 0) {
+        console.log(gameConfig["battle-messages"].defeatMessage.replace("{card}", currentPlayerBattleCards.char.name));
+        currentPlayerBattleCards.char = null;
+        removedPlayerCard = true;
     }
 
-    if (removedEnemyCards.length && enemyHand.length) {
-        let newEnemyCards = enemyHand.splice(0, removedEnemyCards.length);
-        currentEnemyBattleCards.push(...newEnemyCards);
-        console.log(`🔹 New enemy card(s) selected: ${newEnemyCards.map(c => c.name).join(", ")}`);
+    if (currentEnemyBattleCards.char && currentEnemyBattleCards.char.hp <= 0) {
+        console.log(gameConfig["battle-messages"].defeatMessage.replace("{card}", currentEnemyBattleCards.char.name));
+        currentEnemyBattleCards.char = null;
+        removedEnemyCard = true;
+    }
+
+    if (removedPlayerCard && playerHand.length > 0) {
+        currentPlayerBattleCards.char = playerHand.shift();
+        console.log(`🔹 New player card selected: ${currentPlayerBattleCards.char.name}`);
+    }
+
+    if (removedEnemyCard && enemyHand.length > 0) {
+        currentEnemyBattleCards.char = enemyHand.shift();
+        console.log(`🔹 New enemy card selected: ${currentEnemyBattleCards.char.name}`);
     }
 
     updateBattleZones();
@@ -110,18 +97,16 @@ function updateBattleZones() {
     document.getElementById("player-char-zone").innerHTML = "";
     document.getElementById("enemy-char-zone").innerHTML = "";
 
-    currentPlayerBattleCards.forEach(card => {
-        if (card) document.getElementById("player-char-zone").appendChild(createCardElement(card, "char"));
-    });
+    if (currentPlayerBattleCards.char) {
+        document.getElementById("player-char-zone").appendChild(createCardElement(currentPlayerBattleCards.char, "char"));
+    }
 
-    currentEnemyBattleCards.forEach(card => {
-        if (card) document.getElementById("enemy-char-zone").appendChild(createCardElement(card, "char"));
-    });
+    if (currentEnemyBattleCards.char) {
+        document.getElementById("enemy-char-zone").appendChild(createCardElement(currentEnemyBattleCards.char, "char"));
+    }
 }
 
 // Attach event listener to play-turn button
 document.getElementById("play-turn").addEventListener("click", battleRound);
 
 export { battleRound };
-
-
