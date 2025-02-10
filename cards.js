@@ -134,8 +134,6 @@ export {
     // Deck & Hand references
     playerDeck,
     enemyDeck,
-    playerHand,
-    enemyHand,
 
     // Battle card references
     currentPlayerBattleCards,
