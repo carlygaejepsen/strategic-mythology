@@ -7,40 +7,42 @@
     <link rel="stylesheet" href="./styles2.css">
 </head>
 <body>
-    
 
     <div id="game-board">
+        <!-- Player's Hand at the Top -->
         <div id="player-hand-section">
             <h2>Player</h2>
-            <div id="player-hand"></div> <!-- Player's Hand -->
+            <div id="player-hand"></div>
         </div>
 
+        <!-- Battle & Results Log in the Center -->
         <div id="battle-area">
-		<h2>Results Log</h2>
-		<div id="results-log">
-  <p></p>
-</div>
+            <h2>Results Log</h2>
+            <div id="results-log"></div>
+
+            <div id="battle-zones">
                 <div id="player-side">
-        
-        <div id="player-char-zone"></div>
-        <div id="player-essence-zone"></div>
-        <div id="player-ability-zone"></div>
-    </div>
-<button id="play-turn">⚔️ Play Turn ⚔️</button>
-    <div id="enemy-side">
-        <h2>Enemy</h2>
-        <div id="enemy-char-zone"></div>
-        <div id="enemy-essence-zone"></div>
-        <div id="enemy-ability-zone"></div>
+                    <div id="player-char-zone"></div>
+                    <div id="player-essence-zone"></div>
+                    <div id="player-ability-zone"></div>
+                </div>
+
+                <button id="play-turn">⚔️ Play Turn ⚔️</button>
+
+                <div id="enemy-side">
+                    <div id="enemy-char-zone"></div>
+                    <div id="enemy-essence-zone"></div>
+                    <div id="enemy-ability-zone"></div>
+                </div>
+            </div>
         </div>
 
+        <!-- Enemy's Hand at the Bottom -->
         <div id="enemy-hand-section">
             <h2>Enemy</h2>
-            <div id="enemy-hand"></div> <!-- Enemy's Hand -->
+            <div id="enemy-hand"></div>
         </div>
     </div>
-
-
 
 <script type="module" src="./config.js"></script>
 <script type="module" src="./cards.js"></script>
