@@ -129,10 +129,6 @@ function handleCardClick(card) {
     }
 }
 
-// Updates the enemy's active battle card (for a given type)
-function updateEnemyBattleCard(card, type) {
-    currentEnemyBattleCards[type] = card || null;
-}
 
 export {
     // Deck & Hand references
@@ -142,10 +138,6 @@ export {
     // Battle card references
     currentPlayerBattleCards,
     currentEnemyBattleCards,
-
-    // Functions
-    updatePlayerBattleCard,
-    updateEnemyBattleCard,
     shuffleDeck,
     dealStartingHands,
     createCardElement,
