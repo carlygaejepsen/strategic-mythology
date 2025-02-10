@@ -103,34 +103,30 @@ function handleCardClick(card) {
     console.log(`🔹 Player selected: ${card.name}`);
     const type = determineCardType(card);
 
-    // 1️⃣ Place the clicked player card into player's battle zone
-    placeCardInBattleZone(card, `player-${type}-zone`, updatePlayerBattleCard, "Player");
+    // ✅ Only place a new card if the battle zone is empty
+    if (!currentPlayerBattleCards[type]) {
+        placeCardInBattleZone(card, `player-${type}-zone`, updatePlayerBattleCard, "Player");
 
-    // 2️⃣ Remove that card from the player's hand
-    playerHand = playerHand.filter(c => c !== card);
-    updateHands();
-    console.log("⚠️ Player hand updated:", playerHand);
+        // Remove that card from the player's hand
+        playerHand = playerHand.filter(c => c !== card);
+        updateHands();
+        console.log("⚠️ Player hand updated:", playerHand);
+    } else {
+        console.warn(`⚠️ Player already has a ${type} card in battle.`);
+    }
 
-    // 3️⃣ Enemy selects a card from enemyHand (if any)
-    if (enemyHand.length > 0) {
+    // ✅ Only place a new enemy card if they don't already have one
+    if (!currentEnemyBattleCards[type] && enemyHand.length > 0) {
         const enemyCard = enemyHand.shift();
         const enemyType = determineCardType(enemyCard);
         console.log(`🔹 Enemy selected: ${enemyCard.name}`);
 
-        // 4️⃣ Place enemy card in the correct enemy battle zone
         placeCardInBattleZone(enemyCard, `enemy-${enemyType}-zone`, updateEnemyBattleCard, "Enemy");
 
-        // (Optional) update the UI for enemyHand if you want to see the enemy's hand reduce
-        updateHands();
         console.log("⚠️ Enemy hand updated:", enemyHand);
     } else {
-        console.log("⚠️ Enemy has no cards left.");
+        console.warn("⚠️ Enemy already has a card in battle or has no cards left.");
     }
-}
-
-// Updates the player's active battle card (for a given type)
-function updatePlayerBattleCard(card, type) {
-    currentPlayerBattleCards[type] = card || null;
 }
 
 // Updates the enemy's active battle card (for a given type)
