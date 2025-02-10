@@ -3,8 +3,8 @@
 let cardTemplates = {}; // Stores card templates loaded from JSON
 let battleSystem = {}; // Stores battle system configurations
 
-let playerDeck = []; // Stores player's deck
-let enemyDeck = []; // Stores enemy's deck
+export let playerDeck = []; // Stores player's deck
+export let enemyDeck = []; // Stores enemy's deck
 export let playerHand = []; // Stores player's current hand
 export let enemyHand = []; // Stores enemy's current hand
 
@@ -119,10 +119,6 @@ export {
     loadJSON, 
     loadAllCards, 
     shuffleDeck, 
-    playerDeck, 
-    enemyDeck, 
-    playerHand, 
-    enemyHand, 
-    currentPlayerBattleCards, 
+	currentPlayerBattleCards, 
     currentEnemyBattleCards 
 };
