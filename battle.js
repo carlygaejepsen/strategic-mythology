@@ -15,23 +15,29 @@ function setupPlayTurnButton() {
     }
 }
 
-function logToResults(message) {
-    const logContainer = document.getElementById("results-log");
-
-    if (!logContainer) {
-        console.error("❌ ERROR: Results log container not found!");
+function battleRound() {
+    if (!currentPlayerBattleCards?.char || !currentEnemyBattleCards?.char) {
+        console.log("❌ No active cards in the battle zone! Waiting for selections...");
         return;
     }
 
-    const logEntry = document.createElement("p");
-    logEntry.textContent = message;
-    
-    logContainer.appendChild(logEntry);
+    console.log(gameConfig["battle-messages"].battleStart
+        .replace("{player}", currentPlayerBattleCards.char.name)
+        .replace("{enemy}", currentEnemyBattleCards.char.name)
+    );
 
-    // Keep only the last 7 log messages visible
-    while (logContainer.children.length > 7) {
-        logContainer.removeChild(logContainer.firstChild);
+    // 🏹 Player Attacks Enemy
+    processCombat(currentPlayerBattleCards.char, currentEnemyBattleCards.char);
+
+    // 🛡 Check if enemy survived to counterattack
+    if (currentEnemyBattleCards.char?.hp > 0) {
+        processCombat(currentEnemyBattleCards.char, currentPlayerBattleCards.char);
+    } else {
+        console.log(`💀 ${currentEnemyBattleCards.char.name} was defeated before attacking!`);
     }
+
+    // 🛠 Remove defeated cards & update battle zones
+    removeDefeatedCards();
 }
 
 function battleRound() {
