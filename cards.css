@@ -74,6 +74,12 @@
   margin-top: 1px;
 }
 
+.battle-zone .char-classes,
+.battle-zone .ability-classes {
+  font-size: 8px;  
+  margin-top: 1px;
+}
+
 /* Smaller images in the battle zone */
 .battle-zone .char-img,
 .battle-zone .essence-img,
