@@ -64,6 +64,32 @@ function dealStartingHands() {
     console.log("Enemy Hand:", enemyHand);
 }
 
+function handleCardClick(card) {
+    console.log(`🔹 Player selected: ${card.name}`);
+
+    const playerBattleZone = document.getElementById("player-battle-zone");
+
+    // ✅ Append instead of replacing
+	playerBattleZone.appendChild(createCardElement(card, card.type));
+
+    // Find the selected card in playerHand and remove it
+    const cardIndex = playerHand.indexOf(card);
+    if (cardIndex !== -1) {
+        playerHand.splice(cardIndex, 1);
+    }
+
+    // 🔥 Remove the card from the UI (player-hand)
+    const playerHandContainer = document.getElementById("player-hand");
+    const cardElements = [...playerHandContainer.children];
+
+    for (let el of cardElements) {
+        if (el.dataset.cardId === card.id || el.innerText.includes(card.name)) {
+            playerHandContainer.removeChild(el);
+            console.log(`✅ Removed ${card.name} from player hand.`);
+            break;
+        }
+    }
+
 function createCardElement(card, type) {
     console.log(`Creating card: ${card.name} (Type: ${type})`);
 
@@ -113,4 +139,4 @@ function createCardElement(card, type) {
     return cardDiv;
 }
 
-export { playerDeck, enemyDeck, playerHand, enemyHand, loadAllCards, shuffleDeck, dealStartingHands, createCardElement };
+export { playerDeck, enemyDeck, playerHand, enemyHand, loadAllCards, shuffleDeck, dealStartingHands, createCardElement, handleCardClick };
