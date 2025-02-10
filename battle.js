@@ -114,8 +114,7 @@ function drawCardsToFillHands() {
   }
   updateHands();
 }
-
-// Updated battle logic
+//Battle Round 2.0
 function battleRound() {
     console.log("⚔️ New battle round begins!");
 
@@ -127,30 +126,29 @@ function battleRound() {
         performTripleCombo("Enemy", currentPlayerBattleCards);
     }
 
-    // Process individual attacks (one attack per turn, per character)
-    [currentPlayerBattleCards, currentEnemyBattleCards].forEach((battleZone, index) => {
-        const owner = index === 0 ? "Player" : "Enemy";
-        const opponentBattleZone = index === 0 ? currentEnemyBattleCards : currentPlayerBattleCards;
-        const opponentHand = index === 0 ? enemyHand : playerHand;
-
-        Object.values(battleZone).forEach(attacker => {
-            if (!attacker) return;
-
-            const comboActive = checkForCombos(battleZone, owner);
-            let target = Object.values(opponentBattleZone).find(c => c) || opponentHand.find(c => c);
-
-            if (target && attacker !== target) {
-                processCombat(attacker, target, comboActive);
-            } else {
-                console.warn(`⚠️ No valid target found for ${attacker.name}, skipping attack.`);
-            }
-        });
+    // Process individual attacks (only once per turn)
+    Object.entries(currentPlayerBattleCards).forEach(([type, playerCard]) => {
+        if (!playerCard) return;
+        
+        const enemyCard = currentEnemyBattleCards[type];
+        if (enemyCard) {
+            processCombat(playerCard, enemyCard);
+        }
     });
 
-    // ✅ Fix: End the turn instead of looping attacks
-    removeDefeatedCards();
-    drawCardsToFillHands();
-    gameRunning = false; // Stops attack spam
+    Object.entries(currentEnemyBattleCards).forEach(([type, enemyCard]) => {
+        if (!enemyCard) return;
+        
+        const playerCard = currentPlayerBattleCards[type];
+        if (playerCard) {
+            processCombat(enemyCard, playerCard);
+        }
+    });
+
+    removeDefeatedCards(); // ✅ Remove defeated cards BEFORE drawing
+
+    // ✅ Ensure the next turn doesn't start until the player clicks "Play Turn"
+    gameRunning = false;
 }
 
 // Modified processCombat with combo support
