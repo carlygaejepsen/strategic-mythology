@@ -50,7 +50,6 @@ function determineCardType(card) {
     return card.classes ? "char" : "ability";
 }
 
-// Creates a card element for UI display, wrapped in a .card-container
 function createCardElement(card, type) {
     console.log(`🎨 Creating card: ${card.name} (Type: ${type})`);
 
@@ -82,11 +81,6 @@ function createCardElement(card, type) {
     // 1️⃣ Create the container element
     const containerDiv = document.createElement("div");
     containerDiv.classList.add("card-container"); 
-    // Make sure your CSS has something like:
-    // .card-container {
-    //    position: relative; 
-    //    display: inline-block;
-    // }
 
     // 2️⃣ Create the main card element
     const cardDiv = document.createElement("div");

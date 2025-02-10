@@ -5,8 +5,8 @@ let battleSystem = {}; // Stores battle system configurations
 
 let playerDeck = []; // Stores player's deck
 let enemyDeck = []; // Stores enemy's deck
-let playerHand = []; // Stores player's current hand
-let enemyHand = []; // Stores enemy's current hand
+export let playerHand = []; // Stores player's current hand
+export let enemyHand = []; // Stores enemy's current hand
 
 // Stores the player's and enemy's active battle cards (supports multiple slots)
 let currentPlayerBattleCards = { char: null, essence: null, ability: null };
