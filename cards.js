@@ -5,8 +5,8 @@ let enemyDeck = [];
 let playerHand = [];
 let enemyHand = [];
 
-let currentPlayerBattleCard = null;
-let currentEnemyBattleCard = null;
+let currentPlayerBattleCards = { char: null, essence: null, ability: null };
+let currentEnemyBattleCards = { char: null, essence: null, ability: null };
 
 function populateTemplate(template, data) {
     return template.replace(/{(\w+)}/g, (match, key) => (key in data ? data[key] : match));
@@ -34,10 +34,10 @@ async function loadAllCards() {
         playerDeck = shuffleDeck([...fullDeck]);
         enemyDeck = shuffleDeck([...fullDeck]);
 
-        console.log("Player Deck:", playerDeck);
-        console.log("Enemy Deck:", enemyDeck);
+        console.log("✅ Player Deck:", playerDeck);
+        console.log("✅ Enemy Deck:", enemyDeck);
     } catch (error) {
-        console.error("Error loading cards:", error);
+        console.error("❌ ERROR loading cards:", error);
     }
 }
 
@@ -53,20 +53,19 @@ function dealStartingHands() {
     const HAND_SIZE = 6;
 
     if (playerDeck.length < HAND_SIZE || enemyDeck.length < HAND_SIZE) {
-        console.error("Not enough cards to deal starting hands.");
+        console.error("❌ Not enough cards to deal starting hands.");
         return;
     }
 
     playerHand = playerDeck.splice(0, HAND_SIZE);
     enemyHand = enemyDeck.splice(0, HAND_SIZE);
 
-    console.log("Player Hand:", playerHand);
-    console.log("Enemy Hand:", enemyHand);
+    console.log("🎴 Player Hand:", playerHand);
+    console.log("🎴 Enemy Hand:", enemyHand);
 }
 
-// ✅ `createCardElement()` is placed BEFORE `handleCardClick()`
 function createCardElement(card, type) {
-    console.log(`Creating card: ${card.name} (Type: ${type})`);
+    console.log(`🎨 Creating card: ${card.name} (Type: ${type})`);
 
     let computedType;
     if (type) {
@@ -114,33 +113,63 @@ function createCardElement(card, type) {
     return cardDiv;
 }
 
-// ✅ `handleCardClick()` is placed AFTER `createCardElement()`
 function handleCardClick(card) {
     console.log(`🔹 Player selected: ${card.name}`);
 
-    const playerBattleZone = document.getElementById("player-battle-zone");
+    let type = "char";
+    if (card.essence) type = "essence";
+    else if (!card.classes) type = "ability";
+
+    const playerBattleZone = document.getElementById(`player-${type}-zone`);
     if (playerBattleZone) {
-        playerBattleZone.innerHTML = ""; // ✅ Ensure it replaces old cards
-        playerBattleZone.appendChild(createCardElement(card, "char"));
-        currentPlayerBattleCard = card; // ✅ Track the player's active card
+        playerBattleZone.innerHTML = ""; // ✅ Replace only that type of card
+        playerBattleZone.appendChild(createCardElement(card, type));
+        updatePlayerBattleCard(card, type);
     }
 
-    // ✅ Select an enemy card and display it
-    if (enemyHand.length > 0) {
-        const enemyCard = enemyHand.shift(); // ✅ Pick first enemy card
+    if (!currentEnemyBattleCards.char && enemyHand.length > 0) {
+        const enemyCard = enemyHand.shift();
         console.log(`🔹 Enemy selected: ${enemyCard.name}`);
 
-        const enemyBattleZone = document.getElementById("enemy-battle-zone");
+        let enemyType = "char";
+        if (enemyCard.essence) enemyType = "essence";
+        else if (!enemyCard.classes) enemyType = "ability";
+
+        const enemyBattleZone = document.getElementById(`enemy-${enemyType}-zone`);
         if (enemyBattleZone) {
-            enemyBattleZone.innerHTML = ""; // ✅ Ensure old cards are cleared
-            enemyBattleZone.appendChild(createCardElement(enemyCard, "char"));
-            currentEnemyBattleCard = enemyCard; // ✅ Track the enemy's active card
+            enemyBattleZone.innerHTML = "";
+            enemyBattleZone.appendChild(createCardElement(enemyCard, enemyType));
+            updateEnemyBattleCard(enemyCard, enemyType);
         }
     } else {
         console.log("⚠️ No enemy cards left.");
     }
 }
 
+// ✅ Functions to update battle cards for each type
+function updatePlayerBattleCard(card, type) {
+    currentPlayerBattleCards[type] = card;
+    console.log(`🔄 Player ${type} battle card updated: ${card ? card.name : "None"}`);
+}
 
-// ✅ Ensure it's properly exported
-export { playerDeck, enemyDeck, playerHand, enemyHand, loadAllCards, shuffleDeck, dealStartingHands, createCardElement, handleCardClick };
+function updateEnemyBattleCard(card, type) {
+    currentEnemyBattleCards[type] = card;
+    console.log(`🔄 Enemy ${type} battle card updated: ${card ? card.name : "None"}`);
+}
+
+// ✅ Export everything needed in `battle.js`
+export { 
+    playerDeck, 
+    enemyDeck, 
+    playerHand, 
+    enemyHand, 
+    currentPlayerBattleCards, 
+    currentEnemyBattleCards, 
+    updatePlayerBattleCard, 
+    updateEnemyBattleCard, 
+    loadAllCards, 
+    shuffleDeck, 
+    dealStartingHands, 
+    createCardElement, 
+    handleCardClick 
+};

@@ -203,3 +203,13 @@ height: 140px;
   color: #856404;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
+#player-char-zone, #player-essence-zone, #player-ability-zone,
+#enemy-char-zone, #enemy-essence-zone, #enemy-ability-zone {
+    display: inline-block; /* Makes sure cards appear inline */
+    width: auto; /* Cards will adjust to content */
+    height: auto; /* No forced box size */
+    margin: 0; /* No extra spacing */
+    padding: 0; /* No internal space */
+    border: none; /* No visible box */
+    background: transparent; /* Fully invisible */
+}

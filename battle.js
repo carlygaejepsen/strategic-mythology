@@ -1,9 +1,16 @@
-import { currentPlayerBattleCard, currentEnemyBattleCard } from "./cards.js";
+import { 
+    currentPlayerBattleCard, 
+    currentEnemyBattleCard, 
+    updatePlayerBattleCard, 
+    updateEnemyBattleCard, 
+    playerHand, 
+    enemyHand 
+} from "./cards.js";
 import { battleSystem, gameConfig } from "./config.js";
 
 function battleRound() {
     if (!currentPlayerBattleCard || !currentEnemyBattleCard) {
-        console.log("❌ No active cards in the battle zone! Game over.");
+        console.log("❌ No active cards in the battle zone! Waiting for selections...");
         return;
     }
 
@@ -15,15 +22,15 @@ function battleRound() {
     function calculateDamage(attacker, defender) {
         if (!attacker || !defender) return;
 
-        let essenceMultiplier = battleSystem.essenceBonuses[attacker.essence]?.strongAgainst === defender.essence 
+        let essenceMultiplier = battleSystem.essenceBonuses?.[attacker.essence]?.strongAgainst === defender.essence 
             ? battleSystem.damageCalculation.essenceBonusMultiplier
-            : battleSystem.essenceBonuses[attacker.essence]?.weakAgainst === defender.essence
+            : battleSystem.essenceBonuses?.[attacker.essence]?.weakAgainst === defender.essence
             ? 1 / battleSystem.damageCalculation.essenceBonusMultiplier
             : 1;
 
-        let classMultiplier = battleSystem.classBonuses[attacker.class]?.strongAgainst.includes(defender.class) 
+        let classMultiplier = battleSystem.classBonuses?.[attacker.class]?.strongAgainst?.includes(defender.class) 
             ? battleSystem.damageCalculation.classBonusMultiplier
-            : battleSystem.classBonuses[attacker.class]?.weakAgainst.includes(defender.class)
+            : battleSystem.classBonuses?.[attacker.class]?.weakAgainst?.includes(defender.class)
             ? 1 / battleSystem.damageCalculation.classBonusMultiplier
             : 1;
 
@@ -32,7 +39,7 @@ function battleRound() {
             battleSystem.damageCalculation.minDamage
         );
 
-        baseDamage = Math.round(baseDamage); // ✅ Round damage values
+        baseDamage = Math.round(baseDamage);
         defender.hp -= baseDamage;
 
         console.log(gameConfig["battle-messages"].attackMessage
@@ -45,14 +52,33 @@ function battleRound() {
     calculateDamage(currentPlayerBattleCard, currentEnemyBattleCard);
     if (currentEnemyBattleCard.hp > 0) calculateDamage(currentEnemyBattleCard, currentPlayerBattleCard);
 
+    // Handle defeated cards
     if (currentPlayerBattleCard.hp <= 0) {
         console.log(gameConfig["battle-messages"].defeatMessage.replace("{card}", currentPlayerBattleCard.name));
-        currentPlayerBattleCard = null; // ✅ Remove defeated player card from battle
+        updatePlayerBattleCard(null); // Remove defeated player card
+
+        // Replace with a new card from the hand if available
+        if (playerHand.length > 0) {
+            const nextPlayerCard = playerHand.shift();
+            console.log(`🔹 New player card selected: ${nextPlayerCard.name}`);
+            updatePlayerBattleCard(nextPlayerCard);
+        } else {
+            console.log("⚠️ Player has no more cards left!");
+        }
     }
 
     if (currentEnemyBattleCard.hp <= 0) {
         console.log(gameConfig["battle-messages"].defeatMessage.replace("{card}", currentEnemyBattleCard.name));
-        currentEnemyBattleCard = null; // ✅ Remove defeated enemy card from battle
+        updateEnemyBattleCard(null); // Remove defeated enemy card
+
+        // Replace with a new card from the hand if available
+        if (enemyHand.length > 0) {
+            const nextEnemyCard = enemyHand.shift();
+            console.log(`🔹 New enemy card selected: ${nextEnemyCard.name}`);
+            updateEnemyBattleCard(nextEnemyCard);
+        } else {
+            console.log("⚠️ Enemy has no more cards left!");
+        }
     }
 }
 
