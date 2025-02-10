@@ -40,40 +40,6 @@ function battleRound() {
     removeDefeatedCards();
 }
 
-function battleRound() {
-    if (!currentPlayerBattleCards?.char || !currentEnemyBattleCards?.char) {
-        logToResults("❌ No active cards in the battle zone! Waiting for selections...");
-        console.warn("Debug: currentPlayerBattleCards ->", currentPlayerBattleCards);
-        console.warn("Debug: currentEnemyBattleCards ->", currentEnemyBattleCards);
-        return;
-    }
-
-    logToResults(gameConfig["battle-messages"].battleStart
-        .replace("{player}", currentPlayerBattleCards.char.name)
-        .replace("{enemy}", currentEnemyBattleCards.char.name)
-    );
-
-    // ✅ Process Character Combat
-    processCombat(currentPlayerBattleCards.char, currentEnemyBattleCards.char);
-
-    // ✅ Process Essence Combat (Only if both sides have an Essence)
-    if (currentPlayerBattleCards.essence && currentEnemyBattleCards.essence) {
-        processCombat(currentPlayerBattleCards.essence, currentEnemyBattleCards.essence);
-    }
-
-    // ✅ Process Player Ability (Only if player has an ability)
-    if (currentPlayerBattleCards.ability) {
-        processCombat(currentPlayerBattleCards.ability, currentEnemyBattleCards.char);
-    }
-
-    // ✅ Process Enemy Ability (Only if enemy has an ability)
-    if (currentEnemyBattleCards.ability) {
-        processCombat(currentEnemyBattleCards.ability, currentPlayerBattleCards.char);
-    }
-
-    removeDefeatedCards();
-}
-
 function processCombat(attacker, defender) {
     if (!attacker?.name || !defender?.name) {
         console.error("❌ ERROR: Invalid attacker or defender!", { attacker, defender });
