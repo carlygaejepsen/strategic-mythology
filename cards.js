@@ -27,9 +27,19 @@ function dealStartingHands() {
         return;
     }
 
+    // ✅ Move cards from deck to hand
+    playerHand.length = 0; // Clear previous hands
+    enemyHand.length = 0;
+    
+    playerHand.push(...playerDeck.splice(0, HAND_SIZE));
+    enemyHand.push(...enemyDeck.splice(0, HAND_SIZE));
+
+    updateHands(); // ✅ Refresh UI after dealing
+
     console.log("🎴 Player Hand:", playerHand);
     console.log("🎴 Enemy Hand:", enemyHand);
 }
+
 
 // Determines the type of a card based on its properties
 function determineCardType(card) {
