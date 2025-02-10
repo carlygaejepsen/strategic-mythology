@@ -11,20 +11,29 @@ import { battleSystem, gameConfig } from "./config.js";
 import { currentPlayerBattleCards, currentEnemyBattleCards, playerHand, enemyHand } from "./cards.js";
 import { battleSystem, gameConfig } from "./config.js";
 
+import { currentPlayerBattleCards, currentEnemyBattleCards, playerHand, enemyHand } from "./cards.js";
+import { battleSystem, gameConfig } from "./config.js";
+
 function battleRound() {
     if (!currentPlayerBattleCards.length || !currentEnemyBattleCards.length) {
         console.log("❌ No active cards in the battle zone! Waiting for selections...");
+        console.log("Debug: currentPlayerBattleCards ->", currentPlayerBattleCards);
+        console.log("Debug: currentEnemyBattleCards ->", currentEnemyBattleCards);
         return;
     }
 
     console.log(gameConfig["battle-messages"].battleStart
-        .replace("{player}", currentPlayerBattleCards.map(card => card.name).join(", "))
-        .replace("{enemy}", currentEnemyBattleCards.map(card => card.name).join(", "))
+        .replace("{player}", currentPlayerBattleCards.map(card => card?.name || "???").join(", "))
+        .replace("{enemy}", currentEnemyBattleCards.map(card => card?.name || "???").join(", "))
     );
 
     currentPlayerBattleCards.forEach(playerCard => {
         currentEnemyBattleCards.forEach(enemyCard => {
-            calculateDamage(playerCard, enemyCard);
+            if (playerCard && enemyCard) {
+                calculateDamage(playerCard, enemyCard);
+            } else {
+                console.error("❌ ERROR: One of the battle cards is undefined!", { playerCard, enemyCard });
+            }
         });
     });
 
@@ -32,7 +41,10 @@ function battleRound() {
 }
 
 function calculateDamage(attacker, defender) {
-    if (!attacker || !defender) return;
+    if (!attacker || !defender || !attacker.name || !defender.name) {
+        console.error("❌ ERROR: Invalid attacker or defender!", { attacker, defender });
+        return;
+    }
 
     let essenceMultiplier = battleSystem.essenceBonuses?.[attacker.essence]?.strongAgainst === defender.essence 
         ? battleSystem.damageCalculation.essenceBonusMultiplier
@@ -83,7 +95,7 @@ function removeDefeatedCards() {
     currentPlayerBattleCards = currentPlayerBattleCards.filter(card => !removedPlayerCards.includes(card));
     currentEnemyBattleCards = currentEnemyBattleCards.filter(card => !removedEnemyCards.includes(card));
 
-    // Add new cards if there are available ones in hand
+    // Add new cards if available in hand
     if (removedPlayerCards.length && playerHand.length) {
         let newPlayerCards = playerHand.splice(0, removedPlayerCards.length);
         currentPlayerBattleCards.push(...newPlayerCards);
@@ -104,13 +116,18 @@ function updateBattleZones() {
     document.getElementById("enemy-char-zone").innerHTML = "";
 
     currentPlayerBattleCards.forEach(card => {
-        document.getElementById("player-char-zone").appendChild(createCardElement(card, "char"));
+        if (card) document.getElementById("player-char-zone").appendChild(createCardElement(card, "char"));
     });
 
     currentEnemyBattleCards.forEach(card => {
-        document.getElementById("enemy-char-zone").appendChild(createCardElement(card, "char"));
+        if (card) document.getElementById("enemy-char-zone").appendChild(createCardElement(card, "char"));
     });
 }
+
+// Attach event listener to play-turn button
+document.getElementById("play-turn").addEventListener("click", battleRound);
+
+export { battleRound };
 
 // Attach event listener to play-turn button
 document.getElementById("play-turn").addEventListener("click", battleRound);
