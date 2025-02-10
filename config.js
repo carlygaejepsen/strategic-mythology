@@ -136,6 +136,7 @@ export function updatePlayerBattleCard(card, type) {
 }
 export function updateEnemyBattleCard(card, type) {
     currentEnemyBattleCards[type] = card || null;
+}
 
 // Export all data & functions so other modules can use them
 export {
