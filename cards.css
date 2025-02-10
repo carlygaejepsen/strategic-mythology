@@ -49,3 +49,35 @@
     bottom: 2%;
     right: 2%;
 }
+.battle-zone .char-card,
+.battle-zone .essence-card,
+.battle-zone .ability-card {
+  width: 70px;      /* Shrinks the card width */
+  padding: 2px;
+  margin: 0;
+  transform: none;
+  font-size: 10px;  /* Smaller base font size for content */
+  line-height: 1.1; /* Tighter spacing */
+}
+
+.battle-zone .char-name,
+.battle-zone .essence-name,
+.battle-zone .ability-name {
+  font-size: 9px;  
+  margin: 2px 0; 
+}
+
+.battle-zone .char-stats,
+.battle-zone .essence-stats,
+.battle-zone .ability-stats {
+  font-size: 8px;  
+  margin-top: 1px;
+}
+
+/* Smaller images in the battle zone */
+.battle-zone .char-img,
+.battle-zone .essence-img,
+.battle-zone .ability-img {
+  width: 60px;
+  height: 60px;
+}
