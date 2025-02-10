@@ -134,6 +134,8 @@ async function loadAllCards() {
 export function updatePlayerBattleCard(card, type) {
     currentPlayerBattleCards[type] = card || null;
 }
+export function updateEnemyBattleCard(card, type) {
+    currentEnemyBattleCards[type] = card || null;
 
 // Export all data & functions so other modules can use them
 export {
@@ -144,8 +146,6 @@ export {
     loadJSON,
     loadAllCards,
     shuffleDeck,
-
-    // Active battle cards
-    currentPlayerBattleCards,
-    currentEnemyBattleCards
+	updatePlayerBattleCard,
+	updateEnemyBattleCard,
 };
