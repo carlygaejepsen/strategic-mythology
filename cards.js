@@ -25,7 +25,6 @@ async function loadAllCards() {
             Promise.all(characterFiles.map(loadJSON)).then(results => results.flat()),
             loadJSON("./data/essence-cards.json"),
             loadJSON("./data/ability-cards.json"),
-            loadJSON("./data/bat-sys.json")
         ]);
 
         Object.assign(battleSystem, battleData);
@@ -64,19 +63,15 @@ function dealStartingHands() {
     console.log("🎴 Enemy Hand:", enemyHand);
 }
 
+function determineCardType(card) {
+    if (card.essence) return "essence";
+    return card.classes ? "char" : "ability";
+}
+
 function createCardElement(card, type) {
     console.log(`🎨 Creating card: ${card.name} (Type: ${type})`);
 
-    let computedType;
-    if (type) {
-        computedType = type;
-    } else if (Array.isArray(card.classes) && Array.isArray(card.essences)) {
-        computedType = "char";
-    } else if (card.essence) {
-        computedType = "essence";
-    } else {
-        computedType = "ability";
-    }
+    let computedType = determineCardType(card);
 
     if (!cardTemplates[computedType]) {
         console.error(`❌ ERROR: Missing template for card type: ${computedType}`);
@@ -92,12 +87,12 @@ function createCardElement(card, type) {
         def: card.def ?? "",
         spd: card.spd ?? "",
         essence: card.essence || "",
-        essence_emoji: card.essence ? (gameConfig["essence-emojis"]?.[card.essence] || "❓") : "",
+        essence_emoji: card.essence ? (gameConfig?.["essence-emojis"]?.[card.essence] || "❓") : "",
         classes: Array.isArray(card.classes)
-            ? card.classes.map(cls => `<span class="class-tag">${gameConfig["class-names"]?.[cls] || cls}</span>`).join(", ")
+            ? card.classes.map(cls => `<span class="class-tag">${gameConfig?.["class-names"]?.[cls] || cls}</span>`).join(", ")
             : "",
         essences: Array.isArray(card.essences)
-            ? card.essences.map(ess => `<span class="essence ${ess}">${gameConfig["essence-emojis"]?.[ess] || ess}</span>`).join(" ")
+            ? card.essences.map(ess => `<span class="essence ${ess}">${gameConfig?.["essence-emojis"]?.[ess] || ess}</span>`).join(" ")
             : ""
     });
 
@@ -113,63 +108,43 @@ function createCardElement(card, type) {
     return cardDiv;
 }
 
+function placeCardInBattleZone(card, battleZoneId, updateFunction, owner) {
+    const battleZone = document.getElementById(battleZoneId);
+    if (!battleZone) return;
+
+    battleZone.innerHTML = "";
+    const cardElement = createCardElement(card, determineCardType(card));
+    battleZone.appendChild(cardElement);
+
+    updateFunction(card, determineCardType(card));
+    console.log(`🔄 ${owner} ${determineCardType(card)} battle card updated: ${card.name}`);
+
+    return cardElement;
+}
+
 function handleCardClick(card) {
     console.log(`🔹 Player selected: ${card.name}`);
 
-    let type = "char";
-    if (card.essence) type = "essence";
-    else if (!card.classes) type = "ability";
-
-    const playerBattleZone = document.getElementById(`player-${type}-zone`);
-    if (playerBattleZone) {
-        playerBattleZone.innerHTML = ""; // ✅ Replace only that type of card
-        playerBattleZone.appendChild(createCardElement(card, type));
-        updatePlayerBattleCard(card, type);
-    }
+    const type = determineCardType(card);
+    placeCardInBattleZone(card, `player-${type}-zone`, updatePlayerBattleCard, "Player");
 
     if (!currentEnemyBattleCards.char && enemyHand.length > 0) {
         const enemyCard = enemyHand.shift();
         console.log(`🔹 Enemy selected: ${enemyCard.name}`);
 
-        let enemyType = "char";
-        if (enemyCard.essence) enemyType = "essence";
-        else if (!enemyCard.classes) enemyType = "ability";
-
-        const enemyBattleZone = document.getElementById(`enemy-${enemyType}-zone`);
-        if (enemyBattleZone) {
-            enemyBattleZone.innerHTML = "";
-            enemyBattleZone.appendChild(createCardElement(enemyCard, enemyType));
-            updateEnemyBattleCard(enemyCard, enemyType);
-        }
+        const enemyType = determineCardType(enemyCard);
+        placeCardInBattleZone(enemyCard, `enemy-${enemyType}-zone`, updateEnemyBattleCard, "Enemy");
     } else {
         console.log("⚠️ No enemy cards left.");
     }
 }
 
-// ✅ Functions to update battle cards for each type
 function updatePlayerBattleCard(card, type) {
-    currentPlayerBattleCards[type] = card;
-    console.log(`🔄 Player ${type} battle card updated: ${card ? card.name : "None"}`);
+    currentPlayerBattleCards[type] = card || null;
 }
 
 function updateEnemyBattleCard(card, type) {
-    currentEnemyBattleCards[type] = card;
-    console.log(`🔄 Enemy ${type} battle card updated: ${card ? card.name : "None"}`);
+    currentEnemyBattleCards[type] = card || null;
 }
 
-// ✅ Export everything needed in `battle.js`
-export { 
-    playerDeck, 
-    enemyDeck, 
-    playerHand, 
-    enemyHand, 
-    currentPlayerBattleCards, 
-    currentEnemyBattleCards, 
-    updatePlayerBattleCard, 
-    updateEnemyBattleCard, 
-    loadAllCards, 
-    shuffleDeck, 
-    dealStartingHands, 
-    createCardElement, 
-    handleCardClick 
-};
+export { playerDeck, enemyDeck, playerHand, enemyHand, currentPlayerBattleCards, currentEnemyBattleCards, updatePlayerBattleCard, updateEnemyBattleCard, loadAllCards, shuffleDeck, dealStartingHands, createCardElement, handleCardClick };
