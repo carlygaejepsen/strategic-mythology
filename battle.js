@@ -1,35 +1,39 @@
-import { playerHand, enemyHand } from "./cards.js";
+import { currentPlayerBattleCard, currentEnemyBattleCard } from "./cards.js";
 import { battleSystem, gameConfig } from "./config.js";
 
 function battleRound() {
-    if (!playerHand.length || !enemyHand.length) {
-        console.log("❌ One player has no cards left! Game over.");
+    if (!currentPlayerBattleCard || !currentEnemyBattleCard) {
+        console.log("❌ No active cards in the battle zone! Game over.");
         return;
     }
 
-    const playerCard = playerHand[0];
-    const enemyCard = enemyHand[0];
-
     console.log(gameConfig["battle-messages"].battleStart
-        .replace("{player}", playerCard.name)
-        .replace("{enemy}", enemyCard.name)
+        .replace("{player}", currentPlayerBattleCard.name)
+        .replace("{enemy}", currentEnemyBattleCard.name)
     );
 
     function calculateDamage(attacker, defender) {
         if (!attacker || !defender) return;
 
-        let essenceMultiplier = battleSystem.essenceBonuses[attacker.essence]?.strongAgainst === defender.essence ? battleSystem.damageCalculation.essenceBonusMultiplier :
-                                battleSystem.essenceBonuses[attacker.essence]?.weakAgainst === defender.essence ? 1 / battleSystem.damageCalculation.essenceBonusMultiplier : 1;
+        let essenceMultiplier = battleSystem.essenceBonuses[attacker.essence]?.strongAgainst === defender.essence 
+            ? battleSystem.damageCalculation.essenceBonusMultiplier
+            : battleSystem.essenceBonuses[attacker.essence]?.weakAgainst === defender.essence
+            ? 1 / battleSystem.damageCalculation.essenceBonusMultiplier
+            : 1;
 
-        let classMultiplier = battleSystem.classBonuses[attacker.class]?.strongAgainst.includes(defender.class) ? battleSystem.damageCalculation.classBonusMultiplier :
-                              battleSystem.classBonuses[attacker.class]?.weakAgainst.includes(defender.class) ? 1 / battleSystem.damageCalculation.classBonusMultiplier : 1;
+        let classMultiplier = battleSystem.classBonuses[attacker.class]?.strongAgainst.includes(defender.class) 
+            ? battleSystem.damageCalculation.classBonusMultiplier
+            : battleSystem.classBonuses[attacker.class]?.weakAgainst.includes(defender.class)
+            ? 1 / battleSystem.damageCalculation.classBonusMultiplier
+            : 1;
 
         let baseDamage = Math.max(
             (attacker.atk * essenceMultiplier * classMultiplier) - (defender.def ?? 0),
             battleSystem.damageCalculation.minDamage
         );
 
-        defender.hp -= Math.floor(baseDamage);
+        baseDamage = Math.round(baseDamage); // ✅ Round damage values
+        defender.hp -= baseDamage;
 
         console.log(gameConfig["battle-messages"].attackMessage
             .replace("{attacker}", attacker.name)
@@ -38,17 +42,17 @@ function battleRound() {
         );
     }
 
-    calculateDamage(playerCard, enemyCard);
-    if (enemyCard.hp > 0) calculateDamage(enemyCard, playerCard);
+    calculateDamage(currentPlayerBattleCard, currentEnemyBattleCard);
+    if (currentEnemyBattleCard.hp > 0) calculateDamage(currentEnemyBattleCard, currentPlayerBattleCard);
 
-    if (playerCard.hp <= 0) {
-        console.log(gameConfig["battle-messages"].defeatMessage.replace("{card}", playerCard.name));
-        playerHand.shift();
+    if (currentPlayerBattleCard.hp <= 0) {
+        console.log(gameConfig["battle-messages"].defeatMessage.replace("{card}", currentPlayerBattleCard.name));
+        currentPlayerBattleCard = null; // ✅ Remove defeated player card from battle
     }
 
-    if (enemyCard.hp <= 0) {
-        console.log(gameConfig["battle-messages"].defeatMessage.replace("{card}", enemyCard.name));
-        enemyHand.shift();
+    if (currentEnemyBattleCard.hp <= 0) {
+        console.log(gameConfig["battle-messages"].defeatMessage.replace("{card}", currentEnemyBattleCard.name));
+        currentEnemyBattleCard = null; // ✅ Remove defeated enemy card from battle
     }
 }
 

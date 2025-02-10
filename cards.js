@@ -119,29 +119,28 @@ function handleCardClick(card) {
     console.log(`🔹 Player selected: ${card.name}`);
 
     const playerBattleZone = document.getElementById("player-battle-zone");
-
-    // ✅ Append instead of replacing
     if (playerBattleZone) {
-        playerBattleZone.appendChild(createCardElement(card, card.type));
+        playerBattleZone.innerHTML = ""; // ✅ Ensure it replaces old cards
+        playerBattleZone.appendChild(createCardElement(card, "char"));
+        currentPlayerBattleCard = card; // ✅ Track the player's active card
     }
 
-    const cardIndex = playerHand.indexOf(card);
-    if (cardIndex !== -1) {
-        playerHand.splice(cardIndex, 1);
-    }
+    // ✅ Select an enemy card and display it
+    if (enemyHand.length > 0) {
+        const enemyCard = enemyHand.shift(); // ✅ Pick first enemy card
+        console.log(`🔹 Enemy selected: ${enemyCard.name}`);
 
-    const playerHandContainer = document.getElementById("player-hand");
-    if (playerHandContainer) {
-        const cardElements = [...playerHandContainer.children];
-        for (let el of cardElements) {
-            if (el.dataset.cardId === card.id || el.innerText.includes(card.name)) {
-                playerHandContainer.removeChild(el);
-                console.log(`✅ Removed ${card.name} from player hand.`);
-                break;
-            }
+        const enemyBattleZone = document.getElementById("enemy-battle-zone");
+        if (enemyBattleZone) {
+            enemyBattleZone.innerHTML = ""; // ✅ Ensure old cards are cleared
+            enemyBattleZone.appendChild(createCardElement(enemyCard, "char"));
+            currentEnemyBattleCard = enemyCard; // ✅ Track the enemy's active card
         }
+    } else {
+        console.log("⚠️ No enemy cards left.");
     }
 }
+
 
 // ✅ Ensure it's properly exported
 export { playerDeck, enemyDeck, playerHand, enemyHand, loadAllCards, shuffleDeck, dealStartingHands, createCardElement, handleCardClick };
