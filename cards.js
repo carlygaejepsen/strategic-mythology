@@ -7,7 +7,9 @@ import {
     enemyDeck,
     shuffleDeck,
     currentPlayerBattleCards,
-    currentEnemyBattleCards
+    currentEnemyBattleCards,
+	updatePlayerBattleCard,
+	updateEnemyBattleCard,
 } from "./config.js";
 import { placeCardInBattleZone, updateHands } from "./display.js";
 
