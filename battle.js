@@ -1,5 +1,5 @@
-import { playerHand, enemyHand } from "./cards.js"; // ✅ Import player and enemy hands
-import { battleSystem, gameConfig } from "./config.js"; // ✅ Import battle rules and messages
+import { playerHand, enemyHand } from "./cards.js";
+import { battleSystem, gameConfig } from "./config.js";
 
 function battleRound() {
     if (!playerHand.length || !enemyHand.length) {
@@ -16,10 +16,16 @@ function battleRound() {
     );
 
     function calculateDamage(attacker, defender) {
-        if (!attacker || !defender) return; // Prevents crashes if a card is missing
+        if (!attacker || !defender) return;
+
+        let essenceMultiplier = battleSystem.essenceBonuses[attacker.essence]?.strongAgainst === defender.essence ? battleSystem.damageCalculation.essenceBonusMultiplier :
+                                battleSystem.essenceBonuses[attacker.essence]?.weakAgainst === defender.essence ? 1 / battleSystem.damageCalculation.essenceBonusMultiplier : 1;
+
+        let classMultiplier = battleSystem.classBonuses[attacker.class]?.strongAgainst.includes(defender.class) ? battleSystem.damageCalculation.classBonusMultiplier :
+                              battleSystem.classBonuses[attacker.class]?.weakAgainst.includes(defender.class) ? 1 / battleSystem.damageCalculation.classBonusMultiplier : 1;
 
         let baseDamage = Math.max(
-            attacker.atk - (defender.def ?? 0), // Ensure def is handled properly
+            (attacker.atk * essenceMultiplier * classMultiplier) - (defender.def ?? 0),
             battleSystem.damageCalculation.minDamage
         );
 

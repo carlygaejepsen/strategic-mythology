@@ -16,11 +16,10 @@ async function loadJSON(file) {
         return await response.json();
     } catch (error) {
         console.error("Error fetching JSON:", error);
-        return [];
+        return {};
     }
 }
 
-// ✅ gameConfig is now stored directly in config.js (no need to fetch it)
 let gameConfig = {
     "essence-emojis": {
         "fire": "🔥",
@@ -58,20 +57,29 @@ let gameConfig = {
     "battle-messages": {
         "battleStart": "{player} vs {enemy} begins!",
         "attackMessage": "{attacker} attacks {defender} for {damage} damage!",
-        "defeatMessage": "{card} is defeated!"
+        "defeatMessage": "{card} is defeated!",
+        "criticalHit": "💥 Critical hit! {attacker} deals {damage} damage to {defender}!",
+        "dodgeMessage": "✨ {defender} dodged the attack from {attacker}!"
+    },
+    "damageCalculation": {
+        "formula": "atk - def",
+        "minDamage": 1,
+        "criticalMultiplier": 1.5,
+        "essenceBonusMultiplier": 1.2,
+        "classBonusMultiplier": 1.2
     }
 };
 
-// ✅ Updated: No need to fetch game-config.json anymore
 async function loadConfigFiles() {
     try {
         console.log("Fetching configuration files...");
 
-        const cardTemplatesResponse = await fetch("./card-templates.json"); // Only fetch card templates now
+        const cardTemplatesResponse = await fetch("./card-templates.json");
 
         if (!cardTemplatesResponse.ok) throw new Error(`Failed to fetch card-templates.json: ${cardTemplatesResponse.status}`);
 
         cardTemplates = await cardTemplatesResponse.json();
+        Object.assign(battleSystem, await loadJSON("./data/bat-sys.json"));
 
         console.log("✅ Configurations loaded.");
     } catch (error) {
@@ -79,5 +87,4 @@ async function loadConfigFiles() {
     }
 }
 
-// ✅ Export everything needed by other files
 export { cardTemplates, gameConfig, battleSystem, loadConfigFiles, loadJSON };

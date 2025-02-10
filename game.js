@@ -1,25 +1,33 @@
-import { loadConfigFiles, gameConfig } from "./config.js"; // ✅ Load configs
-import { loadAllCards, playerDeck, enemyDeck, shuffleDeck, dealStartingHands } from "./cards.js"; // ✅ Import deck handling
-import { battleRound } from "./battle.js"; // ✅ Import battle mechanics
+import { loadConfigFiles, gameConfig } from "./config.js";
+import { loadAllCards, playerDeck, enemyDeck, shuffleDeck, dealStartingHands, playerHand, enemyHand } from "./cards.js";
+import { battleRound } from "./battle.js";
 
 async function startGame() {
     try {
-        await loadConfigFiles(); // ✅ Loads game settings
-        await loadAllCards(); // ✅ Loads all cards
-
-        dealStartingHands(); // ✅ Give player and enemy their initial hands
-
+        await loadConfigFiles();
+        await loadAllCards();
+        dealStartingHands();
+        renderHand(playerHand, "player-hand");
+        renderHand(enemyHand, "enemy-hand");
         console.log("✅ Game started!");
     } catch (error) {
         console.error("❌ ERROR starting game:", error);
     }
 }
 
-// ✅ Runs when the page loads
+function renderHand(hand, containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) {
+        console.error(`❌ ERROR: Container '${containerId}' not found.`);
+        return;
+    }
+    container.innerHTML = "";
+    hand.forEach(card => container.appendChild(createCardElement(card, card.type)));
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     startGame();
 
-    // ✅ Ensure "play-turn" button exists before adding event listener
     const playTurnButton = document.getElementById("play-turn");
     if (playTurnButton) {
         playTurnButton.addEventListener("click", battleRound);
