@@ -8,7 +8,6 @@ async function startGame() {
         await loadConfigFiles();
         await loadAllCards();
         dealStartingHands();
-        updateHands(); // ✅ Uses the unified function from `display.js`
         console.log("✅ Game started!");
     } catch (error) {
         console.error("❌ ERROR starting game:", error);
