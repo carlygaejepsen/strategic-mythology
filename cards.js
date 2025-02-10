@@ -1,4 +1,4 @@
-import { loadJSON, cardTemplates, battleSystem } from "./config.js"; // ✅ Import JSON loader and battle system config
+import { loadJSON, cardTemplates, battleSystem } from "./config.js";
 
 let playerDeck = [];
 let enemyDeck = [];
@@ -9,7 +9,7 @@ let currentPlayerBattleCard = null;
 let currentEnemyBattleCard = null;
 
 function populateTemplate(template, data) {
-    return template.replace(/{(\w+)}/g, (match, key) => data[key] || '');
+    return template.replace(/{(\w+)}/g, (match, key) => (key in data ? data[key] : match));
 }
 
 async function loadAllCards() {
@@ -21,18 +21,18 @@ async function loadAllCards() {
             "./data/water-chars.json"
         ];
 
-        // Loads all character decks
-        let characterDeck = (await Promise.all(characterFiles.map(loadJSON))).flat();
-        let essenceDeck = await loadJSON("./data/essence-cards.json"); // Loads essence cards
-        let abilityDeck = await loadJSON("./data/ability-cards.json"); // Loads ability cards
-        battleSystem = await loadJSON("./data/bat-sys.json"); // Loads battle system rules
+        const [characterDeck, essenceDeck, abilityDeck, battleData] = await Promise.all([
+            Promise.all(characterFiles.map(loadJSON)).then(results => results.flat()),
+            loadJSON("./data/essence-cards.json"),
+            loadJSON("./data/ability-cards.json"),
+            loadJSON("./data/bat-sys.json")
+        ]);
 
-        // Combines all cards into a full deck
-        let fullDeck = [...characterDeck, ...essenceDeck, ...abilityDeck];
+        Object.assign(battleSystem, battleData);
 
-        // Shuffles decks separately for player and enemy
-        playerDeck = shuffleDeck([...fullDeck]); 
-        enemyDeck = shuffleDeck([...fullDeck]); 
+        const fullDeck = [...characterDeck, ...essenceDeck, ...abilityDeck];
+        playerDeck = shuffleDeck([...fullDeck]);
+        enemyDeck = shuffleDeck([...fullDeck]);
 
         console.log("Player Deck:", playerDeck);
         console.log("Enemy Deck:", enemyDeck);
@@ -50,16 +50,18 @@ function shuffleDeck(deck) {
 }
 
 function dealStartingHands() {
-    const HAND_SIZE = 5; // Adjust as needed
+    const HAND_SIZE = 6;
 
-    // Draw cards for player
+    if (playerDeck.length < HAND_SIZE || enemyDeck.length < HAND_SIZE) {
+        console.error("Not enough cards to deal starting hands.");
+        return;
+    }
+
     playerHand = playerDeck.splice(0, HAND_SIZE);
-    console.log("Player Hand:", playerHand);
-
-    // Draw cards for enemy
     enemyHand = enemyDeck.splice(0, HAND_SIZE);
+
+    console.log("Player Hand:", playerHand);
     console.log("Enemy Hand:", enemyHand);
 }
 
-// ✅ Export functions and variables so game.js can use them
 export { playerDeck, enemyDeck, playerHand, enemyHand, loadAllCards, shuffleDeck, dealStartingHands };
