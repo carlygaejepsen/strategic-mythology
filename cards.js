@@ -1,13 +1,16 @@
-import { loadJSON, cardTemplates, battleSystem, gameConfig } from "./config.js";
+import { 
+    loadJSON, 
+    cardTemplates, 
+    battleSystem, 
+    gameConfig, 
+    playerDeck, 
+    enemyDeck, 
+    playerHand, 
+    enemyHand, 
+    currentPlayerBattleCards, 
+    currentEnemyBattleCards 
+} from "./config.js";
 import { placeCardInBattleZone, updateHands } from "./display.js";
-
-let playerDeck = [];
-let enemyDeck = [];
-let playerHand = [];
-let enemyHand = [];
-
-let currentPlayerBattleCards = { char: null, essence: null, ability: null };
-let currentEnemyBattleCards = { char: null, essence: null, ability: null };
 
 // Replaces placeholders in a template with provided data
 function populateTemplate(template, data) {
@@ -23,15 +26,19 @@ function shuffleDeck(deck) {
     return deck;
 }
 
-// Deals starting hands from the decks and updates the UI
+// Deals starting hands from the decks and updates the UI.
+// This function works on the imported decks and hands from config.js.
 function dealStartingHands() {
     const HAND_SIZE = 6;
     if (playerDeck.length < HAND_SIZE || enemyDeck.length < HAND_SIZE) {
         console.error("❌ Not enough cards to deal starting hands.");
         return;
     }
-    playerHand = playerDeck.splice(0, HAND_SIZE);
-    enemyHand = enemyDeck.splice(0, HAND_SIZE);
+    // Empty the hands first (if any) and then push new cards.
+    playerHand.length = 0;
+    enemyHand.length = 0;
+    playerHand.push(...playerDeck.splice(0, HAND_SIZE));
+    enemyHand.push(...enemyDeck.splice(0, HAND_SIZE));
     updateHands();
     console.log("🎴 Player Hand:", playerHand);
     console.log("🎴 Enemy Hand:", enemyHand);
@@ -43,7 +50,7 @@ function determineCardType(card) {
     return card.classes ? "char" : "ability";
 }
 
-// Creates a card element using the appropriate template and data
+// Creates a card element for UI display
 function createCardElement(card, type) {
     console.log(`🎨 Creating card: ${card.name} (Type: ${type})`);
     let computedType = determineCardType(card);
@@ -89,12 +96,12 @@ function handleCardClick(card) {
     console.log("⚠️ Player hand updated:", playerHand);
 }
 
-// Updates the current active battle card for the player
+// Updates the player's active battle card (for a given type)
 function updatePlayerBattleCard(card, type) {
     currentPlayerBattleCards[type] = card || null;
 }
 
-// Updates the current active battle card for the enemy
+// Updates the enemy's active battle card (for a given type)
 function updateEnemyBattleCard(card, type) {
     currentEnemyBattleCards[type] = card || null;
 }
