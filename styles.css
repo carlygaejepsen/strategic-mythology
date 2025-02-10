@@ -1,11 +1,10 @@
 /* ✅ CSS Reset */
 
-@import url("cards.css");
-@import url("battle.css");
-@import url("buttons.css");
-@import url("responsive.css");
-@import url("hands.css");
-@import url("display.css");
+@import url("./cards.css");
+@import url("./battle.css");
+@import url("./buttons.css");
+@import url("./hands.css");
+@import url("./display.css");
 
 *,
 *::before,
