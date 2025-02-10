@@ -146,7 +146,5 @@ export {
     loadConfigFiles,
     loadJSON,
     loadAllCards,
-    shuffleDeck,
-	updatePlayerBattleCard,
-	updateEnemyBattleCard,
+    shuffleDeck
 };
