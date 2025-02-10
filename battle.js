@@ -23,28 +23,27 @@ import {
 } from "./display.js";
 
 let gameRunning = false;
-
+//gameLoop 2.0
 function gameLoop() {
-    if (gameRunning) return; // Prevents the loop from triggering multiple times
+    if (gameRunning) return; // Prevents multiple triggers
     gameRunning = true;
 
     console.log("🔄 New battle round starting...");
 
-    // Process a single round of battle
     battleRound();
 
-    // Check if the game should continue
     setTimeout(() => {
-        if (playerDeck.length > 0 && enemyDeck.length > 0) {
-            gameRunning = false; // Allow next turn to trigger
-            gameLoop(); // Start next round automatically
-        } else {
+        // ✅ Stop looping if a deck is empty
+        if (playerDeck.length === 0 || enemyDeck.length === 0) {
             logToResults(playerDeck.length === 0 ? "🏁 Player wins!" : "🏁 Enemy wins!");
-            gameRunning = false; // Stop the loop
+            gameRunning = false;
+            return;
         }
-    }, 1000); // Adds a delay so rounds don’t happen too fast
-}
 
+        // ✅ Instead of automatically continuing, the game now waits for the player
+        gameRunning = false; // Turn must be manually advanced by clicking "Play Turn"
+    }, 1000);
+}
 
 function checkForCombos(battleZone, owner) {
   const cards = Object.values(battleZone).filter(card => card !== null);
@@ -197,8 +196,7 @@ function processCombat(attacker, defender, isCombo = false) {
   defender.hp -= baseDamage;
   logToResults(`${attacker.name} hits ${defender.name} for ${baseDamage} damage!`);
 }
-
-// Updated event listener
+// Event listener
 document.addEventListener("DOMContentLoaded", () => {
   const playTurnButton = document.getElementById("play-turn");
   if (playTurnButton) {
