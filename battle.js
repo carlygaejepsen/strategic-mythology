@@ -1,5 +1,6 @@
-import { currentPlayerBattleCards, currentEnemyBattleCards, playerHand, enemyHand } from "./cards.js";
+import { currentPlayerBattleCards, currentEnemyBattleCards, playerHand, enemyHand, createCardElement } from "./cards.js";
 import { battleSystem, gameConfig } from "./config.js";
+
 
 function battleRound() {
     if (!currentPlayerBattleCards.char || !currentEnemyBattleCards.char) {
