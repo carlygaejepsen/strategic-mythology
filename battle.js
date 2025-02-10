@@ -1,10 +1,12 @@
 // battle.js - Handles battle logic and combat mechanics
-
 import {
   currentPlayerBattleCards,
   currentEnemyBattleCards,
   playerHand,
-  enemyHand
+  enemyHand,
+  playerDeck,
+  enemyDeck,
+  determineCardType
 } from "./cards.js";
 
 import {
@@ -15,68 +17,126 @@ import {
 import {
   logToResults,
   updateBattleZones,
-  removeDefeatedCards
+  removeDefeatedCards,
+  updateHands,
+  placeCardInBattleZone
 } from "./display.js";
 
-function battleRound() {
-  // Ensure both players have an active character card
-  if (!currentPlayerBattleCards?.char || !currentEnemyBattleCards?.char) {
-    logToResults("❌ No active cards in the battle zone! Waiting for selections...");
-    console.log("Debug: currentPlayerBattleCards ->", currentPlayerBattleCards);
-    console.log("Debug: currentEnemyBattleCards ->", currentEnemyBattleCards);
-    return;
-  }
+// New helper functions
+function checkForCombos(battleZone, owner) {
+  const cards = Object.values(battleZone).filter(card => card !== null);
+  let comboFound = false;
 
-  logToResults(`⚔️ ${currentPlayerBattleCards.char.name} vs ${currentEnemyBattleCards.char.name} begins!`);
+  // Check class combos
+  const classMap = {};
+  cards.forEach(card => {
+    if (card.classes) {
+      card.classes.forEach(cls => {
+        if (classMap[cls]) {
+          logToResults(`🔥 ${owner} class combo: ${classMap[cls].name} + ${card.name}`);
+          comboFound = true;
+        } else {
+          classMap[cls] = card;
+        }
+      });
+    }
+  });
 
-  // 1️⃣ Character vs Character Combat
-  processCombat(currentPlayerBattleCards.char, currentEnemyBattleCards.char);
+  // Check essence combos
+  const essenceMap = {};
+  cards.forEach(card => {
+    if (card.essence) {
+      if (essenceMap[card.essence]) {
+        logToResults(`🔥 ${owner} essence combo: ${essenceMap[card.essence].name} + ${card.name}`);
+        comboFound = true;
+      } else {
+        essenceMap[card.essence] = card;
+      }
+    }
+  });
 
-  // 2️⃣ Essence vs Essence (if both have one)
-  if (currentPlayerBattleCards.essence && currentEnemyBattleCards.essence) {
-    processCombat(currentPlayerBattleCards.essence, currentEnemyBattleCards.essence);
-  }
-
-  // 3️⃣ Player’s Essence & Ability Attacks Enemy Character
-  if (currentPlayerBattleCards.essence) {
-    processCombat(currentPlayerBattleCards.essence, currentEnemyBattleCards.char);
-  }
-  if (currentPlayerBattleCards.ability) {
-    processCombat(currentPlayerBattleCards.ability, currentEnemyBattleCards.char);
-  }
-
-  // 4️⃣ Enemy’s Essence & Ability Attacks Player Character
-  if (currentEnemyBattleCards.essence) {
-    processCombat(currentEnemyBattleCards.essence, currentPlayerBattleCards.char);
-  }
-  if (currentEnemyBattleCards.ability) {
-    processCombat(currentEnemyBattleCards.ability, currentPlayerBattleCards.char);
-  }
-
-  // Remove any defeated cards and update the UI
-  removeDefeatedCards();
+  return comboFound;
 }
 
-function processCombat(attacker, defender) {
-  if (!attacker?.name || !defender?.name) {
-    console.error("❌ ERROR: Invalid attacker or defender!", { attacker, defender });
-    return;
+function checkForTripleCombo(battleZone, owner) {
+  const types = ['char', 'essence', 'ability'];
+  const hasAllTypes = types.every(type => battleZone[type]);
+  if (hasAllTypes) logToResults(`⚡ ${owner} activated TRIPLE COMBO!`);
+  return hasAllTypes;
+}
+
+function performTripleCombo(owner, opponentBattleZone) {
+  const damage = 60;
+  Object.values(opponentBattleZone).forEach(card => {
+    if (card) {
+      card.hp -= damage;
+      logToResults(`💥 ${owner}'s triple combo hits ${card.name} for ${damage}!`);
+    }
+  });
+}
+
+function drawCardsToFillHands() {
+  // Player draw
+  if (playerHand.length < 6 && playerDeck.length > 0) {
+    const drawn = playerDeck.shift();
+    playerHand.push(drawn);
+    logToResults(`🃏 Player draws ${drawn.name}`);
   }
 
-  // Log the basic attack event
-  logToResults(`${attacker.name} attacks ${defender.name}!`);
+  // Enemy draw
+  if (enemyHand.length < 6 && enemyDeck.length > 0) {
+    const drawn = enemyDeck.shift();
+    enemyHand.push(drawn);
+    logToResults(`🃏 Enemy draws ${drawn.name}`);
+  }
+  updateHands();
+}
 
-  // Some cards (essence/ability) might have no ATK
-  let attackPower = attacker.atk ?? 0;
-  if (attackPower === 0) {
-    logToResults(`⚠️ ${attacker.name} has no attack power and does no damage.`);
-    return;
+// Updated battle logic
+function battleRound() {
+  // Check for triple combos first
+  if (checkForTripleCombo(currentPlayerBattleCards, "Player")) {
+    performTripleCombo("Player", currentEnemyBattleCards);
+  }
+  if (checkForTripleCombo(currentEnemyBattleCards, "Enemy")) {
+    performTripleCombo("Enemy", currentPlayerBattleCards);
   }
 
+  // Process individual attacks
+  [currentPlayerBattleCards, currentEnemyBattleCards].forEach((battleZone, isPlayer) => {
+    const owner = isPlayer ? "Player" : "Enemy";
+    Object.values(battleZone).forEach(card => {
+      if (!card) return;
+      
+      const comboActive = checkForCombos(battleZone, owner);
+      const defenderZone = isPlayer ? currentEnemyBattleCards : currentPlayerBattleCards;
+      let target = Object.values(defenderZone).find(c => c) || 
+                  (isPlayer ? enemyHand : playerHand).find(c => c);
+
+      if (target) {
+        processCombat(card, target, comboActive);
+      }
+    });
+  });
+
+  removeDefeatedCards();
+  drawCardsToFillHands();
+}
+
+// Modified processCombat with combo support
+function processCombat(attacker, defender, isCombo = false) {
+  if (!attacker?.name || !defender?.name) return;
+
+  let attackPower = attacker.atk || 0;
+  if (isCombo && ['essence', 'ability'].includes(determineCardType(attacker))) {
+    attackPower *= 2;
+    logToResults(`🔥 Combo boost for ${attacker.name}!`);
+  }
+
+  // Existing damage calculation
   let essenceMultiplier = 1;
   let classMultiplier = 1;
 
-  // 🌟 Essence multiplier
   if (attacker.essence && defender.essence) {
     const attackerEss = attacker.essence;
     const defenderEss = defender.essence;
@@ -87,7 +147,6 @@ function processCombat(attacker, defender) {
     }
   }
 
-  // 🌟 Class multiplier
   if (attacker.class && defender.class) {
     const attackerClass = attacker.class;
     const defenderClass = defender.class;
@@ -98,25 +157,33 @@ function processCombat(attacker, defender) {
     }
   }
 
-  // Calculate final damage
-  let baseDamage = Math.max(
-    (attackPower * essenceMultiplier * classMultiplier) - (defender.def ?? 0),
+  const baseDamage = Math.max(
+    Math.round((attackPower * essenceMultiplier * classMultiplier) - (defender.def || 0)),
     battleSystem.damageCalculation.minDamage
   );
 
-  baseDamage = Math.round(baseDamage);
   defender.hp -= baseDamage;
-
-  logToResults(`${attacker.name} deals ${baseDamage} damage to ${defender.name}!`);
+  logToResults(`${attacker.name} hits ${defender.name} for ${baseDamage} damage!`);
 }
 
-// Attach event listener after the DOM loads
+// Game loop control
+let gameRunning = false;
+function gameLoop() {
+  if (!gameRunning && (playerDeck.length > 0 && enemyDeck.length > 0)) {
+    gameRunning = true;
+    while (playerDeck.length > 0 && enemyDeck.length > 0) {
+      battleRound();
+    }
+    gameRunning = false;
+    logToResults(playerDeck.length === 0 ? "🏁 Player wins!" : "🏁 Enemy wins!");
+  }
+}
+
+// Updated event listener
 document.addEventListener("DOMContentLoaded", () => {
   const playTurnButton = document.getElementById("play-turn");
   if (playTurnButton) {
-    playTurnButton.addEventListener("click", battleRound);
-  } else {
-    console.error("❌ ERROR: 'Play Turn' button not found!");
+    playTurnButton.addEventListener("click", gameLoop);
   }
 });
 

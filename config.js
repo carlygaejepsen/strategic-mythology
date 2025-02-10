@@ -1,4 +1,13 @@
 // config.js - Handles game configurations, settings, data loading, and global references
+// Add to gameConfig
+export const turnPhases = {
+  PLAYER_SELECTION: 'player',
+  ENEMY_SELECTION: 'enemy',
+  COMBAT: 'combat'
+};
+
+// Add current phase tracking
+export let currentPhase = turnPhases.PLAYER_SELECTION;
 
 // Core objects (non-const so we can reassign if needed)
 let cardTemplates = {}; // Stores card templates loaded from JSON
