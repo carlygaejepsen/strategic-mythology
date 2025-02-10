@@ -37,32 +37,53 @@ function setupPlayTurnButton() {
 function battleRound() {
     if (!currentPlayerBattleCards?.char || !currentEnemyBattleCards?.char) {
         logToResults("❌ No active cards in the battle zone! Waiting for selections...");
+        console.log("Debug: currentPlayerBattleCards ->", currentPlayerBattleCards);
+        console.log("Debug: currentEnemyBattleCards ->", currentEnemyBattleCards);
         return;
     }
 
-    logToResults(gameConfig["battle-messages"].battleStart
-        .replace("{player}", currentPlayerBattleCards.char.name)
-        .replace("{enemy}", currentEnemyBattleCards.char.name)
-    );
+    logToResults(`⚔️ ${currentPlayerBattleCards.char.name} vs ${currentEnemyBattleCards.char.name} begins!`);
 
-    // 🏹 Player Attacks Enemy
+    // 💥 Character vs Character Combat
     processCombat(currentPlayerBattleCards.char, currentEnemyBattleCards.char);
 
-    // 🛡 Enemy gets a turn if they survived
-    if (currentEnemyBattleCards.char?.hp > 0) {
-        processCombat(currentEnemyBattleCards.char, currentPlayerBattleCards.char);
-    } else {
-        logToResults(`💀 ${currentEnemyBattleCards.char.name} was defeated before attacking!`);
+    // 🔥 Essence Card Effects (if both players have one)
+    if (currentPlayerBattleCards.essence && currentEnemyBattleCards.essence) {
+        processCombat(currentPlayerBattleCards.essence, currentEnemyBattleCards.essence);
     }
 
-    // 🛠 Remove defeated cards & update battle zones
+    // 🔥 Player’s Essence & Ability Affecting the Enemy Character
+    if (currentPlayerBattleCards.essence) {
+        processCombat(currentPlayerBattleCards.essence, currentEnemyBattleCards.char);
+    }
+    if (currentPlayerBattleCards.ability) {
+        processCombat(currentPlayerBattleCards.ability, currentEnemyBattleCards.char);
+    }
+
+    // 🔥 Enemy’s Essence & Ability Affecting the Player Character
+    if (currentEnemyBattleCards.essence) {
+        processCombat(currentEnemyBattleCards.essence, currentPlayerBattleCards.char);
+    }
+    if (currentEnemyBattleCards.ability) {
+        processCombat(currentEnemyBattleCards.ability, currentPlayerBattleCards.char);
+    }
+
     removeDefeatedCards();
 }
-
 
 function processCombat(attacker, defender) {
     if (!attacker?.name || !defender?.name) {
         console.error("❌ ERROR: Invalid attacker or defender!", { attacker, defender });
+        return;
+    }
+
+    // 🌟 Log what’s happening to verify the order of attacks
+    logToResults(`${attacker.name} attacks ${defender.name}!`);
+
+    // ✅ Essence & Ability Cards Might Not Have ATK
+    let attackPower = attacker.atk ?? 0;
+    if (attackPower === 0) {
+        logToResults(`⚠️ ${attacker.name} has no attack power and does no damage.`);
         return;
     }
 
@@ -79,77 +100,60 @@ function processCombat(attacker, defender) {
         : 1;
 
     let baseDamage = Math.max(
-        (attacker.atk * essenceMultiplier * classMultiplier) - (defender.def ?? 0),
+        (attackPower * essenceMultiplier * classMultiplier) - (defender.def ?? 0),
         battleSystem.damageCalculation.minDamage
     );
 
     baseDamage = Math.round(baseDamage);
     defender.hp -= baseDamage;
 
-    const attackMessage = gameConfig["battle-messages"].attackMessage
-        .replace("{attacker}", attacker.name)
-        .replace("{defender}", defender.name)
-        .replace("{damage}", baseDamage);
-
-    logToResults(attackMessage);
+    logToResults(`${attacker.name} deals ${baseDamage} damage to ${defender.name}!`);
 }
 
 function removeDefeatedCards() {
     let removedPlayerCard = false;
     let removedEnemyCard = false;
 
-    // ✅ Remove defeated Character cards
-    if (currentPlayerBattleCards?.char?.hp <= 0) {
-        logToResults(gameConfig["battle-messages"].defeatMessage.replace("{card}", currentPlayerBattleCards.char.name));
+    // ⚔️ Remove Character if Defeated
+    if (currentPlayerBattleCards.char?.hp <= 0) {
+        logToResults(`☠️ ${currentPlayerBattleCards.char.name} has been defeated!`);
         currentPlayerBattleCards.char = null;
         removedPlayerCard = true;
     }
-
-    if (currentEnemyBattleCards?.char?.hp <= 0) {
-        logToResults(gameConfig["battle-messages"].defeatMessage.replace("{card}", currentEnemyBattleCards.char.name));
+    if (currentEnemyBattleCards.char?.hp <= 0) {
+        logToResults(`☠️ ${currentEnemyBattleCards.char.name} has been defeated!`);
         currentEnemyBattleCards.char = null;
         removedEnemyCard = true;
     }
 
-    // ✅ Remove defeated Essence cards (if used)
-    if (currentPlayerBattleCards?.essence?.hp <= 0) {
-        logToResults(gameConfig["battle-messages"].defeatMessage.replace("{card}", currentPlayerBattleCards.essence.name));
+    // 🌟 Remove Essence & Ability If Defeated
+    if (currentPlayerBattleCards.essence?.hp <= 0) {
+        logToResults(`☠️ ${currentPlayerBattleCards.essence.name} has been exhausted!`);
         currentPlayerBattleCards.essence = null;
     }
-
-    if (currentEnemyBattleCards?.essence?.hp <= 0) {
-        logToResults(gameConfig["battle-messages"].defeatMessage.replace("{card}", currentEnemyBattleCards.essence.name));
-        currentEnemyBattleCards.essence = null;
-    }
-
-    // ✅ Remove defeated Ability cards (if used)
-    if (currentPlayerBattleCards?.ability?.hp <= 0) {
-        logToResults(gameConfig["battle-messages"].defeatMessage.replace("{card}", currentPlayerBattleCards.ability.name));
+    if (currentPlayerBattleCards.ability?.hp <= 0) {
+        logToResults(`☠️ ${currentPlayerBattleCards.ability.name} has been used up!`);
         currentPlayerBattleCards.ability = null;
     }
-
-    if (currentEnemyBattleCards?.ability?.hp <= 0) {
-        logToResults(gameConfig["battle-messages"].defeatMessage.replace("{card}", currentEnemyBattleCards.ability.name));
+    if (currentEnemyBattleCards.essence?.hp <= 0) {
+        logToResults(`☠️ ${currentEnemyBattleCards.essence.name} has been exhausted!`);
+        currentEnemyBattleCards.essence = null;
+    }
+    if (currentEnemyBattleCards.ability?.hp <= 0) {
+        logToResults(`☠️ ${currentEnemyBattleCards.ability.name} has been used up!`);
         currentEnemyBattleCards.ability = null;
     }
 
-    // ✅ Replace Player's defeated card with next available card
+    // 🃏 Draw new character cards if available
     if (removedPlayerCard && playerHand.length > 0) {
         currentPlayerBattleCards.char = playerHand.shift();
-        logToResults(`🔹 New player card selected: ${currentPlayerBattleCards.char.name}`);
-    } else if (removedPlayerCard) {
-        logToResults("⚠️ Player has no more cards left!");
+        logToResults(`🔄 Player draws ${currentPlayerBattleCards.char.name} into battle!`);
     }
-
-    // ✅ Replace Enemy's defeated card with next available card
     if (removedEnemyCard && enemyHand.length > 0) {
         currentEnemyBattleCards.char = enemyHand.shift();
-        logToResults(`🔹 New enemy card selected: ${currentEnemyBattleCards.char.name}`);
-    } else if (removedEnemyCard) {
-        logToResults("⚠️ Enemy has no more cards left!");
+        logToResults(`🔄 Enemy draws ${currentEnemyBattleCards.char.name} into battle!`);
     }
 
-    // ✅ Update UI to reflect changes
     updateBattleZones();
 }
 
