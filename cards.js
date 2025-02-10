@@ -5,7 +5,7 @@ import {
     gameConfig,
     playerDeck,
     enemyDeck,
-    // ❌ Remove the conflicting imports for playerHand/enemyHand here
+    shuffleDeck,
     currentPlayerBattleCards,
     currentEnemyBattleCards
 } from "./config.js";
@@ -19,16 +19,6 @@ export let enemyHand = [];
 function populateTemplate(template, data) {
     return template.replace(/{(\w+)}/g, (match, key) => (key in data ? data[key] : match));
 }
-
-// Shuffles a deck using the Fisher-Yates algorithm
-function shuffleDeck(deck) {
-    for (let i = deck.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [deck[i], deck[j]] = [deck[j], deck[i]];
-    }
-    return deck;
-}
-
 // Deals starting hands from the decks and updates the UI
 function dealStartingHands() {
     const HAND_SIZE = 6;
@@ -36,14 +26,6 @@ function dealStartingHands() {
         console.error("❌ Not enough cards to deal starting hands.");
         return;
     }
-    // Clear any old hands
-    playerHand.length = 0;
-    enemyHand.length = 0;
-
-    // Populate new hands
-    playerHand.push(...playerDeck.splice(0, HAND_SIZE));
-    enemyHand.push(...enemyDeck.splice(0, HAND_SIZE));
-    updateHands();
 
     console.log("🎴 Player Hand:", playerHand);
     console.log("🎴 Enemy Hand:", enemyHand);

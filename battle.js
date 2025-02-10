@@ -22,13 +22,29 @@ import {
   placeCardInBattleZone
 } from "./display.js";
 
+let gameRunning = false;
+
 function gameLoop() {
-    if (!gameRunning) {
-        gameRunning = true;
-        battleRound();
-        gameRunning = false;
-    }
+    if (gameRunning) return; // Prevents the loop from triggering multiple times
+    gameRunning = true;
+
+    console.log("🔄 New battle round starting...");
+
+    // Process a single round of battle
+    battleRound();
+
+    // Check if the game should continue
+    setTimeout(() => {
+        if (playerDeck.length > 0 && enemyDeck.length > 0) {
+            gameRunning = false; // Allow next turn to trigger
+            gameLoop(); // Start next round automatically
+        } else {
+            logToResults(playerDeck.length === 0 ? "🏁 Player wins!" : "🏁 Enemy wins!");
+            gameRunning = false; // Stop the loop
+        }
+    }, 1000); // Adds a delay so rounds don’t happen too fast
 }
+
 
 function checkForCombos(battleZone, owner) {
   const cards = Object.values(battleZone).filter(card => card !== null);
@@ -171,19 +187,6 @@ function processCombat(attacker, defender, isCombo = false) {
 
   defender.hp -= baseDamage;
   logToResults(`${attacker.name} hits ${defender.name} for ${baseDamage} damage!`);
-}
-
-// Game loop control
-let gameRunning = false;
-function gameLoop() {
-  if (!gameRunning && (playerDeck.length > 0 && enemyDeck.length > 0)) {
-    gameRunning = true;
-    while (playerDeck.length > 0 && enemyDeck.length > 0) {
-      battleRound();
-    }
-    gameRunning = false;
-    logToResults(playerDeck.length === 0 ? "🏁 Player wins!" : "🏁 Enemy wins!");
-  }
 }
 
 // Updated event listener

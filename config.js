@@ -93,7 +93,12 @@ function shuffleDeck(deck) {
 }
 
 // Loads character, essence, and ability cards from JSON, populates playerDeck & enemyDeck
+let cardsLoaded = false; // Prevents multiple reloads
+
 async function loadAllCards() {
+    if (cardsLoaded) return; // If already loaded, do nothing
+    cardsLoaded = true; // Mark as loaded
+
     try {
         console.log("📥 Fetching all card data...");
 
@@ -111,6 +116,11 @@ async function loadAllCards() {
         ]);
 
         const fullDeck = [...characterDeck, ...essenceDeck, ...abilityDeck];
+
+        // Ensure hands are empty before loading new decks
+        playerHand.length = 0;
+        enemyHand.length = 0;
+
         playerDeck = shuffleDeck([...fullDeck]);
         enemyDeck = shuffleDeck([...fullDeck]);
 
@@ -120,6 +130,7 @@ async function loadAllCards() {
         console.error("❌ ERROR loading cards:", error);
     }
 }
+
 
 // Export all data & functions so other modules can use them
 export {
