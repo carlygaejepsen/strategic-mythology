@@ -1,16 +1,19 @@
-import { 
-    loadJSON, 
-    cardTemplates, 
-    battleSystem, 
-    gameConfig, 
-    playerDeck, 
-    enemyDeck, 
-    playerHand, 
-    enemyHand, 
-    currentPlayerBattleCards, 
-    currentEnemyBattleCards 
+import {
+    loadJSON,
+    cardTemplates,
+    battleSystem,
+    gameConfig,
+    playerDeck,
+    enemyDeck,
+    // ❌ Remove the conflicting imports for playerHand/enemyHand here
+    currentPlayerBattleCards,
+    currentEnemyBattleCards
 } from "./config.js";
 import { placeCardInBattleZone, updateHands } from "./display.js";
+
+// ✅ Locally define playerHand & enemyHand as "let"
+export let playerHand = [];
+export let enemyHand = [];
 
 // Replaces placeholders in a template with provided data
 function populateTemplate(template, data) {
@@ -26,20 +29,22 @@ function shuffleDeck(deck) {
     return deck;
 }
 
-// Deals starting hands from the decks and updates the UI.
-// This function works on the imported decks and hands from config.js.
+// Deals starting hands from the decks and updates the UI
 function dealStartingHands() {
     const HAND_SIZE = 6;
     if (playerDeck.length < HAND_SIZE || enemyDeck.length < HAND_SIZE) {
         console.error("❌ Not enough cards to deal starting hands.");
         return;
     }
-    // Empty the hands first (if any) and then push new cards.
+    // Clear any old hands
     playerHand.length = 0;
     enemyHand.length = 0;
+
+    // Populate new hands
     playerHand.push(...playerDeck.splice(0, HAND_SIZE));
     enemyHand.push(...enemyDeck.splice(0, HAND_SIZE));
     updateHands();
+
     console.log("🎴 Player Hand:", playerHand);
     console.log("🎴 Enemy Hand:", enemyHand);
 }
@@ -50,10 +55,11 @@ function determineCardType(card) {
     return card.classes ? "char" : "ability";
 }
 
+// Creates a card element for UI display, wrapped in a .card-container
 function createCardElement(card, type) {
     console.log(`🎨 Creating card: ${card.name} (Type: ${type})`);
-
     const computedType = determineCardType(card);
+
     if (!cardTemplates[computedType]) {
         console.error(`❌ ERROR: Missing template for card type: ${computedType}`);
         return document.createElement("div");
@@ -99,14 +105,17 @@ function createCardElement(card, type) {
     return containerDiv;
 }
 
-
-// Handles the player's card selection, moves the card to the battle zone, and updates the hand UI.
+// Handles the player's card selection, moves the card to the battle zone,
+// and removes it from the player's hand.
 function handleCardClick(card) {
     console.log(`🔹 Player selected: ${card.name}`);
     const type = determineCardType(card);
+
+    // Place the clicked card in the appropriate battle zone
     placeCardInBattleZone(card, `player-${type}-zone`, updatePlayerBattleCard, "Player");
-    // Remove the selected card from the player's hand
-    playerHand = playerHand.filter(c => c !== card);
+
+    // Remove the card from the player's hand
+    playerHand = playerHand.filter(c => c !== card); 
     updateHands();
     console.log("⚠️ Player hand updated:", playerHand);
 }
@@ -122,12 +131,17 @@ function updateEnemyBattleCard(card, type) {
 }
 
 export {
+    // Deck & Hand references
     playerDeck,
     enemyDeck,
     playerHand,
     enemyHand,
+
+    // Battle card references
     currentPlayerBattleCards,
     currentEnemyBattleCards,
+
+    // Functions
     updatePlayerBattleCard,
     updateEnemyBattleCard,
     shuffleDeck,
