@@ -1,9 +1,8 @@
 import { currentPlayerBattleCards, currentEnemyBattleCards, playerHand, enemyHand, createCardElement } from "./cards.js";
 import { battleSystem, gameConfig } from "./config.js";
 
-
 function battleRound() {
-    if (!currentPlayerBattleCards.char || !currentEnemyBattleCards.char) {
+    if (!currentPlayerBattleCards?.char || !currentEnemyBattleCards?.char) {
         console.log("❌ No active cards in the battle zone! Waiting for selections...");
         console.log("Debug: currentPlayerBattleCards ->", currentPlayerBattleCards);
         console.log("Debug: currentEnemyBattleCards ->", currentEnemyBattleCards);
@@ -15,17 +14,19 @@ function battleRound() {
         .replace("{enemy}", currentEnemyBattleCards.char.name)
     );
 
-    processCombat(currentPlayerBattleCards.char, currentEnemyBattleCards.char);
+    if (currentPlayerBattleCards?.char && currentEnemyBattleCards?.char) {
+        processCombat(currentPlayerBattleCards.char, currentEnemyBattleCards.char);
+    }
     
-    if (currentPlayerBattleCards.essence && currentEnemyBattleCards.essence) {
+    if (currentPlayerBattleCards?.essence && currentEnemyBattleCards?.essence) {
         processCombat(currentPlayerBattleCards.essence, currentEnemyBattleCards.essence);
     }
 
-    if (currentPlayerBattleCards.ability) {
+    if (currentPlayerBattleCards?.ability) {
         processCombat(currentPlayerBattleCards.ability, currentEnemyBattleCards.char);
     }
 
-    if (currentEnemyBattleCards.ability) {
+    if (currentEnemyBattleCards?.ability) {
         processCombat(currentEnemyBattleCards.ability, currentPlayerBattleCards.char);
     }
 
@@ -33,7 +34,7 @@ function battleRound() {
 }
 
 function processCombat(attacker, defender) {
-    if (!attacker || !defender || !attacker.name || !defender.name) {
+    if (!attacker?.name || !defender?.name) {
         console.error("❌ ERROR: Invalid attacker or defender!", { attacker, defender });
         return;
     }
@@ -69,13 +70,13 @@ function removeDefeatedCards() {
     let removedPlayerCard = false;
     let removedEnemyCard = false;
 
-    if (currentPlayerBattleCards.char && currentPlayerBattleCards.char.hp <= 0) {
+    if (currentPlayerBattleCards?.char?.hp <= 0) {
         console.log(gameConfig["battle-messages"].defeatMessage.replace("{card}", currentPlayerBattleCards.char.name));
         currentPlayerBattleCards.char = null;
         removedPlayerCard = true;
     }
 
-    if (currentEnemyBattleCards.char && currentEnemyBattleCards.char.hp <= 0) {
+    if (currentEnemyBattleCards?.char?.hp <= 0) {
         console.log(gameConfig["battle-messages"].defeatMessage.replace("{card}", currentEnemyBattleCards.char.name));
         currentEnemyBattleCards.char = null;
         removedEnemyCard = true;
@@ -95,19 +96,34 @@ function removeDefeatedCards() {
 }
 
 function updateBattleZones() {
-    document.getElementById("player-char-zone").innerHTML = "";
-    document.getElementById("enemy-char-zone").innerHTML = "";
+    const playerCharZone = document.getElementById("player-char-zone");
+    const enemyCharZone = document.getElementById("enemy-char-zone");
 
-    if (currentPlayerBattleCards.char) {
-        document.getElementById("player-char-zone").appendChild(createCardElement(currentPlayerBattleCards.char, "char"));
+    if (!playerCharZone || !enemyCharZone) {
+        console.error("❌ ERROR: Battle zones not found in the DOM!");
+        return;
     }
 
-    if (currentEnemyBattleCards.char) {
-        document.getElementById("enemy-char-zone").appendChild(createCardElement(currentEnemyBattleCards.char, "char"));
+    playerCharZone.innerHTML = "";
+    enemyCharZone.innerHTML = "";
+
+    if (currentPlayerBattleCards?.char) {
+        playerCharZone.appendChild(createCardElement(currentPlayerBattleCards.char, "char"));
+    }
+
+    if (currentEnemyBattleCards?.char) {
+        enemyCharZone.appendChild(createCardElement(currentEnemyBattleCards.char, "char"));
     }
 }
 
-// Attach event listener to play-turn button
-document.getElementById("play-turn").addEventListener("click", battleRound);
+// Attach event listener after the DOM loads
+document.addEventListener("DOMContentLoaded", () => {
+    const playTurnButton = document.getElementById("play-turn");
+    if (playTurnButton) {
+        playTurnButton.addEventListener("click", battleRound);
+    } else {
+        console.error("❌ ERROR: 'Play Turn' button not found!");
+    }
+});
 
 export { battleRound };
