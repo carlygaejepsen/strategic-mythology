@@ -117,41 +117,40 @@ function drawCardsToFillHands() {
 
 // Updated battle logic
 function battleRound() {
-  console.log("⚔️ New battle round begins!");
+    console.log("⚔️ New battle round begins!");
 
-  // Check for triple combos first
-  if (checkForTripleCombo(currentPlayerBattleCards, "Player")) {
-    performTripleCombo("Player", currentEnemyBattleCards);
-  }
-  if (checkForTripleCombo(currentEnemyBattleCards, "Enemy")) {
-    performTripleCombo("Enemy", currentPlayerBattleCards);
-  }
+    // Check for triple combos first
+    if (checkForTripleCombo(currentPlayerBattleCards, "Player")) {
+        performTripleCombo("Player", currentEnemyBattleCards);
+    }
+    if (checkForTripleCombo(currentEnemyBattleCards, "Enemy")) {
+        performTripleCombo("Enemy", currentPlayerBattleCards);
+    }
 
-  // Process individual attacks
-  [currentPlayerBattleCards, currentEnemyBattleCards].forEach((battleZone, index) => {
-    const owner = index === 0 ? "Player" : "Enemy";
-    const opponentBattleZone = index === 0 ? currentEnemyBattleCards : currentPlayerBattleCards;
-    const opponentHand = index === 0 ? enemyHand : playerHand;
+    // Process individual attacks (one attack per turn, per character)
+    [currentPlayerBattleCards, currentEnemyBattleCards].forEach((battleZone, index) => {
+        const owner = index === 0 ? "Player" : "Enemy";
+        const opponentBattleZone = index === 0 ? currentEnemyBattleCards : currentPlayerBattleCards;
+        const opponentHand = index === 0 ? enemyHand : playerHand;
 
-    Object.values(battleZone).forEach(attacker => {
-      if (!attacker) return;
+        Object.values(battleZone).forEach(attacker => {
+            if (!attacker) return;
 
-      const comboActive = checkForCombos(battleZone, owner);
-      
-      // Fix: Ensure the attacker does not target itself
-      let target = Object.values(opponentBattleZone).find(c => c && c !== attacker) ||
-                   opponentHand.find(c => c);
+            const comboActive = checkForCombos(battleZone, owner);
+            let target = Object.values(opponentBattleZone).find(c => c) || opponentHand.find(c => c);
 
-      if (target && attacker !== target) {
-        processCombat(attacker, target, comboActive);
-      } else {
-        console.warn(`⚠️ No valid target found for ${attacker.name}, skipping attack.`);
-      }
+            if (target && attacker !== target) {
+                processCombat(attacker, target, comboActive);
+            } else {
+                console.warn(`⚠️ No valid target found for ${attacker.name}, skipping attack.`);
+            }
+        });
     });
-  });
 
-  removeDefeatedCards();
-  drawCardsToFillHands();
+    // ✅ Fix: End the turn instead of looping attacks
+    removeDefeatedCards();
+    drawCardsToFillHands();
+    gameRunning = false; // Stops attack spam
 }
 
 // Modified processCombat with combo support
