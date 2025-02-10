@@ -1,38 +1,22 @@
-import { currentPlayerBattleCards, currentEnemyBattleCards, playerHand, enemyHand, createCardElement } from "./cards.js";
-import { battleSystem, gameConfig } from "./config.js";
+// battle.js - Handles battle logic and combat mechanics
 
-function logToResults(message) {
-    const resultsLog = document.getElementById("results-log");
-    if (!resultsLog) {
-        console.error("❌ ERROR: Results log container not found!");
-        return;
-    }
+import { 
+    currentPlayerBattleCards, 
+    currentEnemyBattleCards, 
+    playerHand, 
+    enemyHand 
+} from "./cards.js";
 
-    // Create new log entry
-    const logEntry = document.createElement("p");
-    logEntry.textContent = message;
+import { 
+    battleSystem, 
+    gameConfig 
+} from "./config.js";
 
-    // Append to results log
-    resultsLog.appendChild(logEntry);
-
-    // Keep only the latest 5 entries for readability
-    while (resultsLog.children.length > 5) {
-        resultsLog.removeChild(resultsLog.firstChild);
-    }
-}
-
-function setupPlayTurnButton() {
-    const playTurnButton = document.getElementById("play-turn");
-
-    if (playTurnButton) {
-        // Remove any existing event listeners before adding a new one
-        playTurnButton.replaceWith(playTurnButton.cloneNode(true)); 
-        const newButton = document.getElementById("play-turn"); 
-        newButton.addEventListener("click", battleRound);
-    } else {
-        console.error("❌ ERROR: 'Play Turn' button not found!");
-    }
-}
+import { 
+    logToResults, 
+    updateBattleZones, 
+    removeDefeatedCards 
+} from "./display.js";
 
 function battleRound() {
     if (!currentPlayerBattleCards?.char || !currentEnemyBattleCards?.char) {
@@ -44,15 +28,15 @@ function battleRound() {
 
     logToResults(`⚔️ ${currentPlayerBattleCards.char.name} vs ${currentEnemyBattleCards.char.name} begins!`);
 
-    // 💥 Character vs Character Combat
+    // 🌟 Character vs Character Combat
     processCombat(currentPlayerBattleCards.char, currentEnemyBattleCards.char);
 
-    // 🔥 Essence Card Effects (if both players have one)
+    // 🌟 Essence vs Essence (if both have one)
     if (currentPlayerBattleCards.essence && currentEnemyBattleCards.essence) {
         processCombat(currentPlayerBattleCards.essence, currentEnemyBattleCards.essence);
     }
 
-    // 🔥 Player’s Essence & Ability Affecting the Enemy Character
+    // 🌟 Player’s Essence & Ability Affecting the Enemy Character
     if (currentPlayerBattleCards.essence) {
         processCombat(currentPlayerBattleCards.essence, currentEnemyBattleCards.char);
     }
@@ -60,7 +44,7 @@ function battleRound() {
         processCombat(currentPlayerBattleCards.ability, currentEnemyBattleCards.char);
     }
 
-    // 🔥 Enemy’s Essence & Ability Affecting the Player Character
+    // 🌟 Enemy’s Essence & Ability Affecting the Player Character
     if (currentEnemyBattleCards.essence) {
         processCombat(currentEnemyBattleCards.essence, currentPlayerBattleCards.char);
     }
@@ -77,7 +61,7 @@ function processCombat(attacker, defender) {
         return;
     }
 
-    // 🌟 Log what’s happening to verify the order of attacks
+    // 🌟 Log the attack event
     logToResults(`${attacker.name} attacks ${defender.name}!`);
 
     // ✅ Essence & Ability Cards Might Not Have ATK
@@ -87,18 +71,28 @@ function processCombat(attacker, defender) {
         return;
     }
 
-    let essenceMultiplier = battleSystem.essenceBonuses?.[attacker.essence]?.strongAgainst === defender.essence 
-        ? battleSystem.damageCalculation.essenceBonusMultiplier
-        : battleSystem.essenceBonuses?.[attacker.essence]?.weakAgainst === defender.essence
-        ? 1 / battleSystem.damageCalculation.essenceBonusMultiplier
-        : 1;
+    let essenceMultiplier = 1;
+    let classMultiplier = 1;
 
-    let classMultiplier = battleSystem.classBonuses?.[attacker.class]?.strongAgainst?.includes(defender.class) 
-        ? battleSystem.damageCalculation.classBonusMultiplier
-        : battleSystem.classBonuses?.[attacker.class]?.weakAgainst?.includes(defender.class)
-        ? 1 / battleSystem.damageCalculation.classBonusMultiplier
-        : 1;
+    // 🌟 Apply Essence Bonus
+    if (attacker.essence && defender.essence) {
+        if (battleSystem.essenceBonuses?.[attacker.essence]?.strongAgainst === defender.essence) {
+            essenceMultiplier = battleSystem.damageCalculation.essenceBonusMultiplier;
+        } else if (battleSystem.essenceBonuses?.[attacker.essence]?.weakAgainst === defender.essence) {
+            essenceMultiplier = 1 / battleSystem.damageCalculation.essenceBonusMultiplier;
+        }
+    }
 
+    // 🌟 Apply Class Bonus
+    if (attacker.class && defender.class) {
+        if (battleSystem.classBonuses?.[attacker.class]?.strongAgainst?.includes(defender.class)) {
+            classMultiplier = battleSystem.damageCalculation.classBonusMultiplier;
+        } else if (battleSystem.classBonuses?.[attacker.class]?.weakAgainst?.includes(defender.class)) {
+            classMultiplier = 1 / battleSystem.damageCalculation.classBonusMultiplier;
+        }
+    }
+
+    // 🌟 Calculate Damage
     let baseDamage = Math.max(
         (attackPower * essenceMultiplier * classMultiplier) - (defender.def ?? 0),
         battleSystem.damageCalculation.minDamage
@@ -110,99 +104,14 @@ function processCombat(attacker, defender) {
     logToResults(`${attacker.name} deals ${baseDamage} damage to ${defender.name}!`);
 }
 
-function removeDefeatedCards() {
-    let removedPlayerCard = false;
-    let removedEnemyCard = false;
-
-    // ⚔️ Remove Character if Defeated
-    if (currentPlayerBattleCards.char?.hp <= 0) {
-        logToResults(`☠️ ${currentPlayerBattleCards.char.name} has been defeated!`);
-        currentPlayerBattleCards.char = null;
-        removedPlayerCard = true;
+// ✅ Attach event listener after the DOM loads
+document.addEventListener("DOMContentLoaded", () => {
+    const playTurnButton = document.getElementById("play-turn");
+    if (playTurnButton) {
+        playTurnButton.addEventListener("click", battleRound);
+    } else {
+        console.error("❌ ERROR: 'Play Turn' button not found!");
     }
-    if (currentEnemyBattleCards.char?.hp <= 0) {
-        logToResults(`☠️ ${currentEnemyBattleCards.char.name} has been defeated!`);
-        currentEnemyBattleCards.char = null;
-        removedEnemyCard = true;
-    }
-
-    // 🌟 Remove Essence & Ability If Defeated
-    if (currentPlayerBattleCards.essence?.hp <= 0) {
-        logToResults(`☠️ ${currentPlayerBattleCards.essence.name} has been exhausted!`);
-        currentPlayerBattleCards.essence = null;
-    }
-    if (currentPlayerBattleCards.ability?.hp <= 0) {
-        logToResults(`☠️ ${currentPlayerBattleCards.ability.name} has been used up!`);
-        currentPlayerBattleCards.ability = null;
-    }
-    if (currentEnemyBattleCards.essence?.hp <= 0) {
-        logToResults(`☠️ ${currentEnemyBattleCards.essence.name} has been exhausted!`);
-        currentEnemyBattleCards.essence = null;
-    }
-    if (currentEnemyBattleCards.ability?.hp <= 0) {
-        logToResults(`☠️ ${currentEnemyBattleCards.ability.name} has been used up!`);
-        currentEnemyBattleCards.ability = null;
-    }
-
-    // 🃏 Draw new character cards if available
-    if (removedPlayerCard && playerHand.length > 0) {
-        currentPlayerBattleCards.char = playerHand.shift();
-        logToResults(`🔄 Player draws ${currentPlayerBattleCards.char.name} into battle!`);
-    }
-    if (removedEnemyCard && enemyHand.length > 0) {
-        currentEnemyBattleCards.char = enemyHand.shift();
-        logToResults(`🔄 Enemy draws ${currentEnemyBattleCards.char.name} into battle!`);
-    }
-
-    updateBattleZones();
-}
-
-function updateBattleZones() {
-    // 🔹 Select battle zones
-    const playerCharZone = document.getElementById("player-char-zone");
-    const playerEssenceZone = document.getElementById("player-essence-zone");
-    const playerAbilityZone = document.getElementById("player-ability-zone");
-
-    const enemyCharZone = document.getElementById("enemy-char-zone");
-    const enemyEssenceZone = document.getElementById("enemy-essence-zone");
-    const enemyAbilityZone = document.getElementById("enemy-ability-zone");
-
-    // 🔥 Clear battle zones before updating (removes defeated cards)
-    playerCharZone.innerHTML = "";
-    playerEssenceZone.innerHTML = "";
-    playerAbilityZone.innerHTML = "";
-
-    enemyCharZone.innerHTML = "";
-    enemyEssenceZone.innerHTML = "";
-    enemyAbilityZone.innerHTML = "";
-
-    // ✅ Update Character Cards
-    if (currentPlayerBattleCards.char) {
-        playerCharZone.appendChild(createCardElement(currentPlayerBattleCards.char, "char"));
-    }
-    if (currentEnemyBattleCards.char) {
-        enemyCharZone.appendChild(createCardElement(currentEnemyBattleCards.char, "char"));
-    }
-
-    // ✅ Update Essence Cards (if applicable)
-    if (currentPlayerBattleCards.essence) {
-        playerEssenceZone.appendChild(createCardElement(currentPlayerBattleCards.essence, "essence"));
-    }
-    if (currentEnemyBattleCards.essence) {
-        enemyEssenceZone.appendChild(createCardElement(currentEnemyBattleCards.essence, "essence"));
-    }
-
-    // ✅ Update Ability Cards (if applicable)
-    if (currentPlayerBattleCards.ability) {
-        playerAbilityZone.appendChild(createCardElement(currentPlayerBattleCards.ability, "ability"));
-    }
-    if (currentEnemyBattleCards.ability) {
-        enemyAbilityZone.appendChild(createCardElement(currentEnemyBattleCards.ability, "ability"));
-    }
-
-    logToResults("🛠️ Battle zones updated.");
-}
-
-document.addEventListener("DOMContentLoaded", setupPlayTurnButton);
+});
 
 export { battleRound };

@@ -1,0 +1,31 @@
+/* 🔹 PLAYER & ENEMY HANDS */
+#player-hand-section,
+#enemy-hand-section {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 🔹 HAND STYLING */
+#player-hand,
+#enemy-hand {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    border: 3px solid #C89F5D;
+    padding: 20px;
+    width: 100%;
+    background-color: #EAD7A5;
+    align-items: center;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    flex-wrap: wrap; /* ✅ Prevents overflow issues */
+}
+
+/* 🔹 RESPONSIVE HAND ADJUSTMENTS */
+@media (max-width: 1024px) {
+    #player-hand,
+    #enemy-hand {
+        grid-template-columns: repeat(2, 1fr); /* Adjusts for smaller screens */
+    }
+}

@@ -1,0 +1,14 @@
+/* 🔹 RESULTS LOG */
+#results-log {
+    width: 100%;
+    height: 140px;
+    padding: 10px;
+    background-color: #fff;
+    border: 3px solid #C89F5D;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #856404;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto; /* ✅ Allows scrolling if full */
+    scroll-behavior: smooth; /* ✅ Smoother scrolling */
+}

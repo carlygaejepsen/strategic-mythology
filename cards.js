@@ -1,4 +1,5 @@
 import { loadJSON, cardTemplates, battleSystem, gameConfig } from "./config.js";
+import { placeCardInBattleZone, updateHands } from "./display.js"; // ✅ UI functions handled separately
 
 let playerDeck = [];
 let enemyDeck = [];
@@ -8,38 +9,12 @@ let enemyHand = [];
 let currentPlayerBattleCards = { char: null, essence: null, ability: null };
 let currentEnemyBattleCards = { char: null, essence: null, ability: null };
 
+// ✅ Ensures correct template data replacement
 function populateTemplate(template, data) {
     return template.replace(/{(\w+)}/g, (match, key) => (key in data ? data[key] : match));
 }
 
-async function loadAllCards() {
-    try {
-        const characterFiles = [
-            "./data/beast-chars.json", "./data/bully-chars.json", "./data/celestial-chars.json",
-            "./data/hero-chars.json", "./data/life-chars.json", "./data/mystical-chars.json",
-            "./data/olympian-chars.json", "./data/plant-chars.json", "./data/underworld-chars.json",
-            "./data/water-chars.json"
-        ];
-
-        const [characterDeck, essenceDeck, abilityDeck, battleData] = await Promise.all([
-            Promise.all(characterFiles.map(loadJSON)).then(results => results.flat()),
-            loadJSON("./data/essence-cards.json"),
-            loadJSON("./data/ability-cards.json"),
-        ]);
-
-        Object.assign(battleSystem, battleData);
-
-        const fullDeck = [...characterDeck, ...essenceDeck, ...abilityDeck];
-        playerDeck = shuffleDeck([...fullDeck]);
-        enemyDeck = shuffleDeck([...fullDeck]);
-
-        console.log("✅ Player Deck:", playerDeck);
-        console.log("✅ Enemy Deck:", enemyDeck);
-    } catch (error) {
-        console.error("❌ ERROR loading cards:", error);
-    }
-}
-
+// ✅ Shuffles deck using Fisher-Yates algorithm
 function shuffleDeck(deck) {
     for (let i = deck.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -48,6 +23,7 @@ function shuffleDeck(deck) {
     return deck;
 }
 
+// ✅ Deals starting hands
 function dealStartingHands() {
     const HAND_SIZE = 6;
 
@@ -59,23 +35,26 @@ function dealStartingHands() {
     playerHand = playerDeck.splice(0, HAND_SIZE);
     enemyHand = enemyDeck.splice(0, HAND_SIZE);
 
+    updateHands(); // ✅ Updates the UI to reflect the new hands
+
     console.log("🎴 Player Hand:", playerHand);
     console.log("🎴 Enemy Hand:", enemyHand);
 }
 
+// ✅ Determines card type correctly
 function determineCardType(card) {
     if (card.essence) return "essence";
     return card.classes ? "char" : "ability";
 }
 
+// ✅ Creates a card element for UI display
 function createCardElement(card, type) {
     console.log(`🎨 Creating card: ${card.name} (Type: ${type})`);
 
     let computedType = determineCardType(card);
-
     if (!cardTemplates[computedType]) {
         console.error(`❌ ERROR: Missing template for card type: ${computedType}`);
-        return document.createElement("div"); 
+        return document.createElement("div");
     }
 
     const template = cardTemplates[computedType].html;
@@ -108,43 +87,42 @@ function createCardElement(card, type) {
     return cardDiv;
 }
 
-function placeCardInBattleZone(card, battleZoneId, updateFunction, owner) {
-    const battleZone = document.getElementById(battleZoneId);
-    if (!battleZone) return;
-
-    battleZone.innerHTML = "";
-    const cardElement = createCardElement(card, determineCardType(card));
-    battleZone.appendChild(cardElement);
-
-    updateFunction(card, determineCardType(card));
-    console.log(`🔄 ${owner} ${determineCardType(card)} battle card updated: ${card.name}`);
-
-    return cardElement;
-}
-
+// ✅ Handles card selection and moves it to the battle zone
 function handleCardClick(card) {
     console.log(`🔹 Player selected: ${card.name}`);
 
     const type = determineCardType(card);
     placeCardInBattleZone(card, `player-${type}-zone`, updatePlayerBattleCard, "Player");
 
-    if (!currentEnemyBattleCards.char && enemyHand.length > 0) {
-        const enemyCard = enemyHand.shift();
-        console.log(`🔹 Enemy selected: ${enemyCard.name}`);
+    // ✅ Removes the selected card from the player's hand
+    playerHand = playerHand.filter(c => c !== card);
+    updateHands(); // ✅ Refreshes the UI to reflect the change
 
-        const enemyType = determineCardType(enemyCard);
-        placeCardInBattleZone(enemyCard, `enemy-${enemyType}-zone`, updateEnemyBattleCard, "Enemy");
-    } else {
-        console.log("⚠️ No enemy cards left.");
-    }
+    console.log("⚠️ Player hand updated:", playerHand);
 }
 
+// ✅ Updates the player's active battle card
 function updatePlayerBattleCard(card, type) {
     currentPlayerBattleCards[type] = card || null;
 }
 
+// ✅ Updates the enemy's active battle card
 function updateEnemyBattleCard(card, type) {
     currentEnemyBattleCards[type] = card || null;
 }
 
-export { playerDeck, enemyDeck, playerHand, enemyHand, currentPlayerBattleCards, currentEnemyBattleCards, updatePlayerBattleCard, updateEnemyBattleCard, loadAllCards, shuffleDeck, dealStartingHands, createCardElement, handleCardClick };
+// ✅ Exports everything needed for game functionality
+export {
+    playerDeck,
+    enemyDeck,
+    playerHand,
+    enemyHand,
+    currentPlayerBattleCards,
+    currentEnemyBattleCards,
+    updatePlayerBattleCard,
+    updateEnemyBattleCard,
+    shuffleDeck,
+    dealStartingHands,
+    createCardElement,
+    handleCardClick
+};
