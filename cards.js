@@ -50,14 +50,17 @@ function determineCardType(card) {
     return card.classes ? "char" : "ability";
 }
 
-// Creates a card element for UI display
+// Creates a card element for UI display, wrapped in a .card-container
 function createCardElement(card, type) {
     console.log(`🎨 Creating card: ${card.name} (Type: ${type})`);
-    let computedType = determineCardType(card);
+
+    const computedType = determineCardType(card);
     if (!cardTemplates[computedType]) {
         console.error(`❌ ERROR: Missing template for card type: ${computedType}`);
         return document.createElement("div");
     }
+
+    // Populate the HTML template
     const template = cardTemplates[computedType].html;
     const populatedHTML = populateTemplate(template, {
         name: card.name || "Unknown",
@@ -75,15 +78,33 @@ function createCardElement(card, type) {
             ? card.essences.map(ess => `<span class="essence ${ess}">${gameConfig?.["essence-emojis"]?.[ess] || ess}</span>`).join(" ")
             : ""
     });
+
+    // 1️⃣ Create the container element
+    const containerDiv = document.createElement("div");
+    containerDiv.classList.add("card-container"); 
+    // Make sure your CSS has something like:
+    // .card-container {
+    //    position: relative; 
+    //    display: inline-block;
+    // }
+
+    // 2️⃣ Create the main card element
     const cardDiv = document.createElement("div");
     cardDiv.classList.add(`${computedType}-card`);
     cardDiv.innerHTML = populatedHTML;
-    cardDiv.addEventListener("click", () => {
+
+    // 3️⃣ Insert the main card into the container
+    containerDiv.appendChild(cardDiv);
+
+    // 4️⃣ Add click handling on the container
+    containerDiv.addEventListener("click", () => {
         console.log(`🖱️ Clicked on card: ${card.name}`);
         handleCardClick(card);
     });
-    return cardDiv;
+
+    return containerDiv;
 }
+
 
 // Handles the player's card selection, moves the card to the battle zone, and updates the hand UI.
 function handleCardClick(card) {
