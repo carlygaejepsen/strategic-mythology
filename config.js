@@ -1,18 +1,20 @@
-// config.js - Handles game configurations, settings, and data loading
+// config.js - Handles game configurations, settings, data loading, and global references
 
+// Core objects (non-const so we can reassign if needed)
 let cardTemplates = {}; // Stores card templates loaded from JSON
-let battleSystem = {}; // Stores battle system configurations
+let battleSystem = {};  // Stores battle system configurations
 
-export let playerDeck = []; // Stores player's deck
-export let enemyDeck = []; // Stores enemy's deck
-export let playerHand = []; // Stores player's current hand
-export let enemyHand = []; // Stores enemy's current hand
+// Decks & Hands (export as let so we can mutate them freely)
+export let playerDeck = [];    // Player's deck
+export let enemyDeck = [];     // Enemy's deck
+export let playerHand = [];    // Player's current hand
+export let enemyHand = [];     // Enemy's current hand
 
-// Stores the player's and enemy's active battle cards (supports multiple slots)
+// Active Battle Cards
 let currentPlayerBattleCards = { char: null, essence: null, ability: null };
 let currentEnemyBattleCards = { char: null, essence: null, ability: null };
 
-// ✅ Function to load JSON data
+// JSON loading helper
 async function loadJSON(file) {
     try {
         const response = await fetch(file);
@@ -24,7 +26,7 @@ async function loadJSON(file) {
     }
 }
 
-// ✅ Game configuration settings
+// Game-wide config (texts, placeholders, etc.)
 let gameConfig = {
     "essence-emojis": {
         "fire": "🔥", "water": "🌊", "air": "💨", "earth": "🏔️",
@@ -55,7 +57,7 @@ let gameConfig = {
     }
 };
 
-// ✅ Load configuration files (card templates + battle system rules)
+// Fetches card templates + merges bat-sys.json data into battleSystem
 async function loadConfigFiles() {
     try {
         console.log("📥 Fetching configuration files...");
@@ -72,7 +74,7 @@ async function loadConfigFiles() {
     }
 }
 
-// ✅ Shuffle deck function
+// Shuffle function (Fisher-Yates)
 function shuffleDeck(deck) {
     for (let i = deck.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -81,7 +83,7 @@ function shuffleDeck(deck) {
     return deck;
 }
 
-// ✅ Load all cards from JSON files
+// Loads character, essence, and ability cards from JSON, populates playerDeck & enemyDeck
 async function loadAllCards() {
     try {
         console.log("📥 Fetching all card data...");
@@ -110,15 +112,23 @@ async function loadAllCards() {
     }
 }
 
-// ✅ Export all necessary data
-export { 
-    cardTemplates, 
-    gameConfig, 
-    battleSystem, 
-    loadConfigFiles, 
-    loadJSON, 
-    loadAllCards, 
-    shuffleDeck, 
-	currentPlayerBattleCards, 
-    currentEnemyBattleCards 
+// Export all data & functions so other modules can use them
+export {
+    cardTemplates,
+    gameConfig,
+    battleSystem,
+    loadConfigFiles,
+    loadJSON,
+    loadAllCards,
+    shuffleDeck,
+
+    // Deck & hand references (reassignable as let)
+    playerDeck,
+    enemyDeck,
+    playerHand,
+    enemyHand,
+
+    // Active battle cards
+    currentPlayerBattleCards,
+    currentEnemyBattleCards
 };
