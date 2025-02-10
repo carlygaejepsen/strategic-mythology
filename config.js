@@ -122,12 +122,6 @@ export {
     loadAllCards,
     shuffleDeck,
 
-    // Deck & hand references (reassignable as let)
-    playerDeck,
-    enemyDeck,
-    playerHand,
-    enemyHand,
-
     // Active battle cards
     currentPlayerBattleCards,
     currentEnemyBattleCards
