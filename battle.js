@@ -22,7 +22,14 @@ import {
   placeCardInBattleZone
 } from "./display.js";
 
-// New helper functions
+function gameLoop() {
+    if (!gameRunning) {
+        gameRunning = true;
+        battleRound();
+        gameRunning = false;
+    }
+}
+
 function checkForCombos(battleZone, owner) {
   const cards = Object.values(battleZone).filter(card => card !== null);
   let comboFound = false;
