@@ -121,4 +121,4 @@ function updateHand(handId, handArray) {
     });
 }
 
-export { logToResults, updateBattleZones, updateHands, removeCardFromHand };
+export { logToResults, updateBattleZones, updateHands };
