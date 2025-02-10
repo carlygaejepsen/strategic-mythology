@@ -20,8 +20,8 @@ export let playerHand = [];    // Player's current hand
 export let enemyHand = [];     // Enemy's current hand
 
 // Active Battle Cards
-let currentPlayerBattleCards = { char: null, essence: null, ability: null };
-let currentEnemyBattleCards = { char: null, essence: null, ability: null };
+export let currentPlayerBattleCards = { char: null, essence: null, ability: null };
+export let currentEnemyBattleCards = { char: null, essence: null, ability: null };
 
 // JSON loading helper
 async function loadJSON(file) {
