@@ -212,20 +212,20 @@ body {
     font-size: 1.2rem;
     font-weight: bold;
     padding: 10px 20px;
-    border: 2px solid #444;
-    background: linear-gradient(to bottom, #f4f4f4, #ddd);
-    color: #222;
+    border: 3px solid #C89F5D;    
+    background-color: #EAD7A5;    
+	color: #222;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
 }
 
 #play-turn:hover {
-    background: linear-gradient(to bottom, #ddd, #ccc);
-    border-color: #222;
+    background-color: #EAD7A5;    
+	border-color: #222;
 }
 
 #play-turn:active {
-    background: #bbb;
-    border-color: #000;
+    background-color: #EAD7A5;    
+	border-color: #000;
 }
