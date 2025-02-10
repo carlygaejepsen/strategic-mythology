@@ -8,11 +8,6 @@ import {
 } from "./cards.js";
 import { battleSystem, gameConfig } from "./config.js";
 
-import { currentPlayerBattleCards, currentEnemyBattleCards, playerHand, enemyHand } from "./cards.js";
-import { battleSystem, gameConfig } from "./config.js";
-
-import { currentPlayerBattleCards, currentEnemyBattleCards, playerHand, enemyHand } from "./cards.js";
-import { battleSystem, gameConfig } from "./config.js";
 
 function battleRound() {
     if (!currentPlayerBattleCards.length || !currentEnemyBattleCards.length) {
@@ -129,9 +124,4 @@ document.getElementById("play-turn").addEventListener("click", battleRound);
 
 export { battleRound };
 
-// Attach event listener to play-turn button
-document.getElementById("play-turn").addEventListener("click", battleRound);
 
-export { battleRound };
-
-export { battleRound };
