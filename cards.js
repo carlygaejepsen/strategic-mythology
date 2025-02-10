@@ -1,4 +1,4 @@
-import { loadJSON, cardTemplates, battleSystem } from "./config.js";
+import { loadJSON, cardTemplates, battleSystem, gameConfig } from "./config.js";
 
 let playerDeck = [];
 let enemyDeck = [];
@@ -64,4 +64,53 @@ function dealStartingHands() {
     console.log("Enemy Hand:", enemyHand);
 }
 
-export { playerDeck, enemyDeck, playerHand, enemyHand, loadAllCards, shuffleDeck, dealStartingHands };
+function createCardElement(card, type) {
+    console.log(`Creating card: ${card.name} (Type: ${type})`);
+
+    let computedType;
+    if (type) {
+        computedType = type;
+    } else if (Array.isArray(card.classes) && Array.isArray(card.essences)) {
+        computedType = "char";
+    } else if (card.essence) {
+        computedType = "essence";
+    } else {
+        computedType = "ability";
+    }
+
+    if (!cardTemplates[computedType]) {
+        console.error(`❌ ERROR: Missing template for card type: ${computedType}`);
+        return document.createElement("div"); 
+    }
+
+    const template = cardTemplates[computedType].html;
+    const populatedHTML = populateTemplate(template, {
+        name: card.name || "Unknown",
+        img: card.img || "",
+        hp: card.hp ?? "",
+        atk: card.atk ?? "",
+        def: card.def ?? "",
+        spd: card.spd ?? "",
+        essence: card.essence || "",
+        essence_emoji: card.essence ? (gameConfig["essence-emojis"]?.[card.essence] || "❓") : "",
+        classes: Array.isArray(card.classes)
+            ? card.classes.map(cls => `<span class="class-tag">${gameConfig["class-names"]?.[cls] || cls}</span>`).join(", ")
+            : "",
+        essences: Array.isArray(card.essences)
+            ? card.essences.map(ess => `<span class="essence ${ess}">${gameConfig["essence-emojis"]?.[ess] || ess}</span>`).join(" ")
+            : ""
+    });
+
+    const cardDiv = document.createElement("div");
+    cardDiv.classList.add(`${computedType}-card`);
+    cardDiv.innerHTML = populatedHTML;
+
+    cardDiv.addEventListener("click", () => {
+        console.log(`🖱️ Clicked on card: ${card.name}`);
+        handleCardClick(card);
+    });
+
+    return cardDiv;
+}
+
+export { playerDeck, enemyDeck, playerHand, enemyHand, loadAllCards, shuffleDeck, dealStartingHands, createCardElement };
