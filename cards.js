@@ -99,8 +99,7 @@ function createCardElement(card, type) {
     return containerDiv;
 }
 
-// Handles the player's card selection, moves the card to the battle zone,
-// and removes it from the player's hand.
+// handleCardClick 2.0
 function handleCardClick(card) {
     console.log(`🔹 Player selected: ${card.name}`);
     const type = determineCardType(card);
@@ -129,6 +128,8 @@ function handleCardClick(card) {
     } else {
         console.warn("⚠️ Enemy already has a card in battle or has no cards left.");
     }
+
+    // ✅ Do NOT start battle automatically, let the player decide
 }
 
 

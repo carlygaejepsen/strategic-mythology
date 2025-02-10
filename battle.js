@@ -23,14 +23,14 @@ import {
 } from "./display.js";
 
 let gameRunning = false;
-//gameLoop 2.0
+//gameLoop 3.0
 function gameLoop() {
     if (gameRunning) return; // Prevents multiple triggers
     gameRunning = true;
 
     console.log("🔄 New battle round starting...");
 
-    battleRound();
+    battleRound(); // ✅ Runs only ONCE per turn
 
     setTimeout(() => {
         // ✅ Stop looping if a deck is empty
@@ -40,8 +40,8 @@ function gameLoop() {
             return;
         }
 
-        // ✅ Instead of automatically continuing, the game now waits for the player
-        gameRunning = false; // Turn must be manually advanced by clicking "Play Turn"
+        // ✅ Ensure the next turn waits for "Play Turn" click
+        gameRunning = false;
     }, 1000);
 }
 
