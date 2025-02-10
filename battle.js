@@ -117,6 +117,8 @@ function drawCardsToFillHands() {
 
 // Updated battle logic
 function battleRound() {
+  console.log("⚔️ New battle round begins!");
+
   // Check for triple combos first
   if (checkForTripleCombo(currentPlayerBattleCards, "Player")) {
     performTripleCombo("Player", currentEnemyBattleCards);
@@ -126,18 +128,24 @@ function battleRound() {
   }
 
   // Process individual attacks
-  [currentPlayerBattleCards, currentEnemyBattleCards].forEach((battleZone, isPlayer) => {
-    const owner = isPlayer ? "Player" : "Enemy";
-    Object.values(battleZone).forEach(card => {
-      if (!card) return;
-      
-      const comboActive = checkForCombos(battleZone, owner);
-      const defenderZone = isPlayer ? currentEnemyBattleCards : currentPlayerBattleCards;
-      let target = Object.values(defenderZone).find(c => c) || 
-                  (isPlayer ? enemyHand : playerHand).find(c => c);
+  [currentPlayerBattleCards, currentEnemyBattleCards].forEach((battleZone, index) => {
+    const owner = index === 0 ? "Player" : "Enemy";
+    const opponentBattleZone = index === 0 ? currentEnemyBattleCards : currentPlayerBattleCards;
+    const opponentHand = index === 0 ? enemyHand : playerHand;
 
-      if (target) {
-        processCombat(card, target, comboActive);
+    Object.values(battleZone).forEach(attacker => {
+      if (!attacker) return;
+
+      const comboActive = checkForCombos(battleZone, owner);
+      
+      // Fix: Ensure the attacker does not target itself
+      let target = Object.values(opponentBattleZone).find(c => c && c !== attacker) ||
+                   opponentHand.find(c => c);
+
+      if (target && attacker !== target) {
+        processCombat(attacker, target, comboActive);
+      } else {
+        console.warn(`⚠️ No valid target found for ${attacker.name}, skipping attack.`);
       }
     });
   });
@@ -149,6 +157,10 @@ function battleRound() {
 // Modified processCombat with combo support
 function processCombat(attacker, defender, isCombo = false) {
   if (!attacker?.name || !defender?.name) return;
+  if (attacker === defender) {
+    console.error(`🚨 ERROR: ${attacker.name} is trying to attack itself! Skipping attack.`);
+    return;
+  }
 
   let attackPower = attacker.atk || 0;
   if (isCombo && ['essence', 'ability'].includes(determineCardType(attacker))) {
@@ -156,7 +168,7 @@ function processCombat(attacker, defender, isCombo = false) {
     logToResults(`🔥 Combo boost for ${attacker.name}!`);
   }
 
-  // Existing damage calculation
+  // Damage multipliers
   let essenceMultiplier = 1;
   let classMultiplier = 1;
 
