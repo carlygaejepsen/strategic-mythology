@@ -9,14 +9,14 @@ import {
 import { battleSystem, gameConfig } from "./config.js";
 
 function battleRound() {
-    if (!currentPlayerBattleCard || !currentEnemyBattleCard) {
+    if (!currentPlayerBattleCards || !currentEnemyBattleCards) {
         console.log("❌ No active cards in the battle zone! Waiting for selections...");
         return;
     }
 
     console.log(gameConfig["battle-messages"].battleStart
-        .replace("{player}", currentPlayerBattleCard.name)
-        .replace("{enemy}", currentEnemyBattleCard.name)
+        .replace("{player}", currentPlayerBattleCards.name)
+        .replace("{enemy}", currentEnemyBattleCards.name)
     );
 
     function calculateDamage(attacker, defender) {
@@ -49,12 +49,12 @@ function battleRound() {
         );
     }
 
-    calculateDamage(currentPlayerBattleCard, currentEnemyBattleCard);
-    if (currentEnemyBattleCard.hp > 0) calculateDamage(currentEnemyBattleCard, currentPlayerBattleCard);
+    calculateDamage(currentPlayerBattleCards, currentEnemyBattleCards);
+    if (currentEnemyBattleCards.hp > 0) calculateDamage(currentEnemyBattleCards, currentPlayerBattleCards);
 
     // Handle defeated cards
-    if (currentPlayerBattleCard.hp <= 0) {
-        console.log(gameConfig["battle-messages"].defeatMessage.replace("{card}", currentPlayerBattleCard.name));
+    if (currentPlayerBattleCards.hp <= 0) {
+        console.log(gameConfig["battle-messages"].defeatMessage.replace("{card}", currentPlayerBattleCards.name));
         updatePlayerBattleCard(null); // Remove defeated player card
 
         // Replace with a new card from the hand if available
@@ -67,8 +67,8 @@ function battleRound() {
         }
     }
 
-    if (currentEnemyBattleCard.hp <= 0) {
-        console.log(gameConfig["battle-messages"].defeatMessage.replace("{card}", currentEnemyBattleCard.name));
+    if (currentEnemyBattleCards.hp <= 0) {
+        console.log(gameConfig["battle-messages"].defeatMessage.replace("{card}", currentEnemyBattleCards.name));
         updateEnemyBattleCard(null); // Remove defeated enemy card
 
         // Replace with a new card from the hand if available
