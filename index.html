@@ -9,7 +9,7 @@
 <body>
 
     <div id="game-board">
-        <!-- Player's Hand at the Top -->
+        <!-- Player's Hand on the Left -->
         <div id="player-hand-section">
             <h2>Player</h2>
             <div id="player-hand"></div>
@@ -21,23 +21,28 @@
             <div id="results-log"></div>
 
             <div id="battle-zones">
-                <div id="player-side">
-                    <div id="player-char-zone"></div>
-                    <div id="player-essence-zone"></div>
-                    <div id="player-ability-zone"></div>
-                </div>
+                <h3>Battle Zone</h3>
+                <div class="battle-container">
+                    <div id="player-side" class="battle-zone">
+                        <h4>Player</h4>
+                        <div id="player-char-zone"></div>
+                        <div id="player-essence-zone"></div>
+                        <div id="player-ability-zone"></div>
+                    </div>
 
-                <button id="play-turn">⚔️ Play Turn ⚔️</button>
+                    <button id="play-turn">⚔️ Play Turn ⚔️</button>
 
-                <div id="enemy-side">
-                    <div id="enemy-char-zone"></div>
-                    <div id="enemy-essence-zone"></div>
-                    <div id="enemy-ability-zone"></div>
+                    <div id="enemy-side" class="battle-zone">
+                        <h4>Enemy</h4>
+                        <div id="enemy-char-zone"></div>
+                        <div id="enemy-essence-zone"></div>
+                        <div id="enemy-ability-zone"></div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Enemy's Hand at the Bottom -->
+        <!-- Enemy's Hand on the Right -->
         <div id="enemy-hand-section">
             <h2>Enemy</h2>
             <div id="enemy-hand"></div>
