@@ -17,8 +17,8 @@ import {
   enemyHasPlacedCard,
   setPlayerHasPlacedCard,
   setEnemyHasPlacedCard,
-  updateEnemyBattleCard
-  updatePlayerBtatleCard
+  updateEnemyBattleCard,
+  updatePlayerBattleCard
 } from "./config.js";
 //display.js
 import {
