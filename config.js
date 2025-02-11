@@ -38,7 +38,7 @@ async function loadJSON(file) {
 }
 
 // Game-wide config (texts, placeholders, etc.)
-let gameConfig = {
+export let gameConfig = {
     "essence-emojis": {
         "fire": "🔥", "water": "🌊", "air": "💨", "earth": "🏔️",
         "electricity": "⚡", "zap": "⚡", "love": "💞", "malice": "🩸",
