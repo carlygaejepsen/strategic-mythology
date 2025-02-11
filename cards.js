@@ -1,10 +1,7 @@
 import { updateHands } from "./display.js";
 import { handleCardClick } from "./interact.js";
-import { currentEnemyBattleCards, shuffleDeck, enemyDeck, playerDeck } from "./config.js";
+import { currentEnemyBattleCards, shuffleDeck, enemyDeck, playerDeck, playerHand, enemyHand } from "./config.js";
 
-
-export let playerHand = [];
-export let enemyHand = [];
 
 // Replaces placeholders in a template with provided data
 function populateTemplate(template, data) {
