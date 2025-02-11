@@ -1,7 +1,5 @@
 let selectedAttacker = null;
 let selectedDefender = null;
-let playerHasPlacedCard = false; // ✅ Track if the player has placed a card this turn
-let enemyHasPlacedCard = false;  // ✅ Track if the AI has placed a card this turn
 
 //cards.js
 import {
@@ -11,7 +9,11 @@ import {
   enemyHand,
   playerDeck,
   enemyDeck,
-  determineCardType
+  determineCardType,
+  playerHasPlacedCard,
+  enemyHasPlacedCard,
+  setPlayerHasPlacedCard,
+  setEnemyHasPlacedCard
 } from "./cards.js";
 //config.js
 import {
