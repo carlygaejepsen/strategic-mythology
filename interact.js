@@ -1,4 +1,4 @@
-import { playerHand, enemyHand, playerHasPlacedCard, enemyHasPlacedCard, currentPlayerBattleCards, currentEnemyBattleCards } from "./config.js";
+import { playerHand, enemyHand, gameState, currentPlayerBattleCards, currentEnemyBattleCards } from "./config.js";
 import { createCardElement, determineCardType } from "./cards.js";
 import { updatePlayerBattleCard, enemyPlaceCard, removeDefeatedCards, logToResults, updateHands } from "./display.js";
 
@@ -31,7 +31,7 @@ export function setSelectedDefender(card) {
 }
 
 export function setPlayerHasPlacedCard(value) {
-    Object.assign(playerHasPlacedCard, { value });  // ✅ This modifies the value safely
+    gameState.playerHasPlacedCard = value;  // ✅ Now updates correctly across files
 }
 
 export function setEnemyHasPlacedCard(value) {

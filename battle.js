@@ -1,7 +1,7 @@
 import { processCombat, battleSystem } from "./battle-logic.js";
-import { drawCardsToFillHands, setSelectedAttacker, setSelectedDefender, setPlayerHasPlacedCard, setEnemyHasPlacedCard } from "./interact.js";
+import { drawCardsToFillHands, setSelectedAttacker, setSelectedDefender, setPlayerHasPlacedCard, setEnemyHasPlacedCard, selectedAttacker, selectedDefender } from "./interact.js";
 import { logToResults, getRandomCardFromZone } from "./display.js";
-import { currentPlayerBattleCards, currentEnemyBattleCards, playerHasPlacedCard, enemyHasPlacedCard, playerDeck, enemyDeck } from "./config.js";
+import { currentPlayerBattleCards, currentEnemyBattleCards, gameState, playerDeck, enemyDeck } from "./config.js";
 let gameRunning = false;
 
 //gameLoop 3.0
@@ -30,10 +30,11 @@ function battleRound() {
     console.log("⚔️ Battle round begins!");
 
     // 🚨 Ensure the player has placed a card before starting
-    if (!playerHasPlacedCard) {
-        console.warn("⚠️ You must place a card in the battle zone before starting a round.");
-        return;
-    }
+if (!gameState.playerHasPlacedCard) {  // ✅ This now updates properly
+    console.warn("⚠️ You must place a card in the battle zone before starting a round.");
+    return;
+}
+
 
     // 🚨 Ensure the player has selected an attacker and defender before continuing
     if (!selectedAttacker || !selectedDefender) {

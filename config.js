@@ -17,8 +17,11 @@ export let playerDeck = [];    // Player's deck
 export let enemyDeck = [];     // Enemy's deck
 export let playerHand = [];    // Player's current hand
 export let enemyHand = [];     // Enemy's current hand
-export let playerHasPlacedCard = false;
-export let enemyHasPlacedCard = false;
+export let gameState = {
+    playerHasPlacedCard: false,
+    enemyHasPlacedCard: false
+};
+
 
 
 // Active Battle Cards
