@@ -99,6 +99,5 @@ function createCardElement(card, type) {
 export {
 
     dealStartingHands,
-    createCardElement,
-    determineCardType
+    createCardElement
 };
