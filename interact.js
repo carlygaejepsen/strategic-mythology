@@ -43,8 +43,7 @@ export function setEnemyHasPlacedCard(value) {
     gameState.enemyHasPlacedCard = value;
     console.log("DEBUG: gameState.enemyHasPlacedCard set to:", gameState.enemyHasPlacedCard);
 }
-
-// Debugging `placeCardInBattleZone`
+//Debug 2 placeCardInBattleZone
 export function placeCardInBattleZone(card, battleZoneId, updateFunction, owner) {
     console.log(`DEBUG: Trying to place ${card.name} in ${battleZoneId}`);
     console.log("DEBUG: currentPlayerBattleCards Before Placement:", currentPlayerBattleCards);
@@ -54,7 +53,13 @@ export function placeCardInBattleZone(card, battleZoneId, updateFunction, owner)
 
     battleZone.innerHTML = "";  // Clears previous card
     const type = determineCardType(card);
+    
     console.log(`DEBUG: Determined card type for ${card.name} is ${type}`);
+
+    if (!["char", "essence", "ability"].includes(type)) {
+        console.error(`🚨 ERROR: Invalid card type '${type}' for ${card.name}!`);
+        return; // Prevents adding an invalid type
+    }
 
     const cardElement = createCardElement(card, type);
     battleZone.appendChild(cardElement);
