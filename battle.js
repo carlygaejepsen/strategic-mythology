@@ -113,7 +113,7 @@ function drawCardsToFillHands() {
   }
   updateHands();
 }
-//Battle Round 4.0
+//Battle Round 5.0
 let selectedAttacker = null;
 let selectedDefender = null;
 
@@ -126,13 +126,7 @@ function battleRound() {
         return;
     }
 
-    // 🚨 Ensure the player selects an attacker and defender
-    if (!selectedAttacker || !selectedDefender) {
-        console.warn("⚠️ Select an attacker and an enemy defender before continuing.");
-        return;
-    }
-
-    // 🤖 Enemy AI places a card if they don't have one
+    // 🤖 AI places a card **before** player selects a defender
     Object.keys(currentEnemyBattleCards).forEach(type => {
         if (!currentEnemyBattleCards[type] && enemyHand.length > 0) {
             const enemyCard = enemyHand.shift();
@@ -140,6 +134,12 @@ function battleRound() {
             console.log(`🤖 Enemy placed ${enemyCard.name} in battle.`);
         }
     });
+
+    // 🚨 Ensure the player selects an attacker and defender
+    if (!selectedAttacker || !selectedDefender) {
+        console.warn("⚠️ Select an attacker and an enemy defender before continuing.");
+        return;
+    }
 
     // ⚔️ Player's Attack
     processCombat(selectedAttacker, selectedDefender);

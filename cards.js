@@ -99,7 +99,7 @@ function createCardElement(card, type) {
     return containerDiv;
 }
 
-// handleCardClick 4.0
+// handleCardClick 5.0
 function handleCardClick(card) {
     const type = determineCardType(card);
 
@@ -118,15 +118,19 @@ function handleCardClick(card) {
         return;
     }
 
-    // 🎯 If clicking a player's battle card, select it as an attacker
+    // 🎯 If clicking a player's battle card, set it as the attacker
     if (currentPlayerBattleCards[type] === card) {
         selectedAttacker = card;
         console.log(`🎯 Selected Attacker: ${card.name}`);
         return;
     }
 
-    // 🛡️ If clicking an enemy battle card, select it as a defender
+    // 🛡️ If clicking an enemy battle card, set it as the defender (AFTER AI has placed one)
     if (currentEnemyBattleCards[type] === card) {
+        if (!currentEnemyBattleCards[type]) {
+            console.warn("⚠️ Enemy has not placed a card yet. Wait for AI.");
+            return;
+        }
         selectedDefender = card;
         console.log(`🛡️ Selected Defender: ${card.name}`);
         return;
