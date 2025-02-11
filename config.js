@@ -10,8 +10,7 @@ export const turnPhases = {
 export let currentPhase = turnPhases.PLAYER_SELECTION;
 
 // Core objects (non-const so we can reassign if needed)
-let cardTemplates = {}; // Stores card templates loaded from JSON
-let battleSystem = {};  // Stores battle system configurations
+export let cardTemplates = {}; // Stores card templates loaded from JSON
 
 // Decks & Hands (export as let so we can mutate them freely)
 export let playerDeck = [];    // Player's deck
