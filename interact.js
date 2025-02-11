@@ -44,6 +44,48 @@ export function setEnemyHasPlacedCard(value) {
     console.log("DEBUG: gameState.enemyHasPlacedCard set to:", gameState.enemyHasPlacedCard);
 }
 
+import { playerHand, enemyHand, gameState, currentPlayerBattleCards, currentEnemyBattleCards, playerDeck, enemyDeck } from "./config.js";
+import { createCardElement, determineCardType } from "./cards.js";
+import { updatePlayerBattleCard, enemyPlaceCard, removeDefeatedCards, logToResults, updateHands } from "./display.js";
+
+export let selectedAttacker = null;
+export let selectedDefender = null;
+
+export function drawCardsToFillHands() {
+  // Player draw
+  if (playerHand.length < 6 && playerDeck.length > 0) {
+    const drawn = playerDeck.shift();
+    playerHand.push(drawn);
+    logToResults(`🃏 Player draws ${drawn.name}`);
+  }
+
+  // Enemy draw
+  if (enemyHand.length < 6 && enemyDeck.length > 0) {
+    const drawn = enemyDeck.shift();
+    enemyHand.push(drawn);
+    logToResults(`🃏 Enemy draws ${drawn.name}`);
+  }
+  updateHands();
+}
+
+export function setSelectedAttacker(card) {
+    selectedAttacker = card;
+}
+
+export function setSelectedDefender(card) {
+    selectedDefender = card;
+}
+
+export function setPlayerHasPlacedCard(value) {
+    gameState.playerHasPlacedCard = value;
+    console.log("DEBUG: gameState.playerHasPlacedCard set to:", value);
+}
+
+export function setEnemyHasPlacedCard(value) {
+    gameState.enemyHasPlacedCard = value;
+    console.log("DEBUG: gameState.enemyHasPlacedCard set to:", value);
+}
+
 // Debugging `placeCardInBattleZone`
 export function placeCardInBattleZone(card, battleZoneId, updateFunction, owner) {
     console.log(`DEBUG: Trying to place ${card.name} in ${battleZoneId}`);
@@ -53,18 +95,23 @@ export function placeCardInBattleZone(card, battleZoneId, updateFunction, owner)
     if (!battleZone) return;
 
     battleZone.innerHTML = "";  // Clears previous card
-    const cardElement = createCardElement(card, determineCardType(card));
+    const type = determineCardType(card);
+    console.log(`DEBUG: Determined card type for ${card.name} is ${type}`);
+
+    const cardElement = createCardElement(card, type);
     battleZone.appendChild(cardElement);
 
-    updateFunction(card, determineCardType(card));
+    updateFunction(card, type);
 
     if (owner === "Player") {
-        currentPlayerBattleCards[determineCardType(card)] = card;
+        currentPlayerBattleCards[type] = card;
     } else {
-        currentEnemyBattleCards[determineCardType(card)] = card;
+        currentEnemyBattleCards[type] = card;
     }
 
-    console.log(`🔄 ${owner} placed a ${determineCardType(card)} card: ${card.name}`);
+    console.log(`🔄 ${owner} placed a ${type} card: ${card.name}`);
+    console.log("DEBUG: currentPlayerBattleCards now =", currentPlayerBattleCards);
+    console.log("DEBUG: currentEnemyBattleCards now =", currentEnemyBattleCards);
     return cardElement;
 }
 
@@ -84,7 +131,8 @@ export function handleCardClick(card) {
     // 🛡️ If clicking a card in hand, place it in the battle zone
     if (playerHand.includes(card)) {
         if (!gameState.playerHasPlacedCard) { 
-            if (!currentPlayerBattleCards[type]) {
+            if (!currentPlayerBattleCards[type] || type === "essence" || type === "ability") {
+                console.log(`DEBUG: Placing ${card.name} in battle zone...`);
                 placeCardInBattleZone(card, `player-${type}-zone`, updatePlayerBattleCard, "Player");
 
                 const index = playerHand.indexOf(card);
