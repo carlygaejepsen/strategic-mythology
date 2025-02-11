@@ -1,4 +1,3 @@
-// battle.js - Handles battle logic and combat mechanics
 import {
   currentPlayerBattleCards,
   currentEnemyBattleCards,
@@ -11,7 +10,8 @@ import {
 
 import {
   battleSystem,
-  gameConfig
+  gameConfig,
+  updateEnemyBattleCard // ✅ Now properly imported!
 } from "./config.js";
 
 import {
