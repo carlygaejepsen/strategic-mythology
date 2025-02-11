@@ -70,7 +70,7 @@ let gameConfig = {
 };
 
 // Fetches card templates + merges bat-sys.json data into battleSystem
-async function loadConfigFiles() {
+export async function loadConfigFiles() {
     try {
         console.log("📥 Fetching configuration files...");
 
