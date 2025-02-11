@@ -38,21 +38,28 @@ export function setEnemyHasPlacedCard(value) {
     Object.assign(enemyHasPlacedCard, { value });  // ✅ This modifies the value safely
 }
 
-
+//placeCardInBattleZone 2.0
 export function placeCardInBattleZone(card, battleZoneId, updateFunction, owner) {
     const battleZone = document.getElementById(battleZoneId);
     if (!battleZone) return;
 
-    // Clear out old card of that type before adding this one
-    battleZone.innerHTML = "";
+    battleZone.innerHTML = "";  // Clears previous card
     const cardElement = createCardElement(card, determineCardType(card));
     battleZone.appendChild(cardElement);
 
     updateFunction(card, determineCardType(card));
-    console.log(`🔄 ${owner} ${determineCardType(card)} battle card updated: ${card.name}`);
 
+    // 🔹 Ensure currentPlayerBattleCards is updated
+    if (owner === "Player") {
+        currentPlayerBattleCards[determineCardType(card)] = card;  // ✅ Correctly assigns
+    } else {
+        currentEnemyBattleCards[determineCardType(card)] = card;  // ✅ Correctly assigns
+    }
+
+    console.log(`🔄 ${owner} placed a ${determineCardType(card)} card: ${card.name}`);
     return cardElement;
 }
+
 
 // handleCardClick 10.0
 export function handleCardClick(card) {
