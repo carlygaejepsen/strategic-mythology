@@ -1,4 +1,4 @@
-import { loadConfigFiles, loadAllCards } from "./config.js";
+import { loadConfigFiles, loadAllCards, playerDeck, enemyDeck } from "./config.js";
 import { dealStartingHands } from "./cards.js";
 import { createCardElement } from "./cards.js";
 import { determineCardType } from "./cards.js";
