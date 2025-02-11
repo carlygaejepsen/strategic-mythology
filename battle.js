@@ -113,41 +113,44 @@ function drawCardsToFillHands() {
   }
   updateHands();
 }
-//Battle Round 2.0
+//Battle Round 3.0
+let selectedAttacker = null;
+let selectedDefender = null;
+
 function battleRound() {
-    console.log("⚔️ New battle round begins!");
-
-    // Check for triple combos first
-    if (checkForTripleCombo(currentPlayerBattleCards, "Player")) {
-        performTripleCombo("Player", currentEnemyBattleCards);
-    }
-    if (checkForTripleCombo(currentEnemyBattleCards, "Enemy")) {
-        performTripleCombo("Enemy", currentPlayerBattleCards);
+    console.log("⚔️ Battle round begins!");
+    
+    if (!selectedAttacker || !selectedDefender) {
+        console.warn("⚠️ Player must select an attacker and a defender before continuing.");
+        return;
     }
 
-    // Process individual attacks (only once per turn)
-    Object.entries(currentPlayerBattleCards).forEach(([type, playerCard]) => {
-        if (!playerCard) return;
-        
-        const enemyCard = currentEnemyBattleCards[type];
-        if (enemyCard) {
-            processCombat(playerCard, enemyCard);
-        }
-    });
+    // 🛡️ Player's Turn (Selected Attacker vs Selected Defender)
+    processCombat(selectedAttacker, selectedDefender);
 
-    Object.entries(currentEnemyBattleCards).forEach(([type, enemyCard]) => {
-        if (!enemyCard) return;
-        
-        const playerCard = currentPlayerBattleCards[type];
-        if (playerCard) {
-            processCombat(enemyCard, playerCard);
-        }
-    });
+    // 🤖 Enemy AI Turn (Auto-Attacks Random Player Card)
+    const enemyAttacker = getRandomCardFromZone(currentEnemyBattleCards);
+    const playerDefender = getRandomCardFromZone(currentPlayerBattleCards);
+    
+    if (enemyAttacker && playerDefender) {
+        processCombat(enemyAttacker, playerDefender);
+        console.log(`🤖 Enemy AI: ${enemyAttacker.name} attacks ${playerDefender.name}`);
+    }
 
-    removeDefeatedCards(); // ✅ Remove defeated cards BEFORE drawing
+    removeDefeatedCards(); // ✅ Only removes defeated cards (DOES NOT clear entire battle zone)
+    drawCardsToFillHands(); // ✅ Players and enemies draw one new card to their hand (if space)
 
-    // ✅ Ensure the next turn doesn't start until the player clicks "Play Turn"
-    gameRunning = false;
+    // Reset selections for next turn
+    selectedAttacker = null;
+    selectedDefender = null;
+
+    console.log("✅ Battle round complete. Click 'Play Turn' to continue.");
+}
+
+// 📌 Helper: Gets a random card from a battle zone
+function getRandomCardFromZone(battleZone) {
+    const availableCards = Object.values(battleZone).filter(card => card !== null);
+    return availableCards.length > 0 ? availableCards[Math.floor(Math.random() * availableCards.length)] : null;
 }
 
 // Modified processCombat with combo support
