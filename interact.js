@@ -53,7 +53,7 @@ export function placeCardInBattleZone(card, battleZoneId, updateFunction, owner)
     return cardElement;
 }
 
-// handleCardClick 9.0
+// handleCardClick 10.0
 export function handleCardClick(card) {
     const type = determineCardType(card);
 
@@ -63,7 +63,8 @@ export function handleCardClick(card) {
             if (!currentPlayerBattleCards[type]) {
                 placeCardInBattleZone(card, `player-${type}-zone`, updatePlayerBattleCard, "Player");
 
-                playerHand = playerHand.filter(c => c !== card);
+				const index = playerHand.indexOf(card);
+				if (index !== -1) playerHand.splice(index, 1);  // ✅ Modifies playerHand without reassigning it
                 updateHands();
                 console.log(`⚔️ ${card.name} placed in battle zone.`);
                 
