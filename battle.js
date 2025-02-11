@@ -2,6 +2,7 @@ import { processCombat, battleSystem } from "./battle-logic.js";
 import { drawCardsToFillHands, setSelectedAttacker, setSelectedDefender, setPlayerHasPlacedCard, setEnemyHasPlacedCard, selectedAttacker, selectedDefender } from "./interact.js";
 import { logToResults, getRandomCardFromZone, removeDefeatedCards } from "./display.js";
 import { currentPlayerBattleCards, currentEnemyBattleCards, gameState, playerDeck, enemyDeck, playerHand, enemyHand } from "./config.js";
+import { determineCardType } from "./cards.js";
 let gameRunning = false;
 
 //gameLoop 3.0
