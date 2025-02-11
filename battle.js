@@ -32,7 +32,7 @@ import {
 
 let gameRunning = false;
 
-function enemyPlaceCard() {
+export function enemyPlaceCard() {
     if (!enemyHasPlacedCard && enemyHand.length > 0) {
         const enemyCard = enemyHand.shift();
         const type = determineCardType(enemyCard);
