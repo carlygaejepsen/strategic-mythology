@@ -98,7 +98,7 @@ export function shuffleDeck(deck) {
 // Loads character, essence, and ability cards from JSON, populates playerDeck & enemyDeck
 let cardsLoaded = false; // Prevents multiple reloads
 
-async function loadAllCards() {
+export async function loadAllCards() {
     if (cardsLoaded) return; // If already loaded, do nothing
     cardsLoaded = true; // Mark as loaded
 
