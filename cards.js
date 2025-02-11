@@ -27,12 +27,22 @@ function dealStartingHands() {
     console.log("🎴 Player Hand:", playerHand);
     console.log("🎴 Enemy Hand:", enemyHand);
 }
+//debug determineCardType
+export function determineCardType(card) {
+    if (!card) {
+        console.error("🚨 ERROR: `determineCardType()` received an undefined or null card!");
+        return "unknown"; // Return an explicit error type
+    }
 
+    console.log(`DEBUG: Determining type for ${card.name} (Raw Data)`, card);
 
-// Determines the type of a card based on its properties
-function determineCardType(card) {
-    if (card.essence) return "essence";
-    return card.classes ? "char" : "ability";
+    if (card.type) {
+        console.log(`✅ Correctly identified type for ${card.name}: ${card.type}`);
+        return card.type;
+    }
+
+    console.warn(`⚠️ No type found for ${card.name}, defaulting to 'char'.`);
+    return "char"; // Fallback, but this shouldn't happen
 }
 
 // Creates a card element for UI display, wrapped in a .card-container

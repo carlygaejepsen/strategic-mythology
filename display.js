@@ -20,7 +20,7 @@ export function updatePlayerBattleCard(card, type) {
 export function updateEnemyBattleCard(card, type) {
     currentEnemyBattleCards[type] = card || null;
 }
-
+//removeDefeatedCards 2.0
 export function removeDefeatedCards() {
     let removedPlayerCard = false;
     let removedEnemyCard = false;
@@ -29,11 +29,13 @@ export function removeDefeatedCards() {
     if (currentPlayerBattleCards.char?.hp <= 0) {
         logToResults(`☠️ ${currentPlayerBattleCards.char.name} has been defeated!`);
         currentPlayerBattleCards.char = null;
+        document.getElementById("player-char-zone").innerHTML = "";  // ✅ Clears only this card
         removedPlayerCard = true;
     }
     if (currentEnemyBattleCards.char?.hp <= 0) {
         logToResults(`☠️ ${currentEnemyBattleCards.char.name} has been defeated!`);
         currentEnemyBattleCards.char = null;
+        document.getElementById("enemy-char-zone").innerHTML = "";  // ✅ Clears only this card
         removedEnemyCard = true;
     }
 
@@ -42,15 +44,25 @@ export function removeDefeatedCards() {
         if (currentPlayerBattleCards[type]?.hp <= 0) {
             logToResults(`☠️ ${currentPlayerBattleCards[type].name} has been exhausted!`);
             currentPlayerBattleCards[type] = null;
+            document.getElementById(`player-${type}-zone`).innerHTML = "";  // ✅ Clears only this card
         }
         if (currentEnemyBattleCards[type]?.hp <= 0) {
             logToResults(`☠️ ${currentEnemyBattleCards[type].name} has been exhausted!`);
             currentEnemyBattleCards[type] = null;
+            document.getElementById(`enemy-${type}-zone`).innerHTML = "";  // ✅ Clears only this card
         }
     });
 
-    // After removing defeated cards, refresh the battle zones
-    updateBattleZones();
+    // ✅ Allow new cards to be played, but without full refresh
+    if (removedPlayerCard) {
+        setPlayerHasPlacedCard(false);
+        logToResults("🃏 Player may now place a new character card.");
+    }
+    if (removedEnemyCard) {
+        setEnemyHasPlacedCard(false);
+        logToResults("🤖 Enemy will place a new character card.");
+        enemyPlaceCard();
+    }
 }
 
 export function updateBattleZones() {
