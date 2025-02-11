@@ -108,7 +108,7 @@ export function getRandomCardFromZone(battleZone) {
 }
 
 export function enemyPlaceCard() {
-    if (!enemyHasPlacedCard && enemyHand.length > 0) {
+    if (!gamestate.enemyHasPlacedCard && enemyHand.length > 0) {
         const enemyCard = enemyHand.shift();
         const type = determineCardType(enemyCard);
 
