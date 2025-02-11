@@ -10,6 +10,7 @@ import {
   playerDeck,
   enemyDeck,
   determineCardType,
+  updateEnemyBattleCard
 } from "./cards.js";
 //config.js
 import {
