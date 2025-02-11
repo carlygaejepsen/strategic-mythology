@@ -113,34 +113,49 @@ function drawCardsToFillHands() {
   }
   updateHands();
 }
-//Battle Round 3.0
+//Battle Round 4.0
 let selectedAttacker = null;
 let selectedDefender = null;
 
 function battleRound() {
     console.log("⚔️ Battle round begins!");
-    
-    if (!selectedAttacker || !selectedDefender) {
-        console.warn("⚠️ Player must select an attacker and a defender before continuing.");
+
+    // 🚨 Ensure the player has placed a card before starting
+    if (Object.values(currentPlayerBattleCards).every(card => !card)) {
+        console.warn("⚠️ You must place a card in the battle zone before starting a round.");
         return;
     }
 
-    // 🛡️ Player's Turn (Selected Attacker vs Selected Defender)
-    processCombat(selectedAttacker, selectedDefender);
+    // 🚨 Ensure the player selects an attacker and defender
+    if (!selectedAttacker || !selectedDefender) {
+        console.warn("⚠️ Select an attacker and an enemy defender before continuing.");
+        return;
+    }
 
-    // 🤖 Enemy AI Turn (Auto-Attacks Random Player Card)
+    // 🤖 Enemy AI places a card if they don't have one
+    Object.keys(currentEnemyBattleCards).forEach(type => {
+        if (!currentEnemyBattleCards[type] && enemyHand.length > 0) {
+            const enemyCard = enemyHand.shift();
+            placeCardInBattleZone(enemyCard, `enemy-${type}-zone`, updateEnemyBattleCard, "Enemy");
+            console.log(`🤖 Enemy placed ${enemyCard.name} in battle.`);
+        }
+    });
+
+    // ⚔️ Player's Attack
+    processCombat(selectedAttacker, selectedDefender);
+    
+    // 🤖 Enemy AI Attack (Random)
     const enemyAttacker = getRandomCardFromZone(currentEnemyBattleCards);
     const playerDefender = getRandomCardFromZone(currentPlayerBattleCards);
-    
     if (enemyAttacker && playerDefender) {
         processCombat(enemyAttacker, playerDefender);
         console.log(`🤖 Enemy AI: ${enemyAttacker.name} attacks ${playerDefender.name}`);
     }
 
-    removeDefeatedCards(); // ✅ Only removes defeated cards (DOES NOT clear entire battle zone)
-    drawCardsToFillHands(); // ✅ Players and enemies draw one new card to their hand (if space)
+    removeDefeatedCards(); // ✅ Remove only defeated cards, NOT the whole zone
+    drawCardsToFillHands(); // ✅ Only draw one new card per hand
 
-    // Reset selections for next turn
+    // Reset selections
     selectedAttacker = null;
     selectedDefender = null;
 

@@ -99,25 +99,40 @@ function createCardElement(card, type) {
     return containerDiv;
 }
 
-// handleCardClick 3.0
+// handleCardClick 4.0
 function handleCardClick(card) {
     const type = determineCardType(card);
 
-    // If player clicks their own battle card, set it as the attacker
+    // 🛡️ If clicking a card in hand, place it in the battle zone
+    if (playerHand.includes(card)) {
+        if (!currentPlayerBattleCards[type]) {
+            placeCardInBattleZone(card, `player-${type}-zone`, updatePlayerBattleCard, "Player");
+
+            // Remove that card from the player's hand
+            playerHand = playerHand.filter(c => c !== card);
+            updateHands();
+            console.log(`⚔️ ${card.name} placed in battle zone.`);
+        } else {
+            console.warn(`⚠️ You already have a ${type} card in battle.`);
+        }
+        return;
+    }
+
+    // 🎯 If clicking a player's battle card, select it as an attacker
     if (currentPlayerBattleCards[type] === card) {
         selectedAttacker = card;
         console.log(`🎯 Selected Attacker: ${card.name}`);
         return;
     }
 
-    // If player clicks an enemy battle card, set it as the defender
+    // 🛡️ If clicking an enemy battle card, select it as a defender
     if (currentEnemyBattleCards[type] === card) {
         selectedDefender = card;
         console.log(`🛡️ Selected Defender: ${card.name}`);
         return;
     }
 
-    console.warn("⚠️ Invalid selection. Select one of your battle cards as an attacker and an enemy battle card as a defender.");
+    console.warn("⚠️ Invalid selection. Place a card first, then select your attacker and defender.");
 }
 
 
