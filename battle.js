@@ -66,11 +66,13 @@ if (!gameState.playerHasPlacedCard) {  // ✅ This now updates properly
     // 🃏 Draw one new card per hand (not battle zone)
     drawCardsToFillHands();
 
-    // 🔄 Reset selections for the next turn
-    setSelectedAttacker(null);
-    setSelectedDefender(null);
-    setPlayerHasPlacedCard(false);
-    setEnemyHasPlacedCard(false);
+	// 🔄 Reset selections & allow new cards to be placed
+	setSelectedAttacker(null);
+	setSelectedDefender(null);
+	setPlayerHasPlacedCard(false);  // ✅ This resets at the start of the new round
+	setEnemyHasPlacedCard(false);
+	console.log("🔄 DEBUG: Reset playerHasPlacedCard & enemyHasPlacedCard for new turn.");
+
 
     console.log("✅ Battle round complete. Click 'Play Turn' to continue.");
 }
