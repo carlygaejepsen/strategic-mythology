@@ -1,6 +1,6 @@
 import { updateHands } from "./display.js";
 import { handleCardClick } from "./interact.js";
-import { currentEnemyBattleCards, shuffleDeck } from "./config.js";
+import { currentEnemyBattleCards, shuffleDeck, enemyDeck, playerDeck } from "./config.js";
 
 
 export let playerHand = [];
