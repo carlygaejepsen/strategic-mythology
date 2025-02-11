@@ -44,12 +44,6 @@ export function setEnemyHasPlacedCard(value) {
     console.log("DEBUG: gameState.enemyHasPlacedCard set to:", gameState.enemyHasPlacedCard);
 }
 
-import { playerHand, enemyHand, gameState, currentPlayerBattleCards, currentEnemyBattleCards, playerDeck, enemyDeck } from "./config.js";
-import { createCardElement, determineCardType } from "./cards.js";
-import { updatePlayerBattleCard, enemyPlaceCard, removeDefeatedCards, logToResults, updateHands } from "./display.js";
-
-export let selectedAttacker = null;
-export let selectedDefender = null;
 
 export function drawCardsToFillHands() {
   // Player draw
