@@ -1,6 +1,6 @@
 import { playerHand, enemyHand, gameState, currentPlayerBattleCards, currentEnemyBattleCards, playerDeck, enemyDeck } from "./config.js";
 import { createCardElement, determineCardType } from "./cards.js";
-import { updatePlayerBattleCard, enemyPlaceCard, removeDefeatedCards, logToResults, updateHands } from "./display.js";
+import { updatePlayerBattleCard, enemyPlaceCard, logToResults, updateHands } from "./display.js";
 
 export let selectedAttacker = null;
 export let selectedDefender = null;
@@ -42,42 +42,6 @@ export function setPlayerHasPlacedCard(value) {
 export function setEnemyHasPlacedCard(value) {
     gameState.enemyHasPlacedCard = value;
     console.log("DEBUG: gameState.enemyHasPlacedCard set to:", gameState.enemyHasPlacedCard);
-}
-
-
-export function drawCardsToFillHands() {
-  // Player draw
-  if (playerHand.length < 6 && playerDeck.length > 0) {
-    const drawn = playerDeck.shift();
-    playerHand.push(drawn);
-    logToResults(`🃏 Player draws ${drawn.name}`);
-  }
-
-  // Enemy draw
-  if (enemyHand.length < 6 && enemyDeck.length > 0) {
-    const drawn = enemyDeck.shift();
-    enemyHand.push(drawn);
-    logToResults(`🃏 Enemy draws ${drawn.name}`);
-  }
-  updateHands();
-}
-
-export function setSelectedAttacker(card) {
-    selectedAttacker = card;
-}
-
-export function setSelectedDefender(card) {
-    selectedDefender = card;
-}
-
-export function setPlayerHasPlacedCard(value) {
-    gameState.playerHasPlacedCard = value;
-    console.log("DEBUG: gameState.playerHasPlacedCard set to:", value);
-}
-
-export function setEnemyHasPlacedCard(value) {
-    gameState.enemyHasPlacedCard = value;
-    console.log("DEBUG: gameState.enemyHasPlacedCard set to:", value);
 }
 
 // Debugging `placeCardInBattleZone`
