@@ -90,10 +90,6 @@ function createCardElement(card, type) {
 
 
 export {
-    // Deck & Hand references
-    playerDeck,
-    enemyDeck,
-
     // Battle card references
     shuffleDeck,
     dealStartingHands,
