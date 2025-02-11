@@ -1,4 +1,4 @@
-import { processCombat, removeDefeatedCards } from "./battle-logic.js";
+import { processCombat } from "./battle-logic.js";
 import { drawCardsToFillHands, setSelectedAttacker, setSelectedDefender, setPlayerHasPlacedCard, setEnemyHasPlacedCard } from "./interact.js";
 import { logToResults, getRandomCardFromZone } from "./display.js";
 

@@ -1,6 +1,6 @@
 import { logToResults, updateHands } from "./display.js";
 import { createCardElement, determineCardType } from "./cards.js";
-import { updatePlayerBattleCard, enemyPlaceCard } from "./display.js";
+import { updatePlayerBattleCard, enemyPlaceCard, removeDefeatedCards } from "./display.js";
 
 export let selectedAttacker = null;
 export let selectedDefender = null;
