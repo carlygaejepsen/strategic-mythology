@@ -11,7 +11,11 @@ import {
 	updatePlayerBattleCard,
 	updateEnemyBattleCard,
 	playerHasPlacedCard,
-	setPlayerHasPlacedCard
+	setPlayerHasPlacedCard,
+	selectedAttacker, 
+	selectedDefender, 
+	setSelectedAttacker, 
+	setSelectedDefender 
 } from "./config.js";
 import { placeCardInBattleZone, updateHands } from "./display.js";
 
@@ -101,7 +105,7 @@ function createCardElement(card, type) {
     return containerDiv;
 }
 
-// handleCardClick 7.0
+// handleCardClick 8.0
 function handleCardClick(card) {
     const type = determineCardType(card);
 
@@ -125,13 +129,13 @@ function handleCardClick(card) {
     }
 
     if (currentPlayerBattleCards[type] === card) {
-        selectedAttacker = card;
+        setSelectedAttacker(card);
         console.log(`🎯 Selected Attacker: ${card.name}`);
         return;
     }
 
     if (currentEnemyBattleCards[type] === card) {
-        selectedDefender = card;
+        setSelectedDefender(card);
         console.log(`🛡️ Selected Defender: ${card.name}`);
         return;
     }

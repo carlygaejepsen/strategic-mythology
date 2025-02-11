@@ -20,6 +20,16 @@ export let playerHand = [];    // Player's current hand
 export let enemyHand = [];     // Enemy's current hand
 export let playerHasPlacedCard = false;
 export let enemyHasPlacedCard = false;
+export let selectedAttacker = null;
+export let selectedDefender = null;
+
+export function setSelectedAttacker(card) {
+    selectedAttacker = card;
+}
+
+export function setSelectedDefender(card) {
+    selectedDefender = card;
+}
 
 export function setPlayerHasPlacedCard(value) {
     playerHasPlacedCard = value;
