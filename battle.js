@@ -10,14 +10,15 @@ import {
   playerDeck,
   enemyDeck,
   determineCardType,
-  updateEnemyBattleCard
 } from "./cards.js";
 //config.js
 import {
   playerHasPlacedCard,
   enemyHasPlacedCard,
   setPlayerHasPlacedCard,
-  setEnemyHasPlacedCard
+  setEnemyHasPlacedCard,
+  updateEnemyBattleCard
+  updatePlayerBtatleCard
 } from "./config.js";
 //display.js
 import {
