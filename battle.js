@@ -10,10 +10,6 @@ import {
   playerDeck,
   enemyDeck,
   determineCardType,
-  playerHasPlacedCard,
-  enemyHasPlacedCard,
-  setPlayerHasPlacedCard,
-  setEnemyHasPlacedCard
 } from "./cards.js";
 //config.js
 import {
