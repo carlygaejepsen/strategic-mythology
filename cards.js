@@ -17,8 +17,8 @@ import {
 	setSelectedAttacker, 
 	setSelectedDefender 
 } from "./config.js";
-import { placeCardInBattleZone, updateHands } from "./display.js";}
-import { enemyPlaceCard} from "./battle.js"}
+import { placeCardInBattleZone, updateHands } from "./display.js";
+import { enemyPlaceCard} from "./battle.js";
 // ✅ Locally define playerHand & enemyHand as "let"
 export let playerHand = [];
 export let enemyHand = [];
