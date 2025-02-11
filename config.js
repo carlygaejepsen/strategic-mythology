@@ -20,24 +20,6 @@ export let playerHand = [];    // Player's current hand
 export let enemyHand = [];     // Enemy's current hand
 export let playerHasPlacedCard = false;
 export let enemyHasPlacedCard = false;
-export let selectedAttacker = null;
-export let selectedDefender = null;
-
-export function setSelectedAttacker(card) {
-    selectedAttacker = card;
-}
-
-export function setSelectedDefender(card) {
-    selectedDefender = card;
-}
-
-export function setPlayerHasPlacedCard(value) {
-    playerHasPlacedCard = value;
-}
-
-export function setEnemyHasPlacedCard(value) {
-    enemyHasPlacedCard = value;
-}
 
 
 // Active Battle Cards
@@ -151,21 +133,3 @@ async function loadAllCards() {
         console.error("❌ ERROR loading cards:", error);
     }
 }
-
-export function updatePlayerBattleCard(card, type) {
-    currentPlayerBattleCards[type] = card || null;
-}
-export function updateEnemyBattleCard(card, type) {
-    currentEnemyBattleCards[type] = card || null;
-}
-
-// Export all data & functions so other modules can use them
-export {
-    cardTemplates,
-    gameConfig,
-    battleSystem,
-    loadConfigFiles,
-    loadJSON,
-    loadAllCards,
-    shuffleDeck
-};

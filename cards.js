@@ -1,25 +1,6 @@
-import {
-    loadJSON,
-    cardTemplates,
-    battleSystem,
-    gameConfig,
-    playerDeck,
-    enemyDeck,
-    shuffleDeck,
-    currentPlayerBattleCards,
-    currentEnemyBattleCards,
-	updatePlayerBattleCard,
-	updateEnemyBattleCard,
-	playerHasPlacedCard,
-	setPlayerHasPlacedCard,
-	selectedAttacker, 
-	selectedDefender, 
-	setSelectedAttacker, 
-	setSelectedDefender 
-} from "./config.js";
-import { placeCardInBattleZone, updateHands } from "./display.js";
-import { enemyPlaceCard} from "./battle.js";
-// ✅ Locally define playerHand & enemyHand as "let"
+import { updateHands } from "./display.js";
+import { handleCardClick } from "./interact.js";
+
 export let playerHand = [];
 export let enemyHand = [];
 
@@ -105,49 +86,6 @@ function createCardElement(card, type) {
     return containerDiv;
 }
 
-// handleCardClick 9.0
-function handleCardClick(card) {
-    const type = determineCardType(card);
-
-    // 🛡️ If clicking a card in hand, place it in the battle zone
-    if (playerHand.includes(card)) {
-        if (!playerHasPlacedCard) { 
-            if (!currentPlayerBattleCards[type]) {
-                placeCardInBattleZone(card, `player-${type}-zone`, updatePlayerBattleCard, "Player");
-
-                playerHand = playerHand.filter(c => c !== card);
-                updateHands();
-                console.log(`⚔️ ${card.name} placed in battle zone.`);
-                
-                setPlayerHasPlacedCard(true); 
-
-                // ✅ As soon as the player places their card, AI places its card
-                enemyPlaceCard();
-            } else {
-                console.warn(`⚠️ You already have a ${type} card in battle.`);
-            }
-        } else {
-            console.warn("⚠️ You can only place one card per turn.");
-        }
-        return;
-    }
-
-    // 🎯 If clicking a player's battle card, set it as the attacker
-    if (currentPlayerBattleCards[type] === card) {
-        setSelectedAttacker(card);
-        console.log(`🎯 Selected Attacker: ${card.name}`);
-        return;
-    }
-
-    // 🛡️ If clicking an enemy battle card, set it as the defender
-    if (currentEnemyBattleCards[type] === card) {
-        setSelectedDefender(card);
-        console.log(`🛡️ Selected Defender: ${card.name}`);
-        return;
-    }
-
-    console.warn("⚠️ Invalid selection. Place a card first, then select your attacker and defender.");
-}
 
 export {
     // Deck & Hand references

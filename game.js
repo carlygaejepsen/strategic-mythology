@@ -1,7 +1,8 @@
-import { loadConfigFiles, gameConfig, loadAllCards } from "./config.js";
-import { playerDeck, enemyDeck, shuffleDeck, dealStartingHands, playerHand, enemyHand, createCardElement, handleCardClick, determineCardType } from "./cards.js"; 
-import { battleRound } from "./battle.js"; 
-import { updateHands } from "./display.js"; // ✅ Ensures consistency in rendering
+import { loadConfigFiles, loadAllCards } from "./config.js";
+import { dealStartingHands } from "./cards.js";
+import { createCardElement } from "./cards.js";
+import { determineCardType } from "./cards.js";
+import { battleRound } from "./battle.js";
 
 async function startGame() {
     try {
