@@ -1,6 +1,53 @@
 import { logToResults } from "./display.js";
 import { determineCardType } from "./cards.js";
 
+export const battleSystem = {
+  combos: {
+    char_alone: 20,
+    "essence-card-alone": 10,
+    "ability-card-alone": 10,
+    "char-plus-essence-card": 40,
+    "full-combo": 60,
+    "char-plus-ability-card": 40
+  },
+  damageCalculation: {
+    formula: "atk - def",
+    minDamage: 1,
+    criticalMultiplier: 1.5,
+    essenceBonusMultiplier: 1.2,
+    classBonusMultiplier: 1.2
+  },
+  essenceBonuses: {
+    fire: { strongAgainst: "plant", weakAgainst: "water" },
+    water: { strongAgainst: "fire", weakAgainst: "earth" },
+    air: { strongAgainst: "earth", weakAgainst: "fire" },
+    earth: { strongAgainst: "water", weakAgainst: "air" },
+    electricity: { strongAgainst: "water", weakAgainst: "earth" },
+    love: { strongAgainst: "malice", weakAgainst: "hubris" },
+    malice: { strongAgainst: "wisdom", weakAgainst: "love" },
+    hubris: { strongAgainst: "wisdom", weakAgainst: "justice" },
+    wisdom: { strongAgainst: "hubris", weakAgainst: "malice" },
+    light: { strongAgainst: "dark", weakAgainst: null },
+    dark: { strongAgainst: "light", weakAgainst: null },
+    vit: { strongAgainst: "death", weakAgainst: null },
+    death: { strongAgainst: "vit", weakAgainst: null },
+    justice: { strongAgainst: "hubris", weakAgainst: null },
+    luck: { strongAgainst: null, weakAgainst: null }
+  },
+  classBonuses: {
+    wars: { strongAgainst: ["oracles", "sages"], weakAgainst: ["ecs", "cares"] },
+    heroes: { strongAgainst: ["auth", "mys"], weakAgainst: ["wilds", "oracles"] },
+    wilds: { strongAgainst: ["sages", "auth"], weakAgainst: ["wars", "ecs"] },
+    mals: { strongAgainst: ["cares", "ecs"], weakAgainst: ["sages", "heroes"] },
+    oracles: { strongAgainst: ["auth", "heroes"], weakAgainst: ["wars", "wilds"] },
+    ecs: { strongAgainst: ["wilds", "wars"], weakAgainst: ["cares", "sages"] },
+    cares: { strongAgainst: ["wars", "heroes"], weakAgainst: ["mals", "auth"] },
+    auth: { strongAgainst: ["sages", "wilds"], weakAgainst: ["heroes", "oracles"] },
+    sages: { strongAgainst: ["cares", "ecs"], weakAgainst: ["wilds", "wars"] },
+    mys: { strongAgainst: ["auth", "sages"], weakAgainst: ["heroes", "oracles"] }
+  }
+};
+
 // Modified processCombat with combo support
 export function processCombat(attacker, defender, isCombo = false) {
   if (!attacker?.name || !defender?.name) return;

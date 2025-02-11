@@ -77,15 +77,13 @@ export async function loadConfigFiles() {
         if (!cardTemplatesResponse.ok) throw new Error(`Failed to fetch card-templates.json`);
 
         cardTemplates = await cardTemplatesResponse.json();
-        Object.assign(battleSystem, await loadJSON("./data/bat-sys.json"));
-
         console.log("✅ Configurations loaded.");
     } catch (error) {
         console.error("❌ ERROR loading configuration files:", error);
     }
 }
 
-// Shuffle function (Fisher-Yates)
+// Shuffle function (Fisher-Yates)r
 export function shuffleDeck(deck) {
     for (let i = deck.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
