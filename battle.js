@@ -30,9 +30,14 @@ function battleRound() {
     console.log("⚔️ Battle round begins!");
 
     // 🚨 Ensure the player has placed a card before starting
-if (!gameState.playerHasPlacedCard) {  // ✅ This now updates properly
-    console.warn("⚠️ You must place a card in the battle zone before starting a round.");
-    return;
+if (!gameState.playerHasPlacedCard) {
+    const canPlay = playerHand.some(card => !currentPlayerBattleCards[determineCardType(card)]);
+    if (!canPlay) {
+        console.warn("⚠️ No valid cards to play. Skipping placement...");
+    } else {
+        console.warn("⚠️ You must place a card in the battle zone before starting a round.");
+        return;
+    }
 }
 
 
