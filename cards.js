@@ -1,6 +1,6 @@
 import { updateHands } from "./display.js";
 import { handleCardClick } from "./interact.js";
-import { currentEnemyBattleCards } from "./config.js";
+import { currentEnemyBattleCards, shuffleDeck } from "./config.js";
 
 
 export let playerHand = [];
@@ -90,10 +90,8 @@ function createCardElement(card, type) {
 
 
 export {
-    // Battle card references
-    shuffleDeck,
+
     dealStartingHands,
     createCardElement,
-    handleCardClick,
     determineCardType
 };
