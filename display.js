@@ -1,6 +1,6 @@
 import { createCardElement } from "./cards.js";
 import { determineCardType } from "./cards.js";
-import { playerHand, enemyHand)
+import { playerHand, enemyHand }
 import { setEnemyHasPlacedCard, placeCardInBattleZone } from "./interact.js";
 
 export function logToResults(message) {
