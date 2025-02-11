@@ -31,11 +31,12 @@ export function setSelectedDefender(card) {
 }
 
 export function setPlayerHasPlacedCard(value) {
-    playerHasPlacedCard = value;
+    Object.defineProperty(config, "playerHasPlacedCard", { value, writable: true });
 }
 
+
 export function setEnemyHasPlacedCard(value) {
-    enemyHasPlacedCard = value;
+    Object.defineProperty(config, "enemyHasPlacedCard", { value, writable: true });
 }
 
 export function placeCardInBattleZone(card, battleZoneId, updateFunction, owner) {
