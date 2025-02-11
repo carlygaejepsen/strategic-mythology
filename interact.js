@@ -35,7 +35,7 @@ export function setPlayerHasPlacedCard(value) {
 }
 
 export function setEnemyHasPlacedCard(value) {
-    Object.assign(enemyHasPlacedCard, { value });  // ✅ This modifies the value safely
+    gameState.enemyHasPlacedCard = value;  // ✅ This modifies the value safely
 }
 
 //placeCardInBattleZone 2.0
