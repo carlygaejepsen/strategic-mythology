@@ -1,4 +1,4 @@
-import { playerHand, enemyHand, playerHasPlacedCard, enemyHasPlacedCard } from "./config.js";
+import { playerHand, enemyHand, playerHasPlacedCard, enemyHasPlacedCard, currentPlayerBattleCards } from "./config.js";
 import { createCardElement, determineCardType } from "./cards.js";
 import { updatePlayerBattleCard, enemyPlaceCard, removeDefeatedCards, logToResults, updateHands } from "./display.js";
 
