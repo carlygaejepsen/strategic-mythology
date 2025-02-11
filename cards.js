@@ -105,10 +105,11 @@ function createCardElement(card, type) {
     return containerDiv;
 }
 
-// handleCardClick 8.0
+// handleCardClick 9.0
 function handleCardClick(card) {
     const type = determineCardType(card);
 
+    // 🛡️ If clicking a card in hand, place it in the battle zone
     if (playerHand.includes(card)) {
         if (!playerHasPlacedCard) { 
             if (!currentPlayerBattleCards[type]) {
@@ -119,6 +120,9 @@ function handleCardClick(card) {
                 console.log(`⚔️ ${card.name} placed in battle zone.`);
                 
                 setPlayerHasPlacedCard(true); 
+
+                // ✅ As soon as the player places their card, AI places its card
+                enemyPlaceCard();
             } else {
                 console.warn(`⚠️ You already have a ${type} card in battle.`);
             }
@@ -128,12 +132,14 @@ function handleCardClick(card) {
         return;
     }
 
+    // 🎯 If clicking a player's battle card, set it as the attacker
     if (currentPlayerBattleCards[type] === card) {
         setSelectedAttacker(card);
         console.log(`🎯 Selected Attacker: ${card.name}`);
         return;
     }
 
+    // 🛡️ If clicking an enemy battle card, set it as the defender
     if (currentEnemyBattleCards[type] === card) {
         setSelectedDefender(card);
         console.log(`🛡️ Selected Defender: ${card.name}`);
