@@ -67,7 +67,7 @@ export function handleCardClick(card) {
 
     // 🛡️ If clicking a card in hand, place it in the battle zone
     if (playerHand.includes(card)) {
-        if (!playerHasPlacedCard) { 
+        if (!gameState.playerHasPlacedCard) { 
             if (!currentPlayerBattleCards[type]) {
                 placeCardInBattleZone(card, `player-${type}-zone`, updatePlayerBattleCard, "Player");
 
