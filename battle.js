@@ -113,29 +113,34 @@ function drawCardsToFillHands() {
   }
   updateHands();
 }
-//Battle Round 5.0
+//Battle Round 6.0
 let selectedAttacker = null;
 let selectedDefender = null;
+let playerHasPlacedCard = false; // ✅ Track if the player has placed a card this turn
+let enemyHasPlacedCard = false;  // ✅ Track if the AI has placed a card this turn
 
 function battleRound() {
     console.log("⚔️ Battle round begins!");
 
     // 🚨 Ensure the player has placed a card before starting
-    if (Object.values(currentPlayerBattleCards).every(card => !card)) {
+    if (!playerHasPlacedCard) {
         console.warn("⚠️ You must place a card in the battle zone before starting a round.");
         return;
     }
 
-    // 🤖 AI places a card **before** player selects a defender
-    Object.keys(currentEnemyBattleCards).forEach(type => {
-        if (!currentEnemyBattleCards[type] && enemyHand.length > 0) {
-            const enemyCard = enemyHand.shift();
+    // 🤖 AI places only ONE card per turn
+    if (!enemyHasPlacedCard && enemyHand.length > 0) {
+        const enemyCard = enemyHand.shift();
+        const type = determineCardType(enemyCard);
+        
+        if (!currentEnemyBattleCards[type]) {
             placeCardInBattleZone(enemyCard, `enemy-${type}-zone`, updateEnemyBattleCard, "Enemy");
             console.log(`🤖 Enemy placed ${enemyCard.name} in battle.`);
+            enemyHasPlacedCard = true; // ✅ Track AI placement
         }
-    });
+    }
 
-    // 🚨 Ensure the player selects an attacker and defender
+    // 🚨 Ensure the player selects an attacker and defender before continuing
     if (!selectedAttacker || !selectedDefender) {
         console.warn("⚠️ Select an attacker and an enemy defender before continuing.");
         return;
@@ -155,9 +160,11 @@ function battleRound() {
     removeDefeatedCards(); // ✅ Remove only defeated cards, NOT the whole zone
     drawCardsToFillHands(); // ✅ Only draw one new card per hand
 
-    // Reset selections
+    // Reset selections & placement tracking for the next turn
     selectedAttacker = null;
     selectedDefender = null;
+    playerHasPlacedCard = false;
+    enemyHasPlacedCard = false;
 
     console.log("✅ Battle round complete. Click 'Play Turn' to continue.");
 }

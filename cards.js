@@ -99,21 +99,27 @@ function createCardElement(card, type) {
     return containerDiv;
 }
 
-// handleCardClick 5.0
+// handleCardClick 6.0
 function handleCardClick(card) {
     const type = determineCardType(card);
 
-    // 🛡️ If clicking a card in hand, place it in the battle zone
+    // 🛡️ If clicking a card in hand, place it in the battle zone (ONE PER TURN)
     if (playerHand.includes(card)) {
-        if (!currentPlayerBattleCards[type]) {
-            placeCardInBattleZone(card, `player-${type}-zone`, updatePlayerBattleCard, "Player");
+        if (!playerHasPlacedCard) { // ✅ Allow only one placement per turn
+            if (!currentPlayerBattleCards[type]) {
+                placeCardInBattleZone(card, `player-${type}-zone`, updatePlayerBattleCard, "Player");
 
-            // Remove that card from the player's hand
-            playerHand = playerHand.filter(c => c !== card);
-            updateHands();
-            console.log(`⚔️ ${card.name} placed in battle zone.`);
+                // Remove that card from the player's hand
+                playerHand = playerHand.filter(c => c !== card);
+                updateHands();
+                console.log(`⚔️ ${card.name} placed in battle zone.`);
+                
+                playerHasPlacedCard = true; // ✅ Track that player placed a card
+            } else {
+                console.warn(`⚠️ You already have a ${type} card in battle.`);
+            }
         } else {
-            console.warn(`⚠️ You already have a ${type} card in battle.`);
+            console.warn("⚠️ You can only place one card per turn.");
         }
         return;
     }
@@ -125,12 +131,8 @@ function handleCardClick(card) {
         return;
     }
 
-    // 🛡️ If clicking an enemy battle card, set it as the defender (AFTER AI has placed one)
+    // 🛡️ If clicking an enemy battle card, set it as the defender
     if (currentEnemyBattleCards[type] === card) {
-        if (!currentEnemyBattleCards[type]) {
-            console.warn("⚠️ Enemy has not placed a card yet. Wait for AI.");
-            return;
-        }
         selectedDefender = card;
         console.log(`🛡️ Selected Defender: ${card.name}`);
         return;
@@ -138,7 +140,6 @@ function handleCardClick(card) {
 
     console.warn("⚠️ Invalid selection. Place a card first, then select your attacker and defender.");
 }
-
 
 export {
     // Deck & Hand references
