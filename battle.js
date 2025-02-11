@@ -1,3 +1,9 @@
+let selectedAttacker = null;
+let selectedDefender = null;
+let playerHasPlacedCard = false; // ✅ Track if the player has placed a card this turn
+let enemyHasPlacedCard = false;  // ✅ Track if the AI has placed a card this turn
+
+//cards.js
 import {
   currentPlayerBattleCards,
   currentEnemyBattleCards,
@@ -7,13 +13,14 @@ import {
   enemyDeck,
   determineCardType
 } from "./cards.js";
-
+//config.js
 import {
-  battleSystem,
-  gameConfig,
-  updateEnemyBattleCard // ✅ Now properly imported!
+  playerHasPlacedCard,
+  enemyHasPlacedCard,
+  setPlayerHasPlacedCard,
+  setEnemyHasPlacedCard
 } from "./config.js";
-
+//display.js
 import {
   logToResults,
   updateBattleZones,
@@ -113,43 +120,33 @@ function drawCardsToFillHands() {
   }
   updateHands();
 }
-//Battle Round 6.0
-let selectedAttacker = null;
-let selectedDefender = null;
-let playerHasPlacedCard = false; // ✅ Track if the player has placed a card this turn
-let enemyHasPlacedCard = false;  // ✅ Track if the AI has placed a card this turn
-
+//Battle Round 7.0
 function battleRound() {
     console.log("⚔️ Battle round begins!");
 
-    // 🚨 Ensure the player has placed a card before starting
     if (!playerHasPlacedCard) {
         console.warn("⚠️ You must place a card in the battle zone before starting a round.");
         return;
     }
 
-    // 🤖 AI places only ONE card per turn
     if (!enemyHasPlacedCard && enemyHand.length > 0) {
         const enemyCard = enemyHand.shift();
         const type = determineCardType(enemyCard);
-        
+
         if (!currentEnemyBattleCards[type]) {
             placeCardInBattleZone(enemyCard, `enemy-${type}-zone`, updateEnemyBattleCard, "Enemy");
             console.log(`🤖 Enemy placed ${enemyCard.name} in battle.`);
-            enemyHasPlacedCard = true; // ✅ Track AI placement
+            setEnemyHasPlacedCard(true);
         }
     }
 
-    // 🚨 Ensure the player selects an attacker and defender before continuing
     if (!selectedAttacker || !selectedDefender) {
         console.warn("⚠️ Select an attacker and an enemy defender before continuing.");
         return;
     }
 
-    // ⚔️ Player's Attack
     processCombat(selectedAttacker, selectedDefender);
     
-    // 🤖 Enemy AI Attack (Random)
     const enemyAttacker = getRandomCardFromZone(currentEnemyBattleCards);
     const playerDefender = getRandomCardFromZone(currentPlayerBattleCards);
     if (enemyAttacker && playerDefender) {
@@ -157,14 +154,13 @@ function battleRound() {
         console.log(`🤖 Enemy AI: ${enemyAttacker.name} attacks ${playerDefender.name}`);
     }
 
-    removeDefeatedCards(); // ✅ Remove only defeated cards, NOT the whole zone
-    drawCardsToFillHands(); // ✅ Only draw one new card per hand
+    removeDefeatedCards();
+    drawCardsToFillHands();
 
-    // Reset selections & placement tracking for the next turn
     selectedAttacker = null;
     selectedDefender = null;
-    playerHasPlacedCard = false;
-    enemyHasPlacedCard = false;
+    setPlayerHasPlacedCard(false);
+    setEnemyHasPlacedCard(false);
 
     console.log("✅ Battle round complete. Click 'Play Turn' to continue.");
 }

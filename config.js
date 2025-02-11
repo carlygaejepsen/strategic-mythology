@@ -18,6 +18,17 @@ export let playerDeck = [];    // Player's deck
 export let enemyDeck = [];     // Enemy's deck
 export let playerHand = [];    // Player's current hand
 export let enemyHand = [];     // Enemy's current hand
+export let playerHasPlacedCard = false;
+export let enemyHasPlacedCard = false;
+
+export function setPlayerHasPlacedCard(value) {
+    playerHasPlacedCard = value;
+}
+
+export function setEnemyHasPlacedCard(value) {
+    enemyHasPlacedCard = value;
+}
+
 
 // Active Battle Cards
 export let currentPlayerBattleCards = { char: null, essence: null, ability: null };

@@ -10,6 +10,8 @@ import {
     currentEnemyBattleCards,
 	updatePlayerBattleCard,
 	updateEnemyBattleCard,
+	playerHasPlacedCard,
+	setPlayerHasPlacedCard
 } from "./config.js";
 import { placeCardInBattleZone, updateHands } from "./display.js";
 
@@ -99,22 +101,20 @@ function createCardElement(card, type) {
     return containerDiv;
 }
 
-// handleCardClick 6.0
+// handleCardClick 7.0
 function handleCardClick(card) {
     const type = determineCardType(card);
 
-    // 🛡️ If clicking a card in hand, place it in the battle zone (ONE PER TURN)
     if (playerHand.includes(card)) {
-        if (!playerHasPlacedCard) { // ✅ Allow only one placement per turn
+        if (!playerHasPlacedCard) { 
             if (!currentPlayerBattleCards[type]) {
                 placeCardInBattleZone(card, `player-${type}-zone`, updatePlayerBattleCard, "Player");
 
-                // Remove that card from the player's hand
                 playerHand = playerHand.filter(c => c !== card);
                 updateHands();
                 console.log(`⚔️ ${card.name} placed in battle zone.`);
                 
-                playerHasPlacedCard = true; // ✅ Track that player placed a card
+                setPlayerHasPlacedCard(true); 
             } else {
                 console.warn(`⚠️ You already have a ${type} card in battle.`);
             }
@@ -124,14 +124,12 @@ function handleCardClick(card) {
         return;
     }
 
-    // 🎯 If clicking a player's battle card, set it as the attacker
     if (currentPlayerBattleCards[type] === card) {
         selectedAttacker = card;
         console.log(`🎯 Selected Attacker: ${card.name}`);
         return;
     }
 
-    // 🛡️ If clicking an enemy battle card, set it as the defender
     if (currentEnemyBattleCards[type] === card) {
         selectedDefender = card;
         console.log(`🛡️ Selected Defender: ${card.name}`);
