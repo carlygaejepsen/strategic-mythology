@@ -60,12 +60,12 @@
 }
 
 /* ✅ If there are two essences, position them separately */
-.image-wrapper .essence-double: top-left {
+.image-wrapper .essence-top-left {
     top: 5px;
     left: 5px;
 }
 
-.image-wrapper .essence-double: bottom-right {
+.image-wrapper .essence-bottom-right {
     bottom: 5px;
     right: 5px;
 }
