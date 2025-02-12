@@ -40,14 +40,16 @@
 
 /* Essence Emojis 3.0 */
 /* ✅ Default styling for essence emojis */
+/* ✅ Default styling for essence emojis */
 .essence-emoji {
     position: absolute;
     font-size: 1em;
+    background: none;  /* ✅ Ensures NO background */
     text-shadow: 
-        -2px -2px 2px rgba(255, 255, 255, 0.8),
-         2px -2px 2px rgba(255, 255, 255, 0.8),
-        -2px  2px 2px rgba(255, 255, 255, 0.8),
-         2px  2px 2px rgba(255, 255, 255, 0.8);
+        -2px -2px 3px rgba(0, 0, 0, 1), /* Dark outline */
+         2px -2px 3px rgba(0, 0, 0, 1),
+        -2px  2px 3px rgba(0, 0, 0, 1),
+         2px  2px 3px rgba(0, 0, 0, 1);
     padding: 2px;
     z-index: 10;
     display: inline-flex;
@@ -55,7 +57,7 @@
     justify-content: center;
 }
 
-/* 🔥 Fire - Cyan Glow */
+/* 🔥 Fire - Cyan Outline */
 .essence-emoji.fire {
     text-shadow: 
         -2px -2px 3px #00FFFF,
@@ -64,7 +66,7 @@
          2px  2px 3px #00FFFF;
 }
 
-/* 🌊 Water - Orange Glow */
+/* 🌊 Water - Orange Outline */
 .essence-emoji.water {
     text-shadow: 
         -2px -2px 3px #FF4500,
@@ -73,7 +75,7 @@
          2px  2px 3px #FF4500;
 }
 
-/* 💨 Air - Deep Blue Glow */
+/* 💨 Air - Deep Blue Outline */
 .essence-emoji.air {
     text-shadow: 
         -2px -2px 3px #1A237E,
@@ -82,7 +84,7 @@
          2px  2px 3px #1A237E;
 }
 
-/* 🏔️ Earth - Magenta Glow */
+/* 🏔️ Earth - Magenta Outline */
 .essence-emoji.earth {
     text-shadow: 
         -2px -2px 3px #FF00FF,
@@ -91,7 +93,7 @@
          2px  2px 3px #FF00FF;
 }
 
-/* ⚡ Electricity - Red Glow */
+/* ⚡ Electricity - Red Outline */
 .essence-emoji.electricity,
 .essence-emoji.zap {
     text-shadow: 
@@ -101,16 +103,7 @@
          2px  2px 3px #C70039;
 }
 
-/* 💞 Love - Teal Glow */
-.essence-emoji.love {
-    text-shadow: 
-        -2px -2px 3px #009688,
-         2px -2px 3px #009688,
-        -2px  2px 3px #009688,
-         2px  2px 3px #009688;
-}
-
-/* 🩸 Malice - Neon Green Glow */
+/* 🩸 Malice - Neon Green Outline */
 .essence-emoji.malice {
     text-shadow: 
         -2px -2px 3px #00FF00,
@@ -119,7 +112,7 @@
          2px  2px 3px #00FF00;
 }
 
-/* 🦚 Hubris - Royal Blue Glow */
+/* 🦚 Hubris - Royal Blue Outline */
 .essence-emoji.hubris {
     text-shadow: 
         -2px -2px 3px #1E90FF,
@@ -128,25 +121,7 @@
          2px  2px 3px #1E90FF;
 }
 
-/* 📖 Wisdom - Red Glow */
-.essence-emoji.wisdom {
-    text-shadow: 
-        -2px -2px 3px #FF0000,
-         2px -2px 3px #FF0000,
-        -2px  2px 3px #FF0000,
-         2px  2px 3px #FF0000;
-}
-
-/* 🕯️ Light - Purple Glow */
-.essence-emoji.light {
-    text-shadow: 
-        -2px -2px 3px #6A0DAD,
-         2px -2px 3px #6A0DAD,
-        -2px  2px 3px #6A0DAD,
-         2px  2px 3px #6A0DAD;
-}
-
-/* 🌑 Dark - Yellow Glow */
+/* 🌑 Dark - Yellow Outline */
 .essence-emoji.dark {
     text-shadow: 
         -2px -2px 3px #FFD700,
@@ -155,54 +130,7 @@
          2px  2px 3px #FFD700;
 }
 
-/* 🌿 Vitality - Pink Glow */
-.essence-emoji.vit {
-    text-shadow: 
-        -2px -2px 3px #FF1493,
-         2px -2px 3px #FF1493,
-        -2px  2px 3px #FF1493,
-         2px  2px 3px #FF1493;
-}
-
-/* 🍂 Decay - Neon Blue Glow */
-.essence-emoji.decay {
-    text-shadow: 
-        -2px -2px 3px #00BFFF,
-         2px -2px 3px #00BFFF,
-        -2px  2px 3px #00BFFF,
-         2px  2px 3px #00BFFF;
-}
-
-/* 🪙 Luck - Deep Green Glow */
-.essence-emoji.luck {
-    text-shadow: 
-        -2px -2px 3px #006400,
-         2px -2px 3px #006400,
-        -2px  2px 3px #006400,
-         2px  2px 3px #006400;
-}
-
-/* ⚖️ Justice - Deep Magenta Glow */
-.essence-emoji.just,
-.essence-emoji.justice {
-    text-shadow: 
-        -2px -2px 3px #8B008B,
-         2px -2px 3px #8B008B,
-        -2px  2px 3px #8B008B,
-         2px  2px 3px #8B008B;
-}
-
-/* 🔮 Insight - Bold Orange Glow */
-.essence-emoji.insight {
-    text-shadow: 
-        -2px -2px 3px #FF8C00,
-         2px -2px 3px #FF8C00,
-        -2px  2px 3px #FF8C00,
-         2px  2px 3px #FF8C00;
-}
-
-
-/* ✅ If there is only one essence, place it in the bottom-right (inside image) */
+/* ✅ If there is only one essence, place it in the bottom-right */
 .image-wrapper .essence-single {
     bottom: 5px;
     right: 5px;
@@ -218,6 +146,7 @@
     bottom: 5px;
     right: 5px;
 }
+
 
 /* 🏛 Battle Zone Shrinking */
 .battle-zone .char-card,
