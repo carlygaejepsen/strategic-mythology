@@ -23,6 +23,7 @@
 .char-img,
 .essence-img,
 .ability-img {
+	position: relative;
     width: 120px;
     height: 120px;
     border-radius: 3px;
@@ -40,6 +41,7 @@
     border-radius: 50%; /* Creates a circular background */
     padding: 1px 2px;  /* Adjust padding for best appearance */
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* Optional: adds depth */
+	z-index: 10;
 }
 
 

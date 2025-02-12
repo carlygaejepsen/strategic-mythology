@@ -45,7 +45,7 @@ export function determineCardType(card) {
     return "char"; // Fallback, but this shouldn't happen
 }
 
-// Creates a card element for UI display, wrapped in a .card-container
+// Creates a card element 3.0
 function createCardElement(card, type) {
     console.log(`🎨 Creating card: ${card.name} (Type: ${type})`);
     const computedType = determineCardType(card);
@@ -83,7 +83,10 @@ function createCardElement(card, type) {
     cardDiv.classList.add(`${computedType}-card`);
     cardDiv.innerHTML = populatedHTML;
 
-    // 3️⃣ Create the Essence Emoji if applicable
+    // 3️⃣ Select the image element
+    const imgElement = cardDiv.querySelector("img");
+
+    // 4️⃣ Create the Essence Emoji inside the image container
     if (card.essence || (Array.isArray(card.essences) && card.essences.length > 0)) {
         const essenceEmojiDiv = document.createElement("div");
         essenceEmojiDiv.classList.add("essence-emoji");
@@ -97,13 +100,17 @@ function createCardElement(card, type) {
             essenceEmojiDiv.innerHTML = gameConfig?.["essence-emojis"]?.[card.essence] || "❓";
         }
 
-        containerDiv.appendChild(essenceEmojiDiv);
+        if (imgElement) {
+            imgElement.parentElement.appendChild(essenceEmojiDiv); // ✅ Append to image container
+        } else {
+            containerDiv.appendChild(essenceEmojiDiv); // Fallback
+        }
     }
 
-    // 4️⃣ Insert the main card into the container
+    // 5️⃣ Insert the main card into the container
     containerDiv.appendChild(cardDiv);
 
-    // 5️⃣ Add click handling on the container
+    // 6️⃣ Add click handling on the container
     containerDiv.addEventListener("click", () => {
         console.log(`🖱️ Clicked on card: ${card.name}`);
         handleCardClick(card);
