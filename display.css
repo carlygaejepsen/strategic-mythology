@@ -12,3 +12,29 @@
     overflow-y: auto; /* ✅ Allows scrolling if full */
     scroll-behavior: smooth; /* ✅ Smoother scrolling */
 }
+/* 🎯 Instruction Box Styling */
+.instruction-box {
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 8px;
+    margin-top: 5px;
+    background-color: rgba(255, 235, 205, 0.9); /* Light, warm background */
+    border: 2px solid #8B3A3A; /* Matches card borders */
+    border-radius: 5px;
+    color: #5A2D0C; /* Rich brown text */
+}
+/* ⚔️ Enemy Status Box Styling */
+.status-box {
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 8px;
+    margin-bottom: 5px;
+    background-color: rgba(240, 128, 128, 0.9); /* Light red (salmon) */
+    border: 2px solid #8B3A3A; /* Matches card borders */
+    border-radius: 5px;
+    color: #5A2D0C; /* Rich brown text */
+}

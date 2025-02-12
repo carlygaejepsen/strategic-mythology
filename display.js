@@ -131,3 +131,24 @@ export function enemyPlaceCard() {
         }
     }
 }
+
+// 🩸 Updates only the HP of a card in the battle zone without re-rendering the entire card.
+function updateCardHP(card) {
+    if (!card || !card.id) return;
+    
+    // Locate the existing card element in the battle zone
+    const cardElement = document.querySelector(`[data-card-id="${card.id}"]`);
+    
+    if (!cardElement) {
+        console.warn(`⚠️ Could not find card element for ${card.name} to update HP.`);
+        return;
+    }
+
+    // Locate the HP display inside the card and update it
+    const hpElement = cardElement.querySelector(".card-hp"); // Adjust selector as needed
+    if (hpElement) {
+        hpElement.textContent = card.hp; // Directly update HP
+    } else {
+        console.warn(`⚠️ No HP element found for ${card.name}.`);
+    }
+}

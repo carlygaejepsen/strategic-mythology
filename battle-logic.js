@@ -1,4 +1,4 @@
-import { logToResults } from "./display.js";
+import { logToResults, updateCardHP, removeDefeatedCards } from "./display.js";
 import { determineCardType } from "./cards.js";
 
 export const battleSystem = {
@@ -48,51 +48,73 @@ export const battleSystem = {
   }
 };
 
-// Modified processCombat with combo support
+// processCombat 2.0
 export function processCombat(attacker, defender, isCombo = false) {
-  if (!attacker?.name || !defender?.name) return;
-  if (attacker === defender) {
-    console.error(`🚨 ERROR: ${attacker.name} is trying to attack itself! Skipping attack.`);
-    return;
-  }
-
-  let attackPower = attacker.atk || 0;
-  if (isCombo && ['essence', 'ability'].includes(determineCardType(attacker))) {
-    attackPower *= 2;
-    logToResults(`🔥 Combo boost for ${attacker.name}!`);
-  }
-
-  // Damage multipliers
-  let essenceMultiplier = 1;
-  let classMultiplier = 1;
-
-  if (attacker.essence && defender.essence) {
-    const attackerEss = attacker.essence;
-    const defenderEss = defender.essence;
-    if (battleSystem.essenceBonuses?.[attackerEss]?.strongAgainst === defenderEss) {
-      essenceMultiplier = battleSystem.damageCalculation.essenceBonusMultiplier;
-    } else if (battleSystem.essenceBonuses?.[attackerEss]?.weakAgainst === defenderEss) {
-      essenceMultiplier = 1 / battleSystem.damageCalculation.essenceBonusMultiplier;
+    if (!attacker?.name || !defender?.name) {
+        console.error("🚨 ERROR: Invalid combatants! Attack skipped.");
+        return;
     }
-  }
+    if (attacker === defender) {
+        console.error(`🚨 ERROR: ${attacker.name} cannot attack itself!`);
+        return;
+    }
 
-  if (attacker.class && defender.class) {
-    const attackerClass = attacker.class;
-    const defenderClass = defender.class;
+    console.log(`⚔️ ${attacker.name} attacks ${defender.name}`);
+
+    // 🎯 Base attack power
+    let attackPower = attacker.atk || 0;
+
+    // 🔥 Combo attacks double effectiveness if valid
+    if (isCombo && ['essence', 'ability'].includes(determineCardType(attacker))) {
+        attackPower *= 2;
+        logToResults(`🔥 Combo boost! ${attacker.name} strikes with extra force!`);
+    }
+
+    // 📊 Essence-based multipliers
+    let essenceMultiplier = calculateEssenceMultiplier(attacker.essence, defender.essence);
+    let classMultiplier = calculateClassMultiplier(attacker.class, defender.class);
+
+    // 🛡️ Calculate final damage (min damage applied)
+    const baseDamage = Math.max(
+        Math.round((attackPower * essenceMultiplier * classMultiplier) - (defender.def || 0)),
+        battleSystem.damageCalculation.minDamage
+    );
+
+    // 🩸 Apply damage and prevent negative HP
+    defender.hp = Math.max(0, defender.hp - baseDamage);
+    logToResults(`💥 ${attacker.name} hits ${defender.name} for ${baseDamage} damage!`);
+
+    // 🎭 Visually update HP without re-rendering cards
+    updateCardHP(defender);
+
+    // ☠️ Check for defeated cards and remove them
+    if (defender.hp <= 0) {
+        logToResults(`☠️ ${defender.name} has been defeated!`);
+        removeDefeatedCards();
+    }
+}
+
+//Calculate Essence Multiplier
+function calculateEssenceMultiplier(attackerEssence, defenderEssence) {
+    if (!attackerEssence || !defenderEssence) return 1;
+    if (battleSystem.essenceBonuses?.[attackerEssence]?.strongAgainst === defenderEssence) {
+        return battleSystem.damageCalculation.essenceBonusMultiplier;
+    }
+    if (battleSystem.essenceBonuses?.[attackerEssence]?.weakAgainst === defenderEssence) {
+        return 1 / battleSystem.damageCalculation.essenceBonusMultiplier;
+    }
+    return 1;
+}
+// calculateClassMultiplier
+function calculateClassMultiplier(attackerClass, defenderClass) {
+    if (!attackerClass || !defenderClass) return 1;
     if (battleSystem.classBonuses?.[attackerClass]?.strongAgainst?.includes(defenderClass)) {
-      classMultiplier = battleSystem.damageCalculation.classBonusMultiplier;
-    } else if (battleSystem.classBonuses?.[attackerClass]?.weakAgainst?.includes(defenderClass)) {
-      classMultiplier = 1 / battleSystem.damageCalculation.classBonusMultiplier;
+        return battleSystem.damageCalculation.classBonusMultiplier;
     }
-  }
-
-  const baseDamage = Math.max(
-    Math.round((attackPower * essenceMultiplier * classMultiplier) - (defender.def || 0)),
-    battleSystem.damageCalculation.minDamage
-  );
-
-  defender.hp -= baseDamage;
-  logToResults(`${attacker.name} hits ${defender.name} for ${baseDamage} damage!`);
+    if (battleSystem.classBonuses?.[attackerClass]?.weakAgainst?.includes(defenderClass)) {
+        return 1 / battleSystem.damageCalculation.classBonusMultiplier;
+    }
+    return 1;
 }
 
 export function checkForCombos(battleZone, owner) {

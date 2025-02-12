@@ -1,17 +1,39 @@
-import { processCombat, battleSystem } from "./battle-logic.js";
-import { drawCardsToFillHands, setSelectedAttacker, setSelectedDefender, setPlayerHasPlacedCard, setEnemyHasPlacedCard, selectedAttacker, selectedDefender } from "./interact.js";
-import { logToResults, getRandomCardFromZone, removeDefeatedCards } from "./display.js";
-import { currentPlayerBattleCards, currentEnemyBattleCards, gameState, playerDeck, enemyDeck, playerHand, enemyHand } from "./config.js";
+import { processCombat } from "./battle-logic.js";
+import { 
+    drawCardsToFillHands, 
+    setSelectedAttacker, 
+    setSelectedDefender, 
+    setPlayerHasPlacedCard, 
+    setEnemyHasPlacedCard, 
+    selectedAttacker, 
+    selectedDefender 
+} from "./interact.js";
+import { 
+    logToResults, 
+    getRandomCardFromZone, 
+    removeDefeatedCards 
+} from "./display.js";
+import { 
+    currentPlayerBattleCards, 
+    currentEnemyBattleCards, 
+    gameState, 
+    playerDeck, 
+    enemyDeck, 
+    playerHand, 
+    enemyHand 
+} from "./config.js";
 import { determineCardType } from "./cards.js";
+
 let gameRunning = false;
 
-//gameLoop 3.0
+/**
+ * 🔄 Main Game Loop: Controls each round of the game.
+ */
 function gameLoop() {
     if (gameRunning) return; // Prevents multiple triggers
     gameRunning = true;
 
     console.log("🔄 New battle round starting...");
-
     battleRound(); // ✅ Runs only ONCE per turn
 
     setTimeout(() => {
@@ -26,21 +48,23 @@ function gameLoop() {
         gameRunning = false;
     }, 1000);
 }
-//Battle Round 9.0
+
+/**
+ * ⚔️ Handles a single battle round.
+ */
 function battleRound() {
     console.log("⚔️ Battle round begins!");
 
     // 🚨 Ensure the player has placed a card before starting
-if (!gameState.playerHasPlacedCard) {
-    const canPlay = playerHand.some(card => !currentPlayerBattleCards[determineCardType(card)]);
-    if (!canPlay) {
-        console.warn("⚠️ No valid cards to play. Skipping placement...");
-    } else {
-        console.warn("⚠️ You must place a card in the battle zone before starting a round.");
-        return;
+    if (!gameState.playerHasPlacedCard) {
+        const canPlay = playerHand.some(card => !currentPlayerBattleCards[determineCardType(card)]);
+        if (!canPlay) {
+            console.warn("⚠️ No valid cards to play. Skipping placement...");
+        } else {
+            console.warn("⚠️ You must place a card in the battle zone before starting a round.");
+            return;
+        }
     }
-}
-
 
     // 🚨 Ensure the player has selected an attacker and defender before continuing
     if (!selectedAttacker || !selectedDefender) {
@@ -52,7 +76,7 @@ if (!gameState.playerHasPlacedCard) {
     console.log(`🎯 ${selectedAttacker.name} attacks ${selectedDefender.name}`);
     processCombat(selectedAttacker, selectedDefender);
 
-    // 🛑 Remove defeated cards before AI attacks (prevents targeting dead cards)
+    // 🛑 Remove defeated cards before AI attacks
     removeDefeatedCards();
 
     // 🤖 Enemy AI Attack (Random selection)
@@ -72,23 +96,85 @@ if (!gameState.playerHasPlacedCard) {
     // 🃏 Draw one new card per hand (not battle zone)
     drawCardsToFillHands();
 
-	// 🔄 Reset selections & allow new cards to be placed
-	setSelectedAttacker(null);
-	setSelectedDefender(null);
-	setPlayerHasPlacedCard(false);  // ✅ This resets at the start of the new round
-	setEnemyHasPlacedCard(false);
-	console.log("🔄 DEBUG: Reset playerHasPlacedCard & enemyHasPlacedCard for new turn.");
-
+    // 🔄 Reset selections & allow new cards to be placed
+    resetSelections();
 
     console.log("✅ Battle round complete. Click 'Play Turn' to continue.");
 }
 
-// Event listener
+/**
+ * 🔄 Resets player and enemy selections after each turn.
+ */
+function resetSelections() {
+    setSelectedAttacker(null);
+    setSelectedDefender(null);
+    setPlayerHasPlacedCard(false);
+    setEnemyHasPlacedCard(false);
+    console.log("🔄 Reset playerHasPlacedCard & enemyHasPlacedCard for new turn.");
+}
+
+/**
+ * 📜 Updates the instruction box for the player.
+ */
+function updateInstructionText(phase) {
+    const instructionBox = document.getElementById("instruction-box");
+    if (!instructionBox) return;
+
+    const instructionMessages = {
+        "start": "It's your turn! Select a card to play.",
+        "select-battle-card": "Choose a card to send to the battle zone.",
+        "select-attacker": "Select your attacker.",
+        "select-defender": "Choose which enemy to attack.",
+        "combo": "Try combining abilities!",
+        "waiting": "Waiting for opponent...",
+    };
+
+    instructionBox.textContent = instructionMessages[phase] || "Make your move!";
+}
+
+/**
+ * 🚦 Updates the enemy's status during their turn.
+ */
+function updateEnemyStatus(phase) {
+    const enemyStatusBox = document.getElementById("enemy-status-box");
+    if (!enemyStatusBox) return;
+
+    const enemyMessages = {
+        "enemy-start": "Enemy is preparing...",
+        "enemy-select-battle-card": "Enemy is adding a card to the battle zone.",
+        "enemy-select-attacker": "Enemy is selecting an attacker.",
+        "enemy-select-defender": "Enemy is choosing a target.",
+        "enemy-combo": "Enemy is trying a combo!",
+        "enemy-waiting": "Enemy is thinking...",
+    };
+
+    enemyStatusBox.textContent = enemyMessages[phase] || "Enemy is strategizing...";
+}
+
+/**
+ * 🎭 Handles game state changes for the player.
+ */
+function onGameStateChange(newState) {
+    updateInstructionText(newState);
+}
+
+/**
+ * 🤖 Handles game state changes for the enemy.
+ */
+function onEnemyStateChange(newState) {
+    updateEnemyStatus(newState);
+}
+
+// Example: Initialize turn states
+onGameStateChange("start");
+onEnemyStateChange("enemy-start");
+
+// 🎮 Add event listener for the "Play Turn" button
 document.addEventListener("DOMContentLoaded", () => {
-  const playTurnButton = document.getElementById("play-turn");
-  if (playTurnButton) {
-    playTurnButton.addEventListener("click", gameLoop);
-  }
+    const playTurnButton = document.getElementById("play-turn");
+    if (playTurnButton) {
+        playTurnButton.addEventListener("click", gameLoop);
+    }
 });
 
 export { battleRound };
