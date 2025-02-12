@@ -37,21 +37,30 @@
 
 /* Essence Emoji - Positioned in the bottom right corner */
 /* ✅ Now .essence-emoji is inside the image */
+/* ✅ Make sure each emoji is outlined instead of placed inside an oval */
 .essence-emoji {
     position: absolute;
-    bottom: 4px;
-    right: 4px;
-    font-size: 0.9em;
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 50%;
-    padding: 2px 4px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    bottom: 5px;
+    right: 5px;
+    font-size: 1em;
+    text-shadow: 0px 0px 3px rgba(0, 0, 0, 0.5); /* Subtle glow to increase contrast */
+    border: 1px solid rgba(255, 255, 255, 0.8); /* Thin white outline */
+    border-radius: 4px; /* Small rounded corners */
+    padding: 2px; /* Adds spacing around emoji */
+    background: none; /* Removes big background shape */
     z-index: 10;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 12px;
-    min-height: 12px;
+}
+
+/* ✅ Make sure multiple emojis are properly spaced */
+.essence-multiple {
+    display: flex;
+    gap: 3px; /* Small spacing between multiple emojis */
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 
