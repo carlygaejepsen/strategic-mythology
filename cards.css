@@ -44,7 +44,6 @@
 .essence-emoji {
     position: absolute;
     font-size: 1em;
-	color: white;
     background: none;  /* ✅ Ensures NO background */
     padding: 2px;
     z-index: 10;
