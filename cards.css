@@ -38,7 +38,7 @@
     display: block;
 }
 
-/* ✅ Default styling for essence emojis */
+/* Essence Emojis 2.0 */
 .essence-emoji {
     position: absolute;
     font-size: 1em;
@@ -47,10 +47,15 @@
          1px -1px 1px rgba(255, 255, 255, 0.8),
         -1px  1px 1px rgba(255, 255, 255, 0.8),
          1px  1px 1px rgba(255, 255, 255, 0.8);
-    background: none;
-    padding: 1px;
+    background-color: rgba(255, 255, 255, 0.2); /* Ensures visibility */
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 50%; /* Keeps it circular */
+    padding: 3px;
     z-index: 10;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 /* 🔥 Fire - Cool Cyan */
 .essence-emoji.fire {
