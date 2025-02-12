@@ -129,12 +129,12 @@
 }
 
 /* ✅ If there are two essences in battle, position them separately */
-.battle-zone .image-wrapper .essence-double:first-child {
+.battle-zone .image-wrapper .essence-top-left {
     top: 2%;
     left: 2%;
 }
 
-.battle-zone .image-wrapper .essence-double:last-child {
+.battle-zone .image-wrapper .essence-bottom-right {
     bottom: 2%;
     right: 2%;
 }
