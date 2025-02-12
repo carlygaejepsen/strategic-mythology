@@ -52,6 +52,104 @@
     z-index: 10;
     display: inline-block;
 }
+/* 🔥 Fire - Cool Cyan */
+.essence-emoji.fire {
+    border-color: #00C3FF; /* Bright Cyan */
+    background-color: rgba(0, 195, 255, 0.2);
+}
+
+/* 🌊 Water - Fiery Orange */
+.essence-emoji.water {
+    border-color: #FF4500; /* Deep Orange-Red */
+    background-color: rgba(255, 69, 0, 0.2);
+}
+
+/* 💨 Air - Rich Deep Blue */
+.essence-emoji.air {
+    border-color: #1A237E; /* Dark Indigo */
+    background-color: rgba(26, 35, 126, 0.2);
+}
+
+/* 🏔️ Earth - Vibrant Magenta */
+.essence-emoji.earth {
+    border-color: #FF00FF; /* Bright Magenta */
+    background-color: rgba(255, 0, 255, 0.2);
+}
+
+/* ⚡ Electricity - Deep Red */
+.essence-emoji.electricity,
+.essence-emoji.zap {
+    border-color: #C70039; /* Bold Crimson */
+    background-color: rgba(199, 0, 57, 0.2);
+}
+
+/* 💞 Love - Cool Teal */
+.essence-emoji.love {
+    border-color: #009688; /* Deep Teal */
+    background-color: rgba(0, 150, 136, 0.2);
+}
+
+/* 🩸 Malice - Neon Green */
+.essence-emoji.malice {
+    border-color: #00FF00; /* True Neon Green */
+    background-color: rgba(0, 255, 0, 0.2);
+}
+
+/* 🦚 Hubris - Royal Blue */
+.essence-emoji.hubris {
+    border-color: #1E90FF; /* Bright Blue */
+    background-color: rgba(30, 144, 255, 0.2);
+}
+
+/* 📖 Wisdom - Fiery Red */
+.essence-emoji.wisdom {
+    border-color: #FF0000; /* True Red */
+    background-color: rgba(255, 0, 0, 0.2);
+}
+
+/* 🕯️ Light - Deep Purple */
+.essence-emoji.light {
+    border-color: #6A0DAD; /* Rich Purple */
+    background-color: rgba(106, 13, 173, 0.2);
+}
+
+/* 🌑 Dark - Bright Yellow */
+.essence-emoji.dark {
+    border-color: #FFD700; /* Gold/Yellow */
+    background-color: rgba(255, 215, 0, 0.2);
+}
+
+/* 🌿 Vitality - Bright Pink */
+.essence-emoji.vit {
+    border-color: #FF1493; /* Deep Pink */
+    background-color: rgba(255, 20, 147, 0.2);
+}
+
+/* 🍂 Decay - Neon Blue */
+.essence-emoji.decay {
+    border-color: #00BFFF; /* Vivid Sky Blue */
+    background-color: rgba(0, 191, 255, 0.2);
+}
+
+/* 🪙 Luck - Deep Green */
+.essence-emoji.luck {
+    border-color: #006400; /* Dark Green */
+    background-color: rgba(0, 100, 0, 0.2);
+}
+
+/* ⚖️ Justice - Deep Magenta */
+.essence-emoji.just,
+.essence-emoji.justice {
+    border-color: #8B008B; /* Dark Magenta */
+    background-color: rgba(139, 0, 139, 0.2);
+}
+
+/* 🔮 Insight - Bold Orange */
+.essence-emoji.insight {
+    border-color: #FF8C00; /* Dark Orange */
+    background-color: rgba(255, 140, 0, 0.2);
+}
+
 
 /* ✅ If there is only one essence, place it in the bottom-right (inside image) */
 .image-wrapper .essence-single {
