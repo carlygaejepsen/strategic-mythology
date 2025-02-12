@@ -9,6 +9,7 @@
 .essence-card,
 .ability-card {
     width: 140px;
+	min-height: 250px;
     background: linear-gradient(135deg, #E3DAC9, #C89F5D);
     border-radius: 6px;
     box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
