@@ -133,7 +133,7 @@ export function enemyPlaceCard() {
 }
 
 // 🩸 Updates only the HP of a card in the battle zone without re-rendering the entire card.
-function updateCardHP(card) {
+export function updateCardHP(card) {
     if (!card || !card.id) return;
     
     // Locate the existing card element in the battle zone
