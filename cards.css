@@ -1,8 +1,8 @@
+/* ✅ Card container */
 .card-container {
-    position: relative; /* Establishes a positioning context for the emoji */
+    position: relative; /* Ensures positioning context for child elements */
     display: inline-block;
 }
-
 
 /* 🎴 Main Card Styles */
 .char-card,
@@ -18,21 +18,24 @@
     background-color: #EDE8E4;
     transition: all 0.3s ease;
 }
-/* ✅ New image wrapper container */
+
+/* ✅ Image wrapper: Ensures essence emojis stay inside */
 .image-wrapper {
-    position: relative;  /* ✅ This ensures .essence-emoji is positioned relative to the image */
+    position: relative;  /* ✅ Needed to position essence emojis correctly */
     display: inline-block;
+    width: 120px;  /* ✅ Matches image size */
+    height: 120px; /* ✅ Matches image size */
 }
-/* Card Images */
+
+/* 📷 Card Images */
 .char-img,
 .essence-img,
 .ability-img {
-    width: 120px;
-    height: 120px;
+    width: 100%;
+    height: 100%;
     border-radius: 3px;
     object-fit: cover;
-	display: block;
-    /* Ensure the container wrapping the image is positioned relative */
+    display: block;
 }
 
 /* ✅ Default styling for essence emojis */
@@ -50,82 +53,88 @@
     display: inline-block;
 }
 
-/* ✅ If there is only one essence, place it in the bottom-right */
-.essence-single {
+/* ✅ If there is only one essence, place it in the bottom-right (inside image) */
+.image-wrapper .essence-single {
     bottom: 5px;
     right: 5px;
 }
 
 /* ✅ If there are two essences, position them separately */
-.essence-double:first-child {
+.image-wrapper .essence-double:first-child {
     top: 5px;
     left: 5px;
 }
 
-.essence-double:last-child {
+.image-wrapper .essence-double:last-child {
     bottom: 5px;
     right: 5px;
 }
 
+/* 🏛 Battle Zone Shrinking */
+.battle-zone .char-card,
+.battle-zone .essence-card,
+.battle-zone .ability-card {
+    width: 70px;      /* Shrinks the card width */
+    padding: 2px;
+    margin: 0;
+    transform: none;
+    font-size: 10px;  /* Smaller base font size for content */
+    line-height: 1.1; /* Tighter spacing */
+}
 
+/* 🔹 Battle Zone Text Adjustments */
+.battle-zone .char-name,
+.battle-zone .essence-name,
+.battle-zone .ability-name {
+    font-size: 9px;  
+    margin: 2px 0; 
+}
 
-/* Battle Zone Shrinking */
+.battle-zone .char-stats,
+.battle-zone .essence-stats,
+.battle-zone .ability-stats {
+    font-size: 8px;  
+    margin-top: 1px;
+}
+
+.battle-zone .char-classes,
+.battle-zone .ability-classes {
+    font-size: 8px;  
+    margin-top: 1px;
+}
+
+/* 📷 Smaller images in the battle zone */
+.battle-zone .image-wrapper {
+    width: 60px;  /* Shrinks the image wrapper */
+    height: 60px;
+}
+
+/* 📷 Shrinking images inside battle zone */
+.battle-zone .char-img,
+.battle-zone .essence-img,
+.battle-zone .ability-img {
+    width: 100%;
+    height: 100%;
+}
+
 /* ✅ Smaller, repositioned essence emoji in battle zone */
 .battle-zone .essence-emoji {
     font-size: 0.5em;  /* Smaller size in battle zone */
 }
 
 /* ✅ If there is only one essence in battle, place it in the bottom-right */
-.battle-zone .essence-single {
+.battle-zone .image-wrapper .essence-single {
     bottom: 2%;
     right: 2%;
 }
 
 /* ✅ If there are two essences in battle, position them separately */
-.battle-zone .essence-double:first-child {
+.battle-zone .image-wrapper .essence-double:first-child {
     top: 2%;
     left: 2%;
 }
 
-.battle-zone .essence-double:last-child {
+.battle-zone .image-wrapper .essence-double:last-child {
     bottom: 2%;
     right: 2%;
-}
-
-.battle-zone .char-card,
-.battle-zone .essence-card,
-.battle-zone .ability-card {
-  width: 70px;      /* Shrinks the card width */
-  padding: 2px;
-  margin: 0;
-  transform: none;
-  font-size: 10px;  /* Smaller base font size for content */
-  line-height: 1.1; /* Tighter spacing */
-}
-
-.battle-zone .char-name,
-.battle-zone .essence-name,
-.battle-zone .ability-name {
-  font-size: 9px;  
-  margin: 2px 0; 
-}
-
-.battle-zone .char-stats,
-.battle-zone .essence-stats,
-.battle-zone .ability-stats {
-  font-size: 8px;  
-  margin-top: 1px;
-}
-.battle-zone .char-classes,
-.battle-zone .ability-classes {
-  font-size: 8px;  
-  margin-top: 1px;
-}
-
-/* Smaller images in the battle zone */
-.battle-zone .char-img,
-.battle-zone .essence-img,
-.battle-zone .ability-img {
-  width: 60px;
-  height: 60px;
 }
