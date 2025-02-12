@@ -44,6 +44,7 @@
 .essence-emoji {
     position: absolute;
     font-size: 1em;
+	color: white;
     background: none;  /* ✅ Ensures NO background */
     text-shadow: 
         -2px -2px 3px rgba(0, 0, 0, 1), /* Dark outline */
