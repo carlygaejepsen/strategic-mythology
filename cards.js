@@ -15,7 +15,6 @@ function dealStartingHands() {
         return;
     }
 
-    // ✅ Move cards from deck to hand
     playerHand.length = 0; // Clear previous hands
     enemyHand.length = 0;
 
@@ -32,7 +31,7 @@ function dealStartingHands() {
 export function determineCardType(card) {
     if (!card) {
         console.error("🚨 ERROR: `determineCardType()` received an undefined or null card!");
-        return "unknown"; // Return an explicit error type
+        return "unknown";
     }
 
     console.log(`DEBUG: Determining type for ${card.name} (Raw Data)`, card);
@@ -46,7 +45,7 @@ export function determineCardType(card) {
     return "char"; // Fallback
 }
 
-// ✅ Creates a fully structured card element with proper essence emoji positioning
+// ✅ Creates a fully structured card element with correct essence emoji positioning
 function createCardElement(card, type) {
     console.log(`🎨 Creating card: ${card.name} (Type: ${type})`);
     const computedType = determineCardType(card);
@@ -105,8 +104,12 @@ function createCardElement(card, type) {
         if (essences.length === 1) {
             essenceEmojiDiv.classList.add("essence-single"); // ✅ Single emoji goes bottom-right
         } else {
-            essenceEmojiDiv.classList.add("essence-double");
-            essenceEmojiDiv.classList.add(index === 0 ? "essence-top-left" : "essence-bottom-right"); // ✅ Two positions
+            // ✅ Two essences—explicitly set classes
+            if (index === 0) {
+                essenceEmojiDiv.classList.add("essence-top-left");
+            } else {
+                essenceEmojiDiv.classList.add("essence-bottom-right");
+            }
         }
 
         essenceEmojiDiv.innerHTML = gameConfig?.["essence-emojis"]?.[ess] || "❓";
