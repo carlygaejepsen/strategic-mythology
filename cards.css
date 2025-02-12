@@ -35,61 +35,63 @@
     /* Ensure the container wrapping the image is positioned relative */
 }
 
-/* Essence Emoji - Positioned in the bottom right corner */
-/* ✅ Now .essence-emoji is inside the image */
-/* ✅ Make sure each emoji is outlined instead of placed inside an oval */
+/* ✅ Default styling for essence emojis */
 .essence-emoji {
     position: absolute;
-    bottom: 5px;
-    right: 5px;
-    font-size: 1em;
-        -1px -1px 1px rgba(255, 255, 255, 0.8), /* Light outer glow */
-         1px -1px 1px rgba(255, 255, 255, 0.8),
-        -1px  1px 1px rgba(255, 255, 255, 0.8),
-         1px  1px 1px rgba(255, 255, 255, 0.8);    border: 1px solid rgba(255, 255, 255, 0.8); /* Thin white outline */
-    padding: 1px; /* Adds spacing around emoji */
-    background: none; /* Removes big background shape */
-    z-index: 10;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* ✅ Make sure multiple emojis are properly spaced */
-/* ✅ Ensure the emojis are inside the image */
-.essence-emoji {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
     font-size: 1em;
     text-shadow: 
-        -1px -1px 1px rgba(255, 255, 255, 0.8), /* Light outer glow */
+        -1px -1px 1px rgba(255, 255, 255, 0.8),
          1px -1px 1px rgba(255, 255, 255, 0.8),
         -1px  1px 1px rgba(255, 255, 255, 0.8),
          1px  1px 1px rgba(255, 255, 255, 0.8);
-    background: none; /* No background, just the emoji */
-    padding: 1px; /* Just enough spacing */
+    background: none;
+    padding: 1px;
     z-index: 10;
     display: inline-block;
 }
 
-/* ✅ Ensures multiple emojis don’t overlap */
-.essence-multiple {
-    display: flex;
-    gap: 3px; /* Small spacing between emojis */
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    align-items: center;
+/* ✅ If there is only one essence, place it in the bottom-right */
+.essence-single {
+    bottom: 5px;
+    right: 5px;
+}
+
+/* ✅ If there are two essences, position them separately */
+.essence-double:first-child {
+    top: 5px;
+    left: 5px;
+}
+
+.essence-double:last-child {
+    bottom: 5px;
+    right: 5px;
 }
 
 
 
 /* Battle Zone Shrinking */
+/* ✅ Smaller, repositioned essence emoji in battle zone */
 .battle-zone .essence-emoji {
-    font-size: .5em;
+    font-size: 0.5em;  /* Smaller size in battle zone */
+}
+
+/* ✅ If there is only one essence in battle, place it in the bottom-right */
+.battle-zone .essence-single {
     bottom: 2%;
     right: 2%;
 }
+
+/* ✅ If there are two essences in battle, position them separately */
+.battle-zone .essence-double:first-child {
+    top: 2%;
+    left: 2%;
+}
+
+.battle-zone .essence-double:last-child {
+    bottom: 2%;
+    right: 2%;
+}
+
 .battle-zone .char-card,
 .battle-zone .essence-card,
 .battle-zone .ability-card {
