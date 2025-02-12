@@ -106,7 +106,7 @@ function createCardElement(card, type) {
         } else {
             // ✅ Two essences—explicitly set classes
             if (index === 0) {
-                essenceEmojiDiv.classList.add("essence-top-left");
+                essenceEmojiDiv.classList.add("essence-bottom-left");
             } else {
                 essenceEmojiDiv.classList.add("essence-bottom-right");
             }

@@ -64,14 +64,14 @@
 }
 
 /* ✅ If there are two essences, position them separately */
-.image-wrapper .essence-top-left {
-    top: 5px;
-    left: 5px;
+.image-wrapper .essence-bottom-left {
+    bottom: 3px;
+    left: 3px;
 }
 
 .image-wrapper .essence-bottom-right {
-    bottom: 5px;
-    right: 5px;
+    bottom: 3px;
+    right: 3px;
 }
 
 
@@ -134,8 +134,8 @@
 }
 
 /* ✅ If there are two essences in battle, position them separately */
-.battle-zone .image-wrapper .essence-top-left {
-    top: 2%;
+.battle-zone .image-wrapper .essence-bottom-left {
+    bottom: 2%;
     left: 2%;
 }
 
