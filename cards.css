@@ -38,121 +38,167 @@
     display: block;
 }
 
-/* Essence Emojis 2.0 */
+/* Essence Emojis 3.0 */
+/* ✅ Default styling for essence emojis */
 .essence-emoji {
     position: absolute;
     font-size: 1em;
     text-shadow: 
-        -1px -1px 1px rgba(255, 255, 255, 0.8),
-         1px -1px 1px rgba(255, 255, 255, 0.8),
-        -1px  1px 1px rgba(255, 255, 255, 0.8),
-         1px  1px 1px rgba(255, 255, 255, 0.8);
-    background-color: rgba(255, 255, 255, 0.2); /* Ensures visibility */
-    border-style: solid;
-    border-width: 2px;
-    border-radius: 50%; /* Keeps it circular */
-    padding: 3px;
+        -2px -2px 2px rgba(255, 255, 255, 0.8),
+         2px -2px 2px rgba(255, 255, 255, 0.8),
+        -2px  2px 2px rgba(255, 255, 255, 0.8),
+         2px  2px 2px rgba(255, 255, 255, 0.8);
+    padding: 2px;
     z-index: 10;
     display: inline-flex;
     align-items: center;
     justify-content: center;
 }
-/* 🔥 Fire - Cool Cyan */
+
+/* 🔥 Fire - Cyan Glow */
 .essence-emoji.fire {
-    border-color: #00C3FF; /* Bright Cyan */
-    background-color: rgba(0, 195, 255, 0.2);
+    text-shadow: 
+        -2px -2px 3px #00FFFF,
+         2px -2px 3px #00FFFF,
+        -2px  2px 3px #00FFFF,
+         2px  2px 3px #00FFFF;
 }
 
-/* 🌊 Water - Fiery Orange */
+/* 🌊 Water - Orange Glow */
 .essence-emoji.water {
-    border-color: #FF4500; /* Deep Orange-Red */
-    background-color: rgba(255, 69, 0, 0.2);
+    text-shadow: 
+        -2px -2px 3px #FF4500,
+         2px -2px 3px #FF4500,
+        -2px  2px 3px #FF4500,
+         2px  2px 3px #FF4500;
 }
 
-/* 💨 Air - Rich Deep Blue */
+/* 💨 Air - Deep Blue Glow */
 .essence-emoji.air {
-    border-color: #1A237E; /* Dark Indigo */
-    background-color: rgba(26, 35, 126, 0.2);
+    text-shadow: 
+        -2px -2px 3px #1A237E,
+         2px -2px 3px #1A237E,
+        -2px  2px 3px #1A237E,
+         2px  2px 3px #1A237E;
 }
 
-/* 🏔️ Earth - Vibrant Magenta */
+/* 🏔️ Earth - Magenta Glow */
 .essence-emoji.earth {
-    border-color: #FF00FF; /* Bright Magenta */
-    background-color: rgba(255, 0, 255, 0.2);
+    text-shadow: 
+        -2px -2px 3px #FF00FF,
+         2px -2px 3px #FF00FF,
+        -2px  2px 3px #FF00FF,
+         2px  2px 3px #FF00FF;
 }
 
-/* ⚡ Electricity - Deep Red */
+/* ⚡ Electricity - Red Glow */
 .essence-emoji.electricity,
 .essence-emoji.zap {
-    border-color: #C70039; /* Bold Crimson */
-    background-color: rgba(199, 0, 57, 0.2);
+    text-shadow: 
+        -2px -2px 3px #C70039,
+         2px -2px 3px #C70039,
+        -2px  2px 3px #C70039,
+         2px  2px 3px #C70039;
 }
 
-/* 💞 Love - Cool Teal */
+/* 💞 Love - Teal Glow */
 .essence-emoji.love {
-    border-color: #009688; /* Deep Teal */
-    background-color: rgba(0, 150, 136, 0.2);
+    text-shadow: 
+        -2px -2px 3px #009688,
+         2px -2px 3px #009688,
+        -2px  2px 3px #009688,
+         2px  2px 3px #009688;
 }
 
-/* 🩸 Malice - Neon Green */
+/* 🩸 Malice - Neon Green Glow */
 .essence-emoji.malice {
-    border-color: #00FF00; /* True Neon Green */
-    background-color: rgba(0, 255, 0, 0.2);
+    text-shadow: 
+        -2px -2px 3px #00FF00,
+         2px -2px 3px #00FF00,
+        -2px  2px 3px #00FF00,
+         2px  2px 3px #00FF00;
 }
 
-/* 🦚 Hubris - Royal Blue */
+/* 🦚 Hubris - Royal Blue Glow */
 .essence-emoji.hubris {
-    border-color: #1E90FF; /* Bright Blue */
-    background-color: rgba(30, 144, 255, 0.2);
+    text-shadow: 
+        -2px -2px 3px #1E90FF,
+         2px -2px 3px #1E90FF,
+        -2px  2px 3px #1E90FF,
+         2px  2px 3px #1E90FF;
 }
 
-/* 📖 Wisdom - Fiery Red */
+/* 📖 Wisdom - Red Glow */
 .essence-emoji.wisdom {
-    border-color: #FF0000; /* True Red */
-    background-color: rgba(255, 0, 0, 0.2);
+    text-shadow: 
+        -2px -2px 3px #FF0000,
+         2px -2px 3px #FF0000,
+        -2px  2px 3px #FF0000,
+         2px  2px 3px #FF0000;
 }
 
-/* 🕯️ Light - Deep Purple */
+/* 🕯️ Light - Purple Glow */
 .essence-emoji.light {
-    border-color: #6A0DAD; /* Rich Purple */
-    background-color: rgba(106, 13, 173, 0.2);
+    text-shadow: 
+        -2px -2px 3px #6A0DAD,
+         2px -2px 3px #6A0DAD,
+        -2px  2px 3px #6A0DAD,
+         2px  2px 3px #6A0DAD;
 }
 
-/* 🌑 Dark - Bright Yellow */
+/* 🌑 Dark - Yellow Glow */
 .essence-emoji.dark {
-    border-color: #FFD700; /* Gold/Yellow */
-    background-color: rgba(255, 215, 0, 0.2);
+    text-shadow: 
+        -2px -2px 3px #FFD700,
+         2px -2px 3px #FFD700,
+        -2px  2px 3px #FFD700,
+         2px  2px 3px #FFD700;
 }
 
-/* 🌿 Vitality - Bright Pink */
+/* 🌿 Vitality - Pink Glow */
 .essence-emoji.vit {
-    border-color: #FF1493; /* Deep Pink */
-    background-color: rgba(255, 20, 147, 0.2);
+    text-shadow: 
+        -2px -2px 3px #FF1493,
+         2px -2px 3px #FF1493,
+        -2px  2px 3px #FF1493,
+         2px  2px 3px #FF1493;
 }
 
-/* 🍂 Decay - Neon Blue */
+/* 🍂 Decay - Neon Blue Glow */
 .essence-emoji.decay {
-    border-color: #00BFFF; /* Vivid Sky Blue */
-    background-color: rgba(0, 191, 255, 0.2);
+    text-shadow: 
+        -2px -2px 3px #00BFFF,
+         2px -2px 3px #00BFFF,
+        -2px  2px 3px #00BFFF,
+         2px  2px 3px #00BFFF;
 }
 
-/* 🪙 Luck - Deep Green */
+/* 🪙 Luck - Deep Green Glow */
 .essence-emoji.luck {
-    border-color: #006400; /* Dark Green */
-    background-color: rgba(0, 100, 0, 0.2);
+    text-shadow: 
+        -2px -2px 3px #006400,
+         2px -2px 3px #006400,
+        -2px  2px 3px #006400,
+         2px  2px 3px #006400;
 }
 
-/* ⚖️ Justice - Deep Magenta */
+/* ⚖️ Justice - Deep Magenta Glow */
 .essence-emoji.just,
 .essence-emoji.justice {
-    border-color: #8B008B; /* Dark Magenta */
-    background-color: rgba(139, 0, 139, 0.2);
+    text-shadow: 
+        -2px -2px 3px #8B008B,
+         2px -2px 3px #8B008B,
+        -2px  2px 3px #8B008B,
+         2px  2px 3px #8B008B;
 }
 
-/* 🔮 Insight - Bold Orange */
+/* 🔮 Insight - Bold Orange Glow */
 .essence-emoji.insight {
-    border-color: #FF8C00; /* Dark Orange */
-    background-color: rgba(255, 140, 0, 0.2);
+    text-shadow: 
+        -2px -2px 3px #FF8C00,
+         2px -2px 3px #FF8C00,
+        -2px  2px 3px #FF8C00,
+         2px  2px 3px #FF8C00;
 }
 
 
