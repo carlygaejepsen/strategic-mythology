@@ -45,7 +45,7 @@ export function determineCardType(card) {
     return "char"; // Fallback, but this shouldn't happen
 }
 
-// Creates a card element 4.0
+// Creates a card element 5.0 - FIXED ESSENCE POSITIONING
 function createCardElement(card, type) {
     console.log(`🎨 Creating card: ${card.name} (Type: ${type})`);
     const computedType = determineCardType(card);
@@ -93,20 +93,24 @@ function createCardElement(card, type) {
         imageWrapper.appendChild(imgElement);
     }
 
-    // 5️⃣ Create and append the Essence Emoji inside `.image-wrapper`
+    // 5️⃣ Create and append essence emojis inside `.image-wrapper`
     if (card.essence || (Array.isArray(card.essences) && card.essences.length > 0)) {
-        const essenceEmojiDiv = document.createElement("div");
-        essenceEmojiDiv.classList.add("essence-emoji");
+        const essences = Array.isArray(card.essences) ? card.essences : [card.essence];
 
-        if (Array.isArray(card.essences)) {
-            essenceEmojiDiv.innerHTML = card.essences.map(
-                ess => gameConfig?.["essence-emojis"]?.[ess] || ess
-            ).join(" ");
-        } else {
-            essenceEmojiDiv.innerHTML = gameConfig?.["essence-emojis"]?.[card.essence] || "❓";
-        }
+        essences.forEach((ess, index) => {
+            const essenceEmojiDiv = document.createElement("div");
+            essenceEmojiDiv.classList.add("essence-emoji");
 
-        imageWrapper.appendChild(essenceEmojiDiv); // ✅ Now it's inside the image wrapper!
+            if (essences.length === 1) {
+                essenceEmojiDiv.classList.add("essence-single"); // ✅ Single emoji goes bottom-right
+            } else {
+                essenceEmojiDiv.classList.add("essence-double");
+                essenceEmojiDiv.classList.add(index === 0 ? "essence-top-left" : "essence-bottom-right"); // ✅ Two positions
+            }
+
+            essenceEmojiDiv.innerHTML = gameConfig?.["essence-emojis"]?.[ess] || "❓";
+            imageWrapper.appendChild(essenceEmojiDiv);
+        });
     }
 
     // 6️⃣ Append the image wrapper into the main card div
