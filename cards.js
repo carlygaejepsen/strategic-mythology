@@ -45,7 +45,7 @@ export function determineCardType(card) {
     return "char"; // Fallback, but this shouldn't happen
 }
 
-// Creates a card element 3.0
+// Creates a card element 4.0
 function createCardElement(card, type) {
     console.log(`🎨 Creating card: ${card.name} (Type: ${type})`);
     const computedType = determineCardType(card);
@@ -74,24 +74,30 @@ function createCardElement(card, type) {
             : ""
     });
 
-    // 1️⃣ Create the container element
+    // 1️⃣ Create the outer card container
     const containerDiv = document.createElement("div");
     containerDiv.classList.add("card-container");
 
-    // 2️⃣ Create the main card element
+    // 2️⃣ Create an inner wrapper JUST for the image & essence emojis
+    const imageWrapper = document.createElement("div");
+    imageWrapper.classList.add("image-wrapper");
+
+    // 3️⃣ Create the main card element
     const cardDiv = document.createElement("div");
     cardDiv.classList.add(`${computedType}-card`);
     cardDiv.innerHTML = populatedHTML;
 
-    // 3️⃣ Select the image element
+    // 4️⃣ Select the image element and move it into the image wrapper
     const imgElement = cardDiv.querySelector("img");
+    if (imgElement) {
+        imageWrapper.appendChild(imgElement);
+    }
 
-    // 4️⃣ Create the Essence Emoji inside the image container
+    // 5️⃣ Create and append the Essence Emoji inside `.image-wrapper`
     if (card.essence || (Array.isArray(card.essences) && card.essences.length > 0)) {
         const essenceEmojiDiv = document.createElement("div");
         essenceEmojiDiv.classList.add("essence-emoji");
 
-        // Handles both single and multiple essences
         if (Array.isArray(card.essences)) {
             essenceEmojiDiv.innerHTML = card.essences.map(
                 ess => gameConfig?.["essence-emojis"]?.[ess] || ess
@@ -100,17 +106,16 @@ function createCardElement(card, type) {
             essenceEmojiDiv.innerHTML = gameConfig?.["essence-emojis"]?.[card.essence] || "❓";
         }
 
-        if (imgElement) {
-            imgElement.parentElement.appendChild(essenceEmojiDiv); // ✅ Append to image container
-        } else {
-            containerDiv.appendChild(essenceEmojiDiv); // Fallback
-        }
+        imageWrapper.appendChild(essenceEmojiDiv); // ✅ Now it's inside the image wrapper!
     }
 
-    // 5️⃣ Insert the main card into the container
+    // 6️⃣ Append the image wrapper into the main card div
+    cardDiv.insertBefore(imageWrapper, cardDiv.firstChild);
+
+    // 7️⃣ Insert the main card into the container
     containerDiv.appendChild(cardDiv);
 
-    // 6️⃣ Add click handling on the container
+    // 8️⃣ Add click handling on the container
     containerDiv.addEventListener("click", () => {
         console.log(`🖱️ Clicked on card: ${card.name}`);
         handleCardClick(card);
