@@ -44,10 +44,10 @@
     position: absolute;
     font-size: 1em;
     text-shadow: 
-        -2px -2px 3px #00BFFF,
-         2px -2px 3px #00BFFF,
-        -2px  2px 3px #00BFFF,
-         2px  2px 3px #00BFFF;
+        -2px -2px 3px #4A1C1A,
+         2px -2px 3px #4A1C1A,
+        -2px  2px 3px #4A1C1A,
+         2px  2px 3px #4A1C1A;
     padding: 2px;
     z-index: 10;
     display: inline-flex;
