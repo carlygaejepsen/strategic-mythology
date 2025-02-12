@@ -76,17 +76,34 @@ function createCardElement(card, type) {
 
     // 1️⃣ Create the container element
     const containerDiv = document.createElement("div");
-    containerDiv.classList.add("card-container"); 
+    containerDiv.classList.add("card-container");
 
     // 2️⃣ Create the main card element
     const cardDiv = document.createElement("div");
     cardDiv.classList.add(`${computedType}-card`);
     cardDiv.innerHTML = populatedHTML;
 
-    // 3️⃣ Insert the main card into the container
+    // 3️⃣ Create the Essence Emoji if applicable
+    if (card.essence || (Array.isArray(card.essences) && card.essences.length > 0)) {
+        const essenceEmojiDiv = document.createElement("div");
+        essenceEmojiDiv.classList.add("essence-emoji");
+
+        // Handles both single and multiple essences
+        if (Array.isArray(card.essences)) {
+            essenceEmojiDiv.innerHTML = card.essences.map(
+                ess => gameConfig?.["essence-emojis"]?.[ess] || ess
+            ).join(" ");
+        } else {
+            essenceEmojiDiv.innerHTML = gameConfig?.["essence-emojis"]?.[card.essence] || "❓";
+        }
+
+        containerDiv.appendChild(essenceEmojiDiv);
+    }
+
+    // 4️⃣ Insert the main card into the container
     containerDiv.appendChild(cardDiv);
 
-    // 4️⃣ Add click handling on the container
+    // 5️⃣ Add click handling on the container
     containerDiv.addEventListener("click", () => {
         console.log(`🖱️ Clicked on card: ${card.name}`);
         handleCardClick(card);
