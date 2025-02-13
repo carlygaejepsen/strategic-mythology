@@ -106,12 +106,13 @@ export function placeCardInBattleZone(card, battleZoneId, updateFunction, owner)
 
 // 🎮 **Handle Card Clicks 2.0
 export function handleCardClick(card) {
-    if (!card?.name) {
+    if (!card || !card.name) {
         console.warn("⚠️ Invalid card click detected.");
         return;
     }
 
-    console.log(`🎴 Clicked on card: ${card.name}`);
+    console.log(`DEBUG: Clicked on card: ${card.name}`);
+
     const type = determineCardType(card);
 
     // 🃏 **Placing a Card in Battle Zone**
@@ -122,11 +123,10 @@ export function handleCardClick(card) {
         }
 
         // ✅ Check if slot is available for card type
-        const canPlaceCard = !currentPlayerBattleCards[type] || ["essence", "ability"].includes(type);
-        if (canPlaceCard) {
+        if (!currentPlayerBattleCards[type] || type === "essence" || type === "ability") {
             placeCardInBattleZone(card, `player-${type}-zone`, updatePlayerBattleCard, "Player");
 
-            // ✅ Remove placed card from hand using `splice()` (mutation-friendly)
+            // ✅ Remove the placed card from hand
             const index = playerHand.indexOf(card);
             if (index !== -1) playerHand.splice(index, 1);
 
@@ -140,10 +140,7 @@ export function handleCardClick(card) {
     }
 
     // 🚫 **Prevent selecting an attacker/defender if no valid battle cards exist**
-    const hasBattleCards = Object.values(currentPlayerBattleCards).some(c => c) || 
-                           Object.values(currentEnemyBattleCards).some(c => c);
-
-    if (!hasBattleCards) {
+    if (!Object.values(currentPlayerBattleCards).some(c => c) && !Object.values(currentEnemyBattleCards).some(c => c)) {
         console.warn("⚠️ No valid cards in the battle zone to select.");
         return;
     }
