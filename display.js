@@ -140,22 +140,26 @@ export function enemyPlaceCard() {
 }
 
 // 🩸 Updates only the HP of a card in the battle zone without re-rendering the entire card.
-export function updateCardHP(card) {
-    if (!card || !card.id) return;
-    
-    // Locate the existing card element in the battle zone
-    const cardElement = document.querySelector(`[data-card-id="${card.id}"]`);
-    
+function updateCardHP(cardName, newHP) {
+    let cardElement = document.querySelector(`[data-card-name="${cardName}"]`);
+
+    // 🔥 Fix: If card doesn't exist in UI, attempt to re-render it
     if (!cardElement) {
-        console.warn(`⚠️ Could not find card element for ${card.name} to update HP.`);
-        return;
+        console.warn(`⚠️ Could not find card element for ${cardName}. Attempting to re-add.`);
+        reRenderBattleCards(); // Ensure battle zone cards are properly rendered
+        cardElement = document.querySelector(`[data-card-name="${cardName}"]`);
+        if (!cardElement) {
+            console.error(`❌ Card ${cardName} still not found after re-render. Skipping HP update.`);
+            return;
+        }
     }
 
-    // Locate the HP display inside the card and update it
-    const hpElement = cardElement.querySelector(".card-hp"); // Adjust selector as needed
+    const hpElement = cardElement.querySelector(".hp");
     if (hpElement) {
-        hpElement.textContent = card.hp; // Directly update HP
-    } else {
-        console.warn(`⚠️ No HP element found for ${card.name}.`);
+        hpElement.textContent = `HP: ${newHP}`;
     }
+}
+function reRenderBattleCards() {
+    console.log("🔄 Re-rendering battle cards to sync UI...");
+    updateBattleZones(); // This function should redraw the battle cards
 }
