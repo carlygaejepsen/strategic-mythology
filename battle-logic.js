@@ -1,5 +1,7 @@
 import { logToResults, updateCardHP, removeDefeatedCards } from "./display.js";
 import { determineCardType } from "./cards.js";
+import { battleSystem } from "./battle-logic.js";
+
 
 export const battleSystem = {
   combos: {
@@ -48,7 +50,7 @@ export const battleSystem = {
   }
 };
 
-// processCombat 2.0
+// processCombat 3.0
 export function processCombat(attacker, defender, isCombo = false) {
     if (!attacker?.name || !defender?.name) {
         console.error("🚨 ERROR: Invalid combatants! Attack skipped.");
@@ -92,6 +94,34 @@ export function processCombat(attacker, defender, isCombo = false) {
         logToResults(`☠️ ${defender.name} has been defeated!`);
         removeDefeatedCards();
     }
+}
+
+/**
+ * 🔄 Calculates essence-based multipliers.
+ */
+function calculateEssenceMultiplier(attackerEssence, defenderEssence) {
+    if (!attackerEssence || !defenderEssence) return 1;
+    if (battleSystem.essenceBonuses?.[attackerEssence]?.strongAgainst === defenderEssence) {
+        return battleSystem.damageCalculation.essenceBonusMultiplier;
+    }
+    if (battleSystem.essenceBonuses?.[attackerEssence]?.weakAgainst === defenderEssence) {
+        return 1 / battleSystem.damageCalculation.essenceBonusMultiplier;
+    }
+    return 1;
+}
+
+/**
+ * 🔄 Calculates class-based multipliers.
+ */
+function calculateClassMultiplier(attackerClass, defenderClass) {
+    if (!attackerClass || !defenderClass) return 1;
+    if (battleSystem.classBonuses?.[attackerClass]?.strongAgainst?.includes(defenderClass)) {
+        return battleSystem.damageCalculation.classBonusMultiplier;
+    }
+    if (battleSystem.classBonuses?.[attackerClass]?.weakAgainst?.includes(defenderClass)) {
+        return 1 / battleSystem.damageCalculation.classBonusMultiplier;
+    }
+    return 1;
 }
 
 //Calculate Essence Multiplier
