@@ -104,48 +104,66 @@ export function placeCardInBattleZone(card, battleZoneId, updateFunction, owner)
     return cardElement;
 }
 
-// 🎮 **Handle Card Clicks**
+// 🎮 **Handle Card Clicks 2.0
 export function handleCardClick(card) {
+    if (!card || !card.name) {
+        console.warn("⚠️ Invalid card click detected.");
+        return;
+    }
+
     console.log(`DEBUG: Clicked on card: ${card.name}`);
 
     const type = determineCardType(card);
 
-    // 🃏 **Placing a card in battle zone**
+    // 🃏 **Placing a Card in Battle Zone**
     if (playerHand.includes(card)) {
-        if (!gameState.playerHasPlacedCard) { 
-            if (!currentPlayerBattleCards[type] || type === "essence" || type === "ability") {
-                placeCardInBattleZone(card, `player-${type}-zone`, updatePlayerBattleCard, "Player");
-
-                // ✅ Remove card from hand without reassigning
-                playerHand.splice(playerHand.indexOf(card), 1);  
-                updateHands();
-
-                setPlayerHasPlacedCard(true);
-                enemyPlaceCard();
-            } else {
-                console.warn(`⚠️ You already have a ${type} card in battle.`);
-            }
-        } else {
+        if (gameState.playerHasPlacedCard) {
             console.warn("⚠️ You can only place one card per turn.");
+            return;
+        }
+
+        // ✅ Check if slot is available for card type
+        if (!currentPlayerBattleCards[type] || type === "essence" || type === "ability") {
+            placeCardInBattleZone(card, `player-${type}-zone`, updatePlayerBattleCard, "Player");
+
+            // ✅ Remove the placed card from hand
+            const index = playerHand.indexOf(card);
+            if (index !== -1) playerHand.splice(index, 1);
+
+            updateHands();
+            setPlayerHasPlacedCard(true);
+            enemyPlaceCard();
+        } else {
+            console.warn(`⚠️ You already have a ${type} card in battle.`);
         }
         return;
     }
 
-    // 🚫 **Prevent selecting an attacker/defender if battle zone is empty**
-    if (!currentPlayerBattleCards[type] && !currentEnemyBattleCards[type]) {
-        console.warn("⚠️ No valid card to select.");
+    // 🚫 **Prevent selecting an attacker/defender if no valid battle cards exist**
+    if (!Object.values(currentPlayerBattleCards).some(c => c) && !Object.values(currentEnemyBattleCards).some(c => c)) {
+        console.warn("⚠️ No valid cards in the battle zone to select.");
         return;
     }
 
-    // 🎯 **Selecting Attacker**
+    // 🎯 **Selecting an Attacker**
     if (currentPlayerBattleCards[type] === card) {
+        if (selectedAttacker === card) {
+            console.warn("⚠️ This card is already selected as the attacker.");
+            return;
+        }
         setSelectedAttacker(card);
+        console.log(`✅ Selected Attacker: ${card.name}`);
         return;
     }
 
-    // 🛡️ **Selecting Defender**
+    // 🛡️ **Selecting a Defender**
     if (currentEnemyBattleCards[type] === card) {
+        if (selectedDefender === card) {
+            console.warn("⚠️ This card is already selected as the defender.");
+            return;
+        }
         setSelectedDefender(card);
+        console.log(`✅ Selected Defender: ${card.name}`);
         return;
     }
 
