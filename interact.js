@@ -37,17 +37,23 @@ export function drawCardsToFillHands() {
     updateHands();
 }
 
-// 🎯 **Selection Functions**
+// 🎯 **Selection Functions 2.0
 export function setSelectedAttacker(card) {
-    if (selectedAttacker === card) return; // ✅ Prevent duplicate selection logs
     selectedAttacker = card;
-    console.log(`🎯 Selected Attacker: ${card.name}`);
+    if (card) {
+        console.log(`🎯 Selected Attacker: ${card.name}`);
+    } else {
+        console.log("🎯 Selected Attacker reset.");
+    }
 }
 
 export function setSelectedDefender(card) {
-    if (selectedDefender === card) return; // ✅ Prevent duplicate selection logs
     selectedDefender = card;
-    console.log(`🛡️ Selected Defender: ${card.name}`);
+    if (card) {
+        console.log(`🛡️ Selected Defender: ${card.name}`);
+    } else {
+        console.log("🛡️ Selected Defender reset.");
+    }
 }
 
 export function setPlayerHasPlacedCard(value) {
