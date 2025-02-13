@@ -1,34 +1,39 @@
 // config.js - Handles game configurations, settings, data loading, and global references
-// Add to gameConfig
+
+// ✅ Turn Phases (for dynamic tracking)
 export const turnPhases = {
   PLAYER_SELECTION: 'player',
   ENEMY_SELECTION: 'enemy',
   COMBAT: 'combat'
 };
 
-// Add current phase tracking
+// ✅ Current Game Phase (updated dynamically)
 export let currentPhase = turnPhases.PLAYER_SELECTION;
+export function setCurrentPhase(newPhase) {
+    console.log(`🔄 Phase Change: ${currentPhase} ➝ ${newPhase}`);
+    currentPhase = newPhase;
+}
 
-// Core objects (non-const so we can reassign if needed)
-export let cardTemplates = {}; // Stores card templates loaded from JSON
+// ✅ Core Objects (non-const so we can reassign if needed)
+export let cardTemplates = {}; 
 
-// Decks & Hands (export as let so we can mutate them freely)
-export let playerDeck = [];    // Player's deck
-export let enemyDeck = [];     // Enemy's deck
-export let playerHand = [];    // Player's current hand
-export let enemyHand = [];     // Enemy's current hand
+// ✅ Decks & Hands (Mutable arrays)
+export let playerDeck = [];
+export let enemyDeck = [];
+export let playerHand = [];
+export let enemyHand = [];
+
+// ✅ Game State Tracking
 export let gameState = {
     playerHasPlacedCard: false,
     enemyHasPlacedCard: false
 };
 
-
-
-// Active Battle Cards
+// ✅ Active Battle Cards
 export let currentPlayerBattleCards = { char: null, essence: null, ability: null };
 export let currentEnemyBattleCards = { char: null, essence: null, ability: null };
 
-// JSON loading helper
+// ✅ JSON Loading Helper
 async function loadJSON(file) {
     try {
         const response = await fetch(file);
@@ -40,7 +45,7 @@ async function loadJSON(file) {
     }
 }
 
-// Game-wide config (texts, placeholders, etc.)
+// ✅ Game-wide config (settings, texts, placeholders)
 export let gameConfig = {
     "essence-emojis": {
         "fire": "🔥", "water": "🌊", "air": "💨", "earth": "🏔️",
@@ -71,22 +76,23 @@ export let gameConfig = {
     }
 };
 
-// Fetches card templates + merges bat-sys.json data into battleSystem
+// ✅ Fetches card templates + merges `battle-system.json` into `gameConfig`
 export async function loadConfigFiles() {
     try {
         console.log("📥 Fetching configuration files...");
 
+        // Fetch card templates
         const cardTemplatesResponse = await fetch("./card-templates.json");
         if (!cardTemplatesResponse.ok) throw new Error(`Failed to fetch card-templates.json`);
-
         cardTemplates = await cardTemplatesResponse.json();
+
         console.log("✅ Configurations loaded.");
     } catch (error) {
         console.error("❌ ERROR loading configuration files:", error);
     }
 }
 
-// Shuffle function (Fisher-Yates)r
+// ✅ Shuffle function (Fisher-Yates algorithm)
 export function shuffleDeck(deck) {
     for (let i = deck.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -95,12 +101,12 @@ export function shuffleDeck(deck) {
     return deck;
 }
 
-// Loads character, essence, and ability cards from JSON, populates playerDeck & enemyDeck
-let cardsLoaded = false; // Prevents multiple reloads
+// ✅ Loads character, essence, and ability cards from JSON, populates decks
+let cardsLoaded = false;
 
 export async function loadAllCards() {
-    if (cardsLoaded) return; // If already loaded, do nothing
-    cardsLoaded = true; // Mark as loaded
+    if (cardsLoaded) return; // Prevent multiple reloads
+    cardsLoaded = true; 
 
     try {
         console.log("📥 Fetching all card data...");
@@ -118,12 +124,18 @@ export async function loadAllCards() {
             loadJSON("./data/ability-cards.json")
         ]);
 
+        // Ensure valid card loading
+        if (!characterDeck.length || !essenceDeck.length || !abilityDeck.length) {
+            console.warn("⚠️ WARNING: One or more decks are empty!");
+        }
+
         const fullDeck = [...characterDeck, ...essenceDeck, ...abilityDeck];
 
-        // Ensure hands are empty before loading new decks
+        // Ensure hands are cleared before loading new decks
         playerHand.length = 0;
         enemyHand.length = 0;
 
+        // Shuffle and assign decks
         playerDeck = shuffleDeck([...fullDeck]);
         enemyDeck = shuffleDeck([...fullDeck]);
 

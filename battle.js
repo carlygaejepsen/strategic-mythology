@@ -11,7 +11,8 @@ import {
 import { 
     logToResults, 
     getRandomCardFromZone, 
-    removeDefeatedCards 
+    removeDefeatedCards, 
+    updateInstructionText 
 } from "./display.js";
 import { 
     currentPlayerBattleCards, 
@@ -26,51 +27,35 @@ import { determineCardType } from "./cards.js";
 
 let gameRunning = false;
 
-//Main Game Loop 2.0
+// 🎮 **Main Game Loop 2.2**
 function gameLoop() {
     if (gameRunning) return; // Prevent multiple triggers
     gameRunning = true;
 
     console.log("🔄 New battle round starting...");
 
-    // 🚨 Check if both players have placed a card before moving forward
+    // 🚨 Ensure both players have placed a card before continuing
     if (!gameState.playerHasPlacedCard || !gameState.enemyHasPlacedCard) {
         console.warn("⚠️ Both players must place a card before starting the round.");
+        gameRunning = false; // ✅ Prevent soft locks
         return;
     }
 
-    // ✅ Update player and enemy status for the attack phase
+    // ✅ Update UI: Change status bars to reflect attack phase
     onGameStateChange("select-attacker");
     onEnemyStateChange("enemy-select-attacker");
 
-    battleRound(); // Runs only once per turn
-
-    setTimeout(() => {
-        if (playerDeck.length === 0 || enemyDeck.length === 0) {
-            logToResults(playerDeck.length === 0 ? "🏁 Player wins!" : "🏁 Enemy wins!");
-            gameRunning = false;
-            return;
-        }
-
-        gameRunning = false;
-    }, 1000);
+    battleRound();
 }
 
-/**
- * ⚔️ Handles a single battle round.
- */
+// ⚔️ **Battle Round 2.2**
 function battleRound() {
     console.log("⚔️ Battle round begins!");
 
     // 🚨 Ensure the player has placed a card before starting
     if (!gameState.playerHasPlacedCard) {
-        const canPlay = playerHand.some(card => !currentPlayerBattleCards[determineCardType(card)]);
-        if (!canPlay) {
-            console.warn("⚠️ No valid cards to play. Skipping placement...");
-        } else {
-            console.warn("⚠️ You must place a card in the battle zone before starting a round.");
-            return;
-        }
+        console.warn("⚠️ Player must place a card before the battle round can continue.");
+        return;
     }
 
     // 🚨 Ensure the player has selected an attacker and defender before continuing
@@ -100,19 +85,21 @@ function battleRound() {
     // 🛑 Remove defeated cards again after AI attack
     removeDefeatedCards();
 
+    // ✅ Ensure the instruction box resets **after** defeated cards are removed
+    onGameStateChange("start");
+    onEnemyStateChange("enemy-start");
+
     // 🃏 Draw one new card per hand (not battle zone)
     drawCardsToFillHands();
 
-    // 🔄 Reset selections & allow new cards to be placed
-    resetSelections();
+    // 🔄 Reset selections **after** UI updates are complete
+    setTimeout(resetSelections, 500); // ✅ Ensures smooth transition
 
     console.log("✅ Battle round complete. Click 'Play Turn' to continue.");
 }
 
-/**
- * 🔄 Resets player and enemy selections after each turn.
- */
-function resetSelections() {
+// 🔄 **Reset Selections & Card Placement**
+export function resetSelections() {
     setSelectedAttacker(null);
     setSelectedDefender(null);
     setPlayerHasPlacedCard(false);
@@ -120,29 +107,8 @@ function resetSelections() {
     console.log("🔄 Reset playerHasPlacedCard & enemyHasPlacedCard for new turn.");
 }
 
-/**
- * 📜 Updates the instruction box for the player.
- */
-function updateInstructionText(phase) {
-    const instructionBox = document.getElementById("instruction-box");
-    if (!instructionBox) return;
-
-    const instructionMessages = {
-        "start": "It's your turn! Select a card to play.",
-        "select-battle-card": "Choose a card to send to the battle zone.",
-        "select-attacker": "Select your attacker.",
-        "select-defender": "Choose which enemy to attack.",
-        "combo": "Try combining abilities!",
-        "waiting": "Waiting for opponent...",
-    };
-
-    instructionBox.textContent = instructionMessages[phase] || "Make your move!";
-}
-
-/**
- * 🚦 Updates the enemy's status during their turn.
- */
-function updateEnemyStatus(phase) {
+// 🛡️ **Update Enemy Status UI**
+export function updateEnemyStatus(phase) {
     const enemyStatusBox = document.getElementById("enemy-status-box");
     if (!enemyStatusBox) return;
 
@@ -158,25 +124,21 @@ function updateEnemyStatus(phase) {
     enemyStatusBox.textContent = enemyMessages[phase] || "Enemy is strategizing...";
 }
 
-/**
- * 🎭 Handles game state changes for the player.
- */
-function onGameStateChange(newState) {
+// 📝 **Update Player Instruction UI**
+export function onGameStateChange(newState) {
     updateInstructionText(newState);
 }
 
-/**
- * 🤖 Handles game state changes for the enemy.
- */
-function onEnemyStateChange(newState) {
+// 🔄 **Update Enemy Phase UI**
+export function onEnemyStateChange(newState) {
     updateEnemyStatus(newState);
 }
 
-// Example: Initialize turn states
+// 🎮 **Initialize turn states**
 onGameStateChange("start");
 onEnemyStateChange("enemy-start");
 
-// 🎮 Add event listener for the "Play Turn" button
+// 🎮 **Add event listener for "Play Turn" button**
 document.addEventListener("DOMContentLoaded", () => {
     const playTurnButton = document.getElementById("play-turn");
     if (playTurnButton) {

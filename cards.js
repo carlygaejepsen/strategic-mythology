@@ -1,21 +1,33 @@
 import { updateHands } from "./display.js";
 import { handleCardClick } from "./interact.js";
-import { gameConfig, currentPlayerBattleCards, currentEnemyBattleCards, shuffleDeck, enemyDeck, playerDeck, playerHand, enemyHand, cardTemplates, gameState } from "./config.js";
+import { 
+    gameConfig, 
+    currentPlayerBattleCards, 
+    currentEnemyBattleCards, 
+    shuffleDeck, 
+    enemyDeck, 
+    playerDeck, 
+    playerHand, 
+    enemyHand, 
+    cardTemplates, 
+    gameState 
+} from "./config.js";
 
-// Replaces placeholders in a template with provided data
+// ✅ Replace placeholders in a template with provided data
 function populateTemplate(template, data) {
     return template.replace(/{(\w+)}/g, (match, key) => (key in data ? data[key] : match));
 }
 
-// Deals starting hands from the decks and updates the UI
+// 🃏 Deals starting hands from decks & updates the UI
 function dealStartingHands() {
     const HAND_SIZE = 6;
+
     if (playerDeck.length < HAND_SIZE || enemyDeck.length < HAND_SIZE) {
         console.error("❌ Not enough cards to deal starting hands.");
         return;
     }
 
-    playerHand.length = 0; // Clear previous hands
+    playerHand.length = 0; 
     enemyHand.length = 0;
 
     playerHand.push(...playerDeck.splice(0, HAND_SIZE));
@@ -27,7 +39,7 @@ function dealStartingHands() {
     console.log("🎴 Enemy Hand:", enemyHand);
 }
 
-// Determine card type safely
+// 🏷️ Determines the card type safely
 export function determineCardType(card) {
     if (!card) {
         console.error("🚨 ERROR: `determineCardType()` received an undefined or null card!");
@@ -45,7 +57,7 @@ export function determineCardType(card) {
     return "char"; // Fallback
 }
 
-// ✅ Creates a fully structured card element with correct essence emoji positioning
+// 🎨 Creates a card element with correct essence emoji positioning
 function createCardElement(card, type) {
     console.log(`🎨 Creating card: ${card.name} (Type: ${type})`);
     const computedType = determineCardType(card);
@@ -55,7 +67,7 @@ function createCardElement(card, type) {
         return document.createElement("div");
     }
 
-    // Populate the HTML template
+    // Populate template with card data
     const template = cardTemplates[computedType].html;
     const populatedHTML = populateTemplate(template, {
         name: card.name || "Unknown",
@@ -74,55 +86,46 @@ function createCardElement(card, type) {
             : ""
     });
 
-    // 1️⃣ Create the outer card container
+    // 🏗️ Build Card Structure
     const containerDiv = document.createElement("div");
     containerDiv.classList.add("card-container");
 
-    // 2️⃣ Create an inner wrapper JUST for the image & essence emojis
     const imageWrapper = document.createElement("div");
     imageWrapper.classList.add("image-wrapper");
 
-    // 3️⃣ Create the main card element
     const cardDiv = document.createElement("div");
     cardDiv.classList.add(`${computedType}-card`);
     cardDiv.innerHTML = populatedHTML;
 
-    // 4️⃣ Select the image element and move it into the image wrapper
+    // Move the image inside `.image-wrapper`
     const imgElement = cardDiv.querySelector("img");
     if (imgElement) {
         imageWrapper.appendChild(imgElement);
     }
 
-    // 5️⃣ Properly append essence emojis inside `.image-wrapper`
+    // 🌀 Proper Essence Emoji Handling
     const essences = Array.isArray(card.essences) ? card.essences : (card.essence ? [card.essence] : []);
 
     essences.forEach((ess, index) => {
         const essenceEmojiDiv = document.createElement("div");
         essenceEmojiDiv.classList.add("essence-emoji");
 
-        // ✅ Correct positioning
+        // ✅ Positioning Rules
         if (essences.length === 1) {
-            essenceEmojiDiv.classList.add("essence-single"); // ✅ Single emoji goes bottom-right
+            essenceEmojiDiv.classList.add("essence-single"); // Bottom-right for single essence
         } else {
-            // ✅ Two essences—explicitly set classes
-            if (index === 0) {
-                essenceEmojiDiv.classList.add("essence-bottom-left");
-            } else {
-                essenceEmojiDiv.classList.add("essence-bottom-right");
-            }
+            essenceEmojiDiv.classList.add(index === 0 ? "essence-bottom-left" : "essence-bottom-right");
         }
 
         essenceEmojiDiv.innerHTML = gameConfig?.["essence-emojis"]?.[ess] || "❓";
         imageWrapper.appendChild(essenceEmojiDiv);
     });
 
-    // 6️⃣ Append the image wrapper into the main card div
+    // 🏗️ Final Assembly
     cardDiv.insertBefore(imageWrapper, cardDiv.firstChild);
-
-    // 7️⃣ Insert the main card into the container
     containerDiv.appendChild(cardDiv);
 
-    // 8️⃣ Add click handling on the container
+    // 🖱️ Click Handling
     containerDiv.addEventListener("click", () => {
         console.log(`🖱️ Clicked on card: ${card.name}`);
         handleCardClick(card);
@@ -131,6 +134,7 @@ function createCardElement(card, type) {
     return containerDiv;
 }
 
+// ✅ Export Functions
 export {
     dealStartingHands,
     createCardElement

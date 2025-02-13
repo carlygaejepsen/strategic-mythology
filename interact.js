@@ -1,74 +1,91 @@
-import { playerHand, enemyHand, gameState, currentPlayerBattleCards, currentEnemyBattleCards, playerDeck, enemyDeck } from "./config.js";
-import { createCardElement, determineCardType } from "./cards.js";
-import { updatePlayerBattleCard, enemyPlaceCard, logToResults, updateHands } from "./display.js";
+import { 
+    playerHand, enemyHand, gameState, 
+    currentPlayerBattleCards, currentEnemyBattleCards, 
+    playerDeck, enemyDeck 
+} from "./config.js";
+
+import { 
+    createCardElement, determineCardType 
+} from "./cards.js";
+
+import { 
+    updatePlayerBattleCard, enemyPlaceCard, 
+    logToResults, updateHands 
+} from "./display.js";
+
+import { onGameStateChange, onEnemyStateChange } from "./battle.js"; // ✅ Ensure state updates work
 
 export let selectedAttacker = null;
 export let selectedDefender = null;
 
+// 🎴 **Draw Cards to Fill Hands**
 export function drawCardsToFillHands() {
     console.log("DEBUG: Drawing cards - Player Hand:", playerHand, "Enemy Hand:", enemyHand);
   
-    // Player draw
     if (playerHand.length < 6 && playerDeck.length > 0) {
         const drawn = playerDeck.shift();
         playerHand.push(drawn);
         logToResults(`🃏 Player draws ${drawn.name}`);
     }
 
-    // Enemy draw
     if (enemyHand.length < 6 && enemyDeck.length > 0) {
         const drawn = enemyDeck.shift();
         enemyHand.push(drawn);
         logToResults(`🃏 Enemy draws ${drawn.name}`);
     }
+    
     updateHands();
 }
 
+// 🎯 **Selection Functions**
 export function setSelectedAttacker(card) {
+    if (selectedAttacker === card) return; // ✅ Prevent duplicate selection logs
     selectedAttacker = card;
-    console.log("DEBUG: Selected Attacker =", selectedAttacker);
+    console.log(`🎯 Selected Attacker: ${card.name}`);
 }
 
 export function setSelectedDefender(card) {
+    if (selectedDefender === card) return; // ✅ Prevent duplicate selection logs
     selectedDefender = card;
-    console.log("DEBUG: Selected Defender =", selectedDefender);
+    console.log(`🛡️ Selected Defender: ${card.name}`);
 }
 
 export function setPlayerHasPlacedCard(value) {
     gameState.playerHasPlacedCard = value;
+
+    // ✅ Update player instruction when both players have placed a card
     if (gameState.playerHasPlacedCard && gameState.enemyHasPlacedCard) {
-        onGameStateChange("select-attacker"); // ✅ Update status when both are placed
+        onGameStateChange("select-attacker");
     }
 }
 
 export function setEnemyHasPlacedCard(value) {
     gameState.enemyHasPlacedCard = value;
-    if (gameState.playerHasPlacedCard && gameState.enemyHasPlacedCard) {
-        onEnemyStateChange("enemy-select-attacker"); // ✅ Update enemy status
+
+    // ✅ Update enemy status correctly
+    if (typeof onEnemyStateChange === "function") {
+        onEnemyStateChange("enemy-select-attacker");
+    } else {
+        console.error("🚨 ERROR: onEnemyStateChange is not defined!");
     }
 }
-
-//Debug 2 placeCardInBattleZone
+// 🃏 **Place a Card in Battle Zone**
 export function placeCardInBattleZone(card, battleZoneId, updateFunction, owner) {
-    console.log(`DEBUG: Trying to place ${card.name} in ${battleZoneId}`);
-    console.log("DEBUG: currentPlayerBattleCards Before Placement:", currentPlayerBattleCards);
-    
+    console.log(`DEBUG: Attempting to place ${card.name} in ${battleZoneId}`);
+
     const battleZone = document.getElementById(battleZoneId);
     if (!battleZone) return;
 
-    battleZone.innerHTML = "";  // Clears previous card
+    battleZone.innerHTML = ""; // ✅ Clear previous card
     const type = determineCardType(card);
     
-    console.log(`DEBUG: Determined card type for ${card.name} is ${type}`);
-
     if (!["char", "essence", "ability"].includes(type)) {
         console.error(`🚨 ERROR: Invalid card type '${type}' for ${card.name}!`);
-        return; // Prevents adding an invalid type
+        return;
     }
 
     const cardElement = createCardElement(card, type);
     battleZone.appendChild(cardElement);
-
     updateFunction(card, type);
 
     if (owner === "Player") {
@@ -78,37 +95,26 @@ export function placeCardInBattleZone(card, battleZoneId, updateFunction, owner)
     }
 
     console.log(`🔄 ${owner} placed a ${type} card: ${card.name}`);
-    console.log("DEBUG: currentPlayerBattleCards now =", currentPlayerBattleCards);
-    console.log("DEBUG: currentEnemyBattleCards now =", currentEnemyBattleCards);
     return cardElement;
 }
 
-// Debugging `handleCardClick`
+// 🎮 **Handle Card Clicks**
 export function handleCardClick(card) {
-    console.log("DEBUG: Clicked on card:", card);
-    console.log("DEBUG: gameState.playerHasPlacedCard =", gameState.playerHasPlacedCard);
-    console.log("DEBUG: currentPlayerBattleCards =", currentPlayerBattleCards);
+    console.log(`DEBUG: Clicked on card: ${card.name}`);
 
     const type = determineCardType(card);
-    
-    console.log(`DEBUG: Checking if ${card.name} can be played...`);
-    console.log("DEBUG: Current battle zone:", currentPlayerBattleCards);
-    console.log("DEBUG: Clicked card class:", card.class);
-    console.log("DEBUG: Existing classes in battle zone:", Object.values(currentPlayerBattleCards).map(c => c?.class));
-    
-    // 🛡️ If clicking a card in hand, place it in the battle zone
+
+    // 🃏 **Placing a card in battle zone**
     if (playerHand.includes(card)) {
         if (!gameState.playerHasPlacedCard) { 
             if (!currentPlayerBattleCards[type] || type === "essence" || type === "ability") {
-                console.log(`DEBUG: Placing ${card.name} in battle zone...`);
                 placeCardInBattleZone(card, `player-${type}-zone`, updatePlayerBattleCard, "Player");
 
-                const index = playerHand.indexOf(card);
-                if (index !== -1) playerHand.splice(index, 1);  // ✅ Modifies playerHand without reassigning it
+                // ✅ Remove card from hand without reassigning
+                playerHand.splice(playerHand.indexOf(card), 1);  
                 updateHands();
-                console.log(`⚔️ ${card.name} placed in battle zone.`);
-                
-                setPlayerHasPlacedCard(true); 
+
+                setPlayerHasPlacedCard(true);
                 enemyPlaceCard();
             } else {
                 console.warn(`⚠️ You already have a ${type} card in battle.`);
@@ -119,17 +125,21 @@ export function handleCardClick(card) {
         return;
     }
 
-    // 🎯 If clicking a player's battle card, set it as the attacker
-    if (currentPlayerBattleCards[type] === card) {
-        setSelectedAttacker(card);
-        console.log(`🎯 Selected Attacker: ${card.name}`);
+    // 🚫 **Prevent selecting an attacker/defender if battle zone is empty**
+    if (!currentPlayerBattleCards[type] && !currentEnemyBattleCards[type]) {
+        console.warn("⚠️ No valid card to select.");
         return;
     }
 
-    // 🛡️ If clicking an enemy battle card, set it as the defender
+    // 🎯 **Selecting Attacker**
+    if (currentPlayerBattleCards[type] === card) {
+        setSelectedAttacker(card);
+        return;
+    }
+
+    // 🛡️ **Selecting Defender**
     if (currentEnemyBattleCards[type] === card) {
         setSelectedDefender(card);
-        console.log(`🛡️ Selected Defender: ${card.name}`);
         return;
     }
 

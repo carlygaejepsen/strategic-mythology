@@ -1,7 +1,6 @@
 import { logToResults, updateCardHP, removeDefeatedCards } from "./display.js";
 import { determineCardType } from "./cards.js";
 
-
 export const battleSystem = {
   combos: {
     char_alone: 20,
@@ -49,7 +48,7 @@ export const battleSystem = {
   }
 };
 
-// processCombat 3.0
+// 🎯 **Process Combat (Finalized)**
 export function processCombat(attacker, defender, isCombo = false) {
     if (!attacker?.name || !defender?.name) {
         console.error("🚨 ERROR: Invalid combatants! Attack skipped.");
@@ -60,42 +59,42 @@ export function processCombat(attacker, defender, isCombo = false) {
         return;
     }
 
+    // 🚫 Prevent attacking an already defeated card
+    if (defender.hp <= 0) {
+        console.warn(`⚠️ ${defender.name} is already defeated! Attack skipped.`);
+        return;
+    }
+
     console.log(`⚔️ ${attacker.name} attacks ${defender.name}`);
 
-    // 🎯 Base attack power
     let attackPower = attacker.atk || 0;
 
-    // 🔥 Combo attacks double effectiveness if valid
     if (isCombo && ['essence', 'ability'].includes(determineCardType(attacker))) {
         attackPower *= 2;
         logToResults(`🔥 Combo boost! ${attacker.name} strikes with extra force!`);
     }
 
-    // 📊 Essence-based multipliers
     let essenceMultiplier = calculateEssenceMultiplier(attacker.essence, defender.essence);
     let classMultiplier = calculateClassMultiplier(attacker.class, defender.class);
 
-    // 🛡️ Calculate final damage (min damage applied)
     const baseDamage = Math.max(
         Math.round((attackPower * essenceMultiplier * classMultiplier) - (defender.def || 0)),
         battleSystem.damageCalculation.minDamage
     );
 
-    // 🩸 Apply damage and prevent negative HP
     defender.hp = Math.max(0, defender.hp - baseDamage);
     logToResults(`💥 ${attacker.name} hits ${defender.name} for ${baseDamage} damage!`);
 
-    // 🎭 Visually update HP without re-rendering cards
-    updateCardHP(defender);
-
-    // ☠️ Check for defeated cards and remove them
-    if (defender.hp <= 0) {
+    // ✅ Update only if the card is still in battle
+    if (defender.hp > 0) {
+        updateCardHP(defender);
+    } else {
         logToResults(`☠️ ${defender.name} has been defeated!`);
         removeDefeatedCards();
     }
 }
 
-//Calculates essence-based multipliers 2.0
+// 🎭 **Essence & Class Multipliers**
 function calculateEssenceMultiplier(attackerEssence, defenderEssence) {
     if (!attackerEssence || !defenderEssence) return 1;
     if (battleSystem.essenceBonuses?.[attackerEssence]?.strongAgainst === defenderEssence) {
@@ -107,7 +106,6 @@ function calculateEssenceMultiplier(attackerEssence, defenderEssence) {
     return 1;
 }
 
- //Calculates class-based multipliers 2.0
 function calculateClassMultiplier(attackerClass, defenderClass) {
     if (!attackerClass || !defenderClass) return 1;
     if (battleSystem.classBonuses?.[attackerClass]?.strongAgainst?.includes(defenderClass)) {
@@ -119,57 +117,54 @@ function calculateClassMultiplier(attackerClass, defenderClass) {
     return 1;
 }
 
+// 🔥 **Check for Combos**
 export function checkForCombos(battleZone, owner) {
-  const cards = Object.values(battleZone).filter(card => card !== null);
-  let comboFound = false;
+    const cards = Object.values(battleZone).filter(card => card !== null);
+    let comboFound = false;
+    const classMap = {};
+    const essenceMap = {};
 
-  // Check class combos
-  const classMap = {};
-  cards.forEach(card => {
-    if (card.classes) {
-      card.classes.forEach(cls => {
-        if (classMap[cls]) {
-          logToResults(`🔥 ${owner} class combo: ${classMap[cls].name} + ${card.name}`);
-          comboFound = true;
-        } else {
-          classMap[cls] = card;
+    cards.forEach(card => {
+        if (card.classes) {
+            card.classes.forEach(cls => {
+                if (classMap[cls]) {
+                    logToResults(`🔥 ${owner} class combo: ${classMap[cls].name} + ${card.name}`);
+                    comboFound = true;
+                } else {
+                    classMap[cls] = card;
+                }
+            });
         }
-      });
-    }
-  });
 
-  // Check essence combos
-  const essenceMap = {};
-  cards.forEach(card => {
-    if (card.essence) {
-      if (essenceMap[card.essence]) {
-        logToResults(`🔥 ${owner} essence combo: ${essenceMap[card.essence].name} + ${card.name}`);
-        comboFound = true;
-      } else {
-        essenceMap[card.essence] = card;
-      }
-    }
-  });
+        if (card.essence) {
+            if (essenceMap[card.essence]) {
+                logToResults(`🔥 ${owner} essence combo: ${essenceMap[card.essence].name} + ${card.name}`);
+                comboFound = true;
+            } else {
+                essenceMap[card.essence] = card;
+            }
+        }
+    });
 
-  return comboFound;
+    return comboFound;
 }
 
+// ⚡ **Check for Triple Combo**
 export function checkForTripleCombo(battleZone, owner) {
-  const types = ['char', 'essence', 'ability'];
-  const hasAllTypes = types.every(type => battleZone[type]);
-  if (hasAllTypes) logToResults(`⚡ ${owner} activated TRIPLE COMBO!`);
-  return hasAllTypes;
+    const types = ['char', 'essence', 'ability'];
+    const hasAllTypes = types.every(type => battleZone[type]);
+    if (hasAllTypes) logToResults(`⚡ ${owner} activated TRIPLE COMBO!`);
+    return hasAllTypes;
 }
 
+// ⚔️ **Perform Triple Combo**
 export function performTripleCombo(owner, opponentBattleZone) {
-  const damage = 60;
-  Object.values(opponentBattleZone).forEach(card => {
-    if (card) {
-      card.hp -= damage;
-      logToResults(`💥 ${owner}'s triple combo hits ${card.name} for ${damage}!`);
-    }
-  });
+    const damage = 60;
+    Object.values(opponentBattleZone).forEach(card => {
+        if (card) {
+            card.hp = Math.max(0, card.hp - damage);
+            logToResults(`💥 ${owner}'s triple combo hits ${card.name} for ${damage}!`);
+            updateCardHP(card);
+        }
+    });
 }
-
-
-
