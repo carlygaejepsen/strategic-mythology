@@ -1,6 +1,5 @@
 import { logToResults, updateCardHP, removeDefeatedCards } from "./display.js";
 import { determineCardType } from "./cards.js";
-import { battleSystem } from "./battle-logic.js";
 
 
 export const battleSystem = {
