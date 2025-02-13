@@ -26,25 +26,32 @@ import { determineCardType } from "./cards.js";
 
 let gameRunning = false;
 
-/**
- * 🔄 Main Game Loop: Controls each round of the game.
- */
+//Main Game Loop 2.0
 function gameLoop() {
-    if (gameRunning) return; // Prevents multiple triggers
+    if (gameRunning) return; // Prevent multiple triggers
     gameRunning = true;
 
     console.log("🔄 New battle round starting...");
-    battleRound(); // ✅ Runs only ONCE per turn
+
+    // 🚨 Check if both players have placed a card before moving forward
+    if (!gameState.playerHasPlacedCard || !gameState.enemyHasPlacedCard) {
+        console.warn("⚠️ Both players must place a card before starting the round.");
+        return;
+    }
+
+    // ✅ Update player and enemy status for the attack phase
+    onGameStateChange("select-attacker");
+    onEnemyStateChange("enemy-select-attacker");
+
+    battleRound(); // Runs only once per turn
 
     setTimeout(() => {
-        // ✅ Stop looping if a deck is empty
         if (playerDeck.length === 0 || enemyDeck.length === 0) {
             logToResults(playerDeck.length === 0 ? "🏁 Player wins!" : "🏁 Enemy wins!");
             gameRunning = false;
             return;
         }
 
-        // ✅ Ensure the next turn waits for "Play Turn" click
         gameRunning = false;
     }, 1000);
 }

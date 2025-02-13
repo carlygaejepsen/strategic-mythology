@@ -3,6 +3,23 @@ import { determineCardType } from "./cards.js";
 import { playerHand, enemyHand, cardTemplates, gameConfig, currentPlayerBattleCards, currentEnemyBattleCards, gameState } from "./config.js";
 import { setEnemyHasPlacedCard, placeCardInBattleZone } from "./interact.js";
 
+function updateInstructionText(phase) {
+    const instructionBox = document.getElementById("instruction-box");
+    if (!instructionBox) return;
+
+    const instructionMessages = {
+        "start": "It's your turn! Select a card to play.",
+        "select-battle-card": "Choose a card to send to the battle zone.",
+        "select-attacker": "Select your attacker.",
+        "select-defender": "Choose which enemy to attack.",
+        "combo": "Try combining abilities!",
+        "waiting": "Waiting for opponent...",
+    };
+
+    instructionBox.textContent = instructionMessages[phase] || "Make your move!";
+    console.log(`🆕 Updated instruction box: ${instructionBox.textContent}`);
+}
+
 export function logToResults(message) {
     const logElement = document.getElementById("results-log");
     if (!logElement) return;

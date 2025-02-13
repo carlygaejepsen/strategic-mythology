@@ -36,13 +36,18 @@ export function setSelectedDefender(card) {
 
 export function setPlayerHasPlacedCard(value) {
     gameState.playerHasPlacedCard = value;
-    console.log("DEBUG: gameState.playerHasPlacedCard set to:", gameState.playerHasPlacedCard);
+    if (gameState.playerHasPlacedCard && gameState.enemyHasPlacedCard) {
+        onGameStateChange("select-attacker"); // ✅ Update status when both are placed
+    }
 }
 
 export function setEnemyHasPlacedCard(value) {
     gameState.enemyHasPlacedCard = value;
-    console.log("DEBUG: gameState.enemyHasPlacedCard set to:", gameState.enemyHasPlacedCard);
+    if (gameState.playerHasPlacedCard && gameState.enemyHasPlacedCard) {
+        onEnemyStateChange("enemy-select-attacker"); // ✅ Update enemy status
+    }
 }
+
 //Debug 2 placeCardInBattleZone
 export function placeCardInBattleZone(card, battleZoneId, updateFunction, owner) {
     console.log(`DEBUG: Trying to place ${card.name} in ${battleZoneId}`);
