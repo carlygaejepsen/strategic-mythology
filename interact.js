@@ -9,7 +9,7 @@ import {
   createCardElement, determineCardType 
 } from "./cards.js";
 import { 
-  updatePlayerBattleCard, enemyPlaceCard, updateHands 
+  enemyPlaceCard, updateHands 
 } from "./card-display.js";
 import { 
   updatePlayerBattleCard 
