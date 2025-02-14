@@ -7,6 +7,7 @@ import {
   selectedDefender,
   setSelectedAttacker, 
   setSelectedDefender,
+  setSelectedCombo, 
   selectedCombo
 } from "./interact.js";
 
@@ -14,7 +15,6 @@ import {
  
   setPlayerHasPlacedCard, 
   setEnemyHasPlacedCard, 
-  setSelectedCombo, 
   resetTurnSelections
 } from "./update.js";
 import { 
