@@ -11,6 +11,9 @@ import {
 import { 
   updatePlayerBattleCard, enemyPlaceCard, updateHands 
 } from "./card-display.js";
+import { 
+  updatePlayerBattleCard 
+} from "./update.js";
 import { logToResults, updateInstructionText, onGameStateChange, onEnemyStateChange } from "./ui-display.js";
 
 // Global selection variables for this turn.
