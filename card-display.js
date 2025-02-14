@@ -7,7 +7,7 @@ import {
     currentPlayerBattleCards, currentEnemyBattleCards, gameState 
 } from "./config.js";
 import { 
-    setEnemyHasPlacedCard, placeCardInBattleZone, setPlayerHasPlacedCard 
+    setEnemyHasPlacedCard, placeCardInBattleZone, setPlayerHasPlacedCard, updateEnemyBattleCard 
 } from "./update.js";
 import { logToResults } from "./ui-display.js"; // Imported for logging battle events
 // Removes only defeated cards without affecting the rest of the battle zone
