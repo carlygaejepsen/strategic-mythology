@@ -12,7 +12,8 @@ import {
     logToResults, 
     getRandomCardFromZone, 
     removeDefeatedCards, 
-    updateInstructionText 
+    updateInstructionText, 
+    updateEnemyStatus 
 } from "./display.js";
 import { 
     currentPlayerBattleCards, 
@@ -26,8 +27,9 @@ import {
 import { determineCardType } from "./cards.js";
 
 let gameRunning = false;
+let selectedCombo = null; // 🔥 NEW: Tracks if a combo is selected
 
-// 🎮 **Main Game Loop 2.2**
+// 🎮 **Main Game Loop**
 function gameLoop() {
     if (gameRunning) return; // Prevent multiple triggers
     gameRunning = true;
@@ -37,41 +39,74 @@ function gameLoop() {
     // 🚨 Ensure both players have placed a card before continuing
     if (!gameState.playerHasPlacedCard || !gameState.enemyHasPlacedCard) {
         console.warn("⚠️ Both players must place a card before starting the round.");
-        gameRunning = false; // ✅ Prevent soft locks
+        updateInstructionText("select-battle-card");
+        updateEnemyStatus("enemy-select-battle-card"); // 🔥 Ensure enemy UI updates correctly
+        gameRunning = false;
         return;
     }
 
-    // ✅ Update UI: Change status bars to reflect attack phase
-    onGameStateChange("select-attacker");
-    onEnemyStateChange("enemy-select-attacker");
-
-    battleRound();
+    updateInstructionText("select-attacker");
+    updateEnemyStatus("enemy-select-attacker"); // ✅ Ensure enemy UI updates properly
 }
 
-// ⚔️ **Battle Round 2.2**
+// 🔄 **Handles Player Selecting an Attacker**
+export function handleSelectAttacker(card) {
+    if (!card) return;
+    setSelectedAttacker(card);
+    console.log(`✅ Attacker selected: ${card.name}`);
+
+    // ✅ Check if a combo is available
+    if (playerHasComboOption()) {
+        updateInstructionText("select-combo");
+        updateEnemyStatus("enemy-combo"); // ✅ Enemy UI update for combo
+    } else {
+        updateInstructionText("select-defender");
+        updateEnemyStatus("enemy-select-defender"); // ✅ Enemy UI update for defender selection
+    }
+}
+
+// 🔄 **Handles Player Selecting a Combo**
+export function handleSelectCombo(combo) {
+    if (!combo) return;
+    selectedCombo = combo;
+    console.log(`🔥 Combo selected: ${combo.name}`);
+
+    updateInstructionText("select-defender");
+    updateEnemyStatus("enemy-select-defender");
+}
+
+// 🔄 **Handles Player Selecting a Defender**
+export function handleSelectDefender(card) {
+    if (!card) return;
+    setSelectedDefender(card);
+    console.log(`✅ Defender selected: ${card.name}`);
+
+    updateInstructionText("play-turn");
+    updateEnemyStatus("enemy-waiting");
+}
+
+// ⚔️ **Battle Round**
 function battleRound() {
     console.log("⚔️ Battle round begins!");
 
-    // 🚨 Ensure the player has placed a card before starting
-    if (!gameState.playerHasPlacedCard) {
-        console.warn("⚠️ Player must place a card before the battle round can continue.");
-        return;
-    }
-
-    // 🚨 Ensure the player has selected an attacker and defender before continuing
     if (!selectedAttacker || !selectedDefender) {
         console.warn("⚠️ Select an attacker and an enemy defender before continuing.");
         return;
     }
 
-    // ⚔️ Player's Attack
-    console.log(`🎯 ${selectedAttacker.name} attacks ${selectedDefender.name}`);
-    processCombat(selectedAttacker, selectedDefender);
+    updateInstructionText("battling");
+    updateEnemyStatus("enemy-battling");
 
-    // 🛑 Remove defeated cards before AI attacks
+    if (selectedCombo) {
+        console.log(`🔥 ${selectedAttacker.name} uses ${selectedCombo.name} while attacking ${selectedDefender.name}`);
+        processCombat(selectedAttacker, selectedDefender, selectedCombo);
+    } else {
+        console.log(`🎯 ${selectedAttacker.name} attacks ${selectedDefender.name}`);
+        processCombat(selectedAttacker, selectedDefender);
+    }
+
     removeDefeatedCards();
 
-    // 🤖 Enemy AI Attack (Random selection)
     const enemyAttacker = getRandomCardFromZone(currentEnemyBattleCards);
     const playerDefender = getRandomCardFromZone(currentPlayerBattleCards);
 
@@ -82,19 +117,14 @@ function battleRound() {
         console.log("🤖 Enemy AI has no valid attack this turn.");
     }
 
-    // 🛑 Remove defeated cards again after AI attack
     removeDefeatedCards();
 
-    // ✅ Ensure the instruction box resets **after** defeated cards are removed
-    onGameStateChange("start");
-    onEnemyStateChange("enemy-start");
+    updateInstructionText("select-battle-card");
+    updateEnemyStatus("enemy-start");
 
-    // 🃏 Draw one new card per hand (not battle zone)
     drawCardsToFillHands();
 
-    // 🔄 Reset selections **after** UI updates are complete
-    setTimeout(resetSelections, 500); // ✅ Ensures smooth transition
-
+    setTimeout(resetSelections, 500);
     console.log("✅ Battle round complete. Click 'Play Turn' to continue.");
 }
 
@@ -102,6 +132,7 @@ function battleRound() {
 export function resetSelections() {
     setSelectedAttacker(null);
     setSelectedDefender(null);
+    selectedCombo = null;
     setPlayerHasPlacedCard(false);
     setEnemyHasPlacedCard(false);
     console.log("🔄 Reset playerHasPlacedCard & enemyHasPlacedCard for new turn.");
@@ -117,6 +148,8 @@ export function updateEnemyStatus(phase) {
         "enemy-select-battle-card": "Enemy is adding a card to the battle zone.",
         "enemy-select-attacker": "Enemy is selecting an attacker.",
         "enemy-select-defender": "Enemy is choosing a target.",
+        "enemy-play-turn": "Enemy is attacking...",
+        "enemy-battling": "Enemy is battling...",
         "enemy-combo": "Enemy is trying a combo!",
         "enemy-waiting": "Enemy is thinking...",
     };
@@ -134,16 +167,16 @@ export function onEnemyStateChange(newState) {
     updateEnemyStatus(newState);
 }
 
-// 🎮 **Initialize turn states**
-onGameStateChange("start");
-onEnemyStateChange("enemy-start");
-
-// 🎮 **Add event listener for "Play Turn" button**
+// 🎮 **Initialize Turn States**
 document.addEventListener("DOMContentLoaded", () => {
+    console.log("🎮 Initializing game states...");
+    updateInstructionText("select-battle-card");
+    updateEnemyStatus("enemy-start");
+
     const playTurnButton = document.getElementById("play-turn");
     if (playTurnButton) {
-        playTurnButton.addEventListener("click", gameLoop);
+        playTurnButton.addEventListener("click", battleRound);
     }
 });
 
-export { battleRound };
+export { battleRound, handleSelectAttacker, handleSelectDefender, handleSelectCombo };

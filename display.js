@@ -1,7 +1,12 @@
 import { createCardElement } from "./cards.js";
 import { determineCardType } from "./cards.js";
-import { playerHand, enemyHand, cardTemplates, gameConfig, currentPlayerBattleCards, currentEnemyBattleCards, gameState } from "./config.js";
-import { setEnemyHasPlacedCard, placeCardInBattleZone, setPlayerHasPlacedCard } from "./interact.js";
+import { 
+    playerHand, enemyHand, cardTemplates, gameConfig, 
+    currentPlayerBattleCards, currentEnemyBattleCards, gameState 
+} from "./config.js";
+import { 
+    setEnemyHasPlacedCard, placeCardInBattleZone, setPlayerHasPlacedCard 
+} from "./interact.js";
 
 // ✅ Updates only the player instruction box
 export function updateInstructionText(phase) {
@@ -13,6 +18,8 @@ export function updateInstructionText(phase) {
         "select-battle-card": "Choose a card to send to the battle zone.",
         "select-attacker": "Select your attacker.",
         "select-defender": "Choose which enemy to attack.",
+        "play-turn": "Click 'Play Turn' to continue.",
+        "battling": "Battling...",
         "combo": "Try combining abilities!",
         "waiting": "Waiting for opponent...",
     };
@@ -30,6 +37,8 @@ export function updateEnemyStatus(phase) {
         "enemy-select-battle-card": "Enemy is adding a card to the battle zone.",
         "enemy-select-attacker": "Enemy is selecting an attacker.",
         "enemy-select-defender": "Enemy is choosing a target.",
+        "enemy-play-turn": "Enemy is attacking...",
+        "enemy-battling": "Enemy is battling...",
         "enemy-combo": "Enemy is trying a combo!",
         "enemy-waiting": "Enemy is thinking...",
     };
@@ -57,13 +66,16 @@ export function updateEnemyBattleCard(card, type) {
 
 // 🛑 Removes only defeated cards without affecting the rest of the battle zone
 export function removeDefeatedCards() {
+    let playerCardsDefeated = false;
+    let enemyCardsDefeated = false;
+
     Object.entries(currentPlayerBattleCards).forEach(([type, card]) => {
         if (card?.hp <= 0) {
             logToResults(`☠️ ${card.name} has been defeated!`);
             delete currentPlayerBattleCards[type];
             document.getElementById(`player-${type}-zone`).innerHTML = "";
             setPlayerHasPlacedCard(false);
-            logToResults("🃏 Player may now place a new character card.");
+            playerCardsDefeated = true;
         }
     });
 
@@ -73,10 +85,14 @@ export function removeDefeatedCards() {
             delete currentEnemyBattleCards[type];
             document.getElementById(`enemy-${type}-zone`).innerHTML = "";
             setEnemyHasPlacedCard(false);
-            logToResults("🤖 Enemy will place a new character card.");
-            enemyPlaceCard();
+            enemyCardsDefeated = true;
         }
     });
+
+    // ✅ Ensure the correct phase reset **after combat completes**
+    if (playerCardsDefeated || enemyCardsDefeated) {
+        updateInstructionText("select-battle-card"); // 🔥 Returns to placing a new card
+    }
 }
 
 export function updateBattleZones() {
