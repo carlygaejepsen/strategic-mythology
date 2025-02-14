@@ -8,7 +8,7 @@ import {
 } from "./config.js";
 import { 
     setEnemyHasPlacedCard, placeCardInBattleZone, setPlayerHasPlacedCard 
-} from "./interact.js";
+} from "./update.js";
 import { logToResults } from "./ui-display.js"; // Imported for logging battle events
 // Removes only defeated cards without affecting the rest of the battle zone
 export function removeDefeatedCards() {
