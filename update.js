@@ -3,10 +3,14 @@
 import { 
   gameState, 
   currentPlayerBattleCards, 
-  currentEnemyBattleCards
+  currentEnemyBattleCards 
 } from "./config.js";
-import { onGameStateChange, onEnemyStateChange } from "./ui-display.js";
+import { onGameStateChange, onEnemyStateChange, updateInstructionText } from "./ui-display.js";
 import { determineCardType, createCardElement } from "./cards.js";
+import { 
+  selectedAttacker, selectedDefender, selectedCombo, 
+  setSelectedAttacker, setSelectedDefender, setSelectedCombo 
+} from "./interact.js"; 
 
 // 🃏 Place a Card in the Battle Zone
 export function placeCardInBattleZone(card, battleZoneId, updateFunction, owner) {
@@ -33,12 +37,16 @@ export function placeCardInBattleZone(card, battleZoneId, updateFunction, owner)
   return cardElement;
 }
 
-// Resets turn selections (moved to interact.js)
+// ✅ Properly resets selections at the end of a turn
 export function resetTurnSelections() {
-  console.log("🔄 Selections reset.");
+  console.log("🔄 Resetting selections...");
+  setSelectedAttacker(null);
+  setSelectedDefender(null);
+  setSelectedCombo(null);
+  updateInstructionText("select-card"); // Ensure UI updates correctly
 }
 
-// Resets selections and game state flags for a new turn.
+// ✅ Resets selections and game state flags for a new turn.
 export function resetSelections() {
   resetTurnSelections();
   setPlayerHasPlacedCard(false);

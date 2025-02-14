@@ -12,14 +12,19 @@ import {
   enemyPlaceCard, updateHands 
 } from "./card-display.js";
 import { 
-  updatePlayerBattleCard, placeCardInBattleZone, setPlayerHasPlacedCard, setEnemyHasPlacedCard
+  updatePlayerBattleCard, placeCardInBattleZone, 
+  setPlayerHasPlacedCard, setEnemyHasPlacedCard, 
+  resetTurnSelections 
 } from "./update.js";
-import { logToResults, updateInstructionText, onGameStateChange, onEnemyStateChange, updateEnemyStatus } from "./ui-display.js";
+import { 
+  logToResults, updateInstructionText, onGameStateChange, 
+  onEnemyStateChange, updateEnemyStatus 
+} from "./ui-display.js";
 
 // Global selection variables for this turn.
-export let selectedAttacker = null;
-export let selectedDefender = null;
-export let selectedCombo = null; // Supports combos
+let selectedAttacker = null;
+let selectedDefender = null;
+let selectedCombo = null;
 
 // 🎴 Draw Cards to Fill Hands
 export function drawCardsToFillHands() {
@@ -60,6 +65,15 @@ export function setSelectedCombo(combo) {
   selectedCombo = combo;
   console.log(`🔥 Combo selected: ${combo.name}`);
   updateInstructionText("select-defender");
+}
+
+// Resets attacker, defender, and combo selection at the start of each turn
+export function resetSelectionsForNewTurn() {
+  console.log("🔄 Resetting selections for new turn...");
+  selectedAttacker = null;
+  selectedDefender = null;
+  selectedCombo = null;
+  resetTurnSelections(); // Ensures the UI updates accordingly
 }
 
 // Internal helper: Check if a combo option is available.
@@ -140,3 +154,11 @@ export function handleCardClick(card) {
   
   console.warn("⚠️ Invalid selection. Place a card first, then select your attacker, combo, and defender.");
 }
+
+// ✅ Exporting Functions
+export {
+  selectedAttacker,
+  selectedDefender,
+  selectedCombo,
+  resetSelectionsForNewTurn
+};
