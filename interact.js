@@ -10,13 +10,14 @@ import {
 
 import { 
     updatePlayerBattleCard, enemyPlaceCard, 
-    logToResults, updateHands 
+    logToResults, updateHands, updateInstructionText 
 } from "./display.js";
 
-import { onGameStateChange, onEnemyStateChange } from "./battle.js"; // ✅ Ensure state updates work
+import { onGameStateChange, onEnemyStateChange } from "./battle.js"; 
 
 export let selectedAttacker = null;
 export let selectedDefender = null;
+export let selectedCombo = null; // 🔥 New: Supports combos
 
 // 🎴 **Draw Cards to Fill Hands**
 export function drawCardsToFillHands() {
@@ -37,45 +38,58 @@ export function drawCardsToFillHands() {
     updateHands();
 }
 
-// 🎯 **Selection Functions 2.0
+// 🎯 **Selection Functions**
 export function setSelectedAttacker(card) {
+    if (!card) return;
     selectedAttacker = card;
-    if (card) {
-        console.log(`🎯 Selected Attacker: ${card.name}`);
-    } else {
-        console.log("🎯 Selected Attacker reset.");
-    }
+    console.log(`🎯 Selected Attacker: ${card.name}`);
+    checkComboAvailability(); // 🔥 New: Check if combos are available
 }
 
 export function setSelectedDefender(card) {
+    if (!card) return;
     selectedDefender = card;
-    if (card) {
-        console.log(`🛡️ Selected Defender: ${card.name}`);
+    console.log(`🛡️ Selected Defender: ${card.name}`);
+    updateInstructionText("play-turn");
+}
+
+export function setSelectedCombo(combo) {
+    if (!combo) return;
+    selectedCombo = combo;
+    console.log(`🔥 Combo selected: ${combo.name}`);
+    updateInstructionText("select-defender");
+}
+
+// 🃏 **Check If Player Can Use a Combo**
+function checkComboAvailability() {
+    if (playerHasComboOption()) {
+        updateInstructionText("select-combo");
     } else {
-        console.log("🛡️ Selected Defender reset.");
+        updateInstructionText("select-defender");
     }
 }
 
+// ✅ **Sets whether the player has placed a card**
 export function setPlayerHasPlacedCard(value) {
     gameState.playerHasPlacedCard = value;
 
-    // ✅ Update player instruction when both players have placed a card
     if (gameState.playerHasPlacedCard && gameState.enemyHasPlacedCard) {
         onGameStateChange("select-attacker");
     }
 }
 
+// ✅ **Sets whether the enemy has placed a card**
 export function setEnemyHasPlacedCard(value) {
     gameState.enemyHasPlacedCard = value;
 
-    // ✅ Update enemy status correctly
     if (typeof onEnemyStateChange === "function") {
         onEnemyStateChange("enemy-select-attacker");
     } else {
         console.error("🚨 ERROR: onEnemyStateChange is not defined!");
     }
 }
-// 🃏 **Place a Card in Battle Zone**
+
+// 🃏 **Place a Card in the Battle Zone**
 export function placeCardInBattleZone(card, battleZoneId, updateFunction, owner) {
     console.log(`DEBUG: Attempting to place ${card.name} in ${battleZoneId}`);
 
@@ -104,7 +118,7 @@ export function placeCardInBattleZone(card, battleZoneId, updateFunction, owner)
     return cardElement;
 }
 
-// 🎮 **Handle Card Clicks 2.0
+// 🎮 **Handle Card Clicks 3.0 (Now Supports Combos)**
 export function handleCardClick(card) {
     if (!card || !card.name) {
         console.warn("⚠️ Invalid card click detected.");
@@ -112,7 +126,6 @@ export function handleCardClick(card) {
     }
 
     console.log(`DEBUG: Clicked on card: ${card.name}`);
-
     const type = determineCardType(card);
 
     // 🃏 **Placing a Card in Battle Zone**
@@ -122,11 +135,9 @@ export function handleCardClick(card) {
             return;
         }
 
-        // ✅ Check if slot is available for card type
         if (!currentPlayerBattleCards[type] || type === "essence" || type === "ability") {
             placeCardInBattleZone(card, `player-${type}-zone`, updatePlayerBattleCard, "Player");
 
-            // ✅ Remove the placed card from hand
             const index = playerHand.indexOf(card);
             if (index !== -1) playerHand.splice(index, 1);
 
@@ -152,7 +163,16 @@ export function handleCardClick(card) {
             return;
         }
         setSelectedAttacker(card);
-        console.log(`✅ Selected Attacker: ${card.name}`);
+        return;
+    }
+
+    // 🔥 **Selecting a Combo (If Available)**
+    if (selectedAttacker && isComboCard(card)) {
+        if (selectedCombo === card) {
+            console.warn("⚠️ This combo is already selected.");
+            return;
+        }
+        setSelectedCombo(card);
         return;
     }
 
@@ -163,9 +183,21 @@ export function handleCardClick(card) {
             return;
         }
         setSelectedDefender(card);
-        console.log(`✅ Selected Defender: ${card.name}`);
         return;
     }
 
-    console.warn("⚠️ Invalid selection. Place a card first, then select your attacker and defender.");
+    console.warn("⚠️ Invalid selection. Place a card first, then select your attacker, combo, and defender.");
+}
+
+// 🃏 **Check If a Card is a Combo Card**
+function isComboCard(card) {
+    return card.type === "ability" && selectedAttacker;
+}
+
+// 🔄 **Resets Turn Selections**
+export function resetTurnSelections() {
+    selectedAttacker = null;
+    selectedDefender = null;
+    selectedCombo = null;
+    console.log("🔄 Selections reset.");
 }

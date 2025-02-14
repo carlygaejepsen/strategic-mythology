@@ -27,7 +27,7 @@ import {
 import { determineCardType } from "./cards.js";
 
 let gameRunning = false;
-let selectedCombo = null; // 🔥 NEW: Tracks if a combo is selected
+let selectedCombo = null; // 🔥 Tracks if a combo is selected
 
 // 🎮 **Main Game Loop**
 function gameLoop() {
@@ -39,14 +39,14 @@ function gameLoop() {
     // 🚨 Ensure both players have placed a card before continuing
     if (!gameState.playerHasPlacedCard || !gameState.enemyHasPlacedCard) {
         console.warn("⚠️ Both players must place a card before starting the round.");
-        updateInstructionText("select-battle-card");
-        updateEnemyStatus("enemy-select-battle-card"); // 🔥 Ensure enemy UI updates correctly
+        updateInstructionText("select-battle-card"); 
+        updateEnemyStatus("enemy-select-battle-card");
         gameRunning = false;
         return;
     }
 
     updateInstructionText("select-attacker");
-    updateEnemyStatus("enemy-select-attacker"); // ✅ Ensure enemy UI updates properly
+    updateEnemyStatus("enemy-select-attacker");
 }
 
 // 🔄 **Handles Player Selecting an Attacker**
@@ -55,13 +55,12 @@ export function handleSelectAttacker(card) {
     setSelectedAttacker(card);
     console.log(`✅ Attacker selected: ${card.name}`);
 
-    // ✅ Check if a combo is available
     if (playerHasComboOption()) {
         updateInstructionText("select-combo");
-        updateEnemyStatus("enemy-combo"); // ✅ Enemy UI update for combo
+        updateEnemyStatus("enemy-combo");
     } else {
         updateInstructionText("select-defender");
-        updateEnemyStatus("enemy-select-defender"); // ✅ Enemy UI update for defender selection
+        updateEnemyStatus("enemy-select-defender");
     }
 }
 
@@ -136,35 +135,6 @@ export function resetSelections() {
     setPlayerHasPlacedCard(false);
     setEnemyHasPlacedCard(false);
     console.log("🔄 Reset playerHasPlacedCard & enemyHasPlacedCard for new turn.");
-}
-
-// 🛡️ **Update Enemy Status UI**
-export function updateEnemyStatus(phase) {
-    const enemyStatusBox = document.getElementById("enemy-status-box");
-    if (!enemyStatusBox) return;
-
-    const enemyMessages = {
-        "enemy-start": "Enemy is preparing...",
-        "enemy-select-battle-card": "Enemy is adding a card to the battle zone.",
-        "enemy-select-attacker": "Enemy is selecting an attacker.",
-        "enemy-select-defender": "Enemy is choosing a target.",
-        "enemy-play-turn": "Enemy is attacking...",
-        "enemy-battling": "Enemy is battling...",
-        "enemy-combo": "Enemy is trying a combo!",
-        "enemy-waiting": "Enemy is thinking...",
-    };
-
-    enemyStatusBox.textContent = enemyMessages[phase] || "Enemy is strategizing...";
-}
-
-// 📝 **Update Player Instruction UI**
-export function onGameStateChange(newState) {
-    updateInstructionText(newState);
-}
-
-// 🔄 **Update Enemy Phase UI**
-export function onEnemyStateChange(newState) {
-    updateEnemyStatus(newState);
 }
 
 // 🎮 **Initialize Turn States**
