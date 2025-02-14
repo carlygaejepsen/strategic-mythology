@@ -15,7 +15,8 @@ import {
  
   setPlayerHasPlacedCard, 
   setEnemyHasPlacedCard, 
-  resetTurnSelections
+  resetTurnSelections,
+  resetSelections
 } from "./update.js";
 import { 
   updateInstructionText, 
