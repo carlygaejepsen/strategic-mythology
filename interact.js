@@ -10,7 +10,7 @@ import {
     updatePlayerBattleCard, enemyPlaceCard, 
     logToResults, updateHands, updateInstructionText 
 } from "./display.js";
-import { onGameStateChange, onEnemyStateChange } from "./battle.js"; 
+import { onGameStateChange, onEnemyStateChange } from "./display.js"; 
 
 // Global selection variables for this turn.
 export let selectedAttacker = null;
