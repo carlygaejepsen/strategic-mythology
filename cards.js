@@ -57,7 +57,7 @@ export function determineCardType(card) {
   return "char"; // Fallback
 }
 
-// 🎨 Creates a card element with correct essence emoji positioning
+// 🎨 Creates a card element 3.0
 function createCardElement(card, type) {
   console.log(`🎨 Creating card: ${card.name} (Type: ${type})`);
   const computedType = determineCardType(card);
@@ -89,6 +89,7 @@ function createCardElement(card, type) {
   // 🏗️ Build Card Structure
   const containerDiv = document.createElement("div");
   containerDiv.classList.add("card-container");
+  containerDiv.setAttribute("data-card-id", card.id); // Ensure unique card tracking
 
   const imageWrapper = document.createElement("div");
   imageWrapper.classList.add("image-wrapper");

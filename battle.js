@@ -31,7 +31,6 @@ let gameRunning = false;
 function playerHasComboOption() {
   return playerHand.some(card => determineCardType(card) === "ability");
 }
-
 // 🎮 Main Game Loop
 export function gameLoop() {
   if (gameRunning) return; // Prevent multiple triggers
@@ -50,7 +49,6 @@ export function gameLoop() {
   updateInstructionText("select-attacker");
   updateEnemyStatus("enemy-select-attacker");
 }
-
 // Handles player selecting an attacker.
 export function handleSelectAttacker(card) {
   if (!card) return;
@@ -65,7 +63,6 @@ export function handleSelectAttacker(card) {
     updateEnemyStatus("enemy-select-defender");
   }
 }
-
 // Handles player selecting a combo.
 export function handleSelectCombo(combo) {
   if (!combo) return;
@@ -74,7 +71,6 @@ export function handleSelectCombo(combo) {
   updateInstructionText("select-defender");
   updateEnemyStatus("enemy-select-defender");
 }
-
 // Handles player selecting a defender.
 export function handleSelectDefender(card) {
   if (!card) return;
@@ -83,7 +79,6 @@ export function handleSelectDefender(card) {
   updateInstructionText("play-turn");
   updateEnemyStatus("enemy-waiting");
 }
-
 // Executes a battle round.
 function battleRound() {
   console.log("⚔️ Battle round begins!");
@@ -126,18 +121,6 @@ function battleRound() {
   setTimeout(resetSelections, 500);
   console.log("✅ Battle round complete. Click 'Play Turn' to continue.");
 }
-
-// Resets selections and game state flags for a new turn.
-export function resetSelections() {
-  setSelectedAttacker(null);
-  setSelectedDefender(null);
-  // Use the interact.js helper to reset all selection variables.
-  resetTurnSelections();
-  setPlayerHasPlacedCard(false);
-  setEnemyHasPlacedCard(false);
-  console.log("🔄 Reset selections and game state flags for new turn.");
-}
-
 // Initialize turn states on DOMContentLoaded.
 document.addEventListener("DOMContentLoaded", () => {
   console.log("🎮 Initializing game states...");
@@ -149,6 +132,5 @@ document.addEventListener("DOMContentLoaded", () => {
     playTurnButton.addEventListener("click", battleRound);
   }
 });
-
 // Export battleRound so it can be called from other modules.
 export { battleRound };

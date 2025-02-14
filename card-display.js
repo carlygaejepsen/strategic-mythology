@@ -10,17 +10,6 @@ import {
     setEnemyHasPlacedCard, placeCardInBattleZone, setPlayerHasPlacedCard 
 } from "./interact.js";
 import { logToResults } from "./ui-display.js"; // Imported for logging battle events
-
-// Updates current player's battle card in game state
-export function updatePlayerBattleCard(card, type) {
-    currentPlayerBattleCards[type] = card || null;
-}
-
-// Updates current enemy's battle card in game state
-export function updateEnemyBattleCard(card, type) {
-    currentEnemyBattleCards[type] = card || null;
-}
-
 // Removes only defeated cards without affecting the rest of the battle zone
 export function removeDefeatedCards() {
     let playerCardsDefeated = false;
@@ -53,7 +42,6 @@ export function removeDefeatedCards() {
         logToResults("Resetting battle zones for the next turn.");
     }
 }
-
 // Rebuilds the battle zones for both player and enemy
 export function updateBattleZones() {
     ["char", "essence", "ability"].forEach(type => {
@@ -76,28 +64,30 @@ export function updateBattleZones() {
     });
     console.log("🛠️ Battle zones updated.");
 }
-
 // Updates both player's and enemy's hand displays
 export function updateHands() {
     updateHand("player-hand", playerHand);
     updateHand("enemy-hand", enemyHand);
 }
+// Update Hand 2.0
+function updateHand(containerId, hand) {
+  const container = document.getElementById(containerId);
+  if (!container) {
+    console.error(`❌ ERROR: Container '${containerId}' not found.`);
+    return;
+  }
 
-// Helper: Updates a specific hand display
-export function updateHand(handId, handArray) {
-    const handElement = document.getElementById(handId);
-    if (!handElement) return;
+  // Create a set of existing card IDs in the container
+  const existingCardIds = new Set(
+    Array.from(container.children).map(child => child.getAttribute("data-card-id"))
+  );
 
-    handElement.innerHTML = "";
-    handArray.forEach(card => {
-        const cardElement = createCardElement(card, "char");
-        cardElement.addEventListener("click", () => {
-            console.log(`🖱️ Clicked on card: ${card.name}`);
-        });
-        handElement.appendChild(cardElement);
-    });
+  hand.forEach(card => {
+    if (!existingCardIds.has(card.id)) {
+      container.appendChild(createCardElement(card, determineCardType(card)));
+    }
+  });
 }
-
 // Helper: Returns a random card from the provided battle zone object
 export function getRandomCardFromZone(battleZone) {
     const availableCards = Object.values(battleZone).filter(card => card !== null);
@@ -105,7 +95,6 @@ export function getRandomCardFromZone(battleZone) {
         ? availableCards[Math.floor(Math.random() * availableCards.length)]
         : null;
 }
-
 // Triggers enemy AI to place a card in the battle zone
 export function enemyPlaceCard() {
     if (!gameState.enemyHasPlacedCard && enemyHand.length > 0) {
@@ -120,7 +109,6 @@ export function enemyPlaceCard() {
         }
     }
 }
-
 // Updates the HP of a card in the battle zone without re-drawing the entire card
 export function updateCardHP(card) {
     if (!card || !card.id) return;

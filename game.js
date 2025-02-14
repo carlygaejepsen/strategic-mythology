@@ -24,9 +24,8 @@ async function startGame() {
     console.log("🎴 Dealing starting hands...");
     dealStartingHands();
 
-    // Render the initial hands for both players.
-    renderHand(playerHand, "player-hand");
-    renderHand(enemyHand, "enemy-hand");
+    // Render the initial hands for both players without duplicating elements.
+    updateHands();
 
     // Set initial game state.
     onGameStateChange("start");       // "It's your turn! Select a card to play."
@@ -38,18 +37,20 @@ async function startGame() {
   }
 }
 
-// Render a given hand into its container.
-function renderHand(hand, containerId) {
-  const container = document.getElementById(containerId);
-  if (!container) {
-    console.error(`❌ ERROR: Container '${containerId}' not found.`);
-    return;
-  }
-  container.innerHTML = "";
-  hand.forEach(card => {
-    container.appendChild(createCardElement(card, determineCardType(card)));
-  });
+// Helper: Determines if a card qualifies as a combo card.
+function isComboCard(card) {
+  return determineCardType(card) === "ability" && Boolean(selectedAttacker);
 }
+// Internal helper: Check if a combo option is available.
+
+function checkComboAvailability() {
+  if (playerHasComboOption()) {
+    updateInstructionText("select-combo");
+  } else {
+    updateInstructionText("select-defender");
+  }
+}
+
 
 // Set up event listeners once the DOM is loaded.
 document.addEventListener("DOMContentLoaded", () => {
@@ -61,9 +62,8 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("⚔️ Playing turn...");
       battleRound();
 
-      // Update hands after the battle round.
-      renderHand(playerHand, "player-hand");
-      renderHand(enemyHand, "enemy-hand");
+      // Update hands after the battle round without duplicating cards.
+      updateHands();
     });
   } else {
     console.error("❌ ERROR: 'Play Turn' button not found!");

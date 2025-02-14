@@ -3,7 +3,7 @@
 import { logToResults } from "./ui-display.js";
 import { updateCardHP, removeDefeatedCards } from "./card-display.js";
 import { determineCardType } from "./cards.js";
-
+//
 export const battleSystem = {
   combos: {
     char_alone: 20,
@@ -50,7 +50,7 @@ export const battleSystem = {
     mys: { strongAgainst: ["auth", "sages"], weakAgainst: ["heroes", "oracles"] },
   },
 };
-
+//
 export function processCombat(attacker, defender, isCombo = false) {
   if (!attacker?.name || !defender?.name) {
     console.error("🚨 ERROR: Invalid combatants! Attack skipped.");
@@ -95,7 +95,7 @@ export function processCombat(attacker, defender, isCombo = false) {
     removeDefeatedCards();
   }
 }
-
+//
 function calculateEssenceMultiplier(attackerEssence, defenderEssence) {
   if (!attackerEssence || !defenderEssence) return 1;
   if (battleSystem.essenceBonuses?.[attackerEssence]?.strongAgainst === defenderEssence) {
@@ -106,7 +106,7 @@ function calculateEssenceMultiplier(attackerEssence, defenderEssence) {
   }
   return 1;
 }
-
+//
 function calculateClassMultiplier(attackerClass, defenderClass) {
   if (!attackerClass || !defenderClass) return 1;
   if (battleSystem.classBonuses?.[attackerClass]?.strongAgainst?.includes(defenderClass)) {
@@ -117,7 +117,7 @@ function calculateClassMultiplier(attackerClass, defenderClass) {
   }
   return 1;
 }
-
+//
 export function checkForCombos(battleZone, owner) {
   const cards = Object.values(battleZone).filter(card => card !== null);
   let comboFound = false;
@@ -147,14 +147,14 @@ export function checkForCombos(battleZone, owner) {
 
   return comboFound;
 }
-
+//
 export function checkForTripleCombo(battleZone, owner) {
   const types = ['char', 'essence', 'ability'];
   const hasAllTypes = types.every(type => battleZone[type]);
   if (hasAllTypes) logToResults(`⚡ ${owner} activated TRIPLE COMBO!`);
   return hasAllTypes;
 }
-
+//perform triple combo
 export function performTripleCombo(owner, opponentBattleZone) {
   const damage = 60;
   Object.values(opponentBattleZone).forEach(card => {
