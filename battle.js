@@ -5,11 +5,13 @@ import {
   drawCardsToFillHands, 
   selectedAttacker,
   selectedDefender,
+  setSelectedAttacker, 
+  setSelectedDefender,
   selectedCombo
 } from "./interact.js";
+
 import { 
-  setSelectedAttacker, 
-  setSelectedDefender, 
+ 
   setPlayerHasPlacedCard, 
   setEnemyHasPlacedCard, 
   setSelectedCombo, 
