@@ -3,16 +3,18 @@
 import { processCombat } from "./battle-logic.js";
 import { 
   drawCardsToFillHands, 
+  selectedAttacker,
+  selectedDefender,
+  selectedCombo
+} from "./interact.js";
+import { 
   setSelectedAttacker, 
   setSelectedDefender, 
   setPlayerHasPlacedCard, 
   setEnemyHasPlacedCard, 
   setSelectedCombo, 
-  resetTurnSelections,
-  selectedAttacker,
-  selectedDefender,
-  selectedCombo
-} from "./interact.js";
+  resetTurnSelections
+} from "./update.js";
 import { 
   updateInstructionText, 
   updateEnemyStatus, 
