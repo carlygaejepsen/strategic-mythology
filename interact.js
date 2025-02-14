@@ -12,7 +12,7 @@ import {
   enemyPlaceCard, updateHands 
 } from "./card-display.js";
 import { 
-  updatePlayerBattleCard, placeCardInBattleZone, setPlayerHasPlacedCard, setEnemyHasPlacedCard
+  updatePlayerBattleCard, placeCardInBattleZone, setPlayerHasPlacedCard, setEnemyHasPlacedCard, updateEnemyStatus
 } from "./update.js";
 import { logToResults, updateInstructionText, onGameStateChange, onEnemyStateChange } from "./ui-display.js";
 
