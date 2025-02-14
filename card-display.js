@@ -1,3 +1,5 @@
+// card-display.js
+
 import { createCardElement } from "./cards.js";
 import { determineCardType } from "./cards.js";
 import { 
@@ -7,65 +9,7 @@ import {
 import { 
     setEnemyHasPlacedCard, placeCardInBattleZone, setPlayerHasPlacedCard 
 } from "./interact.js";
-
-// ✅ Updates Player Instruction Box
-export function updateInstructionText(phase) {
-    const instructionBox = document.getElementById("instruction-box");
-    if (!instructionBox) return;
-
-    const instructionMessages = {
-        "start": "It's your turn! Select a card to play.",
-        "select-battle-card": "Choose a card to send to the battle zone.",
-        "select-attacker": "Select your attacker.",
-        "select-combo": "Choose an ability to enhance your attack.",
-        "select-defender": "Choose which enemy to attack.",
-        "play-turn": "Click 'Play Turn' to continue.",
-        "battling": "Battling...",
-        "waiting": "Waiting for opponent...",
-    };
-
-    instructionBox.textContent = instructionMessages[phase] || "Make your move!";
-}
-
-// 🛡️ Updates Enemy Status UI
-export function updateEnemyStatus(phase) {
-    const enemyStatusBox = document.getElementById("enemy-status-box");
-    if (!enemyStatusBox) return;
-
-    const enemyMessages = {
-        "enemy-start": "Enemy is preparing...",
-        "enemy-select-battle-card": "Enemy is adding a card to the battle zone.",
-        "enemy-select-attacker": "Enemy is selecting an attacker.",
-        "enemy-select-defender": "Enemy is choosing a target.",
-        "enemy-play-turn": "Enemy is attacking...",
-        "enemy-battling": "Enemy is battling...",
-        "enemy-combo": "Enemy is trying a combo!",
-        "enemy-waiting": "Enemy is thinking...",
-    };
-
-    enemyStatusBox.textContent = enemyMessages[phase] || "Enemy is strategizing...";
-}
-
-// 📝 Updates Player Instruction UI (wrapper)
-export function onGameStateChange(newState) {
-    updateInstructionText(newState);
-}
-
-// 🔄 Updates Enemy Phase UI (wrapper)
-export function onEnemyStateChange(newState) {
-    updateEnemyStatus(newState);
-}
-
-// 📝 Logs Battle Events to UI
-export function logToResults(message) {
-    const logElement = document.getElementById("results-log");
-    if (!logElement) return;
-
-    const entry = document.createElement("p");
-    entry.textContent = message;
-    logElement.appendChild(entry);
-    logElement.scrollTop = logElement.scrollHeight; // Auto-scroll
-}
+import { logToResults } from "./ui-display.js"; // Imported for logging battle events
 
 // Updates current player's battle card in game state
 export function updatePlayerBattleCard(card, type) {
@@ -77,7 +21,7 @@ export function updateEnemyBattleCard(card, type) {
     currentEnemyBattleCards[type] = card || null;
 }
 
-// 🛑 Removes only defeated cards without affecting the rest of the battle zone
+// Removes only defeated cards without affecting the rest of the battle zone
 export function removeDefeatedCards() {
     let playerCardsDefeated = false;
     let enemyCardsDefeated = false;
@@ -105,7 +49,8 @@ export function removeDefeatedCards() {
     });
 
     if (playerCardsDefeated || enemyCardsDefeated) {
-        updateInstructionText("select-battle-card"); // Reset to placing a new card
+        // Optionally, trigger a UI update for the next turn
+        logToResults("Resetting battle zones for the next turn.");
     }
 }
 
@@ -138,6 +83,7 @@ export function updateHands() {
     updateHand("enemy-hand", enemyHand);
 }
 
+// Helper: Updates a specific hand display
 export function updateHand(handId, handArray) {
     const handElement = document.getElementById(handId);
     if (!handElement) return;
@@ -155,7 +101,9 @@ export function updateHand(handId, handArray) {
 // Helper: Returns a random card from the provided battle zone object
 export function getRandomCardFromZone(battleZone) {
     const availableCards = Object.values(battleZone).filter(card => card !== null);
-    return availableCards.length > 0 ? availableCards[Math.floor(Math.random() * availableCards.length)] : null;
+    return availableCards.length > 0
+        ? availableCards[Math.floor(Math.random() * availableCards.length)]
+        : null;
 }
 
 // Triggers enemy AI to place a card in the battle zone
@@ -164,7 +112,8 @@ export function enemyPlaceCard() {
         const enemyCard = enemyHand.shift();
         const type = determineCardType(enemyCard);
 
-        if (!currentEnemyBattleCards[type]) {
+        // Allow "ability" or "essence" cards even if one already exists
+        if (type === "ability" || type === "essence" || !currentEnemyBattleCards[type]) {
             placeCardInBattleZone(enemyCard, `enemy-${type}-zone`, updateEnemyBattleCard, "Enemy");
             console.log(`🤖 Enemy placed ${enemyCard.name} in battle.`);
             setEnemyHasPlacedCard(true);
@@ -176,12 +125,14 @@ export function enemyPlaceCard() {
 export function updateCardHP(card) {
     if (!card || !card.id) return;
 
+    // Find the card element using its data attribute
     const cardElement = document.querySelector(`[data-card-id="${card.id}"]`);
     if (!cardElement) {
         console.warn(`⚠️ Could not find card element for ${card.name} to update HP.`);
         return;
     }
 
+    // Update the element displaying the card's HP
     const hpElement = cardElement.querySelector(".card-hp");
     if (hpElement) {
         hpElement.textContent = card.hp;

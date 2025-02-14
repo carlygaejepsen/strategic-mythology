@@ -1,4 +1,7 @@
-import { logToResults, updateCardHP, removeDefeatedCards } from "./display.js";
+// battle-logic.js
+
+import { logToResults } from "./ui-display.js";
+import { updateCardHP, removeDefeatedCards } from "./card-display.js";
 import { determineCardType } from "./cards.js";
 
 export const battleSystem = {
@@ -48,7 +51,6 @@ export const battleSystem = {
   },
 };
 
-// 🎯 Process Combat (Finalized)
 export function processCombat(attacker, defender, isCombo = false) {
   if (!attacker?.name || !defender?.name) {
     console.error("🚨 ERROR: Invalid combatants! Attack skipped.");
@@ -94,7 +96,6 @@ export function processCombat(attacker, defender, isCombo = false) {
   }
 }
 
-// Internal helper: Calculates essence multiplier.
 function calculateEssenceMultiplier(attackerEssence, defenderEssence) {
   if (!attackerEssence || !defenderEssence) return 1;
   if (battleSystem.essenceBonuses?.[attackerEssence]?.strongAgainst === defenderEssence) {
@@ -106,7 +107,6 @@ function calculateEssenceMultiplier(attackerEssence, defenderEssence) {
   return 1;
 }
 
-// Internal helper: Calculates class multiplier.
 function calculateClassMultiplier(attackerClass, defenderClass) {
   if (!attackerClass || !defenderClass) return 1;
   if (battleSystem.classBonuses?.[attackerClass]?.strongAgainst?.includes(defenderClass)) {
@@ -118,7 +118,6 @@ function calculateClassMultiplier(attackerClass, defenderClass) {
   return 1;
 }
 
-// 🔥 Check for Combos in a Battle Zone
 export function checkForCombos(battleZone, owner) {
   const cards = Object.values(battleZone).filter(card => card !== null);
   let comboFound = false;
@@ -149,7 +148,6 @@ export function checkForCombos(battleZone, owner) {
   return comboFound;
 }
 
-// ⚡ Check for Triple Combo in a Battle Zone
 export function checkForTripleCombo(battleZone, owner) {
   const types = ['char', 'essence', 'ability'];
   const hasAllTypes = types.every(type => battleZone[type]);
@@ -157,7 +155,6 @@ export function checkForTripleCombo(battleZone, owner) {
   return hasAllTypes;
 }
 
-// ⚔️ Perform Triple Combo: Applies fixed damage to all cards in the opponent's battle zone.
 export function performTripleCombo(owner, opponentBattleZone) {
   const damage = 60;
   Object.values(opponentBattleZone).forEach(card => {
