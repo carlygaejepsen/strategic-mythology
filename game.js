@@ -13,6 +13,7 @@ import {
 import { dealStartingHands, createCardElement, determineCardType } from "./cards.js";
 import { battleRound } from "./battle.js";
 import { onGameStateChange, onEnemyStateChange } from "./ui-display.js";
+import { updateHands } from "./card-display.js";
 
 // 🎮 Initialize and Start Game
 async function startGame() {
