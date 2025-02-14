@@ -9,8 +9,8 @@ import {
     gameConfig 
 } from "./config.js";
 import { dealStartingHands, createCardElement, determineCardType } from "./cards.js";
-import { battleRound, onGameStateChange, onEnemyStateChange } from "./battle.js";
-
+import { battleRound } from "./battle.js";
+import {  onGameStateChange, onEnemyStateChange } from "./display.js"}
 // 🎮 Initialize and Start Game
 async function startGame() {
     try {
