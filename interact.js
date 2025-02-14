@@ -119,7 +119,7 @@ export function placeCardInBattleZone(card, battleZoneId, updateFunction, owner)
   return cardElement;
 }
 
-// 🎮 Handle Card Clicks (Supports Combo Selection)
+// 🎮 Handle Card Click 2.0
 export function handleCardClick(card) {
   if (!card || !card.name) {
     console.warn("⚠️ Invalid card click detected.");
@@ -127,14 +127,54 @@ export function handleCardClick(card) {
   }
   console.log(`DEBUG: Clicked on card: ${card.name}`);
   const type = determineCardType(card);
-  
+
+  // Check if the card is already in a battle zone.
+  const inPlayerBattle = Object.values(currentPlayerBattleCards).includes(card);
+  const inEnemyBattle = Object.values(currentEnemyBattleCards).includes(card);
+
+  if (inPlayerBattle) {
+    // If no attacker is selected, use this card as the attacker.
+    if (!selectedAttacker) {
+      setSelectedAttacker(card);
+      console.log(`✅ Attacker selected: ${card.name}`);
+      // Prompt: You may now optionally click another card to add a combo, or select a defender.
+      updateInstructionText("select-defender (or click a different card for a combo)");
+      updateEnemyStatus("enemy-select-defender");
+      return;
+    }
+    // If an attacker is already selected and the clicked card is different, treat it as a combo selection.
+    if (selectedAttacker !== card) {
+      setSelectedCombo(card);
+      console.log(`🔥 Combo selected: ${card.name}`);
+      updateInstructionText("select-defender");
+      updateEnemyStatus("enemy-select-defender");
+      return;
+    }
+    console.warn("⚠️ This card is already selected as the attacker.");
+    return;
+  }
+
+  if (inEnemyBattle) {
+    // Handle defender selection.
+    if (selectedDefender === card) {
+      console.warn("⚠️ This card is already selected as the defender.");
+      return;
+    }
+    setSelectedDefender(card);
+    console.log(`✅ Defender selected: ${card.name}`);
+    updateInstructionText("play-turn");
+    updateEnemyStatus("enemy-waiting");
+    return;
+  }
+
   // If the card is in the player's hand, attempt to place it.
   if (playerHand.includes(card)) {
     if (gameState.playerHasPlacedCard) {
       console.warn("⚠️ You can only place one card per turn.");
       return;
     }
-    if (!currentPlayerBattleCards[type] || type === "essence" || type === "ability") {
+    // Allow placement regardless of card type.
+    if (!currentPlayerBattleCards[type] || type === "essence" || type === "ability" || type === "char") {
       placeCardInBattleZone(card, `player-${type}-zone`, updatePlayerBattleCard, "Player");
       const index = playerHand.indexOf(card);
       if (index !== -1) playerHand.splice(index, 1);
@@ -144,45 +184,6 @@ export function handleCardClick(card) {
     } else {
       console.warn(`⚠️ You already have a ${type} card in battle.`);
     }
-    return;
-  }
-  
-  // Prevent selection if there are no valid battle cards.
-  if (
-    !Object.values(currentPlayerBattleCards).some(c => c) &&
-    !Object.values(currentEnemyBattleCards).some(c => c)
-  ) {
-    console.warn("⚠️ No valid cards in the battle zone to select.");
-    return;
-  }
-  
-  // Selecting an Attacker.
-  if (currentPlayerBattleCards[type] === card) {
-    if (selectedAttacker === card) {
-      console.warn("⚠️ This card is already selected as the attacker.");
-      return;
-    }
-    setSelectedAttacker(card);
-    return;
-  }
-  
-  // Selecting a Combo (if available).
-  if (selectedAttacker && isComboCard(card)) {
-    if (selectedCombo === card) {
-      console.warn("⚠️ This combo is already selected.");
-      return;
-    }
-    setSelectedCombo(card);
-    return;
-  }
-  
-  // Selecting a Defender.
-  if (currentEnemyBattleCards[type] === card) {
-    if (selectedDefender === card) {
-      console.warn("⚠️ This card is already selected as the defender.");
-      return;
-    }
-    setSelectedDefender(card);
     return;
   }
   
