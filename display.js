@@ -8,7 +8,7 @@ import {
     setEnemyHasPlacedCard, placeCardInBattleZone, setPlayerHasPlacedCard 
 } from "./interact.js";
 
-// ✅ **Updates Player Instruction Box**
+// ✅ Updates Player Instruction Box
 export function updateInstructionText(phase) {
     const instructionBox = document.getElementById("instruction-box");
     if (!instructionBox) return;
@@ -27,7 +27,7 @@ export function updateInstructionText(phase) {
     instructionBox.textContent = instructionMessages[phase] || "Make your move!";
 }
 
-// 🛡️ **Updates Enemy Status UI**
+// 🛡️ Updates Enemy Status UI
 export function updateEnemyStatus(phase) {
     const enemyStatusBox = document.getElementById("enemy-status-box");
     if (!enemyStatusBox) return;
@@ -46,17 +46,17 @@ export function updateEnemyStatus(phase) {
     enemyStatusBox.textContent = enemyMessages[phase] || "Enemy is strategizing...";
 }
 
-// 📝 **Updates Player Instruction UI**
+// 📝 Updates Player Instruction UI (wrapper)
 export function onGameStateChange(newState) {
     updateInstructionText(newState);
 }
 
-// 🔄 **Updates Enemy Phase UI**
+// 🔄 Updates Enemy Phase UI (wrapper)
 export function onEnemyStateChange(newState) {
     updateEnemyStatus(newState);
 }
 
-// 📝 **Logs Battle Events to UI**
+// 📝 Logs Battle Events to UI
 export function logToResults(message) {
     const logElement = document.getElementById("results-log");
     if (!logElement) return;
@@ -67,10 +67,12 @@ export function logToResults(message) {
     logElement.scrollTop = logElement.scrollHeight; // Auto-scroll
 }
 
+// Updates current player's battle card in game state
 export function updatePlayerBattleCard(card, type) {
     currentPlayerBattleCards[type] = card || null;
 }
 
+// Updates current enemy's battle card in game state
 export function updateEnemyBattleCard(card, type) {
     currentEnemyBattleCards[type] = card || null;
 }
@@ -84,7 +86,8 @@ export function removeDefeatedCards() {
         if (card?.hp <= 0) {
             logToResults(`☠️ ${card.name} has been defeated!`);
             delete currentPlayerBattleCards[type];
-            document.getElementById(`player-${type}-zone`).innerHTML = "";
+            const playerZone = document.getElementById(`player-${type}-zone`);
+            if (playerZone) playerZone.innerHTML = "";
             setPlayerHasPlacedCard(false);
             playerCardsDefeated = true;
         }
@@ -94,18 +97,19 @@ export function removeDefeatedCards() {
         if (card?.hp <= 0) {
             logToResults(`☠️ ${card.name} has been defeated!`);
             delete currentEnemyBattleCards[type];
-            document.getElementById(`enemy-${type}-zone`).innerHTML = "";
+            const enemyZone = document.getElementById(`enemy-${type}-zone`);
+            if (enemyZone) enemyZone.innerHTML = "";
             setEnemyHasPlacedCard(false);
             enemyCardsDefeated = true;
         }
     });
 
-    // ✅ Ensure the correct phase reset **after combat completes**
     if (playerCardsDefeated || enemyCardsDefeated) {
-        updateInstructionText("select-battle-card"); // 🔥 Returns to placing a new card
+        updateInstructionText("select-battle-card"); // Reset to placing a new card
     }
 }
 
+// Rebuilds the battle zones for both player and enemy
 export function updateBattleZones() {
     ["char", "essence", "ability"].forEach(type => {
         const playerZone = document.getElementById(`player-${type}-zone`);
@@ -128,7 +132,7 @@ export function updateBattleZones() {
     console.log("🛠️ Battle zones updated.");
 }
 
-// 🔄 **Updates Hands for Both Players**
+// Updates both player's and enemy's hand displays
 export function updateHands() {
     updateHand("player-hand", playerHand);
     updateHand("enemy-hand", enemyHand);
@@ -148,13 +152,13 @@ export function updateHand(handId, handArray) {
     });
 }
 
-// 📌 **Helper: Gets a Random Card from a Battle Zone**
+// Helper: Returns a random card from the provided battle zone object
 export function getRandomCardFromZone(battleZone) {
     const availableCards = Object.values(battleZone).filter(card => card !== null);
     return availableCards.length > 0 ? availableCards[Math.floor(Math.random() * availableCards.length)] : null;
 }
 
-// 🤖 **Handles Enemy AI Placing a Card**
+// Triggers enemy AI to place a card in the battle zone
 export function enemyPlaceCard() {
     if (!gameState.enemyHasPlacedCard && enemyHand.length > 0) {
         const enemyCard = enemyHand.shift();
@@ -168,42 +172,11 @@ export function enemyPlaceCard() {
     }
 }
 
-// 🛑 **Removes Only Defeated Cards**
-export function removeDefeatedCards() {
-    let playerCardsDefeated = false;
-    let enemyCardsDefeated = false;
-
-    Object.entries(currentPlayerBattleCards).forEach(([type, card]) => {
-        if (card?.hp <= 0) {
-            logToResults(`☠️ ${card.name} has been defeated!`);
-            delete currentPlayerBattleCards[type];
-            document.getElementById(`player-${type}-zone`).innerHTML = "";
-            setPlayerHasPlacedCard(false);
-            playerCardsDefeated = true;
-        }
-    });
-
-    Object.entries(currentEnemyBattleCards).forEach(([type, card]) => {
-        if (card?.hp <= 0) {
-            logToResults(`☠️ ${card.name} has been defeated!`);
-            delete currentEnemyBattleCards[type];
-            document.getElementById(`enemy-${type}-zone`).innerHTML = "";
-            setEnemyHasPlacedCard(false);
-            enemyCardsDefeated = true;
-        }
-    });
-
-    if (playerCardsDefeated || enemyCardsDefeated) {
-        updateInstructionText("select-battle-card"); // 🔄 Resets to next turn
-    }
-}
-
-// 🩸 **Updates Card HP in the Battle Zone Without Re-Drawing**
+// Updates the HP of a card in the battle zone without re-drawing the entire card
 export function updateCardHP(card) {
     if (!card || !card.id) return;
 
     const cardElement = document.querySelector(`[data-card-id="${card.id}"]`);
-
     if (!cardElement) {
         console.warn(`⚠️ Could not find card element for ${card.name} to update HP.`);
         return;

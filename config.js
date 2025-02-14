@@ -15,7 +15,7 @@ export function setCurrentPhase(newPhase) {
 }
 
 // ✅ Core Objects (non-const so we can reassign if needed)
-export let cardTemplates = {}; 
+export let cardTemplates = {};
 
 // ✅ Decks & Hands (Mutable arrays)
 export let playerDeck = [];
@@ -131,9 +131,9 @@ export async function loadAllCards() {
 
         const fullDeck = [...characterDeck, ...essenceDeck, ...abilityDeck];
 
-        // Ensure hands are cleared before loading new decks
-        playerHand.length = 0;
-        enemyHand.length = 0;
+        // Do not clear hands so they persist between turns.
+        // playerHand.length = 0;
+        // enemyHand.length = 0;
 
         // Shuffle and assign decks
         playerDeck = shuffleDeck([...fullDeck]);

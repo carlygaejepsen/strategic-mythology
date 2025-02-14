@@ -8,11 +8,10 @@ import {
     cardTemplates, 
     gameConfig 
 } from "./config.js";
-
 import { dealStartingHands, createCardElement, determineCardType } from "./cards.js";
 import { battleRound, onGameStateChange, onEnemyStateChange } from "./battle.js";
 
-// 🎮 **Initialize and Start Game**
+// 🎮 Initialize and Start Game
 async function startGame() {
     try {
         console.log("📥 Loading game configuration...");
@@ -22,13 +21,13 @@ async function startGame() {
         console.log("🎴 Dealing starting hands...");
         dealStartingHands();
 
-        // ✅ Render initial hands
+        // Render the initial hands for both players.
         renderHand(playerHand, "player-hand");
         renderHand(enemyHand, "enemy-hand");
 
-        // ✅ Set game state at launch
-        onGameStateChange("start"); // "It's your turn! Select a card to play."
-        onEnemyStateChange("enemy-start"); // "Enemy is preparing..."
+        // Set initial game state.
+        onGameStateChange("start");       // "It's your turn! Select a card to play."
+        onEnemyStateChange("enemy-start");  // "Enemy is preparing..."
 
         console.log("✅ Game successfully started!");
     } catch (error) {
@@ -36,21 +35,20 @@ async function startGame() {
     }
 }
 
-// 🎴 **Render Hands for Player & Enemy**
+// Render a given hand into its container.
 function renderHand(hand, containerId) {
     const container = document.getElementById(containerId);
     if (!container) {
         console.error(`❌ ERROR: Container '${containerId}' not found.`);
         return;
     }
-
     container.innerHTML = "";
     hand.forEach(card => {
         container.appendChild(createCardElement(card, determineCardType(card)));
     });
 }
 
-// 🎮 **Set Up Event Listeners**
+// Set up event listeners once the DOM is loaded.
 document.addEventListener("DOMContentLoaded", () => {
     startGame();
 
@@ -60,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log("⚔️ Playing turn...");
             battleRound();
 
-            // ✅ Update hands dynamically after the round
+            // Update hands after the battle round.
             renderHand(playerHand, "player-hand");
             renderHand(enemyHand, "enemy-hand");
         });
