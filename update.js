@@ -6,6 +6,7 @@ import {
   currentEnemyBattleCards
 } from "./config.js";
 import { onGameStateChange, onEnemyStateChange } from "./ui-display.js";
+import { determineCardType } from "./cards.js";
 
 // 🃏 Place a Card in the Battle Zone
 export function placeCardInBattleZone(card, battleZoneId, updateFunction, owner) {
