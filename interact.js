@@ -12,9 +12,9 @@ import {
   enemyPlaceCard, updateHands 
 } from "./card-display.js";
 import { 
-  updatePlayerBattleCard, placeCardInBattleZone, setPlayerHasPlacedCard, setEnemyHasPlacedCard, updateEnemyStatus
+  updatePlayerBattleCard, placeCardInBattleZone, setPlayerHasPlacedCard, setEnemyHasPlacedCard
 } from "./update.js";
-import { logToResults, updateInstructionText, onGameStateChange, onEnemyStateChange } from "./ui-display.js";
+import { logToResults, updateInstructionText, onGameStateChange, onEnemyStateChange, updateEnemyStatus } from "./ui-display.js";
 
 // Global selection variables for this turn.
 export let selectedAttacker = null;
