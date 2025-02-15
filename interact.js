@@ -1,3 +1,4 @@
+// interact.js
 import { 
     playerHand, enemyHand, gameState, 
     currentPlayerBattleCards, currentEnemyBattleCards 
@@ -16,7 +17,7 @@ import {
 } from "./card-display.js";
 
 import { 
-updatePlayerBattleCard, updateEnemyBattleCard 
+updatePlayerBattleCard, updateEnemyBattleCard, placeCardInBattleZone 
 } from "./update.js";
 
 export let selectedAttacker = null;
@@ -98,26 +99,3 @@ export function setEnemyHasPlacedCard(value) {
     gameState.enemyHasPlacedCard = value;
 }
 
-export function placeCardInBattleZone(card, battleZoneId, updateFunction, owner) {
-    console.log(`DEBUG: Attempting to place ${card.name} in ${battleZoneId}`);
-    const battleZone = document.getElementById(battleZoneId);
-    if (!battleZone) return;
-    
-    battleZone.innerHTML = "";
-    const type = determineCardType(card);
-    if (!["char", "essence", "ability"].includes(type)) {
-        console.error(`🚨 ERROR: Invalid card type '${type}' for ${card.name}!`);
-        return;
-    }
-    const cardElement = createCardElement(card, type);
-    battleZone.appendChild(cardElement);
-    updateFunction(card, type);
-    
-    if (owner === "Player") {
-        currentPlayerBattleCards[type] = card;
-    } else {
-        currentEnemyBattleCards[type] = card;
-    }
-    console.log(`🔄 ${owner} placed a ${type} card: ${card.name}`);
-    return cardElement;
-}
