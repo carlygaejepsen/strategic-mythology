@@ -180,6 +180,5 @@ export function handleCardClick(card) {
 export {
   selectedAttacker,
   selectedDefender,
-  selectedCombo,
-  resetSelectionsForNewTurn
+  selectedCombo
 };
