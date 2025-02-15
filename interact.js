@@ -8,9 +8,13 @@ import {
 } from "./cards.js";
 
 import { 
-    updatePlayerBattleCard, updateEnemyBattleCard, enemyPlaceCard, 
-    logToResults, updateHands, updateInstructionText 
+    updatePlayerBattleCard, updateEnemyBattleCard,
+    logToResults, updateInstructionText 
 } from "./ui-display.js";
+
+import { 
+    enemyPlaceCard, updateHands
+} from "./card-display.js";
 
 export let selectedAttacker = null;
 export let selectedDefender = null;
