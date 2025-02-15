@@ -29,7 +29,7 @@ async function startGame() {
     updateHands();
 
     // Set initial game state.
-    onGameStateChange("select-battle-card");      
+    onGameStateChange("start");      
     onEnemyStateChange("enemy-start");  
 
     console.log("✅ Game successfully started!");
