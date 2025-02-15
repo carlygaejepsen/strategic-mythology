@@ -3,7 +3,8 @@
 import { 
   gameState, 
   currentPlayerBattleCards, 
-  currentEnemyBattleCards 
+  currentEnemyBattleCards,
+  playerHand
 } from "./config.js";
 import { onGameStateChange, onEnemyStateChange, updateInstructionText } from "./ui-display.js";
 import { determineCardType, createCardElement } from "./cards.js";
