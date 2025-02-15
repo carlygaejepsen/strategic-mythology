@@ -82,7 +82,7 @@ export function updateEnemyBattleCard(card, type) {
   currentEnemyBattleCards[type] = card || null;
 }
 export function drawCardsToFillHands() {
-    console.log("DEBUG: Drawing cards - Player Hand:", playerHand, "Enemy Hand:", enemyHand");
+    console.log("DEBUG: Drawing cards - Player Hand:", playerHand, "Enemy Hand:", enemyHand);
 
     if (playerHand.length < 6 && playerDeck.length > 0) {
         const drawnCard = playerDeck.shift();
