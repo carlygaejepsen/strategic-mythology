@@ -81,3 +81,30 @@ export function updatePlayerBattleCard(card, type) {
 export function updateEnemyBattleCard(card, type) {
   currentEnemyBattleCards[type] = card || null;
 }
+export function drawCardsToFillHands() {
+    console.log("DEBUG: Drawing cards - Player Hand:", playerHand, "Enemy Hand:", enemyHand");
+
+    if (playerHand.length < 6 && playerDeck.length > 0) {
+        const drawnCard = playerDeck.shift();
+        playerHand.push(drawnCard);
+        logToResults(`🃏 Player draws ${drawnCard.name}`);
+
+        // Only add the new card to the display (DO NOT clear and re-add everything)
+        const playerHandElement = document.getElementById("player-hand");
+        if (playerHandElement) {
+            playerHandElement.appendChild(createCardElement(drawnCard, determineCardType(drawnCard)));
+        }
+    }
+
+    if (enemyHand.length < 6 && enemyDeck.length > 0) {
+        const drawnCard = enemyDeck.shift();
+        enemyHand.push(drawnCard);
+        logToResults(`🃏 Enemy draws ${drawnCard.name}`);
+
+        // Only add the new card to the display (DO NOT clear and re-add everything)
+        const enemyHandElement = document.getElementById("enemy-hand");
+        if (enemyHandElement) {
+            enemyHandElement.appendChild(createCardElement(drawnCard, determineCardType(drawnCard)));
+        }
+    }
+}
