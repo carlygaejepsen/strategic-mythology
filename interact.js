@@ -12,8 +12,12 @@ import {
 } from "./ui-display.js";
 
 import { 
-        updatePlayerBattleCard, updateEnemyBattleCard, enemyPlaceCard, updateHands
+       enemyPlaceCard, updateHands
 } from "./card-display.js";
+
+import { 
+updatePlayerBattleCard, updateEnemyBattleCard 
+} from "./update.js";
 
 export let selectedAttacker = null;
 export let selectedDefender = null;
