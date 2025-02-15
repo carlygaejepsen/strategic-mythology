@@ -28,15 +28,9 @@ import {
 } from "./card-display.js";
 import { gameState, playerHand, currentPlayerBattleCards, currentEnemyBattleCards } from "./config.js";
 import { determineCardType } from "./cards.js";
+import { checkForCombos, comboFound } from "./battle-logic.js";
 
 let gameRunning = false;
-
-// Helper: Check if a combo option is available by looking for any "ability" card in the player's hand.
-function playerHasComboOption() {
-  const hasCombo = playerHand.some(card => determineCardType(card) === "ability");
-  console.log(`DEBUG: Checking combo options - Available: ${hasCombo}`);
-  return hasCombo;
-}
 
 // 🎮 Main Game Loop
 export function gameLoop() {
@@ -47,11 +41,9 @@ export function gameLoop() {
   // Ensure both players have placed a card before continuing.
   if (!gameState.playerHasPlacedCard || !gameState.enemyHasPlacedCard) {
     console.warn("DEBUG: Warning - Both players must place a card before starting the round.");
-    updateInstructionText("select-battle-card");
-    updateEnemyStatus("enemy-select-battle-card");
     gameRunning = false;
     return;
-  }
+  } else {
 
   updateInstructionText("select-attacker");
   updateEnemyStatus("enemy-select-attacker");
@@ -66,7 +58,7 @@ export function handleSelectAttacker(card) {
   setSelectedAttacker(card);
   console.log(`DEBUG: Attacker selected: ${card.name}`);
 
-  if (playerHasComboOption()) {
+  if (comboFound()) {
     updateInstructionText("select-combo");
     updateEnemyStatus("enemy-combo");
   } else {
@@ -107,9 +99,6 @@ function battleRound() {
     console.warn("DEBUG: Select an attacker and a defender before continuing.");
     return;
   }
-
-  updateInstructionText("battling");
-  updateEnemyStatus("enemy-battling");
 
   if (selectedCombo) {
     console.log(`DEBUG: ${selectedAttacker.name} uses ${selectedCombo.name} while attacking ${selectedDefender.name}`);
