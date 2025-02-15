@@ -2,10 +2,8 @@
 
 import { 
   gameState, 
-  currentPlayerBattleCards, 
-  currentEnemyBattleCards,
-  playerHand,
-  enemyHand
+  currentPlayerBattleCards, currentEnemyBattleCards, playerHand,
+  enemyHand, playerDeck, enemyDeck
 } from "./config.js";
 import { onGameStateChange, onEnemyStateChange, updateInstructionText } from "./ui-display.js";
 import { determineCardType, createCardElement } from "./cards.js";
