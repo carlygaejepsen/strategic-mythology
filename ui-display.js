@@ -6,17 +6,15 @@ export function updateInstructionText(phase) {
     if (!instructionBox) return;
 
     const instructionMessages = {
-        "start": "It's your turn! Select a card to play.",
         "select-battle-card": "Choose a card to send to the battle zone.",
         "select-attacker": "Select your attacker.",
         "select-combo": "Choose an ability to enhance your attack.",
-        "select-defender": "Choose which enemy to attack.",
+        "select-defender-or-combo": "Build a combo or choose which enemy to attack.",
         "play-turn": "Click 'Play Turn' to continue.",
         "battling": "Battling...",
         "waiting": "Waiting for opponent...",
     };
 
-    instructionBox.textContent = instructionMessages[phase] || "Make your move!";
 }
 
 // Updates Enemy Status UI

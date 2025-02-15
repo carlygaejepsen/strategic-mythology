@@ -29,8 +29,8 @@ async function startGame() {
     updateHands();
 
     // Set initial game state.
-    onGameStateChange("start");       // "It's your turn! Select a card to play."
-    onEnemyStateChange("enemy-start");  // "Enemy is preparing..."
+    onGameStateChange("select-battle-card");      
+    onEnemyStateChange("enemy-start");  
 
     console.log("✅ Game successfully started!");
   } catch (error) {
