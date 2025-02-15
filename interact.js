@@ -10,7 +10,7 @@ import {
 import { 
     updatePlayerBattleCard, updateEnemyBattleCard, enemyPlaceCard, 
     logToResults, updateHands, updateInstructionText 
-} from "./display.js";
+} from "./ui-display.js";
 
 export let selectedAttacker = null;
 export let selectedDefender = null;
@@ -32,16 +32,12 @@ export function handleCardClick(card) {
             console.warn("⚠️ You can only place one card per turn.");
             return;
         }
-        if (!currentPlayerBattleCards[type]) {
-            placeCardInBattleZone(card, `player-${type}-zone`, updatePlayerBattleCard, "Player");
-            playerHand.splice(playerHand.indexOf(card), 1);
-            updateHands();
-            setPlayerHasPlacedCard(true);
-            updateInstructionText("select-attacker");
-            enemyPlaceCard();
-        } else {
-            console.warn(`⚠️ You already have a ${type} card in battle.`);
-        }
+        placeCardInBattleZone(card, `player-${type}-zone`, updatePlayerBattleCard, "Player");
+        playerHand.splice(playerHand.indexOf(card), 1);
+        updateHands();
+        setPlayerHasPlacedCard(true);
+        updateInstructionText("select-attacker");
+        enemyPlaceCard();
         return;
     }
 
