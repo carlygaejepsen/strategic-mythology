@@ -8,12 +8,11 @@ import {
 } from "./cards.js";
 
 import { 
-    updatePlayerBattleCard, updateEnemyBattleCard,
-    logToResults, updateInstructionText 
+	logToResults, updateInstructionText 
 } from "./ui-display.js";
 
 import { 
-    enemyPlaceCard, updateHands
+        updatePlayerBattleCard, updateEnemyBattleCard, enemyPlaceCard, updateHands
 } from "./card-display.js";
 
 export let selectedAttacker = null;
