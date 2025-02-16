@@ -75,7 +75,7 @@ export function manageTurn() {
 
         resetSelections();
         drawCardsToFillHands();
-        updateInstructionText("select-card");
+        updateInstructionText("select-battle-card");
 
         gameRunning = false;
     }, 1000);
