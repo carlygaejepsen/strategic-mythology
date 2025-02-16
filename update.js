@@ -5,7 +5,7 @@ import {
   currentPlayerBattleCards, currentEnemyBattleCards, playerHand,
   enemyHand, playerDeck, enemyDeck
 } from "./config.js";
-import { onGameStateChange, onEnemyStateChange, updateInstructionText } from "./ui-display.js";
+import { onGameStateChange, onEnemyStateChange, updateInstructionText, drawCardsToFillHands } from "./ui-display.js";
 import { determineCardType, createCardElement } from "./cards.js";
 import { 
   selectedAttacker, selectedDefender, selectedCombo, 
