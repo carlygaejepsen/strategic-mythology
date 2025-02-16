@@ -10,9 +10,14 @@ import {
   cardTemplates, 
   gameConfig 
 } from "./config.js";
+
 import { dealStartingHands, createCardElement, determineCardType } from "./cards.js";
 import { battleRound } from "./battle.js";
-import { onGameStateChange, onEnemyStateChange } from "./ui-display.js";
+import { 
+  onGameStateChange, 
+  onEnemyStateChange, 
+  updateInstructionText 
+} from "./ui-display.js"; 
 import { updateHands } from "./card-display.js";
 
 // 🎮 Initialize and Start Game
@@ -28,30 +33,18 @@ async function startGame() {
     // Render the initial hands for both players without duplicating elements.
     updateHands();
 
-    // Set initial game state.
+    // Ensure proper game state updates for UI
     onGameStateChange("select-battle-card");      
     onEnemyStateChange("enemy-start");  
+
+    // Directly update the instruction text to avoid missing UI updates
+    updateInstructionText("select-battle-card");
 
     console.log("✅ Game successfully started!");
   } catch (error) {
     console.error("❌ ERROR starting game:", error);
   }
 }
-
-// Helper: Determines if a card qualifies as a combo card.
-function isComboCard(card) {
-  return determineCardType(card) === "ability" && Boolean(selectedAttacker);
-}
-// Internal helper: Check if a combo option is available.
-
-function checkComboAvailability() {
-  if (playerHasComboOption()) {
-    updateInstructionText("select-combo");
-  } else {
-    updateInstructionText("select-defender");
-  }
-}
-
 
 // Set up event listeners once the DOM is loaded.
 document.addEventListener("DOMContentLoaded", () => {
