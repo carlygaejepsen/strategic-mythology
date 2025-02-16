@@ -15,7 +15,8 @@ export function updateInstructionText(phase) {
         "select-attacker": "Select your attacker.",
         "select-combo": "Choose an ability to enhance your attack.",
         "select-defender-or-combo": "Build a combo or choose which enemy to attack.",
-        "play-turn": "Click 'Play Turn' to continue.",
+        "select-defender": "Choose which enemy to attack.", 
+		"play-turn": "Click 'Play Turn' to continue.",
         "battling": "Battling...",
         "waiting": "Waiting for opponent..."
     };
