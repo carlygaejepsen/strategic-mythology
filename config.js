@@ -1,17 +1,33 @@
 // config.js - Handles game configurations, settings, data loading, and global references
 
-// ✅ Turn Phases (for dynamic tracking)
+// ✅ Turn Phases (ensuring compatibility with UI updates)
 export const turnPhases = {
-  PLAYER_SELECTION: 'player',
-  ENEMY_SELECTION: 'enemy',
-  COMBAT: 'combat'
+  SELECT_BATTLE_CARD: 'select-battle-card',  // Player places a card
+  SELECT_ATTACKER: 'select-attacker',        // Player chooses attacker
+  SELECT_COMBO: 'select-combo',              // Player optionally selects a combo ability
+  SELECT_DEFENDER: 'select-defender',        // Player chooses enemy target
+  PLAY_TURN: 'play-turn',                    // Player confirms turn execution
+  ENEMY_SELECTION: 'enemy-select-battle-card', // Enemy places a card
+  ENEMY_ATTACKER: 'enemy-select-attacker',   // Enemy chooses attacker
+  ENEMY_DEFENDER: 'enemy-select-defender',   // Enemy chooses target
+  ENEMY_PLAY_TURN: 'enemy-play-turn',        // Enemy executes turn
+  WAITING: 'waiting',                        // Game waiting for actions
+  COMBAT: 'battling'                         // Active combat phase
 };
 
 // ✅ Current Game Phase (updated dynamically)
-export let currentPhase = turnPhases.PLAYER_SELECTION;
+export let currentPhase = turnPhases.SELECT_BATTLE_CARD;
+
 export function setCurrentPhase(newPhase) {
-  console.log(`🔄 Phase Change: ${currentPhase} ➝ ${newPhase}`);
+  if (!Object.values(turnPhases).includes(newPhase)) {
+    console.error(`🚨 ERROR: Invalid phase "${newPhase}" attempted!`);
+    return;
+  }
+  console.log(`🔄 Phase Change: ${currentPhase} ➔ ${newPhase}`);
   currentPhase = newPhase;
+
+  onGameStateChange(newPhase);
+  onEnemyStateChange(newPhase);
 }
 
 // ✅ Core Objects (non-const so we can reassign if needed)
@@ -80,12 +96,9 @@ async function loadJSON(file) {
 export async function loadConfigFiles() {
   try {
     console.log("📥 Fetching configuration files...");
-
-    // Fetch card templates
     const cardTemplatesResponse = await fetch("./card-templates.json");
     if (!cardTemplatesResponse.ok) throw new Error(`Failed to fetch card-templates.json`);
     cardTemplates = await cardTemplatesResponse.json();
-
     console.log("✅ Configurations loaded.");
   } catch (error) {
     console.error("❌ ERROR loading configuration files:", error);
@@ -109,7 +122,6 @@ export async function loadAllCards() {
 
   try {
     console.log("📥 Fetching all card data...");
-
     const characterFiles = [
       "./data/beast-chars.json", "./data/bully-chars.json", "./data/celestial-chars.json",
       "./data/hero-chars.json", "./data/life-chars.json", "./data/mystical-chars.json",
@@ -123,23 +135,13 @@ export async function loadAllCards() {
       loadJSON("./data/ability-cards.json")
     ]);
 
-    // Ensure valid card loading
     if (!characterDeck.length || !essenceDeck.length || !abilityDeck.length) {
       console.warn("⚠️ WARNING: One or more decks are empty!");
     }
 
-    const fullDeck = [...characterDeck, ...essenceDeck, ...abilityDeck];
-
-    // Do not clear hands so they persist between turns.
-    // playerHand.length = 0;
-    // enemyHand.length = 0;
-
-    // Shuffle and assign decks
-    playerDeck = shuffleDeck([...fullDeck]);
-    enemyDeck = shuffleDeck([...fullDeck]);
-
-    console.log("✅ Player Deck:", playerDeck);
-    console.log("✅ Enemy Deck:", enemyDeck);
+    playerDeck = shuffleDeck([...characterDeck, ...essenceDeck, ...abilityDeck]);
+    enemyDeck = shuffleDeck([...characterDeck, ...essenceDeck, ...abilityDeck]);
+    console.log("✅ Decks successfully created.");
   } catch (error) {
     console.error("❌ ERROR loading cards:", error);
   }

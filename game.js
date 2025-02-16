@@ -23,7 +23,7 @@ import { updateHands } from "./card-display.js";
 // 🎮 Initialize and Start Game
 async function startGame() {
   try {
-    console.log("📥 Loading game configuration...");
+    console.log("📝 Loading game configuration...");
     await loadConfigFiles();
     await loadAllCards();
 
@@ -43,6 +43,20 @@ async function startGame() {
     console.log("✅ Game successfully started!");
   } catch (error) {
     console.error("❌ ERROR starting game:", error);
+  }
+}
+
+// Helper: Determines if a card qualifies as a combo card.
+function isComboCard(card) {
+  return determineCardType(card) === "ability" && Boolean(selectedAttacker);
+}
+
+// Internal helper: Check if a combo option is available.
+function checkComboAvailability() {
+  if (playerHasComboOption()) {
+    updateInstructionText("select-combo");
+  } else {
+    updateInstructionText("select-defender-or-combo");
   }
 }
 
