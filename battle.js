@@ -40,11 +40,23 @@ export function startGame() {
     updateEnemyStatus("enemy-start");
     console.log("✅ Game started!");
 }
+function getEnemyOpenSlots() {
+    const openSlots = [];
+
+    if (!currentEnemyBattleCards["char"]) openSlots.push("char");
+    if (!currentEnemyBattleCards["essence"]) openSlots.push("essence");
+    if (!currentEnemyBattleCards["ability"]) openSlots.push("ability");
+
+    return openSlots;
+}
 
 // 🎮 **Manages an entire turn**
 export function manageTurn() {
     if (gameRunning) return;
     gameRunning = true;
+
+    // ✅ Ensure the enemy always attempts to play a card before attacking
+    setTimeout(enemyPlaceCard, 500);
 
     if (!gameState.playerHasPlacedCard || !gameState.enemyHasPlacedCard) {
         console.warn("⚠️ Both players must place a card before starting the round.");
@@ -63,10 +75,35 @@ export function manageTurn() {
 
         resetSelections();
         drawCardsToFillHands();
-        updateInstructionText("select-battle-card");
+        updateInstructionText("select-card");
 
         gameRunning = false;
     }, 1000);
+}
+//enemy place card
+export function enemyPlaceCard() {
+    if (!enemyDeck.length) {
+        console.warn("⚠️ Enemy has no more cards available.");
+        return;
+    }
+
+    const openSlots = getEnemyOpenSlots();
+    if (openSlots.length === 0) {
+        console.log("🤖 Enemy battle zone is full. No card needed.");
+        return;
+    }
+
+    const availableCards = enemyDeck.filter(card => openSlots.includes(determineCardType(card)));
+    if (availableCards.length === 0) {
+        console.warn("⚠️ No suitable cards found for available enemy slots.");
+        return;
+    }
+
+    const card = availableCards[Math.floor(Math.random() * availableCards.length)];
+    const slot = determineCardType(card);
+
+    placeCardInBattleZone(card, `enemy-${slot}-zone`, updateEnemyBattleCard, "Enemy");
+    console.log(`🤖 Enemy placed ${card.name} in the ${slot} slot.`);
 }
 
 // ⚔️ **Handles the battle round**
