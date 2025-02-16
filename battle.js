@@ -115,7 +115,7 @@ function endTurn() {
 
 // ✅ **Initialize game on page load**
 document.addEventListener("DOMContentLoaded", () => {
-    startGame();
+    setTimeout (startGame, 100);
 
     const playTurnButton = document.getElementById("play-turn");
     if (playTurnButton) {
