@@ -43,7 +43,7 @@ export function resetTurnSelections() {
   setSelectedAttacker(null);
   setSelectedDefender(null);
   setSelectedCombo(null);
-  updateInstructionText("select-card"); // Ensure UI updates correctly
+  updateInstructionText("select-battle-card"); // Ensure UI updates correctly
 }
 
 // ✅ Resets selections and game state flags for a new turn.
