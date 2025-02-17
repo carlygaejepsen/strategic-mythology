@@ -1,0 +1,27 @@
+{
+  "name": "strategic-mythology",
+  "version": "1.0.0",
+  "description": "Card-based battler based on ancient mythology",
+  "main": "index.html",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/carlygaejepsen/strategic-mythology.git"
+  },
+  "keywords": [
+    "game",
+    "strategy",
+    "mythology",
+    "JavaScript",
+    "web",
+    "game"
+  ],
+  "author": "Dani Gusto",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/carlygaejepsen/strategic-mythology/issues"
+  },
+  "homepage": "https://github.com/carlygaejepsen/strategic-mythology#readme"
+}
