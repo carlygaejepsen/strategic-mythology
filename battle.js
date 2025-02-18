@@ -13,7 +13,9 @@ import {
     setEnemyHasPlacedCard,
     resetTurnSelections,
     resetSelections,
-    drawCardsToFillHands
+    drawCardsToFillHands,
+    placeCardInBattleZone,
+    updateEnemyBattleCard
 } from "./update.js";
 
 import {
@@ -24,11 +26,14 @@ import {
 
 import {
     getRandomCardFromZone,
-    removeDefeatedCards
+    removeDefeatedCards,
+    enemyPlaceCard
 } from "./card-display.js";
 
 import { gameState, currentPlayerBattleCards, currentEnemyBattleCards, playerDeck, enemyDeck } from "./config.js";
 import { determineCardType } from "./cards.js";
+import { debugMode } from "./config.js";
+import { logDebug, logError, logWarn } from "./utils/logger.js";
 
 let gameRunning = false;
 
@@ -38,8 +43,9 @@ export function startGame() {
     drawCardsToFillHands();
     updateInstructionText("select-battle-card");
     updateEnemyStatus("enemy-start");
-    console.log("✅ Game started!");
+    if (debugMode) logDebug("✅ Game started!");
 }
+
 function getEnemyOpenSlots() {
     const openSlots = [];
 
@@ -59,20 +65,18 @@ export function manageTurn() {
     setTimeout(enemyPlaceCard, 500);
 
     if (!gameState.playerHasPlacedCard || !gameState.enemyHasPlacedCard) {
-        console.warn("⚠️ Both players must place a card before starting the round.");
-        gameRunning = false;
+        if (debugMode) logDebug("Waiting for both players to place their cards.");
         return;
     }
 
+    if (playerDeck.length === 0 || enemyDeck.length === 0) {
+        logToResults(playerDeck.length === 0 ? "🏁 Player wins!" : "🏁 Enemy wins!");
+        gameRunning = false;
+        return;
+    }
     battleRound();
 
     setTimeout(() => {
-        if (playerDeck.length === 0 || enemyDeck.length === 0) {
-            logToResults(playerDeck.length === 0 ? "🏁 Player wins!" : "🏁 Enemy wins!");
-            gameRunning = false;
-            return;
-        }
-
         resetSelections();
         drawCardsToFillHands();
         updateInstructionText("select-battle-card");
@@ -107,9 +111,9 @@ export function enemyPlaceCard() {
 }
 
 // ⚔️ **Handles the battle round**
-function battleRound() {
+export function battleRound() {
     if (!selectedAttacker || !selectedDefender) {
-        console.warn("⚠️ Select an attacker and a defender before continuing.");
+        if (debugMode) logWarn("⚠️ Select an attacker and a defender before continuing.");
         gameRunning = false;
         return;
     }
@@ -125,6 +129,7 @@ function battleRound() {
     removeDefeatedCards();
     setTimeout(enemyTurn, 500);
 }
+
 
 // 🤖 **Enemy AI Turn**
 function enemyTurn() {
@@ -152,14 +157,12 @@ function endTurn() {
 
 // ✅ **Initialize game on page load**
 document.addEventListener("DOMContentLoaded", () => {
-    setTimeout (startGame, 100);
+    setTimeout(startGame, 100);
 
     const playTurnButton = document.getElementById("play-turn");
     if (playTurnButton) {
         playTurnButton.addEventListener("click", manageTurn);
     } else {
-        console.error("❌ ERROR: 'Play Turn' button not found!");
+        logError("❌ ERROR: 'Play Turn' button not found!");
     }
 });
-
-export { battleRound };
