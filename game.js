@@ -1,5 +1,7 @@
 // game.js
 
+const debugMode = false; // Set to true to enable debugging logs, false to disable them
+
 import { 
   loadConfigFiles, 
   loadAllCards, 
@@ -10,7 +12,6 @@ import {
   cardTemplates, 
   gameConfig 
 } from "./config.js";
-
 import { dealStartingHands, createCardElement, determineCardType } from "./cards.js";
 import { battleRound } from "./battle.js";
 import { 
@@ -19,30 +20,31 @@ import {
   updateInstructionText 
 } from "./ui-display.js"; 
 import { updateHands } from "./card-display.js";
+import { logDebug, logError } from "./utils/logger.js";
 
 // 🎮 Initialize and Start Game
 async function startGame() {
   try {
-    console.log("📝 Loading game configuration...");
+    logDebug("📝 Loading game configuration...");
     await loadConfigFiles();
     await loadAllCards();
 
-    console.log("🎴 Dealing starting hands...");
+    logDebug("🎴 Dealing starting hands...");
     dealStartingHands();
 
-    // Render the initial hands for both players without duplicating elements.
+    // Render initial hands for both players.
     updateHands();
 
     // Ensure proper game state updates for UI
     onGameStateChange("select-battle-card");      
     onEnemyStateChange("enemy-start");  
 
-    // Directly update the instruction text to avoid missing UI updates
+    // Update instruction text to ensure UI consistency
     updateInstructionText("select-battle-card");
 
-    console.log("✅ Game successfully started!");
+    logDebug("✅ Game successfully started!");
   } catch (error) {
-    console.error("❌ ERROR starting game:", error);
+    logError("❌ ERROR starting game:", error);
   }
 }
 
@@ -63,17 +65,20 @@ function checkComboAvailability() {
 // Set up event listeners once the DOM is loaded.
 document.addEventListener("DOMContentLoaded", () => {
   startGame();
+});
 
+// Ensure the DOM is fully loaded before accessing elements.
+window.addEventListener("load", () => {
   const playTurnButton = document.getElementById("play-turn");
   if (playTurnButton) {
     playTurnButton.addEventListener("click", () => {
-      console.log("⚔️ Playing turn...");
+      logDebug("⚔️ Playing turn...");
       battleRound();
 
-      // Update hands after the battle round without duplicating cards.
+      // Update hands after battle round.
       updateHands();
     });
   } else {
-    console.error("❌ ERROR: 'Play Turn' button not found!");
+    logError("❌ ERROR: 'Play Turn' button not found!");
   }
 });

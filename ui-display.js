@@ -1,12 +1,13 @@
 // ui-display.js - Handles all UI updates, including instruction box, enemy status, and result logs
 
-import { gameState } from "./config.js";
+import { gameState, debugMode } from "./config.js";
+import { logDebug, logError, logWarn } from "./utils/logger.js";
 
-// ✅ Updates Player Instruction Box
+// ✅ Updates Player Instruction Box (only when changed)
 export function updateInstructionText(phase) {
     const instructionBox = document.getElementById("instruction-box");
     if (!instructionBox) {
-        console.error("❌ ERROR: Instruction box not found in DOM!");
+        logError("❌ ERROR: Instruction box not found in DOM!");
         return;
     }
 
@@ -16,25 +17,22 @@ export function updateInstructionText(phase) {
         "select-combo": "Choose an ability to enhance your attack.",
         "select-defender-or-combo": "Build a combo or choose which enemy to attack.",
         "select-defender": "Choose which enemy to attack.", 
-		"play-turn": "Click 'Play Turn' to continue.",
+        "play-turn": "Click 'Play Turn' to continue.",
         "battling": "Battling...",
         "waiting": "Waiting for opponent..."
     };
 
-    // ✅ Ensure the instruction box updates properly
-    if (instructionMessages[phase]) {
+    if (instructionMessages[phase] && instructionBox.innerText !== instructionMessages[phase]) {
         instructionBox.innerText = instructionMessages[phase];
-        console.log(`📝 Instruction Updated: ${instructionMessages[phase]}`);
-    } else {
-        console.warn(`⚠️ WARNING: Unrecognized phase "${phase}". Instruction box left unchanged.`);
+        if (debugMode) logDebug(`📝 Instruction Updated: ${instructionMessages[phase]}`);
     }
 }
 
-// ✅ Updates Enemy Status UI
+// ✅ Updates Enemy Status UI (only when changed)
 export function updateEnemyStatus(phase) {
     const enemyStatusBox = document.getElementById("enemy-status-box");
     if (!enemyStatusBox) {
-        console.error("❌ ERROR: Enemy status box not found!");
+        logError("❌ ERROR: Enemy status box not found!");
         return;
     }
 
@@ -49,38 +47,35 @@ export function updateEnemyStatus(phase) {
         "enemy-waiting": "Enemy is thinking..."
     };
 
-    if (enemyMessages[phase]) {
+    if (enemyMessages[phase] && enemyStatusBox.textContent !== enemyMessages[phase]) {
         enemyStatusBox.textContent = enemyMessages[phase];
-        console.log(`🤖 Enemy Status Updated: ${enemyMessages[phase]}`);
-    } else {
-        console.warn(`⚠️ WARNING: Unrecognized enemy phase "${phase}". Enemy status left unchanged.`);
+        if (debugMode) logDebug(`🤖 Enemy Status Updated: ${enemyMessages[phase]}`);
     }
 }
 
 // ✅ Wrapper: Updates Player Instruction UI based on game state changes
 export function onGameStateChange(newState) {
-    console.log(`🔄 Game state changed: ${newState}`);
+    if (debugMode) logDebug(`🔄 Game state changed: ${newState}`);
     updateInstructionText(newState);
 }
 
 // ✅ Wrapper: Updates Enemy Phase UI based on game state changes
 export function onEnemyStateChange(newState) {
-    console.log(`🔄 Enemy state changed: ${newState}`);
+    if (debugMode) logDebug(`🔄 Enemy state changed: ${newState}`);
     updateEnemyStatus(newState);
 }
 
-// ✅ Logs battle events to the UI
+// ✅ Logs battle events to the UI (Avoids redundant logging)
 export function logToResults(message) {
-    const logElement = document.getElementById("results-log");
-    if (!logElement) {
-        console.error("❌ ERROR: Results log not found!");
+    const resultsLog = document.getElementById("results-log");
+    if (!resultsLog) {
+        logError("❌ ERROR: Results log element not found.");
         return;
     }
-
-    const entry = document.createElement("p");
-    entry.textContent = message;
-    logElement.appendChild(entry);
-    logElement.scrollTop = logElement.scrollHeight; // Auto-scroll to latest message
+    const logEntry = document.createElement("div");
+    logEntry.textContent = message;
+    resultsLog.appendChild(logEntry);
+    logDebug(`📝 Log entry added: ${message}`);
 }
 
 // ✅ Clears the results log when a new game starts
@@ -88,15 +83,15 @@ export function clearResultsLog() {
     const logElement = document.getElementById("results-log");
     if (logElement) {
         logElement.innerHTML = "";
-        console.log("🧹 Results log cleared.");
+        if (debugMode) logDebug("🧹 Results log cleared.");
     } else {
-        console.error("❌ ERROR: Cannot clear log; results log not found.");
+        logError("❌ ERROR: Cannot clear log; results log not found.");
     }
 }
 
 // ✅ Ensure UI is properly initialized when the game starts
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("✅ UI Display module loaded successfully.");
+    if (debugMode) logDebug("✅ UI Display module loaded successfully.");
     updateInstructionText("select-battle-card");
     updateEnemyStatus("enemy-start");
 });

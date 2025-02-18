@@ -10,8 +10,10 @@ import {
   playerHand, 
   enemyHand, 
   cardTemplates, 
-  gameState 
+  gameState, 
+  debugMode 
 } from "./config.js";
+import { logDebug, logError } from "./utils/logger.js";
 
 // ✅ Replace placeholders in a template with provided data
 function populateTemplate(template, data) {
@@ -19,7 +21,7 @@ function populateTemplate(template, data) {
 }
 
 // 🃏 Deals starting hands from decks & updates the UI
-function dealStartingHands() {
+export function dealStartingHands() {
   const HAND_SIZE = 6;
 
   if (playerDeck.length < HAND_SIZE || enemyDeck.length < HAND_SIZE) {
@@ -39,31 +41,26 @@ function dealStartingHands() {
   console.log("🎴 Enemy Hand:", enemyHand);
 }
 
-// 🏷️ Determines the card type safely
+// 🏷️ Determines the card type safely, caches result to avoid redundant calls
 export function determineCardType(card) {
   if (!card) {
     console.error("🚨 ERROR: `determineCardType()` received an undefined or null card!");
     return "unknown";
   }
 
-  console.log(`DEBUG: Determining type for ${card.name} (Raw Data)`, card);
-
-  if (card.type) {
-    console.log(`✅ Identified type for ${card.name}: ${card.type}`);
-    return card.type;
+  if (!card.cachedType) {
+    card.cachedType = card.type || "char";
   }
-
-  console.warn(`⚠️ No type found for ${card.name}, defaulting to 'char'.`);
-  return "char"; // Fallback
+  return card.cachedType;
 }
 
-// 🎨 Creates a card element 3.0
-function createCardElement(card, type) {
-  console.log(`🎨 Creating card: ${card.name} (Type: ${type})`);
-  const computedType = determineCardType(card);
+// 🎨 Creates a card element
+export function createCardElement(card) {
+  const computedType = card.cachedType || determineCardType(card);
+  logDebug(`🎨 Creating card: ${card.name} (Type: ${computedType})`);
 
   if (!cardTemplates[computedType]) {
-    console.error(`❌ ERROR: Missing template for card type: ${computedType}`);
+    logError(`❌ ERROR: Missing template for card type: ${computedType}`);
     return document.createElement("div");
   }
 
@@ -134,9 +131,3 @@ function createCardElement(card, type) {
 
   return containerDiv;
 }
-
-// ✅ Export Functions
-export {
-  dealStartingHands,
-  createCardElement
-};

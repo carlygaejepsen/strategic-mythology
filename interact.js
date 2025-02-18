@@ -9,28 +9,34 @@ import {
 } from "./cards.js";
 
 import { 
-	logToResults, updateInstructionText 
+    logToResults, updateInstructionText 
 } from "./ui-display.js";
 
 import { 
-       enemyPlaceCard, updateHands
+    enemyPlaceCard, updateHands 
 } from "./card-display.js";
 
 import { 
-updatePlayerBattleCard, updateEnemyBattleCard, placeCardInBattleZone 
+    updatePlayerBattleCard, updateEnemyBattleCard, placeCardInBattleZone, setPlayerHasPlacedCard, setEnemyHasPlacedCard 
 } from "./update.js";
+
+import { logDebug, logWarn } from "./utils/logger.js";
 
 export let selectedAttacker = null;
 export let selectedDefender = null;
 export let selectedCombo = null;
+
+// Debug mode toggle
+export const debugMode = false;
+
 //Card Click 5.0
 export function handleCardClick(card) {
     if (!card || !card.name) {
-        console.warn("⚠️ Invalid card click detected.");
+        logWarn("⚠️ Invalid card click detected.");
         return;
     }
 
-    console.log(`🃏 DEBUG: Clicked on card: ${card.name}`);
+    logDebug(`🃏 DEBUG: Clicked on card: ${card.name}`);
     const type = determineCardType(card);
     
     const inPlayerBattle = Object.values(currentPlayerBattleCards).includes(card);
@@ -39,7 +45,7 @@ export function handleCardClick(card) {
     // ✅ Handling Player Selecting a Card from Hand
     if (playerHand.includes(card)) {
         if (gameState.playerHasPlacedCard) {
-            console.warn("⚠️ You can only place one card per turn.");
+            logWarn("⚠️ You can only place one card per turn.");
             return;
         }
 
@@ -58,7 +64,7 @@ export function handleCardClick(card) {
         if (!selectedAttacker) {
             setSelectedAttacker(card);
             updateInstructionText("select-defender-or-combo");
-            console.log(`⚔️ Attacker selected: ${card.name}`);
+            logDebug(`⚔️ Attacker selected: ${card.name}`);
             return;
         }
 
@@ -66,7 +72,7 @@ export function handleCardClick(card) {
             // Deselect Attacker
             setSelectedAttacker(null);
             updateInstructionText("select-attacker");
-            console.log(`🔄 Attacker deselected.`);
+            logDebug(`🔄 Attacker deselected.`);
             return;
         }
 
@@ -74,11 +80,11 @@ export function handleCardClick(card) {
         if (!selectedCombo) {
             setSelectedCombo(card);
             updateInstructionText("select-defender"); // **Fix: Now updates to 'select-defender' after combo**
-            console.log(`🔥 Combo selected: ${card.name}`);
+            logDebug(`🔥 Combo selected: ${card.name}`);
             return;
         }
 
-        console.warn("⚠️ You already selected a combo. Select a defender now.");
+        logWarn("⚠️ You already selected a combo. Select a defender now.");
         return;
     }
 
@@ -88,17 +94,17 @@ export function handleCardClick(card) {
             // Deselect Defender
             setSelectedDefender(null);
             updateInstructionText("select-defender-or-combo");
-            console.log(`🔄 Defender deselected.`);
+            logDebug(`🔄 Defender deselected.`);
             return;
         }
 
         setSelectedDefender(card);
         updateInstructionText("play-turn");
-        console.log(`🛡️ Defender selected: ${card.name}`);
+        logDebug(`🛡️ Defender selected: ${card.name}`);
         return;
     }
 
-    console.warn("⚠️ Invalid selection. Place a card first, then select attacker, combo, and defender.");
+    logWarn("⚠️ Invalid selection. Place a card first, then select attacker, combo, and defender.");
 }
 
 export function setSelectedAttacker(card) {
@@ -112,12 +118,3 @@ export function setSelectedDefender(card) {
 export function setSelectedCombo(card) {
     selectedCombo = card;
 }
-
-export function setPlayerHasPlacedCard(value) {
-    gameState.playerHasPlacedCard = value;
-}
-
-export function setEnemyHasPlacedCard(value) {
-    gameState.enemyHasPlacedCard = value;
-}
-

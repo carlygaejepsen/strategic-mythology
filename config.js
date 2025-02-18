@@ -1,4 +1,9 @@
+import { logDebug, logError, logWarn } from "./utils/logger.js";
+import { onGameStateChange, onEnemyStateChange } from "./ui-display.js";
+
 // config.js - Handles game configurations, settings, data loading, and global references
+
+export const debugMode = false; // Set to true for debugging, false to reduce logs
 
 // ✅ Turn Phases (ensuring compatibility with UI updates)
 export const turnPhases = {
@@ -20,10 +25,10 @@ export let currentPhase = turnPhases.SELECT_BATTLE_CARD;
 
 export function setCurrentPhase(newPhase) {
   if (!Object.values(turnPhases).includes(newPhase)) {
-    console.error(`🚨 ERROR: Invalid phase "${newPhase}" attempted!`);
+    logError(`🚨 ERROR: Invalid phase "${newPhase}" attempted!`);
     return;
   }
-  console.log(`🔄 Phase Change: ${currentPhase} ➔ ${newPhase}`);
+  logDebug(`🔄 Phase Change: ${currentPhase} ➔ ${newPhase}`);
   currentPhase = newPhase;
 
   onGameStateChange(newPhase);
@@ -62,7 +67,7 @@ export let gameConfig = {
     "mals": "Malevolent", "wilds": "Wildkeeper", "cares": "Caretaker",
     "heroes": "Hero", "ecs": "Ecstatic", "warriors": "Warrior",
     "wars": "Warrior", "auth": "Authority", "sages": "Sage",
-    "mys": "Mystic", "oracles": "Oracle"
+    "mys": "Mystic", "oracles": "Oracle",
   },
   "battle-messages": {
     "battleStart": "{player} vs {enemy} begins!",
@@ -87,21 +92,20 @@ async function loadJSON(file) {
     if (!response.ok) throw new Error(`Failed to load ${file}`);
     return await response.json();
   } catch (error) {
-    console.error("❌ ERROR fetching JSON:", error);
-    return {};
+    logError("❌ ERROR fetching JSON:", error);
   }
 }
 
 // ✅ Fetches card templates and updates configuration
 export async function loadConfigFiles() {
   try {
-    console.log("📥 Fetching configuration files...");
+    logDebug("📥 Fetching configuration files...");
     const cardTemplatesResponse = await fetch("./card-templates.json");
     if (!cardTemplatesResponse.ok) throw new Error(`Failed to fetch card-templates.json`);
     cardTemplates = await cardTemplatesResponse.json();
-    console.log("✅ Configurations loaded.");
+    logDebug("✅ Configurations loaded.");
   } catch (error) {
-    console.error("❌ ERROR loading configuration files:", error);
+    logError("❌ ERROR loading configuration files:", error);
   }
 }
 
@@ -111,37 +115,30 @@ export function shuffleDeck(deck) {
     const j = Math.floor(Math.random() * (i + 1));
     [deck[i], deck[j]] = [deck[j], deck[i]];
   }
-  return deck;
 }
 
 // ✅ Loads character, essence, and ability cards from JSON and populates decks
-let cardsLoaded = false;
 export async function loadAllCards() {
-  if (cardsLoaded) return; // Prevent multiple reloads
   cardsLoaded = true;
 
   try {
-    console.log("📥 Fetching all card data...");
+    if (debugMode) console.log("📥 Fetching all card data...");
     const characterFiles = [
       "./data/beast-chars.json", "./data/bully-chars.json", "./data/celestial-chars.json",
       "./data/hero-chars.json", "./data/life-chars.json", "./data/mystical-chars.json",
-      "./data/olympian-chars.json", "./data/plant-chars.json", "./data/underworld-chars.json",
-      "./data/water-chars.json"
-    ];
+        "./data/water-chars.json"
+      ];
 
     const [characterDeck, essenceDeck, abilityDeck] = await Promise.all([
       Promise.all(characterFiles.map(loadJSON)).then(results => results.flat()),
       loadJSON("./data/essence-cards.json"),
       loadJSON("./data/ability-cards.json")
     ]);
-
     if (!characterDeck.length || !essenceDeck.length || !abilityDeck.length) {
       console.warn("⚠️ WARNING: One or more decks are empty!");
+    } else {
+      shuffleDeck([...characterDeck, ...essenceDeck, ...abilityDeck]);
     }
-
-    playerDeck = shuffleDeck([...characterDeck, ...essenceDeck, ...abilityDeck]);
-    enemyDeck = shuffleDeck([...characterDeck, ...essenceDeck, ...abilityDeck]);
-    console.log("✅ Decks successfully created.");
   } catch (error) {
     console.error("❌ ERROR loading cards:", error);
   }

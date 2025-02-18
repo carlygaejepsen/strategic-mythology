@@ -9,9 +9,9 @@ import {
 import { 
     setEnemyHasPlacedCard, placeCardInBattleZone, setPlayerHasPlacedCard, updateEnemyBattleCard 
 } from "./update.js";
-import { logToResults } from "./ui-display.js"; // Imported for logging battle events
+import { logToResults } from "./ui-display.js"; 
+import { logDebug, logError, logWarn } from "./utils/logger.js";
 
-// Removes only defeated cards without affecting the rest of the battle zone
 export function removeDefeatedCards() {
     let playerCardsDefeated = false;
     let enemyCardsDefeated = false;
@@ -43,8 +43,8 @@ export function removeDefeatedCards() {
     }
 }
 
-// Rebuilds the battle zones for both player and enemy
 export function updateBattleZones() {
+    let hasUpdated = false;
     ["char", "essence", "ability"].forEach(type => {
         const playerZone = document.getElementById(`player-${type}-zone`);
         const enemyZone = document.getElementById(`enemy-${type}-zone`);
@@ -53,6 +53,7 @@ export function updateBattleZones() {
             playerZone.innerHTML = "";
             if (currentPlayerBattleCards[type]) {
                 playerZone.appendChild(createCardElement(currentPlayerBattleCards[type], type));
+                hasUpdated = true;
             }
         }
 
@@ -60,33 +61,45 @@ export function updateBattleZones() {
             enemyZone.innerHTML = "";
             if (currentEnemyBattleCards[type]) {
                 enemyZone.appendChild(createCardElement(currentEnemyBattleCards[type], type));
+                hasUpdated = true;
             }
         }
     });
-    console.log("🛠️ Battle zones updated.");
+    if (hasUpdated) {
+        console.log("🛠️ Battle zones updated.");
+    }
 }
 
-// Updates both player's and enemy's hand displays
 export function updateHands() {
+    logDebug("Updating hands...");
     updateHand("player-hand", playerHand);
     updateHand("enemy-hand", enemyHand);
 }
 
-// Update Hand 2.1 - Now properly removes played cards
 function updateHand(containerId, hand) {
     const container = document.getElementById(containerId);
     if (!container) {
-        console.error(`❌ ERROR: Container '${containerId}' not found.`);
+        console.error(`❌ ERROR: Container '${containerId}' not found. Ensure the DOM has fully loaded before updating hands.`);
         return;
     }
 
-    container.innerHTML = "";
+    const existingCards = new Set([...container.children].map(el => el.getAttribute("data-card-id")));
+    const currentCardIds = new Set(hand.map(card => card.id));
+
+    existingCards.forEach(cardId => {
+        if (!currentCardIds.has(cardId)) {
+            const cardElement = container.querySelector(`[data-card-id='${cardId}']`);
+            if (cardElement) container.removeChild(cardElement);
+        }
+    });
+
     hand.forEach(card => {
-        container.appendChild(createCardElement(card, determineCardType(card)));
+        if (!existingCards.has(card.id)) {
+            container.appendChild(createCardElement(card, determineCardType(card)));
+        }
     });
 }
 
-// Helper: Returns a random card from the provided battle zone object
 export function getRandomCardFromZone(battleZone) {
     const availableCards = Object.values(battleZone).filter(card => card !== null);
     return availableCards.length > 0
@@ -94,21 +107,31 @@ export function getRandomCardFromZone(battleZone) {
         : null;
 }
 
-// Triggers enemy AI to place a card in the battle zone
 export function enemyPlaceCard() {
-    if (!gameState.enemyHasPlacedCard && enemyHand.length > 0) {
-        const enemyCard = enemyHand.shift();
-        const type = determineCardType(enemyCard);
-
-        if (type === "ability" || type === "essence" || !currentEnemyBattleCards[type]) {
-            placeCardInBattleZone(enemyCard, `enemy-${type}-zone`, updateEnemyBattleCard, "Enemy");
-            console.log(`🤖 Enemy placed ${enemyCard.name} in battle.`);
-            setEnemyHasPlacedCard(true);
-        }
+    if (!enemyDeck.length) {
+        console.warn("⚠️ Enemy has no more cards available.");
+        return;
     }
+
+    const openSlots = getEnemyOpenSlots();
+    if (openSlots.length === 0) {
+        console.log("🤖 Enemy battle zone is full. No card needed.");
+        return;
+    }
+
+    const availableCards = enemyDeck.filter(card => openSlots.includes(determineCardType(card)));
+    if (availableCards.length === 0) {
+        console.warn("⚠️ No suitable cards found for available enemy slots.");
+        return;
+    }
+
+    const card = availableCards[Math.floor(Math.random() * availableCards.length)];
+    const slot = determineCardType(card);
+
+    placeCardInBattleZone(card, `enemy-${slot}-zone`, updateEnemyBattleCard, "Enemy");
+    console.log(`🤖 Enemy placed ${card.name} in the ${slot} slot.`);
 }
 
-// Updates the HP of a card in the battle zone without re-drawing the entire card
 export function updateCardHP(card) {
     if (!card || !card.id) return;
 

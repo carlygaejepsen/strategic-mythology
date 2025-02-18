@@ -4,7 +4,8 @@
   "description": "Card-based battler based on ancient mythology",
   "main": "index.html",
   "scripts": {
-    "test": "mocha"
+    "start": "node app.js",
+    "test": "mocha ./update.test.js"
   },
   "repository": {
     "type": "git",
@@ -23,5 +24,12 @@
   "bugs": {
     "url": "https://github.com/carlygaejepsen/strategic-mythology/issues"
   },
-  "homepage": "https://github.com/carlygaejepsen/strategic-mythology#readme"
+  "homepage": "https://github.com/carlygaejepsen/strategic-mythology#readme",
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "mocha": "^11.1.0"
+  },
+  "dependencies": {
+    "jsdom": "^26.0.0"
+  }
 }
