@@ -121,6 +121,16 @@ export function updatePlayerBattleCard(card, type) {
   if (debugMode) logDebug(`🔄 Player's ${type} card updated: ${card.name}`);
 }
 
+// ✅ Updates enemy's battle card in game state
+export function updateEnemyBattleCard(card, type) {
+  if (!validCardTypes.includes(type)) {
+    logError(`🚨 ERROR: Invalid card type '${type}' for ${card.name}!`);
+    return;
+  }
+  currentEnemyBattleCards[type] = card;
+  if (debugMode) logDebug(`🔄 Enemy's ${type} card updated: ${card.name}`);
+}
+
 // Draw Cards to Fill Hands 2.0
 export function drawCardsToFillHands() {
   if (debugMode) {
