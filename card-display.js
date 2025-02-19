@@ -65,9 +65,6 @@ export function updateBattleZones() {
             }
         }
     });
-    if (hasUpdated) {
-        console.log("🛠️ Battle zones updated.");
-    }
 }
 
 export function updateHands() {

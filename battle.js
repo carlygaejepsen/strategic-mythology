@@ -130,7 +130,6 @@ export function battleRound() {
     setTimeout(enemyTurn, 500);
 }
 
-
 // 🤖 **Enemy AI Turn**
 function enemyTurn() {
     const enemyAttacker = getRandomCardFromZone(currentEnemyBattleCards);
