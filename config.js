@@ -119,27 +119,30 @@ export function shuffleDeck(deck) {
 
 // ✅ Loads character, essence, and ability cards from JSON and populates decks
 export async function loadAllCards() {
-  cardsLoaded = true;
-
   try {
-    if (debugMode) console.log("📥 Fetching all card data...");
+    logDebug("📥 Fetching all card data...");
     const characterFiles = [
       "./data/beast-chars.json", "./data/bully-chars.json", "./data/celestial-chars.json",
       "./data/hero-chars.json", "./data/life-chars.json", "./data/mystical-chars.json",
-        "./data/water-chars.json"
-      ];
+      "./data/water-chars.json"
+    ];
 
     const [characterDeck, essenceDeck, abilityDeck] = await Promise.all([
       Promise.all(characterFiles.map(loadJSON)).then(results => results.flat()),
       loadJSON("./data/essence-cards.json"),
       loadJSON("./data/ability-cards.json")
     ]);
+
     if (!characterDeck.length || !essenceDeck.length || !abilityDeck.length) {
-      console.warn("⚠️ WARNING: One or more decks are empty!");
+      logWarn("⚠️ WARNING: One or more decks are empty!");
     } else {
-      shuffleDeck([...characterDeck, ...essenceDeck, ...abilityDeck]);
+      playerDeck = [...characterDeck, ...essenceDeck, ...abilityDeck];
+      enemyDeck = [...characterDeck, ...essenceDeck, ...abilityDeck];
+      shuffleDeck(playerDeck);
+      shuffleDeck(enemyDeck);
+      logDebug("✅ All cards loaded and decks shuffled.");
     }
   } catch (error) {
-    console.error("❌ ERROR loading cards:", error);
+    logError("❌ ERROR loading cards:", error);
   }
 }

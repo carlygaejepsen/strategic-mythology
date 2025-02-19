@@ -69,7 +69,7 @@ export function createCardElement(card) {
   const populatedHTML = populateTemplate(template, {
     name: card.name || "Unknown",
     img: card.img || "",
-    hp: card.hp ?? "",
+    hp: card.hp ?? "0", // Ensure hp is always present
     atk: card.atk ?? "",
     def: card.def ?? "",
     spd: card.spd ?? "",

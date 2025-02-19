@@ -112,8 +112,12 @@ export function setEnemyHasPlacedCard(value) {
 
 // ✅ Resets selections and game state flags for a new turn.
 export function resetSelections() {
-  setPlayerHasPlacedCard(false);
-  setEnemyHasPlacedCard(false);
+    return new Promise((resolve) => {
+        setSelectedAttacker(null);
+        setSelectedDefender(null);
+        setSelectedCombo(null);
+        resolve();
+    });
 }
 // ✅ Updates player's battle card in game state
 export function updatePlayerBattleCard(card, type) {

@@ -1,25 +1,25 @@
 // card-display.js
 
-import { createCardElement } from "./cards.js";
-import { determineCardType } from "./cards.js";
+import { createCardElement, determineCardType } from "./cards.js";
 import { 
-    playerHand, enemyHand, cardTemplates, gameConfig, 
-    currentPlayerBattleCards, currentEnemyBattleCards, gameState 
+    playerHand, enemyHand, 
+    currentPlayerBattleCards, currentEnemyBattleCards, enemyDeck 
 } from "./config.js";
 import { 
     setEnemyHasPlacedCard, placeCardInBattleZone, setPlayerHasPlacedCard, updateEnemyBattleCard 
 } from "./update.js";
 import { logToResults } from "./ui-display.js"; 
-import { logDebug, logError, logWarn } from "./utils/logger.js";
+import { logDebug } from "./utils/logger.js";
 
 export function removeDefeatedCards() {
     let playerCardsDefeated = false;
     let enemyCardsDefeated = false;
 
+    const logMessages = [];
+
     Object.entries(currentPlayerBattleCards).forEach(([type, card]) => {
         if (card?.hp <= 0) {
-            logToResults(`☠️ ${card.name} has been defeated!`);
-            delete currentPlayerBattleCards[type];
+            logMessages.push(`☠️ ${card.name} has been defeated!`);
             const playerZone = document.getElementById(`player-${type}-zone`);
             if (playerZone) playerZone.innerHTML = "";
             setPlayerHasPlacedCard(false);
@@ -29,8 +29,7 @@ export function removeDefeatedCards() {
 
     Object.entries(currentEnemyBattleCards).forEach(([type, card]) => {
         if (card?.hp <= 0) {
-            logToResults(`☠️ ${card.name} has been defeated!`);
-            delete currentEnemyBattleCards[type];
+            logMessages.push(`☠️ ${card.name} has been defeated!`);
             const enemyZone = document.getElementById(`enemy-${type}-zone`);
             if (enemyZone) enemyZone.innerHTML = "";
             setEnemyHasPlacedCard(false);
@@ -39,8 +38,10 @@ export function removeDefeatedCards() {
     });
 
     if (playerCardsDefeated || enemyCardsDefeated) {
-        logToResults("Resetting battle zones for the next turn.");
+        logMessages.push("Resetting battle zones for the next turn.");
     }
+
+    logMessages.forEach(message => logToResults(message));
 }
 
 export function updateBattleZones() {
@@ -75,33 +76,22 @@ export function updateHands() {
 
 function updateHand(containerId, hand) {
     const container = document.getElementById(containerId);
-    if (!container) {
-        console.error(`❌ ERROR: Container '${containerId}' not found. Ensure the DOM has fully loaded before updating hands.`);
-        return;
-    }
+    if (!container) return;
 
-    const existingCards = new Set([...container.children].map(el => el.getAttribute("data-card-id")));
-    const currentCardIds = new Set(hand.map(card => card.id));
-
-    existingCards.forEach(cardId => {
-        if (!currentCardIds.has(cardId)) {
-            const cardElement = container.querySelector(`[data-card-id='${cardId}']`);
-            if (cardElement) container.removeChild(cardElement);
-        }
-    });
-
+    container.innerHTML = "";
     hand.forEach(card => {
-        if (!existingCards.has(card.id)) {
-            container.appendChild(createCardElement(card, determineCardType(card)));
-        }
+        container.appendChild(createCardElement(card));
     });
 }
 
-export function getRandomCardFromZone(battleZone) {
-    const availableCards = Object.values(battleZone).filter(card => card !== null);
-    return availableCards.length > 0
-        ? availableCards[Math.floor(Math.random() * availableCards.length)]
-        : null;
+function getEnemyOpenSlots() {
+    const openSlots = [];
+
+    if (!currentEnemyBattleCards["char"]) openSlots.push("char");
+    if (!currentEnemyBattleCards["essence"]) openSlots.push("essence");
+    if (!currentEnemyBattleCards["ability"]) openSlots.push("ability");
+
+    return openSlots;
 }
 
 export function enemyPlaceCard() {
@@ -130,7 +120,7 @@ export function enemyPlaceCard() {
 }
 
 export function updateCardHP(card) {
-    if (!card || !card.id) return;
+    if (!card || !card.id || typeof card.hp !== 'number') return;
 
     const cardElement = document.querySelector(`[data-card-id="${card.id}"]`);
     if (!cardElement) {
@@ -144,4 +134,10 @@ export function updateCardHP(card) {
     } else {
         console.warn(`⚠️ No HP element found for ${card.name}.`);
     }
+}
+
+export function getRandomCardFromZone(zone) {
+    const cards = Object.values(zone).filter(card => card);
+    if (cards.length === 0) return null;
+    return cards[Math.floor(Math.random() * cards.length)];
 }

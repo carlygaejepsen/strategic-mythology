@@ -49,6 +49,11 @@ export function handleCardClick(card) {
             return;
         }
 
+        if (currentPlayerBattleCards[type]) {
+            logWarn(`⚠️ You already have a ${type} card in the battle zone.`);
+            return;
+        }
+
         placeCardInBattleZone(card, `player-${type}-zone`, updatePlayerBattleCard, "Player");
         playerHand.splice(playerHand.indexOf(card), 1);
         updateHands();
@@ -63,7 +68,7 @@ export function handleCardClick(card) {
     if (inPlayerBattle) {
         if (!selectedAttacker) {
             setSelectedAttacker(card);
-            updateInstructionText("select-defender-or-combo");
+            updateInstructionText("select-combo-or-defender");
             logDebug(`⚔️ Attacker selected: ${card.name}`);
             return;
         }
@@ -79,7 +84,7 @@ export function handleCardClick(card) {
         // ✅ Selecting a Combo Card
         if (!selectedCombo) {
             setSelectedCombo(card);
-            updateInstructionText("select-defender"); // **Fix: Now updates to 'select-defender' after combo**
+            updateInstructionText("select-defender");
             logDebug(`🔥 Combo selected: ${card.name}`);
             return;
         }

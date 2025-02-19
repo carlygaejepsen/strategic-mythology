@@ -58,56 +58,37 @@ function getEnemyOpenSlots() {
 
 // 🎮 **Manages an entire turn**
 export function manageTurn() {
-    if (gameRunning) return;
+    if (!gameRunning) return;
     gameRunning = true;
 
     // ✅ Ensure the enemy always attempts to play a card before attacking
-    setTimeout(enemyPlaceCard, 500);
+    enemyPlaceCard().then(() => {
+        if (!gameState.playerHasPlacedCard || !gameState.enemyHasPlacedCard) {
+            gameRunning = false;
+            return;
+        }
 
-    if (!gameState.playerHasPlacedCard || !gameState.enemyHasPlacedCard) {
-        if (debugMode) logDebug("Waiting for both players to place their cards.");
-        return;
-    }
+        if (playerDeck.length === 0 && enemyDeck.length === 0) {
+            logToResults("🏁 It's a draw!");
+            gameRunning = false;
+            return;
+        }
+        battleRound();
 
-    if (playerDeck.length === 0 || enemyDeck.length === 0) {
-        logToResults(playerDeck.length === 0 ? "🏁 Player wins!" : "🏁 Enemy wins!");
+        setTimeout(() => {
+            resetSelections().then(() => {
+                drawCardsToFillHands().then(() => {
+                    updateInstructionText("select-battle-card");
+                    gameState.playerHasPlacedCard = false; // Reset the flag for the next turn
+                    gameState.enemyHasPlacedCard = false; // Reset the flag for the next turn
+                    gameRunning = false;
+                });
+            });
+        }, 1000);
+    }).catch(error => {
+        logError(`❌ Error during enemyPlaceCard: ${error}`);
         gameRunning = false;
-        return;
-    }
-    battleRound();
-
-    setTimeout(() => {
-        resetSelections();
-        drawCardsToFillHands();
-        updateInstructionText("select-battle-card");
-
-        gameRunning = false;
-    }, 1000);
-}
-//enemy place card
-export function enemyPlaceCard() {
-    if (!enemyDeck.length) {
-        console.warn("⚠️ Enemy has no more cards available.");
-        return;
-    }
-
-    const openSlots = getEnemyOpenSlots();
-    if (openSlots.length === 0) {
-        console.log("🤖 Enemy battle zone is full. No card needed.");
-        return;
-    }
-
-    const availableCards = enemyDeck.filter(card => openSlots.includes(determineCardType(card)));
-    if (availableCards.length === 0) {
-        console.warn("⚠️ No suitable cards found for available enemy slots.");
-        return;
-    }
-
-    const card = availableCards[Math.floor(Math.random() * availableCards.length)];
-    const slot = determineCardType(card);
-
-    placeCardInBattleZone(card, `enemy-${slot}-zone`, updateEnemyBattleCard, "Enemy");
-    console.log(`🤖 Enemy placed ${card.name} in the ${slot} slot.`);
+    });
 }
 
 // ⚔️ **Handles the battle round**
@@ -134,7 +115,11 @@ export function battleRound() {
 function enemyTurn() {
     const enemyAttacker = getRandomCardFromZone(currentEnemyBattleCards);
     const playerDefender = getRandomCardFromZone(currentPlayerBattleCards);
-
+    if (!enemyAttacker || !playerDefender) {
+        logWarn("⚠️ Enemy AI cannot find a valid attacker or defender.");
+        gameRunning = false;
+        return;
+    }
     if (enemyAttacker && playerDefender) {
         logToResults(`🤖 Enemy AI: ${enemyAttacker.name} attacks ${playerDefender.name}`);
         processCombat(enemyAttacker, playerDefender);
@@ -150,7 +135,13 @@ function enemyTurn() {
 function endTurn() {
     updateInstructionText("select-battle-card");
     updateEnemyStatus("enemy-start");
-    drawCardsToFillHands();
+    resetSelections().then(() => {
+        setTimeout(() => {
+            updateInstructionText("select-battle-card");
+            updateEnemyStatus("enemy-start");
+            drawCardsToFillHands();
+        }, 500);
+    });
     setTimeout(resetSelections, 500);
 }
 

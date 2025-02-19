@@ -1,16 +1,12 @@
 // game.js
 
-const debugMode = false; // Set to true to enable debugging logs, false to disable them
-
 import { 
   loadConfigFiles, 
   loadAllCards, 
   playerDeck, 
   enemyDeck, 
   playerHand, 
-  enemyHand, 
-  cardTemplates, 
-  gameConfig 
+  enemyHand 
 } from "./config.js";
 import { dealStartingHands, createCardElement, determineCardType } from "./cards.js";
 import { battleRound } from "./battle.js";
@@ -64,11 +60,13 @@ function checkComboAvailability() {
 
 // Set up event listeners once the DOM is loaded.
 document.addEventListener("DOMContentLoaded", () => {
+  logDebug("📦 DOMContentLoaded event fired. Starting game...");
   startGame();
 });
 
 // Ensure the DOM is fully loaded before accessing elements.
 window.addEventListener("load", () => {
+  logDebug("📦 Window load event fired. Setting up event listeners...");
   const playTurnButton = document.getElementById("play-turn");
   if (playTurnButton) {
     playTurnButton.addEventListener("click", () => {
