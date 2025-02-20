@@ -22,7 +22,7 @@ function populateTemplate(template, data) {
 
 // 🃏 Deals starting hands from decks & updates the UI
 export function dealStartingHands() {
-  const HAND_SIZE = 6;
+  const HAND_SIZE = 5;
 
   if (playerDeck.length < HAND_SIZE || enemyDeck.length < HAND_SIZE) {
     console.error("❌ Not enough cards to deal starting hands.");

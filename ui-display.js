@@ -90,7 +90,7 @@ export function clearResultsLog() {
 }
 
 // ✅ Ensure UI is properly initialized when the game starts
-document.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("DOMContentLoaded", () => {
     if (debugMode) logDebug("✅ UI Display module loaded successfully.");
     updateInstructionText("select-battle-card");
     updateEnemyStatus("enemy-start");

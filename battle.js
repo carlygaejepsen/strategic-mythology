@@ -1,8 +1,5 @@
 import { processCombat } from "./battle-logic.js";
 import {
-    setSelectedAttacker,
-    setSelectedDefender,
-    setSelectedCombo,
     selectedAttacker,
     selectedDefender,
     selectedCombo

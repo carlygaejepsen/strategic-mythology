@@ -39,7 +39,6 @@
 }
 
 /* Essence Emojis 4.0 */
-
 .essence-emoji {
     position: absolute;
     font-size: 1em;
@@ -54,8 +53,6 @@
     align-items: center;
     justify-content: center;
 }
-
-
 
 /* ✅ If there is only one essence, place it in the bottom-right */
 .image-wrapper .essence-single {
@@ -73,7 +70,6 @@
     bottom: 3px;
     right: 3px;
 }
-
 
 /* 🏛 Battle Zone Shrinking */
 .battle-zone .char-card,

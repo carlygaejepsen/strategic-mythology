@@ -1,6 +1,5 @@
 // logger.js - Handles logging for debugging and error tracking
 
-const debugMode = false; // Set to true to enable debugging logs, false to disable them
 
 export function logDebug(message) {
   if (debugMode) {
