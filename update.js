@@ -79,8 +79,6 @@ export function resetTurnSelections() {
   updateInstructionText("select-battle-card"); // Ensure UI updates correctly
 }
 
-
-
 // ✅ Updates whether the player has placed a card.
 export function setPlayerHasPlacedCard(value) {
   gameState.playerHasPlacedCard = value;
@@ -119,6 +117,7 @@ export function resetSelections() {
         resolve();
     });
 }
+
 // ✅ Updates player's battle card in game state
 export function updatePlayerBattleCard(card, type) {
   currentPlayerBattleCards[type] = card;
@@ -146,11 +145,11 @@ export function drawCardsToFillHands() {
 }
 
 /**
- * Draws cards for the player until their hand is full (6 cards).
+ * Draws cards for the player until their hand is full (5 cards).
  * If the player's deck is empty, no more cards can be drawn.
  */
 function drawCardsForPlayer() {
-  const cardsToDraw = Math.min(6 - playerHand.length, playerDeck.length);
+  const cardsToDraw = Math.min(5 - playerHand.length, playerDeck.length);
   for (let i = 0; i < cardsToDraw; i++) {
     const playerDrawnCard = playerDeck.shift();
     if (playerDrawnCard) {
@@ -171,11 +170,11 @@ function drawCardsForPlayer() {
 }
 
 /**
- * Draws cards for the enemy until their hand is full (6 cards).
+ * Draws cards for the enemy until their hand is full (5 cards).
  * If the enemy's deck is empty, no more cards can be drawn.
  */
 function drawCardsForEnemy() {
-  const cardsToDraw = Math.min(6 - enemyHand.length, enemyDeck.length);
+  const cardsToDraw = Math.min(5 - enemyHand.length, enemyDeck.length);
   for (let i = 0; i < cardsToDraw; i++) {
     const enemyDrawnCard = enemyDeck.shift();
     if (enemyDrawnCard) {
@@ -193,4 +192,28 @@ function drawCardsForEnemy() {
       logWarn("⚠️ Enemy deck is empty, cannot draw more cards.");
     }
   }
+}
+
+// 🤖 **Enemy AI Places a Card**
+export function enemyPlaceCard() {
+  return new Promise((resolve, reject) => {
+    const openSlots = getEnemyOpenSlots();
+    if (openSlots.length === 0) {
+      logWarn("⚠️ No open slots for enemy to place a card.");
+      resolve();
+      return;
+    }
+
+    const card = enemyHand.shift();
+    if (!card) {
+      logWarn("⚠️ Enemy hand is empty, cannot place a card.");
+      resolve();
+      return;
+    }
+
+    const slot = openSlots[Math.floor(Math.random() * openSlots.length)];
+    placeCardInBattleZone(card, `enemy-${slot}-zone`, updateEnemyBattleCard, "Enemy");
+    setEnemyHasPlacedCard(true);
+    resolve();
+  });
 }

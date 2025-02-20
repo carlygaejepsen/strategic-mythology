@@ -3,8 +3,13 @@
 import { gameState, debugMode } from "./config.js";
 import { logDebug, logError, logWarn } from "./utils/logger.js";
 
+// Check if running in Node.js environment
+const isNode = typeof window === 'undefined';
+
 // ✅ Updates Player Instruction Box (only when changed)
 export function updateInstructionText(phase) {
+    if (isNode) return; // Skip if running in Node.js environment
+
     const instructionBox = document.getElementById("instruction-box");
     if (!instructionBox) {
         logError("❌ ERROR: Instruction box not found in DOM!");
@@ -30,6 +35,8 @@ export function updateInstructionText(phase) {
 
 // ✅ Updates Enemy Status UI (only when changed)
 export function updateEnemyStatus(phase) {
+    if (isNode) return; // Skip if running in Node.js environment
+
     const enemyStatusBox = document.getElementById("enemy-status-box");
     if (!enemyStatusBox) {
         logError("❌ ERROR: Enemy status box not found!");
@@ -67,6 +74,8 @@ export function onEnemyStateChange(newState) {
 
 // ✅ Logs battle events to the UI (Avoids redundant logging)
 export function logToResults(message) {
+    if (isNode) return; // Skip if running in Node.js environment
+
     const resultsLog = document.getElementById("results-log");
     if (!resultsLog) {
         logError("❌ ERROR: Results log element not found.");
@@ -80,6 +89,8 @@ export function logToResults(message) {
 
 // ✅ Clears the results log when a new game starts
 export function clearResultsLog() {
+    if (isNode) return; // Skip if running in Node.js environment
+
     const logElement = document.getElementById("results-log");
     if (logElement) {
         logElement.innerHTML = "";
@@ -90,8 +101,10 @@ export function clearResultsLog() {
 }
 
 // ✅ Ensure UI is properly initialized when the game starts
-window.addEventListener("DOMContentLoaded", () => {
-    if (debugMode) logDebug("✅ UI Display module loaded successfully.");
-    updateInstructionText("select-battle-card");
-    updateEnemyStatus("enemy-start");
-});
+if (!isNode) {
+    window.addEventListener("DOMContentLoaded", () => {
+        if (debugMode) logDebug("✅ UI Display module loaded successfully.");
+        updateInstructionText("select-battle-card");
+        updateEnemyStatus("enemy-start");
+    });
+}

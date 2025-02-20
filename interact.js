@@ -26,6 +26,8 @@ export let selectedAttacker = null;
 export let selectedDefender = null;
 export let selectedCombo = null;
 
+let cardToDiscard = null;
+
 // Debug mode toggle
 export const debugMode = false;
 
@@ -41,6 +43,15 @@ export function handleCardClick(card) {
     
     const inPlayerBattle = Object.values(currentPlayerBattleCards).includes(card);
     const inEnemyBattle = Object.values(currentEnemyBattleCards).includes(card);
+
+    // Mark card for discarding
+    if (cardToDiscard === card) {
+        cardToDiscard = null;
+        logDebug(`🔄 Card deselected for discarding: ${card.name}`);
+    } else {
+        cardToDiscard = card;
+        logDebug(`🗑️ Card selected for discarding: ${card.name}`);
+    }
 
     // ✅ Handling Player Selecting a Card from Hand
     if (playerHand.includes(card)) {
@@ -60,6 +71,7 @@ export function handleCardClick(card) {
         setPlayerHasPlacedCard(true);
         updateInstructionText("select-attacker");
         enemyPlaceCard(); // Let the enemy place their card
+        setPlayerHasPlacedCard(false); // Reset player card placement state for the next turn
 
         return;
     }
@@ -122,4 +134,8 @@ export function setSelectedDefender(card) {
 
 export function setSelectedCombo(card) {
     selectedCombo = card;
+}
+
+export function selectCardToDiscard() {
+    return cardToDiscard;
 }

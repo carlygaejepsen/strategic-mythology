@@ -3,7 +3,13 @@ import { onGameStateChange, onEnemyStateChange } from "./ui-display.js";
 
 // config.js - Handles game configurations, settings, data loading, and global references
 
-export const debugMode = false; // Set to true for debugging, false to reduce logs
+// Debug Mode (Set to true for debugging, false to reduce logs)
+export let debugMode = false;
+
+export function setDebugMode(value) {
+  debugMode = value;
+  logDebug(`Debug mode is now ${debugMode ? "ON" : "OFF"}`);
+}
 
 // ✅ Turn Phases (ensuring compatibility with UI updates)
 export const turnPhases = {
@@ -140,7 +146,7 @@ export async function loadAllCards() {
       enemyDeck = [...characterDeck, ...essenceDeck, ...abilityDeck];
       shuffleDeck(playerDeck);
       shuffleDeck(enemyDeck);
-      logDebug("✅ All cards loaded and decks shuffled.");
+      logDebug(`✅ All cards loaded and decks shuffled. Player deck count: ${playerDeck.length}, Enemy deck count: ${enemyDeck.length}`);
     }
   } catch (error) {
     logError("❌ ERROR loading cards:", error);

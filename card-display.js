@@ -3,7 +3,7 @@
 import { createCardElement, determineCardType } from "./cards.js";
 import { 
     playerHand, enemyHand, 
-    currentPlayerBattleCards, currentEnemyBattleCards, enemyDeck 
+    currentPlayerBattleCards, currentEnemyBattleCards, enemyDeck, playerDeck 
 } from "./config.js";
 import { 
     setEnemyHasPlacedCard, placeCardInBattleZone, setPlayerHasPlacedCard, updateEnemyBattleCard 
@@ -79,9 +79,17 @@ function updateHand(containerId, hand) {
     if (!container) return;
 
     container.innerHTML = "";
-    hand.forEach(card => {
+    hand.slice(0, 5).forEach(card => { // Limit to 5 cards
         container.appendChild(createCardElement(card));
     });
+
+    // Update the deck count
+    const deckCountElement = document.getElementById(`${containerId}-deck-count`);
+    if (deckCountElement) {
+        deckCountElement.textContent = hand.length; // Ensure this updates correctly
+    } else {
+        console.warn(`⚠️ Deck count element not found for ${containerId}.`);
+    }
 }
 
 function getEnemyOpenSlots() {
@@ -132,7 +140,9 @@ export function updateCardHP(card) {
     if (hpElement) {
         hpElement.textContent = card.hp;
     } else {
-        console.warn(`⚠️ No HP element found for ${card.name}.`);
+        if (debugMode) {
+            console.warn(`⚠️ No HP element found for ${card.name}.`);
+        }
     }
 }
 

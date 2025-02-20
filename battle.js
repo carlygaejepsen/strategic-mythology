@@ -4,32 +4,26 @@ import {
     selectedDefender,
     selectedCombo
 } from "./interact.js";
-
+if (typeof document === "undefined") {
+    throw new Error("This code must be run in a browser environment.");
+}
 import {
-    setPlayerHasPlacedCard,
-    setEnemyHasPlacedCard,
-    resetTurnSelections,
-    resetSelections,
-    drawCardsToFillHands,
-    placeCardInBattleZone,
-    updateEnemyBattleCard
-} from "./update.js";
+    playerHand, enemyHand, gameState, debugMode, setDebugMode,
+    currentPlayerBattleCards, currentEnemyBattleCards, playerDeck, enemyDeck
+} from "./config.js";
 
-import {
-    updateInstructionText,
-    updateEnemyStatus,
-    logToResults
+import { 
+    logToResults, updateInstructionText, updateEnemyStatus 
 } from "./ui-display.js";
 
-import {
-    getRandomCardFromZone,
-    removeDefeatedCards,
-    enemyPlaceCard
+import { 
+    updateHands, removeDefeatedCards, getRandomCardFromZone 
 } from "./card-display.js";
 
-import { gameState, currentPlayerBattleCards, currentEnemyBattleCards, playerDeck, enemyDeck } from "./config.js";
-import { determineCardType } from "./cards.js";
-import { debugMode } from "./config.js";
+import { 
+    resetSelections, enemyPlaceCard 
+} from "./update.js";
+
 import { logDebug, logError, logWarn } from "./utils/logger.js";
 
 let gameRunning = false;
@@ -41,6 +35,17 @@ export function startGame() {
     updateInstructionText("select-battle-card");
     updateEnemyStatus("enemy-start");
     if (debugMode) logDebug("✅ Game started!");
+}
+
+// Draw cards to fill hands
+function drawCardsToFillHands() {
+    while (playerHand.length < 6 && playerDeck.length > 0) {
+        playerHand.push(playerDeck.pop());
+    }
+    while (enemyHand.length < 6 && enemyDeck.length > 0) {
+        enemyHand.push(enemyDeck.pop());
+    }
+    updateHands();
 }
 
 function getEnemyOpenSlots() {
@@ -57,6 +62,8 @@ function getEnemyOpenSlots() {
 export function manageTurn() {
     if (!gameRunning) return;
     gameRunning = true;
+
+    if (debugMode) logDebug("🔄 Starting turn management.");
 
     // ✅ Ensure the enemy always attempts to play a card before attacking
     enemyPlaceCard().then(() => {
@@ -79,6 +86,7 @@ export function manageTurn() {
                     gameState.playerHasPlacedCard = false; // Reset the flag for the next turn
                     gameState.enemyHasPlacedCard = false; // Reset the flag for the next turn
                     gameRunning = false;
+                    if (debugMode) logDebug("🔄 Turn management completed.");
                 });
             });
         }, 1000);
@@ -91,7 +99,7 @@ export function manageTurn() {
 // ⚔️ **Handles the battle round**
 export function battleRound() {
     if (!selectedAttacker || !selectedDefender) {
-        if (debugMode) logWarn("⚠️ Select an attacker and a defender before continuing.");
+        logWarn("⚠️ Select an attacker and a defender before continuing.");
         gameRunning = false;
         return;
     }
@@ -151,5 +159,14 @@ document.addEventListener("DOMContentLoaded", () => {
         playTurnButton.addEventListener("click", manageTurn);
     } else {
         logError("❌ ERROR: 'Play Turn' button not found!");
+    }
+
+    // Add a button or some mechanism to toggle debug mode
+    const debugToggleButton = document.getElementById("debug-toggle");
+    if (debugToggleButton) {
+        debugToggleButton.addEventListener("click", () => {
+            setDebugMode(!debugMode);
+            logDebug(`Debug mode is now ${debugMode ? "ON" : "OFF"}`);
+        });
     }
 });

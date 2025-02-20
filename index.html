@@ -12,17 +12,23 @@
 <body>
 
     <div id="game-board">
-	
-
-
         <!-- Player's Hand on the Left -->
         <div id="player-hand-section">
             <h2>Player</h2>
-						<div id="instruction-box" class="instruction-box">
-						</div>
-			<div id="player-hand">
-
-		</div>
+            <div id="instruction-box" class="instruction-box"></div>
+            <div id="player-hand" class="hand-container">
+                <!-- Player's Cards -->
+                <div class="card-container"></div>
+                <div class="card-container"></div>
+                <div class="card-container"></div>
+                <div class="card-container"></div>
+                <div class="card-container"></div>
+                <!-- Player's Deck -->
+                <div id="player-deck-container" class="deck-container">
+                    <div id="player-deck" class="card-back"></div>
+                    <span id="player-deck-count">0</span>
+                </div>
+            </div>
         </div>
 
         <!-- Battle & Results Log in the Center -->
@@ -44,8 +50,6 @@
 
                     <div id="enemy-side" class="battle-zone">
                         <h4>Enemy</h4>
-
-
                         <div id="enemy-char-zone"></div>
                         <div id="enemy-essence-zone"></div>
                         <div id="enemy-ability-zone"></div>
@@ -57,9 +61,20 @@
         <!-- Enemy's Hand on the Right -->
         <div id="enemy-hand-section">
             <h2>Enemy</h2>
-						<div id="enemy-status-box" class="status-box">
-						</div>
-            <div id="enemy-hand">
+            <div id="enemy-status-box" class="status-box"></div>
+            <div id="enemy-hand" class="hand-container">
+                <!-- Enemy's Cards -->
+                <div class="card-container"></div>
+                <div class="card-container"></div>
+                <div class="card-container"></div>
+                <div class="card-container"></div>
+                <div class="card-container"></div>
+                <!-- Enemy's Deck -->
+                <div id="enemy-deck-container" class="deck-container">
+                    <div id="enemy-deck" class="card-back"></div>
+                    <span id="enemy-deck-count">0</span>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -67,12 +82,12 @@
     <script type="module" src="./config.js"></script>
     <script type="module" src="./cards.js"></script>
     <script type="module" src="./battle.js"></script>
-	<script type="module" src="./battle-logic.js"></script>
+    <script type="module" src="./battle-logic.js"></script>
     <script type="module" src="./game.js"></script>
-	<script type="module" src="./interact.js"></script>
+    <script type="module" src="./interact.js"></script>
     <script type="module" src="./ui-display.js"></script> <!-- ✅ Added this -->
     <script type="module" src="./update.js"></script>   
-   <script type="module" src="./card-display.js"></script> <!-- ✅ Added this -->
+    <script type="module" src="./card-display.js"></script> <!-- ✅ Added this -->
 
 </body>
 </html>

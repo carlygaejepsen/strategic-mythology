@@ -1,5 +1,5 @@
 // logger.js - Handles logging for debugging and error tracking
-
+import { debugMode } from "../config.js"; // Adjust the path as necessary
 
 export function logDebug(message) {
   if (debugMode) {
