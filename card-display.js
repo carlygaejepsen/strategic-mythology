@@ -74,7 +74,7 @@ export function updateHands() {
     updateHand("enemy-hand", enemyHand);
 }
 
-function updateHand(containerId, hand) {
+function updateHand(containerId, hand, deck) {
     const container = document.getElementById(containerId);
     if (!container) return;
 
@@ -90,16 +90,6 @@ function updateHand(containerId, hand) {
     } else {
         console.warn(`⚠️ Deck count element not found for ${containerId}.`);
     }
-}
-
-function getEnemyOpenSlots() {
-    const openSlots = [];
-
-    if (!currentEnemyBattleCards["char"]) openSlots.push("char");
-    if (!currentEnemyBattleCards["essence"]) openSlots.push("essence");
-    if (!currentEnemyBattleCards["ability"]) openSlots.push("ability");
-
-    return openSlots;
 }
 
 export function enemyPlaceCard() {
@@ -125,29 +115,4 @@ export function enemyPlaceCard() {
 
     placeCardInBattleZone(card, `enemy-${slot}-zone`, updateEnemyBattleCard, "Enemy");
     console.log(`🤖 Enemy placed ${card.name} in the ${slot} slot.`);
-}
-
-export function updateCardHP(card) {
-    if (!card || !card.id || typeof card.hp !== 'number') return;
-
-    const cardElement = document.querySelector(`[data-card-id="${card.id}"]`);
-    if (!cardElement) {
-        console.warn(`⚠️ Could not find card element for ${card.name} to update HP.`);
-        return;
-    }
-
-    const hpElement = cardElement.querySelector(".card-hp");
-    if (hpElement) {
-        hpElement.textContent = card.hp;
-    } else {
-        if (debugMode) {
-            console.warn(`⚠️ No HP element found for ${card.name}.`);
-        }
-    }
-}
-
-export function getRandomCardFromZone(zone) {
-    const cards = Object.values(zone).filter(card => card);
-    if (cards.length === 0) return null;
-    return cards[Math.floor(Math.random() * cards.length)];
 }

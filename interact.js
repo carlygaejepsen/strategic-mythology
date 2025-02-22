@@ -70,8 +70,6 @@ export function handleCardClick(card) {
         updateHands();
         setPlayerHasPlacedCard(true);
         updateInstructionText("select-attacker");
-        enemyPlaceCard(); // Let the enemy place their card
-        setPlayerHasPlacedCard(false); // Reset player card placement state for the next turn
 
         return;
     }

@@ -59,17 +59,6 @@ function checkComboAvailability() {
   }
 }
 
-function updateDeckCount() {
-  const playerDeckCountElement = document.getElementById("player-deck-count");
-  const enemyDeckCountElement = document.getElementById("enemy-deck-count");
-  if (playerDeckCountElement) {
-    playerDeckCountElement.textContent = playerDeck.length;
-  }
-  if (enemyDeckCountElement) {
-    enemyDeckCountElement.textContent = enemyDeck.length;
-  }
-}
-
 function discardCard(card) {
   if (!card) {
     logError("❌ ERROR: No card selected to discard.");
@@ -109,12 +98,7 @@ function discardCard(card) {
 document.addEventListener("DOMContentLoaded", () => {
   logDebug("📦 DOMContentLoaded event fired. Starting game...");
   startGame();
-  updateDeckCount();
-});
 
-// Ensure the DOM is fully loaded before accessing elements.
-window.addEventListener("load", () => {
-  logDebug("📦 Window load event fired. Setting up event listeners...");
   const playTurnButton = document.getElementById("play-turn");
   const playerDeckContainer = document.getElementById("player-deck-container");
   const enemyDeckContainer = document.getElementById("enemy-deck-container");
