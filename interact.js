@@ -17,7 +17,9 @@ import {
 } from "./card-display.js";
 
 import { 
-    updatePlayerBattleCard, updateEnemyBattleCard, placeCardInBattleZone, setPlayerHasPlacedCard, setEnemyHasPlacedCard 
+    updatePlayerBattleCard, updateEnemyBattleCard, 
+    placeCardInBattleZone, setPlayerHasPlacedCard, 
+    setEnemyHasPlacedCard 
 } from "./update.js";
 
 import { logDebug, logWarn } from "./utils/logger.js";
@@ -31,7 +33,9 @@ let cardToDiscard = null;
 // Debug mode toggle
 export const debugMode = false;
 
-//Card Click 5.0
+/**
+ * ✅ Handles all player card clicks (Hand, Battle Zone, Enemy Battle Zone)
+ */
 export function handleCardClick(card) {
     if (!card || !card.name) {
         logWarn("⚠️ Invalid card click detected.");
@@ -44,16 +48,13 @@ export function handleCardClick(card) {
     const inPlayerBattle = Object.values(currentPlayerBattleCards).includes(card);
     const inEnemyBattle = Object.values(currentEnemyBattleCards).includes(card);
 
-    // Mark card for discarding
-    if (cardToDiscard === card) {
-        cardToDiscard = null;
-        logDebug(`🔄 Card deselected for discarding: ${card.name}`);
-    } else {
-        cardToDiscard = card;
-        logDebug(`🗑️ Card selected for discarding: ${card.name}`);
+    // ✅ Reset player card placement state at the start of each round
+    if (!gameState.playerHasPlacedCard && !gameState.enemyHasPlacedCard) {
+        logDebug("🔄 New round: Resetting player card placement state.");
+        setPlayerHasPlacedCard(false);
     }
 
-    // ✅ Handling Player Selecting a Card from Hand
+    // ✅ Handling Player Selecting a Card from Hand to Place in Battle
     if (playerHand.includes(card)) {
         if (gameState.playerHasPlacedCard) {
             logWarn("⚠️ You can only place one card per turn.");
@@ -68,13 +69,15 @@ export function handleCardClick(card) {
         placeCardInBattleZone(card, `player-${type}-zone`, updatePlayerBattleCard, "Player");
         playerHand.splice(playerHand.indexOf(card), 1);
         updateHands();
-        setPlayerHasPlacedCard(true);
+        setPlayerHasPlacedCard(true); // ✅ Prevent placing another card this turn
         updateInstructionText("select-attacker");
-
+        
+        // ✅ Enemy places their card immediately after
+        enemyPlaceCard();
         return;
     }
 
-    // ✅ Handling Selection of a Player's Battle Card
+    // ✅ Handling Selection of a Player's Battle Card (Attacker or Combo)
     if (inPlayerBattle) {
         if (!selectedAttacker) {
             setSelectedAttacker(card);
@@ -105,6 +108,11 @@ export function handleCardClick(card) {
 
     // ✅ Handling Selection of an Enemy's Battle Card (Defender)
     if (inEnemyBattle) {
+        if (!selectedAttacker) {
+            logWarn("⚠️ Select an attacker first.");
+            return;
+        }
+
         if (selectedDefender === card) {
             // Deselect Defender
             setSelectedDefender(null);
@@ -122,18 +130,30 @@ export function handleCardClick(card) {
     logWarn("⚠️ Invalid selection. Place a card first, then select attacker, combo, and defender.");
 }
 
+/**
+ * ✅ Sets the selected attacker.
+ */
 export function setSelectedAttacker(card) {
     selectedAttacker = card;
 }
 
+/**
+ * ✅ Sets the selected defender.
+ */
 export function setSelectedDefender(card) {
     selectedDefender = card;
 }
 
+/**
+ * ✅ Sets the selected combo card.
+ */
 export function setSelectedCombo(card) {
     selectedCombo = card;
 }
 
+/**
+ * ✅ Selects a card for discarding.
+ */
 export function selectCardToDiscard() {
     return cardToDiscard;
 }

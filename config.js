@@ -1,3 +1,4 @@
+console.log("config.js loaded");
 import { logDebug, logError, logWarn } from "./utils/logger.js";
 import { onGameStateChange, onEnemyStateChange } from "./ui-display.js";
 
@@ -17,13 +18,15 @@ export const turnPhases = {
   SELECT_ATTACKER: 'select-attacker',        // Player chooses attacker
   SELECT_COMBO: 'select-combo',              // Player optionally selects a combo ability
   SELECT_DEFENDER: 'select-defender',        // Player chooses enemy target
+  SELECT_DEFENDER_OR_COMBO: 'select-defender-or-combo', // Player chooses defender or combo
   PLAY_TURN: 'play-turn',                    // Player confirms turn execution
   ENEMY_SELECTION: 'enemy-select-battle-card', // Enemy places a card
   ENEMY_ATTACKER: 'enemy-select-attacker',   // Enemy chooses attacker
   ENEMY_DEFENDER: 'enemy-select-defender',   // Enemy chooses target
   ENEMY_PLAY_TURN: 'enemy-play-turn',        // Enemy executes turn
   WAITING: 'waiting',                        // Game waiting for actions
-  COMBAT: 'battling'                         // Active combat phase
+  COMBAT: 'battling',                        // Active combat phase
+  DISCARD_TO_DECK: 'discard-to-deck'         // New optional phase for discarding cards to the deck
 };
 
 // ✅ Current Game Phase (updated dynamically)
@@ -142,10 +145,14 @@ export async function loadAllCards() {
     if (!characterDeck.length || !essenceDeck.length || !abilityDeck.length) {
       logWarn("⚠️ WARNING: One or more decks are empty!");
     } else {
-      playerDeck = [...characterDeck, ...essenceDeck, ...abilityDeck];
-      enemyDeck = [...characterDeck, ...essenceDeck, ...abilityDeck];
+      // Ensure each deck consists of exactly one of each card
+      const allCards = [...characterDeck, ...essenceDeck, ...abilityDeck];
+      playerDeck = [...allCards];
+      enemyDeck = [...allCards];
       shuffleDeck(playerDeck);
       shuffleDeck(enemyDeck);
+
+
       logDebug(`✅ All cards loaded and decks shuffled. Player deck count: ${playerDeck.length}, Enemy deck count: ${enemyDeck.length}`);
     }
   } catch (error) {

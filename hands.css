@@ -1,4 +1,4 @@
-/* 🔹 PLAYER & ENEMY HANDS */
+/* 🔹 PLAYER & ENEMY HAND SECTIONS */
 #player-hand-section,
 #enemy-hand-section {
     width: 40%;
@@ -7,11 +7,12 @@
     align-items: center;
 }
 
-/* 🔹 HAND STYLING */
+/* 🔹 HAND CONTAINER */
 #player-hand,
 #enemy-hand {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
     gap: 15px;
     border: 3px solid #C89F5D;
     padding: 20px;
@@ -19,7 +20,39 @@
     background-color: #EAD7A5;
     align-items: center;
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
-    flex-wrap: wrap; /* ✅ Prevents overflow issues */
+    position: relative;
+}
+
+/* ✅ Ensures deck is in the 6th position */
+#player-deck, #enemy-deck {
+    grid-column: 3;
+    grid-row: 2;
+    width: 140px;
+    height: 250px;
+    background: url('./data/imgs/card-back.png') no-repeat center center;
+    background-size: cover;
+    border: 2px solid #fff;
+    border-radius: 10px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+/* ✅ Deck Count Styling */
+#player-deck-count, #enemy-deck-count {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-shadow: 1px 1px 2px #000;
+    z-index: 20;
 }
 
 /* 🔹 RESPONSIVE HAND ADJUSTMENTS */

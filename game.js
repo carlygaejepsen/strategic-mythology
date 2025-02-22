@@ -13,7 +13,8 @@ import { battleRound } from "./battle.js";
 import { 
   onGameStateChange, 
   onEnemyStateChange, 
-  updateInstructionText 
+  updateInstructionText, 
+  updateDeckCounts 
 } from "./ui-display.js"; 
 import { updateHands } from "./card-display.js";
 import { logDebug, logError } from "./utils/logger.js";
@@ -30,7 +31,7 @@ async function startGame() {
 
     // Render initial hands for both players.
     updateHands();
-    updateDeckCount(); // Ensure deck count is updated after dealing hands
+    updateDeckCounts(playerDeck.length, enemyDeck.length); // Ensure deck count is updated after dealing hands
 
     // Ensure proper game state updates for UI
     onGameStateChange("select-battle-card");      
@@ -74,7 +75,7 @@ function discardCard(card) {
     playerDeck.push(card); // Add card back to the deck
     logDebug(`🗑️ Discarded ${card.name} from hand.`);
     updateHands();
-    updateDeckCount(); // Ensure deck count is updated after discarding
+    updateDeckCounts(playerDeck.length, enemyDeck.length); // Ensure deck count is updated after discarding
     return;
   }
 
@@ -87,7 +88,7 @@ function discardCard(card) {
     }
     playerDeck.push(card); // Add card back to the deck
     logDebug(`🗑️ Discarded ${card.name} from battle zone.`);
-    updateDeckCount(); // Ensure deck count is updated after discarding
+    updateDeckCounts(playerDeck.length, enemyDeck.length); // Ensure deck count is updated after discarding
     return;
   }
 
@@ -100,8 +101,8 @@ document.addEventListener("DOMContentLoaded", () => {
   startGame();
 
   const playTurnButton = document.getElementById("play-turn");
-  const playerDeckContainer = document.getElementById("player-deck-container");
-  const enemyDeckContainer = document.getElementById("enemy-deck-container");
+  const playerDeckElement = document.getElementById("player-deck");
+  const enemyDeckElement = document.getElementById("enemy-deck");
 
   if (playTurnButton) {
     playTurnButton.addEventListener("click", () => {
@@ -110,31 +111,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Update hands after battle round.
       updateHands();
-      updateDeckCount(); // Ensure deck count is updated after updating hands
+      updateDeckCounts(playerDeck.length, enemyDeck.length); // Ensure deck count is updated after updating hands
     });
   } else {
     logError("❌ ERROR: 'Play Turn' button not found!");
   }
 
-  if (playerDeckContainer) {
-    playerDeckContainer.addEventListener("click", () => {
+  if (playerDeckElement) {
+    playerDeckElement.addEventListener("click", () => {
       logDebug("🗑️ Discarding card...");
       // Implement logic to select a card to discard
       const cardToDiscard = selectCardToDiscard(); // You need to implement this function
       discardCard(cardToDiscard);
     });
   } else {
-    logError("❌ ERROR: 'Player Deck Container' not found!");
+    logError("❌ ERROR: 'Player Deck' element not found!");
   }
 
-  if (enemyDeckContainer) {
-    enemyDeckContainer.addEventListener("click", () => {
+  if (enemyDeckElement) {
+    enemyDeckElement.addEventListener("click", () => {
       logDebug("🗑️ Discarding card...");
       // Implement logic to select a card to discard
       const cardToDiscard = selectCardToDiscard(); // You need to implement this function
       discardCard(cardToDiscard);
     });
   } else {
-    logError("❌ ERROR: 'Enemy Deck Container' not found!");
+    logError("❌ ERROR: 'Enemy Deck' element not found!");
   }
 });

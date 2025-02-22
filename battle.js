@@ -1,3 +1,4 @@
+console.log("battle.js loaded");
 import { processCombat } from "./battle-logic.js";
 import {
     selectedAttacker,
@@ -8,12 +9,11 @@ if (typeof document === "undefined") {
     throw new Error("This code must be run in a browser environment.");
 }
 import {
-    playerHand, enemyHand, gameState, debugMode, setDebugMode,
-    currentPlayerBattleCards, currentEnemyBattleCards, playerDeck, enemyDeck
+    playerHand, enemyHand, playerDeck, enemyDeck, gameState, debugMode, setDebugMode, currentEnemyBattleCards, currentPlayerBattleCards
 } from "./config.js";
 
 import { 
-    logToResults, updateInstructionText, updateEnemyStatus 
+    logToResults, updateInstructionText, updateEnemyStatus, updateDeckCounts 
 } from "./ui-display.js";
 
 import { 
@@ -39,16 +39,17 @@ export function startGame() {
 
 // Draw cards to fill hands
 function drawCardsToFillHands() {
-    while (playerHand.length < 6 && playerDeck.length > 0) {
+    while (playerHand.length < 5 && playerDeck.length > 0) {
         playerHand.push(playerDeck.pop());
     }
-    while (enemyHand.length < 6 && enemyDeck.length > 0) {
+    while (enemyHand.length < 5 && enemyDeck.length > 0) {
         enemyHand.push(enemyDeck.pop());
     }
     updateHands();
+    updateDeckCounts(playerDeck.length, enemyDeck.length); // Ensure deck count is updated after drawing cards
 }
 
-function getEnemyOpenSlots() {
+export function getEnemyOpenSlots() {
     const openSlots = [];
 
     if (!currentEnemyBattleCards["char"]) openSlots.push("char");
@@ -148,6 +149,7 @@ function endTurn() {
         }, 500);
     });
     setTimeout(resetSelections, 500);
+    updateDeckCounts(playerDeck.length, enemyDeck.length);
 }
 
 // ✅ **Initialize game on page load**

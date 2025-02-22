@@ -1,6 +1,6 @@
 // ui-display.js - Handles all UI updates, including instruction box, enemy status, and result logs
 
-import { gameState, debugMode } from "./config.js";
+import { gameState, debugMode, playerDeck, enemyDeck } from "./config.js";
 import { logDebug, logError, logWarn } from "./utils/logger.js";
 
 // Check if running in Node.js environment
@@ -24,7 +24,8 @@ export function updateInstructionText(phase) {
         "select-defender": "Choose which enemy to attack.", 
         "play-turn": "Click 'Play Turn' to continue.",
         "battling": "Battling...",
-        "waiting": "Waiting for opponent..."
+        "waiting": "Waiting for opponent...",
+        "discard-to-deck": "Discard cards to the deck."
     };
 
     if (instructionMessages[phase] && instructionBox.innerText !== instructionMessages[phase]) {
@@ -100,11 +101,27 @@ export function clearResultsLog() {
     }
 }
 
+// Function to update deck counts
+export function updateDeckCounts(playerCount, enemyCount) {
+    const playerDeckCountElement = document.getElementById('player-deck-count');
+    const enemyDeckCountElement = document.getElementById('enemy-deck-count');
+
+    if (playerDeckCountElement) {
+        playerDeckCountElement.textContent = playerCount;
+    }
+    if (enemyDeckCountElement) {
+        enemyDeckCountElement.textContent = enemyCount;
+    }
+}
+
 // ✅ Ensure UI is properly initialized when the game starts
 if (!isNode) {
     window.addEventListener("DOMContentLoaded", () => {
         if (debugMode) logDebug("✅ UI Display module loaded successfully.");
         updateInstructionText("select-battle-card");
         updateEnemyStatus("enemy-start");
+
+        // Ensure deck counts are updated on load
+        updateDeckCounts(playerDeck.length, enemyDeck.length);
     });
 }

@@ -1,3 +1,4 @@
+console.log("cards.js loaded");
 import { updateHands } from "./card-display.js";
 import { handleCardClick } from "./interact.js";
 import { 
@@ -8,7 +9,7 @@ import {
   enemyDeck, 
   playerDeck, 
   playerHand, 
-  enemyHand, 
+  enemyHand,
   cardTemplates, 
   gameState, 
   debugMode 
@@ -65,7 +66,7 @@ export function createCardElement(card) {
 
     if (!cardTemplates[computedType]) {
         logError(`❌ ERROR: Missing template for card type: ${computedType}`);
-        return document.createElement("div");
+        return null;
     }
 
     // Populate template with card data

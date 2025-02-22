@@ -214,6 +214,7 @@ export function enemyPlaceCard() {
     const slot = openSlots[Math.floor(Math.random() * openSlots.length)];
     placeCardInBattleZone(card, `enemy-${slot}-zone`, updateEnemyBattleCard, "Enemy");
     setEnemyHasPlacedCard(true);
+    gameState.playerHasPlacedCard = false; // Reset playerHasPlacedCard at the end of each turn
     resolve();
   });
 }
