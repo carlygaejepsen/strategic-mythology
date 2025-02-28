@@ -1,16 +1,31 @@
-/* 🎴 Card Styles */
-.card-container {
-    position: relative;
-    display: inline-block;
-    width: 140px;
-    height: 250px;
+/* ✅ Hand container */
+.hand-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 15px;
+    border: 3px solid #C89F5D;
+    padding: 20px;
+    width: 100%;
+    background-color: #EAD7A5;
+    align-items: center;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
 }
 
+/* ✅ Card container */
+.card-container {
+    position: relative; /* Ensures positioning context for child elements */
+    display: inline-block;
+    width: 140px; /* Fixed width */
+    height: 250px; /* Fixed height */
+}
+
+/* 🎴 Main Card Styles */
 .char-card,
 .essence-card,
 .ability-card {
-    width: 100%;
-    height: 100%;
+    width: 100%; /* Use 100% of the container's width */
+    height: 100%; /* Use 100% of the container's height */
     background: linear-gradient(135deg, #E3DAC9, #C89F5D);
     border-radius: 6px;
     box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
@@ -29,17 +44,17 @@
 .char-name,
 .essence-name,
 .ability-name {
-    font-size: 16px;
-    margin: 4px 0;
+    font-size: 16px; /* Smaller font size */
+    margin: 4px 0; 
 }
 
-/* 📷 Image Wrapper */
+/* ✅ Image wrapper: Ensures essence emojis stay inside */
 .image-wrapper {
-    position: relative;
+    position: relative;  /* ✅ Needed to position essence emojis correctly */
     display: inline-block;
-    width: 120px;
-    height: 120px;
-    margin: 0 auto;
+    width: 120px;  /* Fixed width */
+    height: 120px; /* Fixed height */
+    margin: 0 auto; /* Center the image wrapper */
 }
 
 /* 📷 Card Images */
@@ -53,11 +68,11 @@
     display: block;
 }
 
-/* 🔥 Essence Emojis */
+/* Essence Emojis 4.0 */
 .essence-emoji {
     position: absolute;
     font-size: 1em;
-    text-shadow:
+    text-shadow: 
         -2px -2px 3px #4A1C1A,
          2px -2px 3px #4A1C1A,
         -2px  2px 3px #4A1C1A,
@@ -69,21 +84,90 @@
     justify-content: center;
 }
 
-/* ✅ Battle Zone Scaling */
-.battle-zone .card-container {
-    width: 70px;
-    height: 140px;
-    padding: 2px;
-    margin: 0;
-    font-size: 8px;
-    line-height: 1.1;
+/* ✅ If there is only one essence, place it in the bottom-right */
+.image-wrapper .essence-single {
+    bottom: 5px;
+    right: 5px;
 }
 
+/* ✅ If there are two essences, position them separately */
+.image-wrapper .essence-bottom-left {
+    bottom: 3px;
+    left: 3px;
+}
+
+.image-wrapper .essence-bottom-right {
+    bottom: 3px;
+    right: 3px;
+}
+
+/* 🏛 Battle Zone Shrinking */
+.battle-zone .card-container {
+    width: 70px;      /* Shrinks the card width */
+    height: 140px;    /* Shrinks the card height */
+    padding: 2px;
+    margin: 0;
+    transform: none;
+    font-size: 8px;  /* Smaller base font size for content */
+    line-height: 1.1; /* Tighter spacing */
+}
+
+/* 🔹 Battle Zone Text Adjustments */
+.battle-zone .char-name,
+.battle-zone .essence-name,
+.battle-zone .ability-name {
+    font-size: 9px;  
+    margin: 2px 0; 
+}
+
+.battle-zone .char-stats,
+.battle-zone .essence-stats,
+.battle-zone .ability-stats {
+    font-size: 8px;  
+    margin-top: 1px;
+}
+
+.battle-zone .char-classes,
+.battle-zone .ability-classes {
+    font-size: 8px;  
+    margin-top: 1px;
+}
+
+/* 📷 Smaller images in the battle zone */
 .battle-zone .image-wrapper {
-    width: 60px;
+    width: 60px;  /* Shrinks the image wrapper */
     height: 60px;
 }
 
+/* 📷 Shrinking images inside battle zone */
+.battle-zone .char-img,
+.battle-zone .essence-img,
+.battle-zone .ability-img {
+    width: 100%;
+    height: 100%;
+}
+
+/* ✅ Smaller, repositioned essence emoji in battle zone */
+.battle-zone .essence-emoji {
+    font-size: 0.5em;  /* Smaller size in battle zone */
+}
+
+/* ✅ If there is only one essence in battle, place it in the bottom-right */
+.battle-zone .image-wrapper .essence-single {
+    bottom: 2%;
+    right: 2%;
+}
+
+/* ✅ If there are two essences in battle, position them separately */
+.battle-zone .image-wrapper .essence-bottom-left {
+    bottom: 2%;
+    left: 2%;
+}
+
+.battle-zone .image-wrapper .essence-bottom-right {
+    bottom: 2%;
+    right: 2%;
+}
 /* ✅ Card Back */
 .card-back {
     position: relative;
