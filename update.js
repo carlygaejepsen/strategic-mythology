@@ -76,6 +76,8 @@ export function resetTurnSelections() {
   setSelectedAttacker(null);
   setSelectedDefender(null);
   setSelectedCombo(null);
+  gameState.playerHasPlacedCard = false; // ✅ This should reset it
+  gameState.enemyHasPlacedCard = false;  // ✅ Reset enemy too, just in case
   updateInstructionText("select-battle-card"); // Ensure UI updates correctly
 }
 
@@ -108,16 +110,6 @@ export function setEnemyHasPlacedCard(value) {
   }
 }
 
-// ✅ Resets selections and game state flags for a new turn.
-export function resetSelections() {
-    return new Promise((resolve) => {
-        setSelectedAttacker(null);
-        setSelectedDefender(null);
-        setSelectedCombo(null);
-        resolve();
-    });
-}
-
 // ✅ Updates player's battle card in game state
 export function updatePlayerBattleCard(card, type) {
   currentPlayerBattleCards[type] = card;
@@ -134,21 +126,11 @@ export function updateEnemyBattleCard(card, type) {
   if (debugMode) logDebug(`🔄 Enemy's ${type} card updated: ${card.name}`);
 }
 
-// Draw Cards to Fill Hands 2.0
-export function drawCardsToFillHands() {
-  if (debugMode) {
-    logDebug(`DEBUG: Drawing cards - Player Hand: ${JSON.stringify(playerHand)}`);
-    logDebug(`DEBUG: Drawing cards - Enemy Hand: ${JSON.stringify(enemyHand)}`);
-  }
-  drawCardsForPlayer();
-  drawCardsForEnemy();
-}
-
 /**
  * Draws cards for the player until their hand is full (5 cards).
  * If the player's deck is empty, no more cards can be drawn.
  */
-function drawCardsForPlayer() {
+export function drawCardsForPlayer() {
   const cardsToDraw = Math.min(5 - playerHand.length, playerDeck.length);
   for (let i = 0; i < cardsToDraw; i++) {
     const playerDrawnCard = playerDeck.shift();
@@ -173,7 +155,7 @@ function drawCardsForPlayer() {
  * Draws cards for the enemy until their hand is full (5 cards).
  * If the enemy's deck is empty, no more cards can be drawn.
  */
-function drawCardsForEnemy() {
+export function drawCardsForEnemy() {
   const cardsToDraw = Math.min(5 - enemyHand.length, enemyDeck.length);
   for (let i = 0; i < cardsToDraw; i++) {
     const enemyDrawnCard = enemyDeck.shift();

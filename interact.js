@@ -1,6 +1,6 @@
 // interact.js
 import { 
-    playerHand, enemyHand, gameState, 
+    playerHand, enemyHand, gameState, debugMode,
     currentPlayerBattleCards, currentEnemyBattleCards 
 } from "./config.js";
 
@@ -29,9 +29,33 @@ export let selectedDefender = null;
 export let selectedCombo = null;
 
 let cardToDiscard = null;
+/**
+ * ✅ Sets the selected attacker.
+ */
+export function setSelectedAttacker(card) {
+    selectedAttacker = card;
+}
 
-// Debug mode toggle
-export const debugMode = false;
+/**
+ * ✅ Sets the selected defender.
+ */
+export function setSelectedDefender(card) {
+    selectedDefender = card;
+}
+
+/**
+ * ✅ Sets the selected combo card.
+ */
+export function setSelectedCombo(card) {
+    selectedCombo = card;
+}
+
+/**
+ * ✅ Selects a card for discarding.
+ */
+export function selectCardToDiscard() {
+    return cardToDiscard;
+}
 
 /**
  * ✅ Handles all player card clicks (Hand, Battle Zone, Enemy Battle Zone)
@@ -42,7 +66,7 @@ export function handleCardClick(card) {
         return;
     }
 
-    logDebug(`🃏 DEBUG: Clicked on card: ${card.name}`);
+    if (debugMode) logDebug(`🃏 DEBUG: Clicked on card: ${card.name}`);
     const type = determineCardType(card);
     
     const inPlayerBattle = Object.values(currentPlayerBattleCards).includes(card);
@@ -50,7 +74,7 @@ export function handleCardClick(card) {
 
     // ✅ Reset player card placement state at the start of each round
     if (!gameState.playerHasPlacedCard && !gameState.enemyHasPlacedCard) {
-        logDebug("🔄 New round: Resetting player card placement state.");
+        if (debugMode) logDebug("🔄 New round: Resetting player card placement state.");
         setPlayerHasPlacedCard(false);
     }
 
@@ -82,7 +106,7 @@ export function handleCardClick(card) {
         if (!selectedAttacker) {
             setSelectedAttacker(card);
             updateInstructionText("select-combo-or-defender");
-            logDebug(`⚔️ Attacker selected: ${card.name}`);
+            if (debugMode) logDebug(`⚔️ Attacker selected: ${card.name}`);
             return;
         }
 
@@ -90,7 +114,7 @@ export function handleCardClick(card) {
             // Deselect Attacker
             setSelectedAttacker(null);
             updateInstructionText("select-attacker");
-            logDebug(`🔄 Attacker deselected.`);
+            if (debugMode) logDebug(`🔄 Attacker deselected.`);
             return;
         }
 
@@ -98,7 +122,7 @@ export function handleCardClick(card) {
         if (!selectedCombo) {
             setSelectedCombo(card);
             updateInstructionText("select-defender");
-            logDebug(`🔥 Combo selected: ${card.name}`);
+            if (debugMode) logDebug(`🔥 Combo selected: ${card.name}`);
             return;
         }
 
@@ -117,43 +141,16 @@ export function handleCardClick(card) {
             // Deselect Defender
             setSelectedDefender(null);
             updateInstructionText("select-defender-or-combo");
-            logDebug(`🔄 Defender deselected.`);
+            if (debugMode) logDebug(`🔄 Defender deselected.`);
             return;
         }
 
         setSelectedDefender(card);
         updateInstructionText("play-turn");
-        logDebug(`🛡️ Defender selected: ${card.name}`);
+        if (debugMode) logDebug(`🛡️ Defender selected: ${card.name}`);
         return;
     }
 
     logWarn("⚠️ Invalid selection. Place a card first, then select attacker, combo, and defender.");
 }
 
-/**
- * ✅ Sets the selected attacker.
- */
-export function setSelectedAttacker(card) {
-    selectedAttacker = card;
-}
-
-/**
- * ✅ Sets the selected defender.
- */
-export function setSelectedDefender(card) {
-    selectedDefender = card;
-}
-
-/**
- * ✅ Sets the selected combo card.
- */
-export function setSelectedCombo(card) {
-    selectedCombo = card;
-}
-
-/**
- * ✅ Selects a card for discarding.
- */
-export function selectCardToDiscard() {
-    return cardToDiscard;
-}

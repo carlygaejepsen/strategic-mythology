@@ -1,0 +1,123 @@
+Function Organizer (and variables, event listeners, etc.)
+
+cards.js:
+populateTemplate(template, data): Replaces placeholders in a template with provided data.
+dealStartingHands(): Deals starting hands from decks and updates the UI.
+determineCardType(card): Determines the card type safely and caches the result to avoid redundant calls.
+createCardElement(card): Creates a card element.
+
+logger.js:
+logDebug(message): Logs a debug message if debugMode is enabled.
+logError(message, error): Logs an error message along with an error object.
+logWarn(message): Logs a warning message.
+logInfo(message): Logs an informational message.
+
+battle-logic.js:
+Variables
+battleSystem
+Functions
+processCombat(attacker, defender, isCombo = false)
+calculateEssenceMultiplier(attackerEssence, defenderEssence)
+calculateClassMultiplier(attackerClass, defenderClass)
+checkForCombos(battleZone, owner)
+checkForTripleCombo(battleZone, owner)
+performTripleCombo(owner, opponentBattleZone)
+
+battle.js:
+Functions
+startGame(): Ensures the game initializes correctly.
+drawCardsToFillHands(): Draws cards to fill hands.
+getEnemyOpenSlots(): Gets the open slots in the enemy's battle zone.
+manageTurn(): Manages an entire turn.
+battleRound(): Handles the battle round.
+enemyTurn(): Handles the enemy AI turn.
+endTurn(): Ends the turn and prepares for the next round.
+Variables
+gameRunning: A boolean variable to track if the game is running.
+
+card-display.js:
+removeDefeatedCards(): Removes defeated cards from the battle zones and logs the results.
+updateBattleZones(): Updates the battle zones for both the player and the enemy.
+updateHands(): Updates the hands for both the player and the enemy.
+updateHand(containerId, hand, deck): Updates a specific hand container with the given hand and deck.
+enemyPlaceCard(): Handles the enemy placing a card in the battle zone.
+updateCardHP(card): Updates the HP of a specific card.
+getRandomCardFromZone(zone): Gets a random card from a specified zone.
+discardToDeck(hand, deck): Discards selected cards from the hand to the deck and shuffles the deck.
+
+config.js:
+Functions
+setDebugMode(value): Sets the debug mode and logs the current state.
+setCurrentPhase(newPhase): Sets the current game phase and logs the phase change.
+loadJSON(file): Loads a JSON file and returns its content.
+loadConfigFiles(): Fetches card templates and updates the configuration.
+shuffleDeck(deck): Shuffles a deck using the Fisher-Yates algorithm.
+loadAllCards(): Loads character, essence, and ability cards from JSON files and populates the decks.
+Variables
+debugMode: A boolean variable to enable or disable debugging.
+turnPhases: An object containing the different phases of the game.
+currentPhase: A variable to track the current game phase.
+cardTemplates: An object to store card templates.
+playerDeck: An array to store the player's deck.
+enemyDeck: An array to store the enemy's deck.
+playerHand: An array to store the player's hand.
+enemyHand: An array to store the enemy's hand.
+gameState: An object to track the game state.
+currentPlayerBattleCards: An object to store the player's current battle cards.
+currentEnemyBattleCards: An object to store the enemy's current battle cards.
+gameConfig: An object to store game-wide configuration settings.
+
+game.js:
+Functions
+startGame(): Initializes and starts the game.
+isComboCard(card): Determines if a card qualifies as a combo card.
+checkComboAvailability(): Checks if a combo option is available.
+discardCard(card): Discards a selected card from the hand or battle zone.
+selectCardToDiscard(): (Placeholder) Selects a card to discard. (Note: This function needs to be implemented.)
+Event Listeners
+DOMContentLoaded: Sets up event listeners and starts the game when the DOM is fully loaded.
+playTurnButton: Adds a click event listener to the "Play Turn" button to handle playing a turn.
+playerDeckElement: Adds a click event listener to the player deck element to handle discarding a card.
+enemyDeckElement: Adds a click event listener to the enemy deck element to handle discarding a card.
+
+interact.js:
+Functions
+handleCardClick(card): Handles all player card clicks (Hand, Battle Zone, Enemy Battle Zone).
+setSelectedAttacker(card): Sets the selected attacker.
+setSelectedDefender(card): Sets the selected defender.
+setSelectedCombo(card): Sets the selected combo card.
+selectCardToDiscard(): Selects a card for discarding.
+Variables
+selectedAttacker: A variable to store the selected attacker.
+selectedDefender: A variable to store the selected defender.
+selectedCombo: A variable to store the selected combo card.
+cardToDiscard: A variable to store the card to be discarded.
+
+ui-display.js:
+Functions
+updateInstructionText(phase): Updates the player instruction box based on the game phase.
+updateEnemyStatus(phase): Updates the enemy status UI based on the game phase.
+onGameStateChange(newState): Wrapper function to update the player instruction UI based on game state changes.
+onEnemyStateChange(newState): Wrapper function to update the enemy phase UI based on game state changes.
+logToResults(message): Logs battle events to the results log in the UI.
+clearResultsLog(): Clears the results log when a new game starts.
+updateDeckCounts(playerCount, enemyCount): Updates the deck counts for both the player and the enemy.
+Variables
+isNode: A boolean variable to check if the code is running in a Node.js environment.
+
+update.js:
+Functions
+placeCardInBattleZone(card, battleZoneId, updateFunction, owner): Places a card in the specified battle zone.
+resetTurnSelections(): Properly resets selections at the end of a turn.
+setPlayerHasPlacedCard(value): Updates whether the player has placed a card.
+setEnemyHasPlacedCard(value): Updates whether the enemy has placed a card.
+resetTurnSelections(): Resets selections and game state flags for a new turn.
+updatePlayerBattleCard(card, type): Updates the player's battle card in the game state.
+updateEnemyBattleCard(card, type): Updates the enemy's battle card in the game state.
+drawCardsToFillHands(): Draws cards to fill hands.
+drawCardsForPlayer(): Draws cards for the player until their hand is full (5 cards).
+drawCardsForEnemy(): Draws cards for the enemy until their hand is full (5 cards).
+enemyPlaceCard(): Handles the enemy placing a card in the battle zone.
+Variables
+debugMode: A boolean variable to enable or disable debugging.
+validCardTypes: An array containing valid card types.

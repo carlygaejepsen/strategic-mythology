@@ -23,7 +23,7 @@ describe('manageTurn', () => {
         playerHand.length = 0;
         enemyHand.length = 0;
         sinon.stub(enemyPlaceCard).resolves(); // Ensure resolves method is used correctly
-        sinon.stub(resetSelections).resolves();
+        sinon.stub(resetTurnSelections).resolves();
         sinon.stub(drawCardsToFillHands).resolves();
         sinon.stub(logError);
         sinon.stub(logToResults);
