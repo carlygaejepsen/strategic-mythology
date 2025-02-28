@@ -62,3 +62,16 @@
         grid-template-columns: repeat(2, 1fr); /* Adjusts for smaller screens */
     }
 }
+
+/* ✅ Hand container */
+.hand-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 15px;
+    border: 3px solid #C89F5D;
+    width: 100%;
+    background-color: #EAD7A5;
+    align-items: center;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+}

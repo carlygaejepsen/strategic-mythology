@@ -14,47 +14,53 @@
 
 /* ✅ Card container */
 .card-container {
-    position: relative; /* Ensures positioning context for child elements */
-    display: inline-block;
-    width: 140px; /* Fixed width */
-    height: 250px; /* Fixed height */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 140px;
+    height: auto;
+    padding: 4px;
 }
 
 /* 🎴 Main Card Styles */
 .char-card,
 .essence-card,
 .ability-card {
-    width: 100%; /* Use 100% of the container's width */
-    height: 100%; /* Use 100% of the container's height */
+    width: 100%;
     background: linear-gradient(135deg, #E3DAC9, #C89F5D);
     border-radius: 6px;
     box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
-    padding: 8px;
+    padding: 4px;
     text-align: center;
     border: 2px solid #8B3A3A;
     background-color: #EDE8E4;
     transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    align-items: center;
     font-size: 12px;
 }
 
-/* 🔹 Card Titles */
+/* 🔹 Card Titles (Move to the Top) */
 .char-name,
 .essence-name,
 .ability-name {
-    font-size: 16px; /* Smaller font size */
-    margin: 4px 0; 
+    font-size: 16px;
+    margin-bottom: 2px;
+    text-align: center;
+    order: -1; /* Moves the title to the top */
 }
 
 /* ✅ Image wrapper: Ensures essence emojis stay inside */
 .image-wrapper {
-    position: relative;  /* ✅ Needed to position essence emojis correctly */
-    display: inline-block;
-    width: 120px;  /* Fixed width */
-    height: 120px; /* Fixed height */
-    margin: 0 auto; /* Center the image wrapper */
+    position: relative;
+    display: flex;
+    justify-content: center; /* Center image horizontally */
+    align-items: center;
+    width: 120px;
+    height: 120px;
+    margin-bottom: 2px;
 }
 
 /* 📷 Card Images */
@@ -68,11 +74,18 @@
     display: block;
 }
 
-/* Essence Emojis 4.0 */
+/* 🔢 Card Stats */
+.card-stats {
+    margin-top: 2px;
+    font-size: 12px;
+    text-align: center;
+}
+
+/* Essence Emojis */
 .essence-emoji {
     position: absolute;
     font-size: 1em;
-    text-shadow: 
+    text-shadow:
         -2px -2px 3px #4A1C1A,
          2px -2px 3px #4A1C1A,
         -2px  2px 3px #4A1C1A,
@@ -112,7 +125,7 @@
     line-height: 1.1; /* Tighter spacing */
 }
 
-/* 🔹 Battle Zone Text Adjustments */
+/* � Battle Zone Text Adjustments */
 .battle-zone .char-name,
 .battle-zone .essence-name,
 .battle-zone .ability-name {
@@ -133,7 +146,7 @@
     margin-top: 1px;
 }
 
-/* 📷 Smaller images in the battle zone */
+/* �📷 Smaller images in the battle zone */
 .battle-zone .image-wrapper {
     width: 60px;  /* Shrinks the image wrapper */
     height: 60px;
