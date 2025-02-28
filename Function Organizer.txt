@@ -108,7 +108,6 @@ isNode: A boolean variable to check if the code is running in a Node.js environm
 update.js:
 Functions
 placeCardInBattleZone(card, battleZoneId, updateFunction, owner): Places a card in the specified battle zone.
-resetTurnSelections(): Properly resets selections at the end of a turn.
 setPlayerHasPlacedCard(value): Updates whether the player has placed a card.
 setEnemyHasPlacedCard(value): Updates whether the enemy has placed a card.
 resetTurnSelections(): Resets selections and game state flags for a new turn.
