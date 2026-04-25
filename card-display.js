@@ -82,16 +82,10 @@ function updateHand(containerId, hand, deck) {
         return;
     }
 
-    // Find the existing deck element (DO NOT CREATE IT)
-    let deckElement = document.getElementById(`${containerId}-deck`);
-    let deckCountElement = document.getElementById(`${containerId}-deck-count`);
+    // Remove all existing card elements in the hand
+    container.innerHTML = "";
 
-    // Remove all existing card elements in the hand (EXCEPT the deck card)
-    Array.from(container.children)
-        .filter(el => el.classList.contains("card-container") && el.id !== `${containerId}-deck`)
-        .forEach(el => el.remove());
-
-    // Add missing cards (up to 5)
+    // Add cards (up to 5)
     hand.slice(0, 5).forEach(card => {
         const cardElement = createCardElement(card);
         if (cardElement) {

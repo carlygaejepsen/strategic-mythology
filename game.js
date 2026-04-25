@@ -12,7 +12,6 @@ import {
   turnPhases
 } from "./config.js";
 import {
-  dealStartingHands,
   createCardElement,
   determineCardType
 } from "./cards.js";
