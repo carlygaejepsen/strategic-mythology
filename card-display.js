@@ -3,14 +3,14 @@
 import { createCardElement, determineCardType } from "./cards.js";
 import { 
     playerHand, enemyHand, 
-    currentPlayerBattleCards, currentEnemyBattleCards, enemyDeck, playerDeck 
+    currentPlayerBattleCards, currentEnemyBattleCards, enemyDeck, playerDeck,
+    shuffleDeck
 } from "./config.js";
 import { 
-    setEnemyHasPlacedCard, placeCardInBattleZone, setPlayerHasPlacedCard, updateEnemyBattleCard 
+    setEnemyHasPlacedCard, placeCardInBattleZone, setPlayerHasPlacedCard, updateEnemyBattleCard, getEnemyOpenSlots 
 } from "./update.js";
 import { logToResults } from "./ui-display.js"; 
 import { logDebug } from "./utils/logger.js";
-import { getEnemyOpenSlots} from "./battle.js";
 
 export function removeDefeatedCards() {
     let playerCardsDefeated = false;
@@ -101,31 +101,6 @@ function updateHand(containerId, hand, deck) {
             console.warn(`⚠️ Failed to create card element for ${card.name}.`);
         }
     });
-}
-
-export function enemyPlaceCard() {
-    if (!enemyDeck.length) {
-        console.warn("⚠️ Enemy has no more cards available.");
-        return;
-    }
-
-    const openSlots = getEnemyOpenSlots();
-    if (openSlots.length === 0) {
-        console.log("🤖 Enemy battle zone is full. No card needed.");
-        return;
-    }
-
-    const availableCards = enemyDeck.filter(card => openSlots.includes(determineCardType(card)));
-    if (availableCards.length === 0) {
-        console.warn("⚠️ No suitable cards found for available enemy slots.");
-        return;
-    }
-
-    const card = availableCards[Math.floor(Math.random() * availableCards.length)];
-    const slot = determineCardType(card);
-
-    placeCardInBattleZone(card, `enemy-${slot}-zone`, updateEnemyBattleCard, "Enemy");
-    console.log(`🤖 Enemy placed ${card.name} in the ${slot} slot.`);
 }
 
 export function updateCardHP(card) {

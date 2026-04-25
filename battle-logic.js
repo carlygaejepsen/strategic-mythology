@@ -1,8 +1,9 @@
 // battle-logic.js - Handles Combat Logic & Combos
 
-import { logToResults } from "./ui-display.js";
+import { logToResults, updatePlayerHPDisplay, updateEnemyHPDisplay } from "./ui-display.js";
 import { updateCardHP, removeDefeatedCards } from "./card-display.js";
 import { determineCardType } from "./cards.js";
+import { updatePlayerHP, updateEnemyHP, playerHP, enemyHP } from "./config.js";
 
 export const battleSystem = {
   combos: {
@@ -76,8 +77,13 @@ export function processCombat(attacker, defender, isCombo = false) {
   }
 
   // ✅ **Apply Essence & Class Multipliers**
-  let essenceMultiplier = calculateEssenceMultiplier(attacker.essence, defender.essence);
-  let classMultiplier = calculateClassMultiplier(attacker.class, defender.class);
+  const attackerEssence = attacker.essence || (attacker.essences && attacker.essences[0]);
+  const defenderEssence = defender.essence || (defender.essences && defender.essences[0]);
+  const attackerClass = attacker.class || (attacker.classes && attacker.classes[0]);
+  const defenderClass = defender.class || (defender.classes && defender.classes[0]);
+
+  let essenceMultiplier = calculateEssenceMultiplier(attackerEssence, defenderEssence);
+  let classMultiplier = calculateClassMultiplier(attackerClass, defenderClass);
 
   const baseDamage = Math.max(
     Math.round((attackPower * essenceMultiplier * classMultiplier) - (defender.def || 0)),
@@ -138,14 +144,15 @@ export function checkForCombos(battleZone, owner) {
         }
       });
     }
-    if (card.essence) {
-      if (essenceMap[card.essence]) {
-        logToResults(`🔥 ${owner} activated essence combo: ${essenceMap[card.essence].name} + ${card.name}`);
+    const cardEssences = card.essences || (card.essence ? [card.essence] : []);
+    cardEssences.forEach(ess => {
+      if (essenceMap[ess]) {
+        logToResults(`🔥 ${owner} activated essence combo: ${essenceMap[ess].name} + ${card.name}`);
         comboFound = true;
       } else {
-        essenceMap[card.essence] = card;
+        essenceMap[ess] = card;
       }
-    }
+    });
   });
 
   return comboFound;
@@ -161,14 +168,33 @@ export function checkForTripleCombo(battleZone, owner) {
   return hasAllTypes;
 }
 
-// 💥 **Execute Triple Combo Attack**
-export function performTripleCombo(owner, opponentBattleZone) {
-  const damage = 60;
-  Object.values(opponentBattleZone).forEach(card => {
-    if (card) {
-      card.hp = Math.max(0, card.hp - damage);
-      logToResults(`💥 ${owner}'s triple combo hits ${card.name} for ${damage}!`);
-      updateCardHP(card);
-    }
-  });
+// 🎯 **Direct Attack: Attack the player directly**
+export function processDirectAttack(attacker, targetOwner) {
+  if (!attacker?.name) return;
+
+  const damage = attacker.atk || 0;
+  if (targetOwner === "Player") {
+    updatePlayerHP(-damage);
+    updatePlayerHPDisplay(playerHP);
+    logToResults(`🎯 ${attacker.name} attacks YOU directly for ${damage} damage!`);
+  } else {
+    updateEnemyHP(-damage);
+    updateEnemyHPDisplay(enemyHP);
+    logToResults(`🎯 ${attacker.name} attacks ENEMY directly for ${damage} damage!`);
+  }
+}
+
+// 🏆 **Check Win Condition**
+export function checkWinCondition() {
+  if (playerHP <= 0) {
+    logToResults("💀 GAME OVER! You have been defeated by the ancient forces...");
+    alert("GAME OVER! You lost.");
+    return true;
+  }
+  if (enemyHP <= 0) {
+    logToResults("🏆 VICTORY! You have conquered the mythological realm!");
+    alert("VICTORY! You won!");
+    return true;
+  }
+  return false;
 }

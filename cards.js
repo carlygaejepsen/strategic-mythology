@@ -21,29 +21,6 @@ function populateTemplate(template, data) {
   return template.replace(/{(\w+)}/g, (match, key) => (key in data ? data[key] : match));
 }
 
-// 🃏 Deals starting hands from decks & updates the UI
-export function dealStartingHands() {
-  const HAND_SIZE = 5;
-
-  if (playerDeck.length < HAND_SIZE || enemyDeck.length < HAND_SIZE) {
-    console.error("❌ Not enough cards to deal starting hands.");
-    return;
-  }
-
-  playerHand.length = 0; 
-  enemyHand.length = 0;
-
-  playerHand.push(...playerDeck.splice(0, HAND_SIZE));
-  enemyHand.push(...enemyDeck.splice(0, HAND_SIZE));
-
-  updateHands(); // ✅ Refresh UI after dealing
-
-  if (debugMode) {
-    console.log("🎴 Player Hand:", playerHand);
-    console.log("🎴 Enemy Hand:", enemyHand);
-  }
-}
-
 // 🏷️ Determines the card type safely, caches result to avoid redundant calls
 export function determineCardType(card) {
   if (!card) {

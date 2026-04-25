@@ -1,34 +1,34 @@
-// interact.js
-import { 
+import {
     playerHand, enemyHand, gameState, debugMode,
-    currentPlayerBattleCards, currentEnemyBattleCards 
+    currentPlayerBattleCards, currentEnemyBattleCards,
+    turnPhases, setCurrentPhase
 } from "./config.js";
 
-import { 
-    createCardElement, determineCardType 
+import {
+    createCardElement, determineCardType
 } from "./cards.js";
 
-import { 
-    logToResults, updateInstructionText 
+import {
+    logToResults
 } from "./ui-display.js";
 
-import { 
-    enemyPlaceCard, updateHands 
-} from "./card-display.js";
-
-import { 
-    updatePlayerBattleCard, updateEnemyBattleCard, 
-    placeCardInBattleZone, setPlayerHasPlacedCard, 
-    setEnemyHasPlacedCard 
+import {
+    updatePlayerBattleCard, updateEnemyBattleCard,
+    placeCardInBattleZone, setPlayerHasPlacedCard,
+    setEnemyHasPlacedCard, enemyPlaceCard
 } from "./update.js";
+import { updateHands } from "./card-display.js";
+import { updateDeckCounts } from "./ui-display.js";
 
-import { logDebug, logWarn } from "./utils/logger.js";
+import { logDebug, logWarn, logError } from "./utils/logger.js";
 
 export let selectedAttacker = null;
 export let selectedDefender = null;
 export let selectedCombo = null;
 
-let cardToDiscard = null;
+// We'll keep a reference for discarding, if needed.
+let lastClickedCard = null;
+
 /**
  * ✅ Sets the selected attacker.
  */
@@ -54,7 +54,47 @@ export function setSelectedCombo(card) {
  * ✅ Selects a card for discarding.
  */
 export function selectCardToDiscard() {
-    return cardToDiscard;
+    return lastClickedCard;
+}
+
+/**
+ * ✅ Logic to discard a specific card back to the deck.
+ */
+export function discardCard(card) {
+    if (!card) {
+        logWarn("🗑️ No card selected to discard.");
+        return;
+    }
+
+    const type = determineCardType(card);
+
+    // Remove card from player's hand
+    const handIndex = playerHand.indexOf(card);
+    if (handIndex !== -1) {
+        playerHand.splice(handIndex, 1);
+        playerDeck.push(card); // Add card back to the deck
+        logDebug(`🗑️ Discarded ${card.name} from hand.`);
+        updateHands();
+        updateDeckCounts(playerDeck.length, enemyDeck.length);
+        lastClickedCard = null;
+        return;
+    }
+
+    // Remove card from player's battle zone
+    if (currentPlayerBattleCards[type] === card) {
+        currentPlayerBattleCards[type] = null;
+        const battleZone = document.getElementById(`player-${type}-zone`);
+        if (battleZone) {
+            battleZone.innerHTML = "";
+        }
+        playerDeck.push(card); // Add card back to the deck
+        logDebug(`🗑️ Discarded ${card.name} from battle zone.`);
+        updateDeckCounts(playerDeck.length, enemyDeck.length);
+        lastClickedCard = null;
+        return;
+    }
+
+    logError("❌ ERROR: Card not found in hand or battle zone.");
 }
 
 /**
@@ -66,15 +106,21 @@ export function handleCardClick(card) {
         return;
     }
 
-    if (debugMode) logDebug(`🃏 DEBUG: Clicked on card: ${card.name}`);
+    lastClickedCard = card;
+
+    if (debugMode) {
+      logDebug(`🃏 DEBUG: Clicked on card: ${card.name}`);
+    }
     const type = determineCardType(card);
-    
+
     const inPlayerBattle = Object.values(currentPlayerBattleCards).includes(card);
     const inEnemyBattle = Object.values(currentEnemyBattleCards).includes(card);
 
     // ✅ Reset player card placement state at the start of each round
     if (!gameState.playerHasPlacedCard && !gameState.enemyHasPlacedCard) {
-        if (debugMode) logDebug("🔄 New round: Resetting player card placement state.");
+        if (debugMode) {
+          logDebug("🔄 New round: Resetting player card placement state.");
+        }
         setPlayerHasPlacedCard(false);
     }
 
@@ -94,8 +140,8 @@ export function handleCardClick(card) {
         playerHand.splice(playerHand.indexOf(card), 1);
         updateHands();
         setPlayerHasPlacedCard(true); // ✅ Prevent placing another card this turn
-        updateInstructionText("select-attacker");
-        
+        setCurrentPhase(turnPhases.SELECT_ATTACKER);
+
         // ✅ Enemy places their card immediately after
         enemyPlaceCard();
         return;
@@ -105,24 +151,30 @@ export function handleCardClick(card) {
     if (inPlayerBattle) {
         if (!selectedAttacker) {
             setSelectedAttacker(card);
-            updateInstructionText("select-combo-or-defender");
-            if (debugMode) logDebug(`⚔️ Attacker selected: ${card.name}`);
+            setCurrentPhase(turnPhases.SELECT_DEFENDER_OR_COMBO);
+            if (debugMode) {
+              logDebug(`⚔️ Attacker selected: ${card.name}`);
+            }
             return;
         }
 
         if (selectedAttacker === card) {
             // Deselect Attacker
             setSelectedAttacker(null);
-            updateInstructionText("select-attacker");
-            if (debugMode) logDebug(`🔄 Attacker deselected.`);
+            setCurrentPhase(turnPhases.SELECT_ATTACKER);
+            if (debugMode) {
+              logDebug(`🔄 Attacker deselected.`);
+            }
             return;
         }
 
         // ✅ Selecting a Combo Card
         if (!selectedCombo) {
             setSelectedCombo(card);
-            updateInstructionText("select-defender");
-            if (debugMode) logDebug(`🔥 Combo selected: ${card.name}`);
+            setCurrentPhase(turnPhases.SELECT_DEFENDER);
+            if (debugMode) {
+              logDebug(`🔥 Combo selected: ${card.name}`);
+            }
             return;
         }
 
@@ -140,17 +192,39 @@ export function handleCardClick(card) {
         if (selectedDefender === card) {
             // Deselect Defender
             setSelectedDefender(null);
-            updateInstructionText("select-defender-or-combo");
-            if (debugMode) logDebug(`🔄 Defender deselected.`);
+            setCurrentPhase(turnPhases.SELECT_DEFENDER_OR_COMBO);
+            if (debugMode) {
+              logDebug(`🔄 Defender deselected.`);
+            }
             return;
         }
 
         setSelectedDefender(card);
-        updateInstructionText("play-turn");
-        if (debugMode) logDebug(`🛡️ Defender selected: ${card.name}`);
+        setCurrentPhase(turnPhases.PLAY_TURN);
+        if (debugMode) {
+          logDebug(`🛡️ Defender selected: ${card.name}`);
+        }
         return;
     }
 
     logWarn("⚠️ Invalid selection. Place a card first, then select attacker, combo, and defender.");
 }
 
+// ✅ Deck Click Listener Initialization
+document.addEventListener("DOMContentLoaded", () => {
+    const playerDeckElement = document.getElementById("player-deck");
+    const enemyDeckElement = document.getElementById("enemy-deck");
+
+    if (playerDeckElement) {
+        playerDeckElement.addEventListener("click", () => {
+            logDebug("🗑️ Attempting to discard last clicked card to Player Deck...");
+            discardCard(lastClickedCard);
+        });
+    }
+
+    if (enemyDeckElement) {
+        enemyDeckElement.addEventListener("click", () => {
+            logWarn("⚠️ You cannot discard cards to the enemy deck!");
+        });
+    }
+});

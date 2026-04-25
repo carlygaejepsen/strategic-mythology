@@ -53,6 +53,18 @@ export let enemyDeck = [];
 export let playerHand = [];
 export let enemyHand = [];
 
+// ✅ Player & Enemy Health
+export let playerHP = 100;
+export let enemyHP = 100;
+
+export function updatePlayerHP(amount) {
+    playerHP = Math.max(0, playerHP + amount);
+}
+
+export function updateEnemyHP(amount) {
+    enemyHP = Math.max(0, enemyHP + amount);
+}
+
 // ✅ Game State Tracking
 export let gameState = {
   playerHasPlacedCard: false,
@@ -145,13 +157,12 @@ export async function loadAllCards() {
     if (!characterDeck.length || !essenceDeck.length || !abilityDeck.length) {
       logWarn("⚠️ WARNING: One or more decks are empty!");
     } else {
-      // Ensure each deck consists of exactly one of each card
+      // Ensure each deck consists of exactly one of each card (cloned to avoid shared state)
       const allCards = [...characterDeck, ...essenceDeck, ...abilityDeck];
-      playerDeck = [...allCards];
-      enemyDeck = [...allCards];
+      playerDeck = allCards.map(card => ({ ...card }));
+      enemyDeck = allCards.map(card => ({ ...card }));
       shuffleDeck(playerDeck);
       shuffleDeck(enemyDeck);
-
 
       logDebug(`✅ All cards loaded and decks shuffled. Player deck count: ${playerDeck.length}, Enemy deck count: ${enemyDeck.length}`);
     }

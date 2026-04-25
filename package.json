@@ -1,6 +1,7 @@
 {
   "name": "strategic-mythology",
   "version": "1.0.0",
+  "type": "module",
   "description": "Card-based battler based on ancient mythology",
   "main": "index.html",
   "scripts": {

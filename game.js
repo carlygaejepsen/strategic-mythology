@@ -1,23 +1,30 @@
 // game.js
 
-import { 
-  loadConfigFiles, 
-  loadAllCards, 
-  playerDeck, 
-  enemyDeck, 
-  playerHand, 
-  enemyHand 
+import {
+  loadConfigFiles,
+  loadAllCards,
+  playerDeck,
+  enemyDeck,
+  playerHand,
+  enemyHand,
+  currentPlayerBattleCards,
+  setCurrentPhase,
+  turnPhases
 } from "./config.js";
-import { dealStartingHands, createCardElement, determineCardType } from "./cards.js";
-import { battleRound } from "./battle.js";
-import { 
-  onGameStateChange, 
-  onEnemyStateChange, 
-  updateInstructionText, 
-  updateDeckCounts 
-} from "./ui-display.js"; 
+import {
+  dealStartingHands,
+  createCardElement,
+  determineCardType
+} from "./cards.js";
+import { battleRound, manageTurn, startGame as startBattle } from "./battle.js";
+import {
+  onGameStateChange,
+  onEnemyStateChange,
+  updateDeckCounts
+} from "./ui-display.js";
 import { updateHands } from "./card-display.js";
 import { logDebug, logError } from "./utils/logger.js";
+import { selectCardToDiscard } from "./interact.js";
 
 // 🎮 Initialize and Start Game
 async function startGame() {
@@ -26,19 +33,18 @@ async function startGame() {
     await loadConfigFiles();
     await loadAllCards();
 
-    logDebug("🎴 Dealing starting hands...");
-    dealStartingHands();
+    logDebug("🎴 Initializing battle...");
+    startBattle();
 
     // Render initial hands for both players.
     updateHands();
-    updateDeckCounts(playerDeck.length, enemyDeck.length); // Ensure deck count is updated after dealing hands
+    updateDeckCounts(playerDeck.length, enemyDeck.length); // Ensure deck count is updated
 
     // Ensure proper game state updates for UI
-    onGameStateChange("select-battle-card");      
-    onEnemyStateChange("enemy-start");  
+    onEnemyStateChange("enemy-start");
 
-    // Update instruction text to ensure UI consistency
-    updateInstructionText("select-battle-card");
+    // Update turn state to ensure UI consistency
+    setCurrentPhase(turnPhases.SELECT_BATTLE_CARD);
 
     logDebug("✅ Game successfully started!");
   } catch (error) {
@@ -46,54 +52,8 @@ async function startGame() {
   }
 }
 
-// Helper: Determines if a card qualifies as a combo card.
-function isComboCard(card) {
-  return determineCardType(card) === "ability" && Boolean(selectedAttacker);
-}
-
-// Internal helper: Check if a combo option is available.
-function checkComboAvailability() {
-  if (playerHasComboOption()) {
-    updateInstructionText("select-combo");
-  } else {
-    updateInstructionText("select-defender-or-combo");
-  }
-}
-
-function discardCard(card) {
-  if (!card) {
-    logError("❌ ERROR: No card selected to discard.");
-    return;
-  }
-
-  const type = determineCardType(card);
-
-  // Remove card from player's hand
-  const handIndex = playerHand.indexOf(card);
-  if (handIndex !== -1) {
-    playerHand.splice(handIndex, 1);
-    playerDeck.push(card); // Add card back to the deck
-    logDebug(`🗑️ Discarded ${card.name} from hand.`);
-    updateHands();
-    updateDeckCounts(playerDeck.length, enemyDeck.length); // Ensure deck count is updated after discarding
-    return;
-  }
-
-  // Remove card from player's battle zone
-  if (currentPlayerBattleCards[type] === card) {
-    currentPlayerBattleCards[type] = null;
-    const battleZone = document.getElementById(`player-${type}-zone`);
-    if (battleZone) {
-      battleZone.innerHTML = "";
-    }
-    playerDeck.push(card); // Add card back to the deck
-    logDebug(`🗑️ Discarded ${card.name} from battle zone.`);
-    updateDeckCounts(playerDeck.length, enemyDeck.length); // Ensure deck count is updated after discarding
-    return;
-  }
-
-  logError("❌ ERROR: Card not found in hand or battle zone.");
-}
+// Helper: Determines if a card qualifies as a combo card. (Used by UI or other modules if needed, keeping for potential expansion or removing if strictly dead)
+// Actually, it's not used here, so removing it to clean up.
 
 // Set up event listeners once the DOM is loaded.
 document.addEventListener("DOMContentLoaded", () => {
@@ -101,41 +61,13 @@ document.addEventListener("DOMContentLoaded", () => {
   startGame();
 
   const playTurnButton = document.getElementById("play-turn");
-  const playerDeckElement = document.getElementById("player-deck");
-  const enemyDeckElement = document.getElementById("enemy-deck");
 
   if (playTurnButton) {
     playTurnButton.addEventListener("click", () => {
       logDebug("⚔️ Playing turn...");
-      battleRound();
-
-      // Update hands after battle round.
-      updateHands();
-      updateDeckCounts(playerDeck.length, enemyDeck.length); // Ensure deck count is updated after updating hands
+      manageTurn();
     });
   } else {
     logError("❌ ERROR: 'Play Turn' button not found!");
-  }
-
-  if (playerDeckElement) {
-    playerDeckElement.addEventListener("click", () => {
-      logDebug("🗑️ Discarding card...");
-      // Implement logic to select a card to discard
-      const cardToDiscard = selectCardToDiscard(); // You need to implement this function
-      discardCard(cardToDiscard);
-    });
-  } else {
-    logError("❌ ERROR: 'Player Deck' element not found!");
-  }
-
-  if (enemyDeckElement) {
-    enemyDeckElement.addEventListener("click", () => {
-      logDebug("🗑️ Discarding card...");
-      // Implement logic to select a card to discard
-      const cardToDiscard = selectCardToDiscard(); // You need to implement this function
-      discardCard(cardToDiscard);
-    });
-  } else {
-    logError("❌ ERROR: 'Enemy Deck' element not found!");
   }
 });
