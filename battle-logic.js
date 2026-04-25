@@ -168,6 +168,18 @@ export function checkForTripleCombo(battleZone, owner) {
   return hasAllTypes;
 }
 
+// 💥 **Execute Triple Combo Attack**
+export function performTripleCombo(owner, opponentBattleZone) {
+  const damage = 60;
+  Object.values(opponentBattleZone).forEach(card => {
+    if (card) {
+      card.hp = Math.max(0, card.hp - damage);
+      logToResults(`💥 ${owner}'s triple combo hits ${card.name} for ${damage}!`);
+      updateCardHP(card);
+    }
+  });
+}
+
 // 🎯 **Direct Attack: Attack the player directly**
 export function processDirectAttack(attacker, targetOwner) {
   if (!attacker?.name) return;

@@ -49,6 +49,7 @@ export function drawCardsToFillHands() {
   }
   drawCardsForPlayer();
   drawCardsForEnemy();
+  updateHands();
   updateDeckCounts(playerDeck.length, enemyDeck.length);
 }
 
